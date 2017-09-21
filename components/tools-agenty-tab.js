@@ -1,0 +1,59 @@
+/* 代办头部 */
+import React from 'react';
+import ReactDOM from 'react-dom';
+import "../js/iss.js";
+import "babel-polyfill";  //兼容ie
+
+class ToolsTtab extends React.Component {
+    constructor(arg) {
+        super(arg);
+        this.state = {
+            data:[
+                { "guid":"1","text":"我的待审","tap":"agenty"},
+                { "guid":"2","text":"我的申请","tap":"apply"},
+                { "guid":"3","text":"我的草稿","tap":"draft"},
+                { "guid":"4","text":"审批历史","tap":"approalHistory"}
+            ]
+        }
+    }
+    bindTab(prop){
+        ReactDOM.render(<ToolsTtab parent={prop}/>,document.querySelector("#React-tools-tab"));
+    }
+    /* 事件 */
+    Event_click(data,ev){
+      let el = $(ev.target);
+          el.parent().find("li").removeClass("active");
+          setTimeout(()=>{el.addClass("active")});
+          switch(data){
+             case "agenty":iss.hashHistory.push("agenty",{"state":"001"});break;
+             case "apply":iss.hashHistory.push("apply",{"state":"002"});break;
+             case "draft":iss.hashHistory.push("draft",{"state":"002"});break;
+             case "approalHistory":iss.hashHistory.push("approalHistory",{"state":"002"});break;
+          }
+    }
+    render() {
+        var th = this,current = this.props.parent.location.pathname;
+         var th;
+        let list = this.state.data.map((da,ind)=>{
+           
+            if(current.indexOf(da.tap)>=0){
+                return <li key={ind} className="J-List active" onClick={th.Event_click.bind(th,da.tap)}>{da.text}</li>
+            }else{
+            return <li key={ind} className="J-List" onClick={th.Event_click.bind(th,da.tap)}>{da.text}</li>
+            }
+        })
+        return <header className="JH-HeadTab" >
+            <ul className="JH-HeadList">
+                {list}
+            </ul>
+            <div className="JH-RightFlot">
+                <a className="btn-refish" href="javascript:;">刷新</a>
+            </div>
+        </header>
+    
+    }
+}
+
+export default ToolsTtab;
+
+
