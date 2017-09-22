@@ -6,9 +6,14 @@ import AgentyTab from "./tools-agenty-tab.js";//引入头部
 class Agenty extends React.Component {
     constructor(arg) {
         super(arg);
+        var th = this;
     }
     componentDidMount() {
-        this.agentyTabel();//绑定表哥 
+        var th = this;
+        
+        $(window).on("EVENT_CLOSELEFTBAR",t=>{
+            th.agentyTabel();//绑定表哥
+        })
     }
     agentyTabel() {
         let opens = (arg, data) => {
@@ -17,7 +22,7 @@ class Agenty extends React.Component {
         let formatter = (txt, data) => {
             return `<a href='javascript:;' >${txt}</a>`
         }
-        let tabel = $("#agentyBoxTabel"),
+        let tabel = this.tabel = $("#agentyBoxTabel"),
             col = [[
                 { field: "type", title: "审批类型", align: "center", width: 120, fixed: true, formatter: formatter },
                 { field: "content", title: "审批内容", align: "center", width: 120 },

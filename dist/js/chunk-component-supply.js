@@ -18,7 +18,7 @@ var _react2 = _interopRequireDefault(_react);
 
 __webpack_require__(85);
 
-var _toolsIndexTab = __webpack_require__(577);
+var _toolsIndexTab = __webpack_require__(578);
 
 var _toolsIndexTab2 = _interopRequireDefault(_toolsIndexTab);
 
@@ -239,7 +239,7 @@ exports.default = supply;
 
 /***/ }),
 
-/***/ 577:
+/***/ 578:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -286,6 +286,7 @@ var IndexTab = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (IndexTab.__proto__ || Object.getPrototypeOf(IndexTab)).call(this, arg));
 
+        _this.bindTab();
         _this.state = {
             data: [{ "guid": "1", "text": "项目概览", "tap": "index" }, { "guid": "2", "text": "项目身份证", "tap": "identity" }, { "guid": "3", "text": "供货", "tap": "supply" }, { "guid": "4", "text": "签约与回款", "tap": "signPayment" }, { "guid": "5", "text": "计划", "tap": "plan" }, { "guid": "6", "text": "重点事项", "tap": "matter" }, { "guid": "7", "text": "关键指标", "tap": "keyPoint" }]
         };
@@ -294,9 +295,10 @@ var IndexTab = function (_React$Component) {
 
     _createClass(IndexTab, [{
         key: 'bindTab',
-        value: function bindTab(prop) {}
-        // ReactDOM.render(<ToolsTtab parent={prop}/>,document.querySelector("#React-tools-tab"));
-
+        value: function bindTab(prop) {
+            $(".JH-Content").removeClass("CLASS_AGENTY");
+            // ReactDOM.render(<ToolsTtab parent={prop}/>,document.querySelector("#React-tools-tab"));
+        }
         /* 事件 */
 
     }, {

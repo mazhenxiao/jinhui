@@ -7,6 +7,7 @@ import "babel-polyfill";  //兼容ie
 class ToolsTtab extends React.Component {
     constructor(arg) {
         super(arg);
+        this.bindLeftBart();
         this.state = {
             data:[
                 { "guid":"1","text":"我的待审","tap":"agenty"},
@@ -16,8 +17,11 @@ class ToolsTtab extends React.Component {
             ]
         }
     }
-    bindTab(prop){
-        ReactDOM.render(<ToolsTtab parent={prop}/>,document.querySelector("#React-tools-tab"));
+    bindLeftBart(){
+        $(".JH-Content").addClass("CLASS_AGENTY");
+       setTimeout(a=>{
+        $(window).trigger("EVENT_CLOSELEFTBAR");
+       },1000)
     }
     /* 事件 */
     Event_click(data,ev){

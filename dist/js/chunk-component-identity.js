@@ -18,7 +18,7 @@ var _react2 = _interopRequireDefault(_react);
 
 __webpack_require__(85);
 
-var _toolsIndexTab = __webpack_require__(577);
+var _toolsIndexTab = __webpack_require__(578);
 
 var _toolsIndexTab2 = _interopRequireDefault(_toolsIndexTab);
 
@@ -33,7 +33,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 //标签
-__webpack_require__(581);
+__webpack_require__(582);
 
 var identity = function (_React$Component) {
     _inherits(identity, _React$Component);
@@ -616,7 +616,7 @@ exports.default = identity;
 
 /***/ }),
 
-/***/ 577:
+/***/ 578:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -663,6 +663,7 @@ var IndexTab = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (IndexTab.__proto__ || Object.getPrototypeOf(IndexTab)).call(this, arg));
 
+        _this.bindTab();
         _this.state = {
             data: [{ "guid": "1", "text": "项目概览", "tap": "index" }, { "guid": "2", "text": "项目身份证", "tap": "identity" }, { "guid": "3", "text": "供货", "tap": "supply" }, { "guid": "4", "text": "签约与回款", "tap": "signPayment" }, { "guid": "5", "text": "计划", "tap": "plan" }, { "guid": "6", "text": "重点事项", "tap": "matter" }, { "guid": "7", "text": "关键指标", "tap": "keyPoint" }]
         };
@@ -671,9 +672,10 @@ var IndexTab = function (_React$Component) {
 
     _createClass(IndexTab, [{
         key: 'bindTab',
-        value: function bindTab(prop) {}
-        // ReactDOM.render(<ToolsTtab parent={prop}/>,document.querySelector("#React-tools-tab"));
-
+        value: function bindTab(prop) {
+            $(".JH-Content").removeClass("CLASS_AGENTY");
+            // ReactDOM.render(<ToolsTtab parent={prop}/>,document.querySelector("#React-tools-tab"));
+        }
         /* 事件 */
 
     }, {
@@ -743,13 +745,13 @@ exports.default = IndexTab;
 
 /***/ }),
 
-/***/ 581:
+/***/ 582:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(582);
+var content = __webpack_require__(583);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -757,7 +759,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(584)(content, options);
+var update = __webpack_require__(585)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -775,10 +777,10 @@ if(false) {
 
 /***/ }),
 
-/***/ 582:
+/***/ 583:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(583)(undefined);
+exports = module.exports = __webpack_require__(584)(undefined);
 // imports
 
 
@@ -790,7 +792,7 @@ exports.push([module.i, ".index-identity {\n  margin: 0;\n  padding: 0;\n}\n", "
 
 /***/ }),
 
-/***/ 583:
+/***/ 584:
 /***/ (function(module, exports) {
 
 /*
@@ -873,7 +875,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 584:
+/***/ 585:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -919,7 +921,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(585);
+var	fixUrls = __webpack_require__(586);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -1233,7 +1235,7 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 
-/***/ 585:
+/***/ 586:
 /***/ (function(module, exports) {
 
 

@@ -10,7 +10,9 @@
 total: 20,  //总条目
 rows: [
 { type: "field对应列字段", content: "field对应列字段", people: "field对应列字段", time:"field对应列字段" }
-]
+],
+message:"错误信息",
+errorcode:"错误码"
 }
 ~~~
 * 动态表格生成

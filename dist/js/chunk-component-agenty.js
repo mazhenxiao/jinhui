@@ -1,6 +1,6 @@
-webpackJsonp([6],{
+webpackJsonp([3],{
 
-/***/ 586:
+/***/ 577:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -41,13 +41,20 @@ var Agenty = function (_React$Component) {
     function Agenty(arg) {
         _classCallCheck(this, Agenty);
 
-        return _possibleConstructorReturn(this, (Agenty.__proto__ || Object.getPrototypeOf(Agenty)).call(this, arg));
+        var _this = _possibleConstructorReturn(this, (Agenty.__proto__ || Object.getPrototypeOf(Agenty)).call(this, arg));
+
+        var th = _this;
+        return _this;
     }
 
     _createClass(Agenty, [{
         key: "componentDidMount",
         value: function componentDidMount() {
-            this.agentyTabel(); //绑定表哥 
+            var th = this;
+
+            $(window).on("EVENT_CLOSELEFTBAR", function (t) {
+                th.agentyTabel(); //绑定表哥
+            });
         }
     }, {
         key: "agentyTabel",
@@ -58,7 +65,7 @@ var Agenty = function (_React$Component) {
             var formatter = function formatter(txt, data) {
                 return "<a href='javascript:;' >" + txt + "</a>";
             };
-            var tabel = $("#agentyBoxTabel"),
+            var tabel = this.tabel = $("#agentyBoxTabel"),
                 col = [[{ field: "type", title: "审批类型", align: "center", width: 120, fixed: true, formatter: formatter }, { field: "content", title: "审批内容", align: "center", width: 120 }, { field: "people", title: "提交人", align: "center", width: 120, fixed: true }, { field: "time", title: "提交时间", align: "center", width: 120, fixed: true }]],
                 da = {
                 total: 20,
@@ -143,6 +150,7 @@ var ToolsTtab = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (ToolsTtab.__proto__ || Object.getPrototypeOf(ToolsTtab)).call(this, arg));
 
+        _this.bindLeftBart();
         _this.state = {
             data: [{ "guid": "1", "text": "我的待审", "tap": "agenty" }, { "guid": "2", "text": "我的申请", "tap": "apply" }, { "guid": "3", "text": "我的草稿", "tap": "draft" }, { "guid": "4", "text": "审批历史", "tap": "approalHistory" }]
         };
@@ -150,9 +158,12 @@ var ToolsTtab = function (_React$Component) {
     }
 
     _createClass(ToolsTtab, [{
-        key: 'bindTab',
-        value: function bindTab(prop) {
-            _reactDom2.default.render(_react2.default.createElement(ToolsTtab, { parent: prop }), document.querySelector("#React-tools-tab"));
+        key: 'bindLeftBart',
+        value: function bindLeftBart() {
+            $(".JH-Content").addClass("CLASS_AGENTY");
+            setTimeout(function (a) {
+                $(window).trigger("EVENT_CLOSELEFTBAR");
+            }, 1000);
         }
         /* 事件 */
 

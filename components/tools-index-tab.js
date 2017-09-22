@@ -10,6 +10,7 @@ import "babel-polyfill";  //兼容ie
 class IndexTab extends React.Component {
     constructor(arg) {
         super(arg);
+        this.bindTab();
         this.state = {
             data:[
                 { "guid":"1","text":"项目概览","tap":"index"},
@@ -23,6 +24,7 @@ class IndexTab extends React.Component {
         }
     }
     bindTab(prop){
+        $(".JH-Content").removeClass("CLASS_AGENTY");
        // ReactDOM.render(<ToolsTtab parent={prop}/>,document.querySelector("#React-tools-tab"));
     }
     /* 事件 */
