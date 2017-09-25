@@ -28,6 +28,7 @@ errorcode:"错误码"
 |unit| 单位|平米等|
 |edit| 是否只读|+w,+r,+m,只读与可写互斥以最后出现值为准|
 |exec| 公式|{id}*{id}|
+|regExp| 验证|{type:"类型string number date",max:"最大值",min:"最小值" }|
 | data | ｛label：”“，val：”“｝ | 如果select data数据key值为txt值 val值为实际值  |
 
 ~~~ json
