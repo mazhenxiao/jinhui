@@ -40,7 +40,7 @@ errorcode:"错误码"
     val:"实际值,实际值2",    //提交value值
     type:"input，select,selects，date",  //类型
     unit:"单位￥，km",
-    exec:"{控件id}+{id}*{id}>={id}",
+    exec:"{控件id}+{id}*{id}",
     edit:"可写+w 只读+r 必填+m",
     regExp:{ 
         type:"string,number,date",
