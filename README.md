@@ -19,11 +19,15 @@ errorcode:"错误码"
 
 | 名称 | 值 | 说明 |
 |:-------------:|:-------------|-----:|
+| pid | 父级id | 控件父级id比如“项目总图” |
 | id | 控件id | 控件唯一id用来对应服务器字段 | 
-| key | 显示名称 | 比如select的txt值 | 
+| label | 显示名称 | 标题 | 
+| text | 显示内容 | 与val值对应的显示txt内容 | 
 | val | 值 | 比如select value值 |
-|type| 类型|input 或 select|
-| data | ｛key：”“，val：”“｝ | 如果select data数据key值为txt值 val值为实际值  |
+|type| 类型|input 或 select，selects，date|
+|unit| 单位|平米等|
+|exec| 公式|｛id｝*｛id｝>={id}|
+| data | ｛label：”“，val：”“｝ | 如果select data数据key值为txt值 val值为实际值  |
 
 ~~~ json
 [{
