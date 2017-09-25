@@ -54,6 +54,8 @@ class $iss {
         let opt = {
             title: "提示",
             content: "",
+            width:"400px",
+            height:"200px",
             ok: $.noop
         }
         $.extend(opt, arg);
@@ -65,10 +67,10 @@ class $iss {
               <h4 class="modal-title">${opt.title}</h4>
             </div>
             <div class="modal-body">
-              <p>${opt.content}</p>
+              <div>${opt.content}</div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+              <button type="button" class="btn btn-primary J_button" >确定</button>
             </div>
           </div>
         </div>
@@ -78,7 +80,7 @@ class $iss {
         $("body").append($ele);
         $ele.modal({
             show: true
-        }).on("hidden.bs.modal", function () {
+        }).on("click.modeclose",".J_button", function () {
             let opts = $(this).data("data");
             opts.ok();
         }).data("data", opt)

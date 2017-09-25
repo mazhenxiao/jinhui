@@ -15,12 +15,18 @@ class Agenty extends React.Component {
             th.agentyTabel();//绑定表哥
         })
     }
-    agentyTabel() {
-        let opens = (arg, data) => {
-            console.log(arg);
+    EventClickCell(txt,da,val){
+        var tar = event.target||event.srcElement;
+        let w = window.screen.availWidth,
+            h =window.screen.availHeight-50;
+        if(da=="type"&&tar.nodeName.toLocaleLowerCase()=="a"){
+            window.open("/Home/MYTodo/#/","",`width=${w},height=${h},left=0,top=0`)
         }
+    }
+    agentyTabel() {
+        var th = this;
         let formatter = (txt, data) => {
-            return `<a href='javascript:;' >${txt}</a>`
+            return `<a href='javascript:;' class="J_EventClick" >${txt}</a>`
         }
         let tabel = this.tabel = $("#agentyBoxTabel"),
             col = [[
@@ -53,7 +59,8 @@ class Agenty extends React.Component {
             striped: true,
             pagination: true,
             columns: col,
-            data: da
+            data: da,
+            onClickCell:th.EventClickCell
 
         });
 

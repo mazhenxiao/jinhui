@@ -54,6 +54,15 @@ var rootRout = {
           callback(null, app.default);
         }, "component-agenty");
       }
+    },//弹出层
+    {
+      path:"/todo",
+      getComponent: function (next, callback) {
+        require.ensure([], function (require) {
+          var app = require('../components/component-todo.js');//============================生日祝福
+          callback(null, app.default);
+        }, "component-todo");
+      }
     }
    
   ]

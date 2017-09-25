@@ -10,6 +10,7 @@ const extractLESS = new ExtractTextPlugin('./Content/dist/css/[name].min.css');
 var config = {
     entry: {
         "jinhui-Index": path.join(__dirname, '/js/main.js'),
+        "jinhui-OpenIndex":path.join(__dirname, '/js/openmain.js')
     },
     output: {
         path: path.join(__dirname, '/dist/js/'),

@@ -27,19 +27,16 @@ errorcode:"错误码"
 
 ~~~ json
 [{
+    pid:"",//父id
     id:"",//控件id
-    key:"key",  //显示文本值
-    val:"",    //提交value值
-    type:"input",  //类型
-    data:[]
-},
-{
-    id:"",
-   key:"key",
-    val:"",
-    type:"select",
+    label:"label",  //标题
+    text:"显示内容，显示内容2",
+    val:"实际值,实际值2",    //提交value值
+    type:"input，select,selects，date",  //类型
+    unit:"单位￥，km",
+    exec:"{控件id}+{id}*{id}>={id}",
     data:[
-        {key:"key",val:""}
+        {label:"显示内容",val:"实际值"}
     ]
 }
 ]

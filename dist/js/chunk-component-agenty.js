@@ -1,6 +1,6 @@
 webpackJsonp([3],{
 
-/***/ 577:
+/***/ 578:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12,15 +12,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(24);
+var _react = __webpack_require__(19);
 
 var _react2 = _interopRequireDefault(_react);
 
-__webpack_require__(76);
+__webpack_require__(65);
 
-__webpack_require__(85);
+__webpack_require__(77);
 
-var _toolsAgentyTab = __webpack_require__(587);
+var _toolsAgentyTab = __webpack_require__(588);
 
 var _toolsAgentyTab2 = _interopRequireDefault(_toolsAgentyTab);
 
@@ -57,13 +57,21 @@ var Agenty = function (_React$Component) {
             });
         }
     }, {
+        key: "EventClickCell",
+        value: function EventClickCell(txt, da, val) {
+            var tar = event.target || event.srcElement;
+            var w = window.screen.availWidth,
+                h = window.screen.availHeight - 50;
+            if (da == "type" && tar.nodeName.toLocaleLowerCase() == "a") {
+                window.open("/Home/MYTodo/#/", "", "width=" + w + ",height=" + h + ",left=0,top=0");
+            }
+        }
+    }, {
         key: "agentyTabel",
         value: function agentyTabel() {
-            var opens = function opens(arg, data) {
-                console.log(arg);
-            };
+            var th = this;
             var formatter = function formatter(txt, data) {
-                return "<a href='javascript:;' >" + txt + "</a>";
+                return "<a href='javascript:;' class=\"J_EventClick\" >" + txt + "</a>";
             };
             var tabel = this.tabel = $("#agentyBoxTabel"),
                 col = [[{ field: "type", title: "审批类型", align: "center", width: 120, fixed: true, formatter: formatter }, { field: "content", title: "审批内容", align: "center", width: 120 }, { field: "people", title: "提交人", align: "center", width: 120, fixed: true }, { field: "time", title: "提交时间", align: "center", width: 120, fixed: true }]],
@@ -80,7 +88,8 @@ var Agenty = function (_React$Component) {
                 striped: true,
                 pagination: true,
                 columns: col,
-                data: da
+                data: da,
+                onClickCell: th.EventClickCell
 
             });
         }
@@ -107,7 +116,7 @@ exports.default = Agenty;
 
 /***/ }),
 
-/***/ 587:
+/***/ 588:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -119,17 +128,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(24);
+var _react = __webpack_require__(19);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(86);
+var _reactDom = __webpack_require__(78);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-__webpack_require__(76);
+__webpack_require__(65);
 
-__webpack_require__(85);
+__webpack_require__(77);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

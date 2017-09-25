@@ -1,6 +1,6 @@
-webpackJsonp([4],{
+webpackJsonp([8],{
 
-/***/ 577:
+/***/ 589:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10,11 +10,11 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = __webpack_require__(19);
 
 var _react2 = _interopRequireDefault(_react);
+
+__webpack_require__(65);
 
 __webpack_require__(77);
 
@@ -28,30 +28,19 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 //兼容ie
 
-var ProjectList = function (_React$Component) {
-    _inherits(ProjectList, _React$Component);
+var Todo = function (_React$comments) {
+    _inherits(Todo, _React$comments);
 
-    function ProjectList(arg) {
-        _classCallCheck(this, ProjectList);
+    function Todo(arg) {
+        _classCallCheck(this, Todo);
 
-        return _possibleConstructorReturn(this, (ProjectList.__proto__ || Object.getPrototypeOf(ProjectList)).call(this, arg));
+        return _possibleConstructorReturn(this, (Todo.__proto__ || Object.getPrototypeOf(Todo)).call(this, arg));
     }
 
-    _createClass(ProjectList, [{
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(
-                "article",
-                null,
-                "fdsafsfsfdsafadsf"
-            );
-        }
-    }]);
+    return Todo;
+}(_react2.default.comments);
 
-    return ProjectList;
-}(_react2.default.Component);
-
-exports.default = ProjectList;
+exports.default = Todo;
 
 /***/ })
 

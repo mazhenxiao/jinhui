@@ -1,0 +1,171 @@
+.JH-Header{
+    
+        &:after{ content:"";clear: both;position: absolute;}
+      background:@bg url(../img/logo.png) no-repeat 10px center;/* height:60px;overflow: hidden; */border-bottom:@border; width:100%;
+    
+      height: 60px;
+        h1{ float: left; 
+            padding:0;margin:0;
+            height: 60px;
+            line-height: 60px;
+            color: #EFD4A5;
+            font-size: 18px ;
+            margin-left:160px;
+        }
+    
+        ul{
+            margin-left:380px;
+            &:after{content: "\0020";
+                display: block;
+                height: 0;
+                clear: both;
+            }
+            li {
+                height: 60px;
+                line-height: 80px;
+                padding: 0 20px;
+                float: left;
+                position: relative;
+                a {
+                    display: inline-block;
+                    color: #ffffff;
+                    font-size: 14px;
+                    height: 59px;
+                }
+                a.active,a:hover{
+                    color: #EFD4A5;
+                    border-bottom: 2px solid #EFD4A5;
+                }
+                .subMenu{
+                    display: none;
+                    position: absolute;
+                    left: 18px;
+                    top: 60px;
+                    z-index: 10;
+                    width: 450px;
+                    height: 40px;
+                    background: #0b4082;
+                    
+                    li{
+                        padding: 0 10px;
+                        display: inline-block;
+                        a{
+                            float: left;
+                            line-height: 40px;
+                            height: 40px;
+                             &:hover{
+                                 border: 0;
+                                 background: #0b4082;
+                             }
+                        }
+                        .active{
+                            color: #EFD4A5;
+                            border-bottom: 0;
+                        }
+                    }
+                }
+                 &:hover{
+                    .subMenu{
+                        display: block;
+                    }
+                 }
+            }    
+        }
+    
+        /* 登陆 */
+        .userLogin{
+            float:right;
+            text-align:right;
+            width:160px;
+           line-height: 79px;
+           height: 60px;
+           padding-right: 40px;
+           position: relative;
+           .userTancen{
+             display: none;
+             position: absolute;
+             bottom: -137px;
+             right: 0;
+             height: 137px;
+             width: 340px;
+             z-index: 999;
+             background: #0b4082;
+             padding: 10px;
+               li{
+                     height: 40px;
+                     line-height: 40px;
+                     float: left;
+                     width: 50%;
+                     text-align: left;
+                i{
+                    font-style:normal;
+                    color:@bar
+                }
+                   a{
+                     height:auto;
+                     color: #ffffff;
+                     padding-left:20px; 
+                     background-image:url(../img/userPending-icon.png) ;
+                     background-repeat:no-repeat;
+                     background-position:left center;  
+                     &:hover{
+                         color:#EFD4A5;
+                         background-image:url(../img/userPending-icon-hover.png) ;
+                     }
+                       .redFont{
+                           color: #e53935;
+                       }
+                   }
+                    .userApply{
+                          background-image:url(../img/userApply-icon.png) ;
+                          &:hover{
+                              background-image:url(../img/userApply-icon-hover.png) ;
+                          }
+                     }  
+                   .userDraft{
+                          background-image:url(../img/userDraft-icon.png) ;
+                          &:hover{
+                              background-image:url(../img/userDraft-icon-hover.png) ;
+                          }
+                     }  
+                   .userHistory{
+                          background-image:url(../img/userHistory-icon.png) ;
+                          &:hover{
+                              background-image:url(../img/userHistory-icon-hover.png) ;
+                          }
+                     }
+                   .userExit{
+                          background-image:url(../img/userExit-icon.png) ;
+                          &:hover{
+                              background-image:url(../img/userExit-icon-hover.png) ;
+                          }
+                     }    
+       
+                 
+             }
+             
+           }
+           &:hover{
+                 .userTancen{
+                     display: block;
+                 }
+           }
+           .userName{
+               padding-left: 20px;
+               background-image:url(../img/userName.png);
+               background-repeat:no-repeat ;
+               background-position:left center;
+           }
+           b{
+               color:#ffffff;
+               cursor: pointer;
+           }
+           img{
+               display: inline-block;
+               margin-right: 10px;
+               width: 30px; 
+           }
+           
+       }
+    
+    }
