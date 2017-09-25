@@ -47,7 +47,13 @@ var Openmain = function (_React$Component) {
     function Openmain(arg) {
         _classCallCheck(this, Openmain);
 
-        return _possibleConstructorReturn(this, (Openmain.__proto__ || Object.getPrototypeOf(Openmain)).call(this, arg));
+        var _this = _possibleConstructorReturn(this, (Openmain.__proto__ || Object.getPrototypeOf(Openmain)).call(this, arg));
+
+        _this.data = {
+            a: 1,
+            b: 2
+        };
+        return _this;
     }
 
     _createClass(Openmain, [{

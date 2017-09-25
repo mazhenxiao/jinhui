@@ -6,6 +6,10 @@ import rootRout from "./router.js";//路由
 class Openmain extends React.Component{
     constructor(arg){
         super(arg)
+        this.data={
+            a:1,
+            b:2
+        }
     }
     render(){
 
