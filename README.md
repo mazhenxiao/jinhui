@@ -26,6 +26,7 @@ errorcode:"错误码"
 | val | 值 | 比如select value值 |
 |type| 类型|input 或 select，selects，date|
 |unit| 单位|平米等|
+|edit| 是否只读|+w,+r,+m,只读与可写互斥以最后出现值为准|
 |exec| 公式|｛id｝*｛id｝>={id}|
 | data | ｛label：”“，val：”“｝ | 如果select data数据key值为txt值 val值为实际值  |
 
@@ -39,6 +40,7 @@ errorcode:"错误码"
     type:"input，select,selects，date",  //类型
     unit:"单位￥，km",
     exec:"{控件id}+{id}*{id}>={id}",
+    edit:"可写+w 只读+r 必填+m",
     data:[
         {label:"显示内容",val:"实际值"}
     ]
