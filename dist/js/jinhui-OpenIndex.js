@@ -1,4 +1,4 @@
-webpackJsonp([6],{
+webpackJsonp([9],{
 
 /***/ 573:
 /***/ (function(module, exports, __webpack_require__) {
@@ -40,7 +40,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 //公共类
 
 
-//路由
+//路由 
 var Openmain = function (_React$Component) {
     _inherits(Openmain, _React$Component);
 

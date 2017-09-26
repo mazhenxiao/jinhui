@@ -1,4 +1,4 @@
-webpackJsonp([5],{
+webpackJsonp([2],{
 
 /***/ 578:
 /***/ (function(module, exports, __webpack_require__) {
@@ -12,15 +12,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(19);
+var _react = __webpack_require__(24);
 
 var _react2 = _interopRequireDefault(_react);
 
-__webpack_require__(65);
+__webpack_require__(76);
 
-__webpack_require__(77);
+__webpack_require__(85);
 
-var _toolsAgentyTab = __webpack_require__(591);
+var _toolsAgentyTab = __webpack_require__(580);
 
 var _toolsAgentyTab2 = _interopRequireDefault(_toolsAgentyTab);
 
@@ -35,49 +35,34 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 //引入头部
-var Agenty = function (_React$Component) {
-    _inherits(Agenty, _React$Component);
+var Apply = function (_React$Component) {
+    _inherits(Apply, _React$Component);
 
-    function Agenty(arg) {
-        _classCallCheck(this, Agenty);
+    function Apply(arg) {
+        _classCallCheck(this, Apply);
 
-        var _this = _possibleConstructorReturn(this, (Agenty.__proto__ || Object.getPrototypeOf(Agenty)).call(this, arg));
-
-        var th = _this;
-        return _this;
+        return _possibleConstructorReturn(this, (Apply.__proto__ || Object.getPrototypeOf(Apply)).call(this, arg));
     }
 
-    _createClass(Agenty, [{
+    _createClass(Apply, [{
         key: "componentDidMount",
         value: function componentDidMount() {
-            var th = this;
-
-            $(window).on("EVENT_CLOSELEFTBAR", function (t) {
-                th.agentyTabel(); //绑定表哥
-            });
-        }
-    }, {
-        key: "EventClickCell",
-        value: function EventClickCell(txt, da, val) {
-            var tar = event.target || event.srcElement;
-            var w = window.screen.availWidth,
-                h = window.screen.availHeight - 50;
-            if (da == "type" && tar.nodeName.toLocaleLowerCase() == "a") {
-                window.open("/Home/MYTodo/#/", "", "width=" + w + ",height=" + h + ",left=0,top=0");
-            }
+            this.agentyTabel(); //绑定表哥 
         }
     }, {
         key: "agentyTabel",
         value: function agentyTabel() {
-            var th = this;
-            var formatter = function formatter(txt, data) {
-                return "<a href='javascript:;' class=\"J_EventClick\" >" + txt + "</a>";
+            var opens = function opens(arg, data) {
+                console.log(arg);
             };
-            var tabel = this.tabel = $("#agentyBoxTabel"),
-                col = [[{ field: "type", title: "审批类型", align: "center", width: 120, fixed: true, formatter: formatter }, { field: "content", title: "审批内容", align: "center", width: 120 }, { field: "people", title: "提交人", align: "center", width: 120, fixed: true }, { field: "time", title: "提交时间", align: "center", width: 120, fixed: true }]],
+            var formatter = function formatter(txt, data) {
+                return "<a href='javascript:;' >" + txt + "</a>";
+            };
+            var tabel = $("#agentyBoxTabel"),
+                col = [[{ field: "type", title: "审批类型", align: "center", width: 120, fixed: true, formatter: formatter }, { field: "content", title: "审批内容", align: "center", width: 120 }, { field: "time", title: "提交时间", align: "center", width: 120, fixed: true }, { field: "status", title: "审批状态", align: "center", width: 120, fixed: true }, { field: "current", title: "当前节点", align: "center", width: 120, fixed: true }, { field: "people", title: "当前审批人", align: "center", width: 120, fixed: true }]],
                 da = {
                 total: 20,
-                rows: [{ type: "审批类型", content: "1审批内容", people: "提交人", time: "2017-20-20" }, { type: "审批类型", content: "2审批内容", people: "提交人", time: "2017-20-20" }, { type: "审批类型", content: "3审批内容", people: "提交人", time: "2017-20-20" }, { type: "审批类型", content: "4审批内容", people: "提交人", time: "2017-20-20" }, { type: "审批类型", content: "5审批内容", people: "提交人", time: "2017-20-20" }, { type: "审批类型", content: "6审批内容", people: "提交人", time: "2017-20-20" }, { type: "审批类型", content: "7审批内容", people: "提交人", time: "2017-20-20" }, { type: "审批类型", content: "8审批内容", people: "提交人", time: "2017-20-20" }, { type: "审批类型", content: "9审批内容", people: "提交人", time: "2017-20-20" }, { type: "审批类型", content: "0审批内容", people: "提交人", time: "2017-20-20" }]
+                rows: [{ type: "审批类型", content: "1审批内容", time: "2017-20-20", status: "审批中", current: "当前节点", people: "提交人" }, { type: "审批类型", content: "2审批内容", time: "2017-20-20", status: "审批中", current: "当前节点", people: "提交人" }, { type: "审批类型", content: "3审批内容", time: "2017-20-20", status: "审批中", current: "当前节点", people: "提交人" }, { type: "审批类型", content: "4审批内容", time: "2017-20-20", status: "审批中", current: "当前节点", people: "提交人" }, { type: "审批类型", content: "5审批内容", time: "2017-20-20", status: "审批中", current: "当前节点", people: "提交人" }, { type: "审批类型", content: "6审批内容", time: "2017-20-20", status: "审批中", current: "当前节点", people: "提交人" }, { type: "审批类型", content: "7审批内容", time: "2017-20-20", status: "审批中", current: "当前节点", people: "提交人" }, { type: "审批类型", content: "8审批内容", time: "2017-20-20", status: "审批中", current: "当前节点", people: "提交人" }, { type: "审批类型", content: "9审批内容", time: "2017-20-20", status: "审批中", current: "当前节点", people: "提交人" }, { type: "审批类型", content: "0审批内容", time: "2017-20-20", status: "审批中", current: "当前节点", people: "提交人" }]
             };
             tabel.datagrid({
                 width: "auto",
@@ -88,8 +73,7 @@ var Agenty = function (_React$Component) {
                 striped: true,
                 pagination: true,
                 columns: col,
-                data: da,
-                onClickCell: th.EventClickCell
+                data: da
 
             });
         }
@@ -109,14 +93,14 @@ var Agenty = function (_React$Component) {
         }
     }]);
 
-    return Agenty;
+    return Apply;
 }(_react2.default.Component);
 
-exports.default = Agenty;
+exports.default = Apply;
 
 /***/ }),
 
-/***/ 591:
+/***/ 580:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -128,17 +112,17 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(19);
+var _react = __webpack_require__(24);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(78);
+var _reactDom = __webpack_require__(86);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-__webpack_require__(65);
+__webpack_require__(76);
 
-__webpack_require__(77);
+__webpack_require__(85);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -186,13 +170,13 @@ var ToolsTtab = function (_React$Component) {
             });
             switch (data) {
                 case "agenty":
-                    iss.hashHistory.push("agenty");break;
+                    iss.hashHistory.push("agenty", { "state": "001" });break;
                 case "apply":
-                    iss.hashHistory.push("apply");break;
+                    iss.hashHistory.push("apply", { "state": "002" });break;
                 case "draft":
-                    iss.hashHistory.push("draft");break;
+                    iss.hashHistory.push("draft", { "state": "002" });break;
                 case "approalHistory":
-                    iss.hashHistory.push("approalHistory");break;
+                    iss.hashHistory.push("approalHistory", { "state": "002" });break;
             }
         }
     }, {

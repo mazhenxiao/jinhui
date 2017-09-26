@@ -1,5 +1,37 @@
 @import "publick.less";
 @import "header.less"; 
+/* 图标 */
+.iconBoxJin {
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    float: right;
+    margin-left: 10px;
+  }
+  .projectAdd {
+    background-image: url(../img/add-iconbs.png);
+    background-repeat: no-repeat;
+    &:hover {
+        background-image: url(../img/add-iconbs-hover.png);
+      }
+  }
+  
+  .projectBian {
+    background-image: url(../img/editor-iconbs.png);
+    background-repeat: no-repeat;
+    &:hover {
+        background-image: url(../img/editor-iconbs-hover.png);
+      }
+  }
+  .projectDelete {
+    background-image: url(../img/delete-iconbs.png);
+    background-repeat: no-repeat;
+    &:hover {
+        background-image: url(../img/delete-iconbs-hover.png);
+      }
+  }
+ 
+
 .CLASS_AGENTY{
     .JH-Nav{ display: none}
     .JH-RightBox{ margin-left:0 !important;}
@@ -10,14 +42,146 @@
     th,td{ padding:0 0 5px 0;margin:0;}
     th{
         text-align: right;
-        label{ text-align:right;padding-right:5px}
+        label{ text-align:right;padding-right:5px;font-weight:100;font-size: 12px;}
     }
     td{
+        
+        position: relative;
         input[type="text"]{ width:100%;box-sizing:border-box;}
         select{ width:100%}
+        .symbol{
+            position: absolute;
+            top:6px;
+            right: 8px;
+        }
     }
+    
     .inputTextBox { border:@bc solid 1px;padding:3px;}
+    .inputGray{background:@bc }
+    
 }
+/*h3标题*/
+.boxGroupTit{
+    height: 40px;
+    margin-bottom:5px ;
+    position: relative;
+    margin-top: 0;
+    p{
+        height:40px;
+        line-height: 40px;
+        color:#333333;
+        font-size: 14px;
+        border-bottom:1px solid #c9c9c9;
+        span{
+            display: inline-block;
+            line-height:40px;
+            border-bottom: 2px solid #31395d;
+            
+           
+        }
+        i{
+            font-style: normal;
+        }
+        
+    }
+    span.functionButton{
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: auto;
+        text-align: right;
+        a{
+            font-size:12px;
+            height: 40px;
+            line-height: 40px;
+            display: inline-block;
+            padding-left: 20px;
+            padding-right: 20px;
+            color: #999999 !important;
+            background-repeat: no-repeat;
+            background-position: left center;
+            &:hover{
+                color: #31395d;
+            }
+        }
+        .refresh-icon{    
+            background-image: url(../img/refresh-icon.png);
+            &:hover{
+                background-image: url(../img/refresh-icon-hover.png);
+            }
+        }
+        .saveIcon{
+            background-image: url(../img/save-icon.png);
+            &:hover{
+                background-image: url(../img/save-icon-hover.png);
+            }
+        }
+        .saveIcon{
+            background-image:url(../img/save-icon.png) ;
+       }
+       .saveIcon:hover{
+           background-image:url(../img/save-icon-hover.png) ;
+       }
+       .approvalIcon{
+           background-image:url(../img/approval-icon.png) ;
+       }
+       
+       .approvalIcon:hover{
+           background-image:url(../img/approval-icon-hover.png) ;
+       }
+       .fullScreen{
+           background-image:url(../img/fullScreen-icon.png) ;
+       }
+       
+       .fullScreen:hover{
+           background-image:url(../img/fullScreen-icon-hover.png) ;
+       }
+       .addIcon{
+           background-image:url(../img/add-icon.png);
+       }
+       .addIcon:hover{
+           background-image:url(../img/add-icon-hover.png);
+       }
+       .deleteIcon{
+           background-image:url(../img/delete-icon.png);
+       }
+       .deleteIcon:hover{
+           background-image:url(../img/delete-icon-hover.png);
+       }
+       .inventoryIcon{
+            background-image:url(../img/inventory-icon.png);
+       }
+       .inventoryIcon:hover{
+            background-image:url(../img/inventory-icon-hover.png);
+       }
+       .editorIcon{
+           background-image:url(../img/editor-icon.png);
+           &:hover{
+               background-image:url(../img/editor-icon-hover.png);
+           }
+       }
+       .drEXcelIcon{
+          background-image:url(../img/drEXcel-icon.png); 
+          &:hover{
+              background-image:url(../img/drEXcel-icon-hover.png); 
+           }
+       }
+       .importEXcelIcon{
+           background-image:url(../img/importEXcel-icon.png); 
+           &:hover{
+               background-image:url(../img/importEXcel-icon-hover.png); 
+           }
+       }
+       .cancelIcon{
+           background-image:url(../img/cancel-icon.png); 
+           &:hover{
+               background-image:url(../img/cancel-icon-hover.png); 
+           }
+       }
+        
+    }
+}
+ 
 /* 中心内容 */
 .JH-Content{
     overflow: hidden;
@@ -31,6 +195,40 @@
                 padding:20px;
                 select{ color:@fb}
             }
+            .stateSelect {
+                margin-top: 20px;
+                padding: 0 10px;
+                select {
+                    border: 1px solid #dddddd;
+                  }
+                  span {
+                    display: inline-block;
+                    width: 90px;
+                    height: auto;
+                    position: relative;
+                    input.stateSearch {
+                        border: 1px solid #dddddd;
+                        width: 90px;
+                        padding-right: 20px;
+                      }
+                      .stateBtn {
+                        position: absolute;
+                        right: 0;
+                        top: 0;
+                        height: 20px;
+                        width: 20px;
+                        border: 0;
+                        background-image: url(../img/state-icon-btn.png);
+                        background-color: 0;
+                        background-repeat: no-repeat;
+                      }
+                      label {
+                        font-size: 14px;
+                        color: #fff;
+                      }
+                  }
+
+              }
         }
         .JH-LeftNav{
             .JH-TreeTitle{

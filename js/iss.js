@@ -13,6 +13,11 @@ class $iss {
         })
 
     }
+    getQuert(t){
+        let reg = new RegExp(t),
+            me = reg.exec(location.hash);
+            return me? me:"";
+    }
     ajax(opt) {
         let th = this;
         let $o = JSON.parse(JSON.stringify(opt));

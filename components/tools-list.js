@@ -12,6 +12,7 @@ class ToolsList extends React.Component {
         switch(str){
             case "index":iss.hashHistory.push("index");break;
             case "agenty":iss.hashHistory.push("agenty");break;
+            case "apply":iss.hashHistory.push("apply");break;
             case "projectList":iss.hashHistory.push("projectList");break;
         }
     }
@@ -21,7 +22,7 @@ class ToolsList extends React.Component {
 				<b className="userName">欧阳少华</b>
 				<ul className="userTancen boxSizing">
 					<li><a className="userPending" onClick={this.EVENT_CLICK.bind(this,"agenty")} href="javascript:;">我的待审</a><i className="redFont">(2)</i></li>
-					<li><a className="userApply " href="#">我的申请</a><i className="redFont">(12)</i></li>
+					<li><a className="userApply" onClick={this.EVENT_CLICK.bind(this,"apply")} href="javascript:;">我的申请</a><i className="redFont">(12)</i></li>
 					<li><a className="userDraft" href="#">我的草稿</a><i className="redFont">(12)</i></li>
 					<li><a className="userHistory" href="#">审批历史</a><i className="redFont">(12)</i></li>
 					<li><a className="userExit" href="#">退出</a></li>

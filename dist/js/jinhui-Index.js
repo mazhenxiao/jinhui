@@ -1,4 +1,4 @@
-webpackJsonp([5],{
+webpackJsonp([8],{
 
 /***/ 243:
 /***/ (function(module, exports, __webpack_require__) {
@@ -167,6 +167,8 @@ var ToolsList = function (_React$Component) {
                     iss.hashHistory.push("index");break;
                 case "agenty":
                     iss.hashHistory.push("agenty");break;
+                case "apply":
+                    iss.hashHistory.push("apply");break;
                 case "projectList":
                     iss.hashHistory.push("projectList");break;
             }
@@ -207,7 +209,7 @@ var ToolsList = function (_React$Component) {
                             null,
                             _react2.default.createElement(
                                 'a',
-                                { className: 'userApply ', href: '#' },
+                                { className: 'userApply', onClick: this.EVENT_CLICK.bind(this, "apply"), href: 'javascript:;' },
                                 '\u6211\u7684\u7533\u8BF7'
                             ),
                             _react2.default.createElement(
@@ -421,17 +423,60 @@ var ToolsTree = function (_React$Component) {
     function ToolsTree(arg) {
         _classCallCheck(this, ToolsTree);
 
-        return _possibleConstructorReturn(this, (ToolsTree.__proto__ || Object.getPrototypeOf(ToolsTree)).call(this, arg));
+        var _this = _possibleConstructorReturn(this, (ToolsTree.__proto__ || Object.getPrototypeOf(ToolsTree)).call(this, arg));
+
+        _this.state = {
+            data: "",
+            changeState: _iss2.default.getQuert("intallment") ? "intallment" : _iss2.default.getQuert("newProject") ? "newProject" : ""
+        };
+        return _this;
     }
 
     _createClass(ToolsTree, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            _toolsTree2.default.bindTree("#tree");
+            var self = this;
+            _toolsTree2.default.bindTree("#tree", function (arg) {
+                self.setState({
+                    changeState: arg.type == 2 ? "newProject" : arg.type == 3 ? "intallment" : "",
+                    data: arg
+                });
+            });
+        }
+    }, {
+        key: 'addTodo',
+        value: function addTodo() {
+            var th = this;
+            _iss2.default.hashHistory.replace({
+                pathname: '/' + th.state.changeState,
+                state: this.state.data
+            });
         }
     }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
+            var th = this;
+            var setBar = function setBar(arg) {
+                console.log(th.state.changeState);
+                if (th.state.changeState == "") {
+                    return _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement('input', { type: 'search', className: 'stateSearch', value: '' }),
+                        _react2.default.createElement('img', { src: 'img/state-icon-btn.png' })
+                    );
+                } else {
+                    return _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement('a', { href: 'javascript:;', className: 'iconBoxJin projectDelete' }),
+                        _react2.default.createElement('a', { href: 'javascript:;', className: 'iconBoxJin projectBian' }),
+                        _react2.default.createElement('a', { href: 'javascript:;', onClick: _this2.addTodo.bind(_this2), className: 'iconBoxJin projectAdd' })
+                    );
+                }
+            };
             return _react2.default.createElement(
                 'div',
                 null,
@@ -439,10 +484,10 @@ var ToolsTree = function (_React$Component) {
                     'header',
                     null,
                     _react2.default.createElement(
-                        'p',
-                        { className: 'headSate' },
+                        'div',
+                        { className: 'stateSelect' },
                         _react2.default.createElement(
-                            'span',
+                            'label',
                             null,
                             '\u72B6\u6001\uFF1A'
                         ),
@@ -451,10 +496,21 @@ var ToolsTree = function (_React$Component) {
                             null,
                             _react2.default.createElement(
                                 'option',
-                                null,
+                                { value: '' },
                                 '\u5168\u90E8'
+                            ),
+                            _react2.default.createElement(
+                                'option',
+                                { value: '' },
+                                '\u5DF2\u5BA1\u6279'
+                            ),
+                            _react2.default.createElement(
+                                'option',
+                                { value: '' },
+                                '\u5F85\u5BA1\u6279'
                             )
-                        )
+                        ),
+                        setBar()
                     )
                 ),
                 _react2.default.createElement(
@@ -515,29 +571,37 @@ var $tree = function () {
 
         this.data = [{
             "id": 1,
+            "type": 0,
             "text": "My Documents",
             "children": [{
                 "id": 11,
+                "type": 1,
                 "text": "Photos",
                 "state": "closed",
                 "children": [{
                     "id": 111,
+                    "type": 2,
                     "text": "Friend"
                 }, {
                     "id": 112,
+                    "type": 2,
                     "text": "Wife"
                 }, {
                     "id": 113,
+                    "type": 2,
                     "text": "Company"
                 }]
             }, {
                 "id": 12,
+                "type": 2,
                 "text": "Program Files",
                 "children": [{
                     "id": 121,
+                    "type": 3,
                     "text": "Intel"
                 }, {
                     "id": 122,
+                    "type": 3,
                     "text": "Java",
                     "attributes": {
                         "p1": "Custom Attribute1",
@@ -545,32 +609,57 @@ var $tree = function () {
                     }
                 }, {
                     "id": 123,
+                    "type": 3,
                     "text": "Microsoft Office"
                 }, {
                     "id": 124,
+                    "type": 3,
                     "text": "Games",
                     "checked": true
                 }]
             }, {
                 "id": 13,
+                "type": 2,
                 "text": "index.html"
             }, {
                 "id": 14,
+                "type": 2,
                 "text": "about.html"
             }, {
                 "id": 15,
+                "type": 2,
                 "text": "welcome.html"
             }]
         }];
     }
 
     _createClass($tree, [{
+        key: "togo",
+        value: function togo(node) {//跳转
+
+            //if(node.type==3){
+            /*    iss.hashHistory.push({
+                   pathname:`/intallment/${(new Date()).getTime()}`,
+                   state:node //
+               });  */
+            // }
+        }
+    }, {
         key: "bindTree",
-        value: function bindTree(ele) {
+        value: function bindTree(ele, callback) {
+            //绑定数据后回调
             var th = this;
             this.ele = $(ele);
-            this.ele.tree({
-                data: th.data
+            var trees = this.ele.tree({
+                parentField: "pid",
+                idFiled: "id",
+                textFiled: "name",
+                data: th.data,
+                onClick: function onClick(node) {
+
+                    // trees.tree("toggle",node.target);
+                    callback(node);
+                }
             });
             setTimeout(function (arg) {
                 th.bindScroll();

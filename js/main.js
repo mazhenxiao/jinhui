@@ -5,7 +5,7 @@ import iss from "./iss.js";//公共类
 import rootRout from "./router.js";//路由
 import toolsList from "../components/tools-list.js";//头部
 import toolsTree from "../components/tools-leftTree.js";//左侧树形
-/* 公共页面js */
+/* 公共页面js */ 
 class main{
   constructor(){
     var th = this;

@@ -29,10 +29,10 @@ class ToolsTtab extends React.Component {
           el.parent().find("li").removeClass("active");
           setTimeout(()=>{el.addClass("active")});
           switch(data){
-             case "agenty":iss.hashHistory.push("agenty",{"state":"001"});break;
-             case "apply":iss.hashHistory.push("apply",{"state":"002"});break;
-             case "draft":iss.hashHistory.push("draft",{"state":"002"});break;
-             case "approalHistory":iss.hashHistory.push("approalHistory",{"state":"002"});break;
+             case "agenty":iss.hashHistory.push("agenty");break;
+             case "apply":iss.hashHistory.push("apply");break;
+             case "draft":iss.hashHistory.push("draft");break;
+             case "approalHistory":iss.hashHistory.push("approalHistory");break;
           }
     }
     render() {

@@ -34,7 +34,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		7: 0
+/******/ 		10: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -91,7 +91,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "chunk-" + ({"0":"component-identity","1":"component-index","2":"component-supply","3":"component-agenty","4":"component-projectList","5":"jinhui-Index","6":"jinhui-OpenIndex","8":"component-todo"}[chunkId]||chunkId) + ".js";
+/******/ 		script.src = __webpack_require__.p + "chunk-" + ({"0":"component-newProject","1":"component-identity","2":"component-index","3":"component-supply","4":"component-intallment","5":"component-agenty","6":"component-todo","7":"component-projectList","8":"jinhui-Index","9":"jinhui-OpenIndex"}[chunkId]||chunkId) + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -4284,6 +4284,13 @@ var $iss = function () {
                 afterPageText: '页    共 {pages} 页',
                 displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录'
             });
+        }
+    }, {
+        key: "getQuert",
+        value: function getQuert(t) {
+            var reg = new RegExp(t),
+                me = reg.exec(location.hash);
+            return me ? me : "";
         }
     }, {
         key: "ajax",
@@ -16643,7 +16650,7 @@ var rootRout = {
   childRoutes: [{
     path: "/index",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(1).then((function (require) {
+      __webpack_require__.e/* require.ensure */(2).then((function (require) {
         var app = __webpack_require__(574); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -16652,7 +16659,7 @@ var rootRout = {
   }, {
     path: "/identity",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(0).then((function (require) {
+      __webpack_require__.e/* require.ensure */(1).then((function (require) {
         var app = __webpack_require__(575); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -16660,7 +16667,7 @@ var rootRout = {
   }, {
     path: "/supply",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(2).then((function (require) {
+      __webpack_require__.e/* require.ensure */(3).then((function (require) {
         var app = __webpack_require__(576); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -16668,7 +16675,7 @@ var rootRout = {
   }, {
     path: "/projectList",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(4).then((function (require) {
+      __webpack_require__.e/* require.ensure */(7).then((function (require) {
         var app = __webpack_require__(577); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -16677,7 +16684,7 @@ var rootRout = {
   {
     path: "/agenty",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(3).then((function (require) {
+      __webpack_require__.e/* require.ensure */(5).then((function (require) {
         var app = __webpack_require__(578); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -16686,8 +16693,24 @@ var rootRout = {
   {
     path: "/todo",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(8/* empty */).then((function (require) {
-        var app = __webpack_require__(589); //============================生日祝福
+      __webpack_require__.e/* require.ensure */(6).then((function (require) {
+        var app = __webpack_require__(579); //============================生日祝福
+        callback(null, app.default);
+      }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+    }
+  }, { //分期
+    path: "/intallment",
+    getComponent: function getComponent(next, callback) {
+      __webpack_require__.e/* require.ensure */(4).then((function (require) {
+        var app = __webpack_require__(580); //============================分期
+        callback(null, app.default);
+      }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+    }
+  }, { //项目
+    path: "/newProject",
+    getComponent: function getComponent(next, callback) {
+      __webpack_require__.e/* require.ensure */(0).then((function (require) {
+        var app = __webpack_require__(581); //============================分期
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }

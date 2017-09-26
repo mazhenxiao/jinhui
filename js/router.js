@@ -63,8 +63,25 @@ var rootRout = {
           callback(null, app.default);
         }, "component-todo");
       }
+    },
+    { //分期
+      path:"/intallment",
+      getComponent: function (next, callback) {
+        require.ensure([], function (require) {
+          var app = require('../components/component-intallment.js');//============================分期
+          callback(null, app.default);
+        }, "component-intallment");
+      }
+    },
+    { //项目
+      path:"/newProject", 
+      getComponent: function (next, callback) {
+        require.ensure([], function (require) {
+          var app = require('../components/component-newProject.js');//============================分期
+          callback(null, app.default);
+        }, "component-newProject");
+      }
     }
-   
   ]
 }
 ReactDOM.render(<Router history={hashHistory} routes={rootRout}></Router>, document.querySelector("#JH-Router"));
