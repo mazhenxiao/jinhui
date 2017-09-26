@@ -759,7 +759,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(600)(content, options);
+var update = __webpack_require__(763)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -780,7 +780,7 @@ if(false) {
 /***/ 587:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(599)(undefined);
+exports = module.exports = __webpack_require__(762)(undefined);
 // imports
 
 
@@ -792,7 +792,7 @@ exports.push([module.i, ".index-identity {\n  margin: 0;\n  padding: 0;\n}\n", "
 
 /***/ }),
 
-/***/ 599:
+/***/ 762:
 /***/ (function(module, exports) {
 
 /*
@@ -875,7 +875,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 600:
+/***/ 763:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -921,7 +921,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(601);
+var	fixUrls = __webpack_require__(764);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -1235,7 +1235,7 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 
-/***/ 601:
+/***/ 764:
 /***/ (function(module, exports) {
 
 

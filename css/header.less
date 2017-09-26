@@ -1,8 +1,10 @@
 .JH-Header{
     
         &:after{ content:"";clear: both;position: absolute;}
-      background:@bg url(../img/logo.png) no-repeat 10px center;/* height:60px;overflow: hidden; */border-bottom:@border; width:100%;
-    
+        background:@bg url(../img/index_01.png);/* height:60px;overflow: hidden; */border-bottom:@border; width:100%;
+      article{
+        background: url(../img/logo.png) no-repeat 10px center;
+      }
       height: 60px;
         h1{ float: left; 
             padding:0;margin:0;
@@ -14,6 +16,7 @@
         }
     
         ul{
+           
             margin-left:380px;
             &:after{content: "\0020";
                 display: block;
@@ -34,7 +37,7 @@
                 }
                 a.active,a:hover{
                     color: #EFD4A5;
-                    border-bottom: 2px solid #EFD4A5;
+                    // border-bottom: 2px solid #EFD4A5;
                 }
                 .subMenu{
                     display: none;
@@ -108,12 +111,16 @@
                      background-image:url(../img/userPending-icon.png) ;
                      background-repeat:no-repeat;
                      background-position:left center;  
+                     font-size: 12px;
                      &:hover{
                          color:#EFD4A5;
                          background-image:url(../img/userPending-icon-hover.png) ;
                      }
                        .redFont{
                            color: #e53935;
+                       }
+                       .redFont::before{
+                           content: " "
                        }
                    }
                     .userApply{
@@ -151,6 +158,7 @@
                  }
            }
            .userName{
+               font-size: @f14;
                padding-left: 20px;
                background-image:url(../img/userName.png);
                background-repeat:no-repeat ;

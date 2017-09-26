@@ -54,7 +54,9 @@ errorcode:"错误码"
 ]
 ~~~
 * 树控件
-
+---
+url: Home/GetTreeInfo
+---
 ~~~json
 [
     {
@@ -62,6 +64,7 @@ errorcode:"错误码"
     "text":"内容",
     "state":"节点状态，'open' 或 'closed'，默认是 'open'。当设置为 'closed' 时，该节点有子节点，并且将从远程站点加载它们",
     "attributes":"给一个节点添加的自定义属性",
+    "level_id":"1 级别",
     "children":[{
         "id":1,
 		"text":"File1",

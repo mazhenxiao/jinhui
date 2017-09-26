@@ -19,7 +19,7 @@ class StagingInformation extends React.Component {
         
      }
     componentDidMount() {
-        this.bind_combobox();
+       this.bind_combobox();
         //  toolsTab.bindTab(this.props);//绑定头部标签
     }
     addTodo(text) {
@@ -136,7 +136,7 @@ class StagingInformation extends React.Component {
                <h3 className="boxGroupTit">
                     <p>
                         <span>分期信息</span>
-                        <i>（*为必填项）</i>
+                        <i>（<i className="redFont"></i>为必填项）</i>
                     </p>
 				    <span className="functionButton">
                         <a className="saveIcon " href="#">暂存</a>
@@ -207,7 +207,6 @@ class StagingInformation extends React.Component {
                                         <input className="inputTextBox boxSizing" type="text" value="" />
                                     </td>
                                 </tr>
-
                                 <tr>
 								    <th>
                                         <label className="formTableLabel boxSizing redFont">项目负责人</label>
@@ -291,10 +290,10 @@ class StagingInformation extends React.Component {
                     <div id="myCarousel" className="carousel slide">
                         <div className="carousel-inner">
                             <div className="item active">
-                                <iframe src=""></iframe>
+                                <iframe src="" width="100%"></iframe>
                             </div>
                             <div className="item">
-                                <iframe src=""></iframe>
+                                <iframe src="" width="100%"></iframe>
                             </div>
                         </div>
                         {/* 轮播（Carousel）导航 */}

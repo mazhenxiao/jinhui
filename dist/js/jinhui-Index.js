@@ -437,8 +437,20 @@ var ToolsTree = function (_React$Component) {
         value: function componentDidMount() {
             var self = this;
             _toolsTree2.default.bindTree("#tree", function (arg) {
+
+                var id = void 0;
+                switch (arg["level_id"]) {
+                    case "1": //集团汇总
+                    case "2": //大区汇总
+                    case "3":
+                        _iss2.default.hashHistory.replace({ pathname: "index", state: arg });break; //分区
+                    case "4":
+                        id = "intallment";break; //分公司
+                    case "5":
+                        id = "newProject";break; //项目
+                }
                 self.setState({
-                    changeState: arg.type == 2 ? "newProject" : arg.type == 3 ? "intallment" : "",
+                    changeState: id,
                     data: arg
                 });
             });
@@ -447,6 +459,7 @@ var ToolsTree = function (_React$Component) {
         key: 'addTodo',
         value: function addTodo() {
             var th = this;
+
             _iss2.default.hashHistory.replace({
                 pathname: '/' + th.state.changeState,
                 state: this.state.data
@@ -569,80 +582,94 @@ var $tree = function () {
     function $tree(ele) {
         _classCallCheck(this, $tree);
 
-        this.data = [{
-            "id": 1,
-            "type": 0,
-            "text": "My Documents",
-            "children": [{
-                "id": 11,
-                "type": 1,
-                "text": "Photos",
-                "state": "closed",
-                "children": [{
-                    "id": 111,
-                    "type": 2,
-                    "text": "Friend"
-                }, {
-                    "id": 112,
-                    "type": 2,
-                    "text": "Wife"
-                }, {
-                    "id": 113,
-                    "type": 2,
-                    "text": "Company"
-                }]
-            }, {
-                "id": 12,
-                "type": 2,
-                "text": "Program Files",
-                "children": [{
-                    "id": 121,
-                    "type": 3,
-                    "text": "Intel"
-                }, {
-                    "id": 122,
-                    "type": 3,
-                    "text": "Java",
-                    "attributes": {
-                        "p1": "Custom Attribute1",
-                        "p2": "Custom Attribute2"
-                    }
-                }, {
-                    "id": 123,
-                    "type": 3,
-                    "text": "Microsoft Office"
-                }, {
-                    "id": 124,
-                    "type": 3,
-                    "text": "Games",
-                    "checked": true
-                }]
-            }, {
-                "id": 13,
-                "type": 2,
-                "text": "index.html"
-            }, {
-                "id": 14,
-                "type": 2,
-                "text": "about.html"
-            }, {
-                "id": 15,
-                "type": 2,
-                "text": "welcome.html"
-            }]
-        }];
+        this.state = {
+            url: "/Home/GetTreeInfo",
+            treeDate: []
+        };
+        this.getAjax();
+        /*  this.data = [{
+              "id": 1,
+              "type":0,
+              "text": "My Documents",
+              "children": [{
+                  "id": 11,
+                  "type":1,
+                  "text": "Photos",
+                  "state": "closed",
+                  "children": [{
+                      "id": 111,
+                      "type":2,
+                      "text": "Friend"
+                  }, {
+                      "id": 112,
+                      "type":2,
+                      "text": "Wife"
+                  }, {
+                      "id": 113,
+                      "type":2,
+                      "text": "Company"
+                  }]
+              }, {
+                  "id": 12,
+                  "type":2,
+                  "text": "Program Files",
+                  "children": [{
+                      "id": 121,
+                      "type":3,
+                      "text": "Intel"
+                  }, {
+                      "id": 122,
+                      "type":3,
+                      "text": "Java",
+                      "attributes": {
+                          "p1": "Custom Attribute1",
+                          "p2": "Custom Attribute2"
+                      }
+                  }, {
+                      "id": 123,
+                      "type":3,
+                      "text": "Microsoft Office"
+                  }, {
+                      "id": 124,
+                      "type":3,
+                      "text": "Games",
+                      "checked": true
+                  }]
+              }, {
+                  "id": 13,
+                  "type":2,
+                  "text": "index.html"
+              }, {
+                  "id": 14,
+                  "type":2,
+                  "text": "about.html"
+              }, {
+                  "id": 15,
+                  "type":2,
+                  "text": "welcome.html"
+              }]
+          }]  */
     }
 
     _createClass($tree, [{
+        key: "getAjax",
+        value: function getAjax() {
+            var th = this;
+
+            _iss2.default.ajax({
+                type: "post",
+                url: th.state.url,
+                sucess: function sucess(da) {
+                    th.ele.tree("loadData", da);
+                },
+                error: function error(e) {}
+            });
+        }
+    }, {
         key: "togo",
         value: function togo(node) {//跳转
 
-            //if(node.type==3){
-            /*    iss.hashHistory.push({
-                   pathname:`/intallment/${(new Date()).getTime()}`,
-                   state:node //
-               });  */
-            // }
+
         }
     }, {
         key: "bindTree",

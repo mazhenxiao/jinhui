@@ -4,8 +4,12 @@ import iss from "../js/iss.js";
 class $tree {
     constructor(ele) {
        
-        
-       this.data = [{
+        this.state={
+            url:"/Home/GetTreeInfo",
+            treeDate:[]
+        }
+        this.getAjax();
+      /*  this.data = [{
             "id": 1,
             "type":0,
             "text": "My Documents",
@@ -66,17 +70,26 @@ class $tree {
                 "type":2,
                 "text": "welcome.html"
             }]
-        }] 
+        }]  */
 
+    }
+    getAjax(){
+        var th =this;
+      
+        iss.ajax({
+            type:"post",
+            url:th.state.url,
+            sucess(da){
+                th.ele.tree("loadData",da);
+            },
+            error(e){
+
+            }
+        })
     }
     togo(node){ //跳转
        
-       //if(node.type==3){
-     /*    iss.hashHistory.push({
-            pathname:`/intallment/${(new Date()).getTime()}`,
-            state:node //
-        });  */
-      // }
+      
     }
     bindTree(ele,callback) { //绑定数据后回调
         var th = this;

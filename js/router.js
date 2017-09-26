@@ -72,7 +72,7 @@ var rootRout = {
           callback(null, app.default);
         }, "component-intallment");
       }
-    },
+    }, 
     { //项目
       path:"/newProject", 
       getComponent: function (next, callback) {

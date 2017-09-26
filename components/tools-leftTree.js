@@ -15,18 +15,28 @@ class ToolsTree extends React.Component {
     componentDidMount() {
         var self = this;
         Tree.bindTree("#tree", arg => {
+           
+            let id;
+            switch(arg["level_id"]){
+                case "1": //集团汇总
+                case "2":  //大区汇总
+                case "3":iss.hashHistory.replace({pathname:"index",state:arg});break;//分区
+                case "4":id="intallment";break;//分公司
+                case "5":id="newProject";break;//项目
+            }
             self.setState({
-                changeState: arg.type == 2 ? "newProject" :  arg.type == 3? "intallment":"",
+                changeState:id,
                 data:arg
             })
         });
     }
     addTodo() {
         var th = this;
-        iss.hashHistory.replace({
+       
+         iss.hashHistory.replace({
             pathname: `/${th.state.changeState}`,
             state:this.state.data
-        })
+        }) 
     }
     render() {
         let th = this;

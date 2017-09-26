@@ -1,19 +1,18 @@
 import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-import DynamicTable from "./tools-dynamicTable.js";//动态表格
+import NewProjectCount from "./component-newProject-count.js";
+import DynamicTable from "./tools-dynamicTable.js";
 class NewProject extends React.Component{
     constructor(arg){
         super(arg);
-        iss.hashHistory.listenBefore((local,next)=>{
-            console.log(local)
-        })
+         iss.hashHistory.listen((local,next)=>{
+            console.log(arguments)
+        }) 
     }
     render(){
         return <article>
-            <section>
-                <DynamicTable src="/Home/demoAdd" />
-            </section>
+            <NewProjectCount />
         </article>
     }
 }

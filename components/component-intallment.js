@@ -2,14 +2,15 @@
 import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-import Staging from "./component-stagingInformation.js";
+import StagingInformation from "./component-stagingInformation.js";
 import Indicators from "./component-indicators.js";
 class Intallment extends React.Component {
     constructor(arg) {
         super(arg);
-        iss.hashHistory.listenBefore((local,next)=>{
+         iss.hashHistory.listen((local,next)=>{
             console.log(local);
-        })
+               
+        }) 
         console.log(this.props.location)
     }
     componentDidMount(){
@@ -17,10 +18,11 @@ class Intallment extends React.Component {
     }
     render() {
         return <article>
-            <Staging />
-            <Indicators />
+        <StagingInformation  />
+        <Indicators />
         </article>
     }
 
 }
+
 export default Intallment;
