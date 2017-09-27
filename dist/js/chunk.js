@@ -91,7 +91,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "chunk-" + ({"0":"component-newProject","1":"component-identity","2":"component-index","3":"component-supply","4":"component-intallment","5":"component-agenty","6":"component-todo","7":"component-projectList","8":"jinhui-Index","9":"jinhui-OpenIndex"}[chunkId]||chunkId) + ".js";
+/******/ 		script.src = __webpack_require__.p + "chunk-" + ({"0":"component-newProject","1":"component-intallment","2":"component-identity","3":"component-index","4":"component-supply","5":"component-agenty","6":"component-todo","7":"component-projectList","8":"jinhui-Index","9":"jinhui-OpenIndex"}[chunkId]||chunkId) + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -4337,24 +4337,119 @@ var $iss = function () {
     }, {
         key: "Alert",
         value: function Alert(arg) {
+            $(".modal").remove();
             var opt = {
                 title: "提示",
                 content: "",
-                width: "400px",
-                height: "200px",
+                width: "600px",
+                height: "400px",
                 ok: $.noop
             };
             $.extend(opt, arg);
-            var str = "<div class=\"modal fade\" tabindex=\"-1\" role=\"dialog\">\n        <div class=\"modal-dialog\" role=\"document\">\n          <div class=\"modal-content\">\n            <div class=\"modal-header\">\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n              <h4 class=\"modal-title\">" + opt.title + "</h4>\n            </div>\n            <div class=\"modal-body\">\n              <div>" + opt.content + "</div>\n            </div>\n            <div class=\"modal-footer\">\n              <button type=\"button\" class=\"btn btn-primary J_button\" >\u786E\u5B9A</button>\n            </div>\n          </div>\n        </div>\n      </div>";
+            var str = "<div class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" >\n        <div class=\"modal-dialog\" role=\"document\">\n          <div class=\"modal-content\">\n            <div class=\"modal-header\">\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n              <h4 class=\"modal-title\">" + opt.title + "</h4>\n            </div>\n            <div class=\"modal-body\" style=\"height:" + opt.height + "px;\">\n              <div>" + opt.content + "</div>\n            </div>\n            <div class=\"modal-footer\">\n              <button type=\"button\" class=\"btn btn-primary J_button\" >\u786E\u5B9A</button>\n            </div>\n          </div>\n        </div>\n      </div>";
 
-            var $ele = $(str);
+            var $ele = $(str),
+                s = $ele.width(),
+                h = $ele.height();
+
             $("body").append($ele);
+            $ele.css({
+                width: opt.width,
+                height: opt.height + 65 + 56,
+                top: "20%",
+                left: "50%",
+                transform: "translate(-50%,-20%)"
+            });
             $ele.modal({
                 show: true
             }).on("click.modeclose", ".J_button", function () {
-                var opts = $(this).data("data");
-                opts.ok();
-            }).data("data", opt);
+                // let opts = $(this).data("data");
+
+                if (opt.ok() == "false") {
+                    return;
+                }
+                $(".modal").remove();
+                $(".modal-backdrop").remove();
+            });
+        }
+    }, {
+        key: "upload",
+        value: function upload(arg) {
+            var _this = this;
+
+            var th = this;
+            var str = "<section class=\"upload\">\n            <header><div id=\"uploadAddBTN\"></div><div class=\"uploadBtn J_uploadBtn hide\">\u4E0A\u4F20</div></header>\n            <ul class=\"uploadList\"></ul>\n        </section>";
+            iss.Alert({
+                title: "上传",
+                width: 800,
+                height: 400,
+                content: str
+            });
+            var opt = {
+                pick: {
+                    id: '#uploadAddBTN',
+                    label: '点击选择图片'
+                },
+                accept: {
+                    title: 'Images',
+                    extensions: 'gif,jpg,jpeg,bmp,png',
+                    mimeTypes: 'image/*'
+                },
+                // swf文件路径
+                swf: "../source/webuploader-0.1.5/Uploader.swf",
+                disableGlobalDnd: true,
+                chunked: true,
+                server: 'http://2betop.net/fileupload.php',
+                fileNumLimit: 300,
+                fileSizeLimit: 5 * 1024 * 1024, // 200 M
+                fileSingleSizeLimit: 1 * 1024 * 1024 // 50 M  
+
+            };
+            $.extend(opt, arg || {});
+            var addFile = function addFile($f) {
+                var txt = "";
+                if ($f.length) {
+                    $f.forEach(function (el, ind) {
+                        txt += "<li id=\"" + el.id + "\"><i  class=\"J_delete\">\u5220\u9664</i><span class='time'>" + new Date().Format("yyyy-MM-dd hh:mm:ss") + "</span><span class='size'>" + (el.size / 1024 / 1024).toFixed(2) + "M</span><span class=\"progresses\">0%</span><span class=\"txt\" type='" + el.type + "'>" + el.name + "</span></li>";
+                    }, _this);
+                }
+                return txt;
+                // uploadList.append(txt); 
+            };
+
+            setTimeout(function () {
+                var uploader = th.uploader = WebUploader.create(opt),
+                    list = $(".uploadList");
+                uploader.on("filesQueued", function (file) {
+                    var tt = addFile(file);
+                    if (tt) {
+                        $(".J_uploadBtn").removeClass("hide");
+                        list.append(tt);
+                    }
+                });
+                uploader.on("uploadError", function (f) {
+                    $("#f.id").addClass("error");
+                });
+                uploader.on("uploadProgress", function (f) {});
+                uploader.on("fileDequeued", function (f) {});
+                list.on("click.upload", ".J_delete", function (e) {
+
+                    var pa = $(e.currentTarget).parent(),
+                        id = pa.attr("id");
+
+                    uploader.removeFile(id, true);
+                    pa.remove();
+                    if (uploader.getFiles().length <= 0) {
+                        $(".J_uploadBtn").addClass("hide");
+                    }
+                });
+                $(document).on("click.upload", ".J_uploadBtn", function (e) {
+                    var th = $(e.target);
+                    if (th.hasClass("uploadBtn")) {
+                        uploader.upload();
+                    }
+                });
+            }, 500);
         }
     }]);
 
@@ -4362,6 +4457,26 @@ var $iss = function () {
 }();
 
 var iss = window["iss"] = new $iss();
+
+;~function () {
+    window.Date.prototype.Format = function (fmt) {
+        //author: meizz 
+        !fmt && (fmt = "yyyy-mm-dd");
+        var o = {
+            "M+": this.getMonth() + 1, //月份 
+            "d+": this.getDate(), //日 
+            "h+": this.getHours(), //小时 
+            "m+": this.getMinutes(), //分 
+            "s+": this.getSeconds(), //秒 
+            "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+            "S": this.getMilliseconds() //毫秒 
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+        }return fmt;
+    };
+}();
 exports.default = iss;
 
 /***/ }),
@@ -16650,16 +16765,15 @@ var rootRout = {
   childRoutes: [{
     path: "/index",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(2).then((function (require) {
+      __webpack_require__.e/* require.ensure */(3).then((function (require) {
         var app = __webpack_require__(574); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-    },
-    onEnter: function onEnter(nextLocation) {}
+    }
   }, {
     path: "/identity",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(1).then((function (require) {
+      __webpack_require__.e/* require.ensure */(2).then((function (require) {
         var app = __webpack_require__(575); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -16667,7 +16781,7 @@ var rootRout = {
   }, {
     path: "/supply",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(3).then((function (require) {
+      __webpack_require__.e/* require.ensure */(4).then((function (require) {
         var app = __webpack_require__(576); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -16701,7 +16815,7 @@ var rootRout = {
   }, { //分期
     path: "/intallment",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(4).then((function (require) {
+      __webpack_require__.e/* require.ensure */(1).then((function (require) {
         var app = __webpack_require__(580); //============================分期
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);

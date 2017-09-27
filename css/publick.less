@@ -56,7 +56,30 @@ body{
 @media (min-width: 768px){
     .container{ width:auto;}
 }
-
+.modal-open{
+    .modal{
+        overflow:visible !important;z-index:2000;padding-right:0 !important;
+    }
+} 
+.modal-dialog{
+    min-width:auto;width:auto;
+}
+.hide{ visibility: hidden}
+.uploadBtn{width:40px;height:40px;background:@p1;line-height:40px;margin:10px;text-align: center;color:#fff;cursor:pointer;vertical-align: top}
+.webuploader-container,.uploadBtn{ display:inline-block;}
+.webuploader-container{ margin:10px;} 
+.uploadList{
+    padding:10px;
+    li{padding-bottom:10px;overflow: hidden;
+        span{margin-right:10px; display:inline-block; 
+            &.txt{display: block;max-width:300px;}
+            &.size{float: right;width:80px}
+            &.time{float: right;width:160px}
+            &.progresses{ float:right;width:60px}
+        }
+        i{float:right;width:80px;color:@p1;cursor: pointer}
+    }
+}
 .row{ margin-left:0;margin-right:0;}
 .tooltip{ border-radius:2px;padding:5px 10px;}
 ol,ul{ margin-bottom:0;}
@@ -66,19 +89,46 @@ ol,ul,ol li ul li{
 a:hover{ text-decoration: none;}
 .modal-dialog{
     width:auto !important;
-    min-width:600px;
+    min-width:auto;
     .modal-body{ padding:0;}
 }
 /* esayui */
 .tree{
-    li{ 
-        .tree-node{ min-height:30px;
-        .tree-hit,.tree-icon,.tree-title{
-            min-height:30px;line-height:30px;background:none;
-         
-        }
-        }
+    li{     
+            .tree-node{ min-height:30px;line-height:30px;
+                 .tree-hit,.tree-icon,.tree-title{
+                     min-height:30px;line-height:30px;background:none;
+                }
+                .tree-collapsed{
+                    background:url(../img/tree_icons.png)  0px 6px no-repeat; 
+                }
+                .tree-expanded{
+                    background:url(../img/tree_icons.png) -18px 6px no-repeat; 
+                }
+                .tree-folder{
+                    background:url(../img/tree_icons.png) -208px 6px no-repeat; 
+                }
+                .tree-folder-open {
+                    background: url(../img/tree_icons.png) -224px 6px no-repeat;
+                }
+            }
+            div#_easyui_tree_1{
+                .tree-folder{
+                    background:url(../img/index-icon.png) 0 6px no-repeat; 
+                }   
+                .tree-folder-open {
+                    background:url(../img/index-icon.png) 0 6px no-repeat;
+                }
+            }
+            div#_easyui_tree_1:hover{
+                .tree-folder-open {
+                    background:url(../img/index-icon-hover.png) 0 6px no-repeat;
+                }
+            }
+            
+          
     }
+   
 }
 .panel-body, .panel-header{
     border-color:@bc;

@@ -7,10 +7,7 @@ import "babel-polyfill";  //兼容ie
 class StagingInformation extends React.Component {
     constructor(arg) {
         super(arg);
-        iss.hashHistory.listenBefore((local,next)=>{
-            console.log(local);
-        })
-        console.log(this.props.location)
+        
     }
     componentWillUpdate(){
         console.log(this.props.location)
@@ -143,7 +140,6 @@ class StagingInformation extends React.Component {
                         <a className="approvalIcon" target="_blank" href="#">发起审批</a>
                     </span>
 				</h3>
-                
                 <section className="staging-left boxSizing projectinFormation">
                     <table className="formTable" width="100%">
                             <colgroup>
@@ -222,7 +218,7 @@ class StagingInformation extends React.Component {
                                         <i className="symbol">%</i>
                                     </td>
 								</tr>	
-								<tr>
+								<tr> 
 									    <th>
                                             <label className="formTableLabel boxSizing redFont">并表方式</label>
                                         </th>
@@ -278,7 +274,8 @@ class StagingInformation extends React.Component {
                                             <label className="formTableLabel boxSizing redFont">分期总图</label>
                                         </th>
 								    	<td>
-                                            <a className="linkA" href="#">上传/编辑分期总图</a>
+                                            <button className="btn btnStyle uploadIconBtn">上传</button>
+                                            <button className="btn btnStyle userApplyIconBtn">编辑</button>
                                         </td>	
 								    </tr>
                                 
@@ -287,20 +284,22 @@ class StagingInformation extends React.Component {
                 </section>
                 <section className="staging-right boxSizing fieldLocation fl">
                     {/* bootstrap 轮播图 */}
-                    <div id="myCarousel" className="carousel slide">
+                    <div id="myCarousel" className="carousel slide carouselStyle">
                         <div className="carousel-inner">
                             <div className="item active">
-                                <iframe src="" width="100%"></iframe>
+                                <iframe src="" width="100%" height="295px"></iframe>
                             </div>
                             <div className="item">
-                                <iframe src="" width="100%"></iframe>
+                                <iframe src="" width="100%" height="295px"></iframe>
                             </div>
                         </div>
                         {/* 轮播（Carousel）导航 */}
-                        <a className="carousel-control left" href="#myCarousel" 
-                        data-slide="prev">&lsaquo;</a>
-                        <a className="carousel-control right" href="#myCarousel" 
-                        data-slide="next">&rsaquo;</a>
+                        <a className="carousel-control left glyphicon glyphicon-menu-left" href="#myCarousel" 
+                        data-slide="prev">
+                        </a>
+                        <a className="carousel-control right glyphicon glyphicon-menu-right" href="#myCarousel" 
+                        data-slide="next">
+                        </a>
                     </div> 
                 </section>
                 <div className="clear"></div>

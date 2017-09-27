@@ -16,6 +16,9 @@ errorcode:"错误码"
 }
 ~~~
 * 动态表格生成
+----
+url:Project/ILandInfo
+----
 
 | 名称 | 值 | 说明 |
 |:-------------:|:-------------|-----:|
@@ -72,4 +75,20 @@ url: Home/GetTreeInfo
         "attributes":"给一个节点添加的自定义属性"
     }
 ]
+~~~
+
+* 上传控件
+---
+~~~
+iss.upload({
+                accept: {
+                    title: 'Images',
+                    extensions: 'gif,jpg,jpeg,bmp,png',
+                    mimeTypes: 'image/*'
+                },
+                server: 'http://2betop.net/fileupload.php',
+                fileNumLimit: 300,
+                fileSizeLimit: 5 * 1024 * 1024,    // 200 M
+                fileSingleSizeLimit: 1 * 1024 * 1024    // 50 M
+})
 ~~~

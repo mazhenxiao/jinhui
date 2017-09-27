@@ -115,9 +115,9 @@ class NewProjectCount extends React.Component {
         
     }
     render() {
+       
         return <section>
             <article className="staging-box">
-
 
                 <h3 className="boxGroupTit">
                     <p>

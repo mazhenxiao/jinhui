@@ -8,21 +8,17 @@ class Intallment extends React.Component {
     constructor(arg) {
         super(arg);
          iss.hashHistory.listen((local,next)=>{
-            console.log(local);
-               
-        }) 
-        console.log(this.props.location)
-    }
+        })
+    }    
     componentDidMount(){
-        console.log(this.props.location)
+         
     }
     render() {
         return <article>
         <StagingInformation  />
         <Indicators />
         </article>
-    }
+    }     
 
 }
-
 export default Intallment;

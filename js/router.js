@@ -15,8 +15,6 @@ var rootRout = {
           var app = require('../components/component-index.js');//============================生日祝福
           callback(null, app.default);
         }, "component-index");
-      },
-      onEnter(nextLocation){
       }
     },
     {

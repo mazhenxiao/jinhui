@@ -13,6 +13,7 @@ class NewProject extends React.Component{
     render(){
         return <article>
             <NewProjectCount />
+            <DynamicTable  url="/Project/ILandInfo"/>
         </article>
     }
 }

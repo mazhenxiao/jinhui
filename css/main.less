@@ -4,11 +4,11 @@
 .iconBoxJin {
     display: inline-block;
     height: 20px;
-    width: 20px;
+    width: 20px; 
     float: right;
-    margin-left: 10px;
+    margin-left: 10px;  
   }
-  .projectAdd {
+  .projectAdd {  
     background-image: url(../img/add-iconbs.png);
     background-repeat: no-repeat;
     &:hover {
@@ -32,6 +32,34 @@
 .CLASS_AGENTY{
     .JH-Nav{ display: none}
     .JH-RightBox{ margin-left:0 !important;}
+}  
+/* btnStyle */
+.btnStyle{
+    background-color: @bg;
+    color: #ffffff;
+    text-align: center;
+    padding: 3px 12px 3px 30px;
+    margin-right: 10px;
+    &:hover, &:active, &:focus{
+        color: #ffffff;
+        background-color: @bar;
+    }
+} 
+.uploadIconBtn{
+    background-image: url(../img/upload-icon.png);
+    background-repeat:no-repeat;
+    background-position:10px center;
+    &:hover, &:active, &:focus{
+        background-image: url(../img/upload-icon.png);
+    }  
+}
+.userApplyIconBtn{
+    background-image: url(../img/userApply-icon.png);
+    background-repeat:no-repeat;
+    background-position:10px center;  
+    &:hover, &:active, &:focus{
+        background-image: url(../img/userApply-icon.png);
+    }      
 }
 /* table */
 .formTable{
@@ -213,7 +241,7 @@
                         height: 20px;
                         width: 20px;
                         border: 0;
-                    }
+                    } 
                     input.stateSearch {
                         border: 1px solid #dddddd;
                         width: 100px;
@@ -246,49 +274,12 @@
                 .tree-hit{
                     overflow: initial;
                 }
-                .tree-collapsed::before{
-                    content: " ";
-                    width:0; 
-                    height:0; 
-                    border:6px solid; 
-                    border-color: transparent transparent transparent #ffffff;
-                    float: left;
-                    position: relative;
-                    top: 8px;
-                    left: 17px;
-                }
-                .tree-expanded::before{
-                    content: " ";
-                    width:0; 
-                    height:0; 
-                    border:6px solid; 
-                    border-color:#ffffff transparent transparent transparent;
-                    float: left;
-                    position: relative;
-                    top: 13px;
-                    left: 17px;
-                }
-            }
-            .tree-node-hover{
-                .tree-collapsed::before{
-                    border-color: transparent transparent transparent #333333;
-                }
-                .tree-expanded::before{
-                    border-color:#333333 transparent transparent transparent;
-                }
-            }
-            .tree-node-selected{
-                .tree-collapsed::before{
-                    border-color: transparent transparent transparent #333333;
-                }
-                .tree-expanded::before{
-                    border-color:#333333 transparent transparent transparent;
-                }
+                
             }
              .treeBox{
                     height:400px;overflow: hidden;position: relative;top:0;left:0;
              }
-            
+               
         }
         &.active{
             left:-240px !important;
@@ -329,7 +320,7 @@
             &.active{
                 border-bottom: @bg solid 3px
             }
-            }
+        }
     }
     .JH-RightFlot{ float:right;}
 }

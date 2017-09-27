@@ -6,10 +6,6 @@ require("../../Content/css/intallment.less");
 class Indicators extends React.Component {
     constructor(arg) {
         super(arg);
-        iss.hashHistory.listenBefore((local,next)=>{
-            console.log(local);
-        })
-        console.log(this.props.location)
     }
     render() {
         return <article className="staging-box">
