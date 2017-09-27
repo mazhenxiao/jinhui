@@ -4337,7 +4337,7 @@ var $iss = function () {
     }, {
         key: "Alert",
         value: function Alert(arg) {
-            $(".modal").remove();
+            $(".modal").modal("hide");
             var opt = {
                 title: "提示",
                 content: "",
@@ -4368,6 +4368,8 @@ var $iss = function () {
                 if (opt.ok() == "false") {
                     return;
                 }
+                $ele.modal("hide");
+            }).on("hide.bs.modal", function (arg) {
                 $(".modal").remove();
                 $(".modal-backdrop").remove();
             });

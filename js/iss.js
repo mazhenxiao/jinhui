@@ -56,7 +56,7 @@ class $iss {
         el.src = $els.getAttribute("data-src");
     }
     Alert(arg) {
-        $(".modal").remove();
+        $(".modal").modal("hide");
         let opt = {
             title: "提示",
             content: "",
@@ -100,8 +100,10 @@ class $iss {
                 if(opt.ok()=="false"){
                   return
                 }
-                $(".modal").remove();
-                $(".modal-backdrop").remove();
+                $ele.modal("hide");
+        }).on("hide.bs.modal",arg=>{
+            $(".modal").remove();
+            $(".modal-backdrop").remove();
         })
 
     }
