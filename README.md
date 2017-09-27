@@ -79,7 +79,7 @@ url: Home/GetTreeInfo
 
 * 上传控件
 ---
-~~~
+~~~ javascript
 iss.upload({
                 accept: {
                     title: 'Images',
@@ -90,5 +90,15 @@ iss.upload({
                 fileNumLimit: 300,
                 fileSizeLimit: 5 * 1024 * 1024,    // 200 M
                 fileSingleSizeLimit: 1 * 1024 * 1024    // 50 M
+})
+~~~
+* 选人控件
+选人完成后接听选中人员
+$(window).on("chooseTo",function(ev,da){ //ev为event //da为选中人员  })
+~~~ javascript
+iss.chooseTo({
+      url:"/Home/GetTreeInfo",
+            title:"选择人员",
+            pepole:{}  //已选人员名单
 })
 ~~~

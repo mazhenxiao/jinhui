@@ -189,6 +189,95 @@ class $iss {
         },500);
 
     }
+    chooseTo(arg){  //选人控件
+        let th = this,
+            str = `<section class="chooseTo">
+        <div class="chooseToTree">
+            
+            <input type="text" class="chooseToSearch J_chooseToSearch" />
+            <ul id="chooseToTreeUl"></ul>
+        </div>
+        <div class="chooseToRight">
+        <ul>
+         <%choosePepole%>
+        </ul>
+        </div>
+        <div class="chooseToBar">
+           
+            <button type="button" class="btn btn-info chooseToRemo" >全部移除</button>
+        </div>
+       
+    </section>`;
+        let opt = {
+            url:"/Home/GetTreeInfo",
+            title:"选择人员",
+            width:800,
+            height:300,
+            content:str,
+            pepole:{},
+            ok(){
+               // console.log(opt.pepole);
+                $(window).trigger("chooseTo",opt.pepole)
+            }
+        }
+        $.extend(opt,arg);
+        let _s="";
+        for(var v in opt.pepole){
+            _s+=`<li class="chooseTolist"><li>`;
+        }
+        opt.content= opt.content.replace(/<%choosePepole%>/ig,_s)
+        iss.Alert(opt);
+        let bindData =to=>{
+            let ele = $("#chooseToTreeUl"),add = $("#chooseToAdd"),remo=$("#chooseToRemo");
+            ele.tree({
+                data:to,
+                onDblClick(node){
+                   
+                    opt.pepole[node.id] = node;
+                    render();
+                }
+            });
+        let render = d=>{
+            let rp="",$el = $(".chooseToRight ul");
+                $el.html("")
+                let op = opt.pepole;
+            for(let me in op){
+    
+                rp+=`<li class="chooseTolist" guid="${me}">${op[me]["text"]}</li>`
+            }
+           
+            $el.html(rp);
+        }
+            $(document).on("click.chooseTo",".chooseToAdd,.chooseToRemo",ev=>{
+                var th = $(ev.target);
+                    if(th.hasClass("chooseToAdd")){  //新增
+
+                    }
+                    if(th.hasClass("chooseToRemo")){ //删除
+                        opt.pepole={};
+                        render();
+                    }
+                  
+            }).on("dblclick.chooseTo",".chooseTolist",ev=>{
+                console.log(ev)
+                var th = $(ev.target);
+                if(th.hasClass("chooseTolist")){  //右侧选人
+                    let guid = th.attr("guid");
+                        delete opt.pepole[guid];
+                        render();
+                }
+            })
+        }
+        iss.ajax({
+            url:opt.url,
+            sucess(da){
+                bindData(da)
+            },
+            error(){}
+        })
+
+        
+    }
 
 
 
