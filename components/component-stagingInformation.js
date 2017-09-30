@@ -7,14 +7,24 @@ import "babel-polyfill";  //兼容ie
 class StagingInformation extends React.Component {
     constructor(arg) {
         super(arg);
+        this.state ={
+                        "stageName":"",
+                        "stageCase":"",
+                        "stageCode":"",
+                        "companyName":"",
+                        "companyHead":"",
+                        "installmentState":"",
+                        "selfSustaining":"",
+                        "tradersWay":"",
+                        "tableManner":"",
+                        "projectType":"",
+                        "taxManner":"",
+                        "controlStage":"",
+        }
+        
         
     }
-    componentWillUpdate(){
-        console.log(this.props.location)
-    }
-    componentWillMount() {
-        
-     }
+    
     componentDidMount() {
        this.bind_combobox();
         //  toolsTab.bindTab(this.props);//绑定头部标签
@@ -22,8 +32,54 @@ class StagingInformation extends React.Component {
     addTodo(text) {
         
     }
+    onUpload(){
+        iss.upload({
+            accept: {
+                title: 'Images',
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                mimeTypes: 'image/*'
+            },
+            server: 'http://2betop.net/fileupload.php',
+            fileNumLimit: 300,
+            fileSizeLimit: 5 * 1024 * 1024,    // 200 M
+            fileSingleSizeLimit: 1 * 1024 * 1024    // 50 M
+        })
+    }
+    handChooseTo(ev,da){
+        iss.chooseTo({
+            url:"/Home/GetTreeInfo",
+            title:"选择人员",
+            pepole:{},  //已选人员名单
+            callback(da){
+                console.log(da);
+            }
 
+        })
+        
+    }
+    
+    handleInputTextChange (e) {
+        var th = this;
+        let target = e.target.id
+         this.setState({
+           [target]: e.target.value // 将表单元素的值的变化映射到state中
+         },()=>{
+            console.log(th.state[target]) 
+         }) 
+      
+       // console.log(e.target.id);
+       // console.log(e.target.value);
+      
+    }
+    handleSelectTextChange(e,b,c){
+        this.setState({
+              [e]:b
+          }) 
+        //console.log(this.state);
+    }
+    
     bind_combobox() {
+        var th = this;
         let installmentState = $("#installmentState");//分期状态
         installmentState.combobox({
             valueField: "value",
@@ -31,6 +87,7 @@ class StagingInformation extends React.Component {
             editable: true,
             readonly: false,
             panelHeight:"auto",
+            onChange:th.handleSelectTextChange.bind(th,"installmentState"),
             data: [
                 { label: "请选择", value: "", "selected": true },
                 { label: "2017年首开项目", value: "0" },
@@ -45,6 +102,7 @@ class StagingInformation extends React.Component {
             editable: true,
             readonly: false,
             panelHeight:"auto",
+            onChange:th.handleSelectTextChange.bind(th,"selfSustaining"),
             data: [
                 { label: "无", value: "", "selected": true },
                 { label: "酒店", value: "0" },
@@ -58,6 +116,7 @@ class StagingInformation extends React.Component {
             editable: true,
             readonly: false,
             panelHeight:"auto",
+            onChange:th.handleSelectTextChange.bind(th,"tradersWay"),
             data: [
                 { label: "请选择", value: "", "selected": true },
                 { label: "完全操盘", value: "0" },
@@ -72,6 +131,7 @@ class StagingInformation extends React.Component {
             editable: true,
             readonly: false,
             panelHeight:"auto",
+            onChange:th.handleSelectTextChange.bind(th,"tableManner"),
             data: [
                 { label: "请选择", value: "", "selected": true },
                 { label: "A并表项目", value: "0" },
@@ -85,6 +145,7 @@ class StagingInformation extends React.Component {
             editable: true,
             readonly: false,
             panelHeight:"auto",
+            onChange:th.handleSelectTextChange.bind(th,"projectType"),
             data: [
                 { label: "请选择", value: "", "selected": true },
                 { label: "全新开发", value: "0" },
@@ -99,6 +160,7 @@ class StagingInformation extends React.Component {
             editable: true,
             readonly: false,
             panelHeight:"auto",
+            onChange:th.handleSelectTextChange.bind(th,"taxManner"),
             data: [
                 { label: "请选择", value: "", "selected": true },
                 { label: "一般计税", value: "0" },
@@ -112,6 +174,7 @@ class StagingInformation extends React.Component {
             editable: true,
             readonly: false,
             panelHeight:"auto",
+            onChange:th.handleSelectTextChange.bind(th,"controlStage"),
             data: [
                 { label: "请选择", value: "", "selected": true },
                 { label: "启动版", value: "0" },
@@ -128,18 +191,6 @@ class StagingInformation extends React.Component {
 
     render() {
         return <article className="staging-box">
-
-        
-               <h3 className="boxGroupTit">
-                    <p>
-                        <span>分期信息</span>
-                        <i>（<i className="redFont"></i>为必填项）</i>
-                    </p>
-				    <span className="functionButton">
-                        <a className="saveIcon " href="#">暂存</a>
-                        <a className="approvalIcon" target="_blank" href="#">发起审批</a>
-                    </span>
-				</h3>
                 <section className="staging-left boxSizing projectinFormation">
                     <table className="formTable" width="100%">
                             <colgroup>
@@ -152,13 +203,13 @@ class StagingInformation extends React.Component {
                                         <label className="formTableLabel boxSizing">项目名称</label>
                                     </th>
                                     <td>
-                                        <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text" value="" />
+                                        <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text"  />
                                     </td>
                                     <th>
                                         <label className="formTableLabel boxSizing redFont">分期名称</label>
                                     </th>
                                     <td>
-                                        <input className="inputTextBox boxSizing" type="text" value="" />
+                                        <input  onChange={this.handleInputTextChange.bind(this)} id="stageName" className="inputTextBox boxSizing" type="text" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -166,13 +217,13 @@ class StagingInformation extends React.Component {
                                         <label className="formTableLabel boxSizing redFont">分期案名</label>
                                     </th>
                                     <td>
-                                        <input className="inputTextBox boxSizing" type="text" value="" />
+                                        <input onChange={this.handleInputTextChange.bind(this)} id="stageCase" className="inputTextBox boxSizing" type="text" />
                                     </td>
                                     <th>
                                         <label className="formTableLabel boxSizing redFont">分期编码</label>
                                     </th>
                                     <td>
-                                        <input className="inputTextBox boxSizing" type="text" value="" />
+                                        <input onChange={this.handleInputTextChange.bind(this)} id="stageCode" className="inputTextBox boxSizing" type="text" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -200,7 +251,7 @@ class StagingInformation extends React.Component {
                                         <label className="formTableLabel boxSizing redFont">项目公司名称</label>
                                     </th>
                                     <td>
-                                        <input className="inputTextBox boxSizing" type="text" value="" />
+                                        <input onChange={this.handleInputTextChange.bind(this)} id="companyName" className="inputTextBox boxSizing" type="text" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -208,13 +259,14 @@ class StagingInformation extends React.Component {
                                         <label className="formTableLabel boxSizing redFont">项目负责人</label>
                                     </th>
 								    <td>
-                                        <input className="inputTextBox boxSizing" type="text" value="" />
+                                        <input readOnly="readonly" onClick={this.handChooseTo.bind(this)} id="companyHead" className="inputTextBox boxSizing" type="text" />
+                                        <img className="symbol headIcon" src="../../Content/img/head-icon.png" />
                                     </td>
 								    <th>
-                                        <label className="formTableLabel boxSizing redFont">权益比例</label>
+                                        <label className="formTableLabel boxSizing">权益比例</label>
                                     </th>
                                     <td>
-                                        <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text" value="" />
+                                        <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text" />
                                         <i className="symbol">%</i>
                                     </td>
 								</tr>	
@@ -223,7 +275,7 @@ class StagingInformation extends React.Component {
                                             <label className="formTableLabel boxSizing redFont">并表方式</label>
                                         </th>
 										<td>
-                                            <input type="text" id="tableManner" />
+                                            <input  type="text" id="tableManner" />
 										</td>	
 							    		<th>
                                             <label className="formTableLabel boxSizing redFont">项目类型</label>
@@ -241,22 +293,22 @@ class StagingInformation extends React.Component {
                                             <input type="text" id="taxManner" />
 								    	</td>	
                                         <th>
-                                            <label className="formTableLabel boxSizing redFont">分期创建日期</label>
+                                            <label className="formTableLabel boxSizing">分期创建日期</label>
                                         </th>
 										<td>
-                                            <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text" value="" />    
+                                            <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text" />    
                                         </td>	
 							    		
 								    </tr>
 								    <tr>
                                         <th>
-                                            <label className="formTableLabel boxSizing redFont">分期更新日期</label>
+                                            <label className="formTableLabel boxSizing">分期更新日期</label>
                                         </th>
 							    		<td>
-                                            <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text" value="" /> 
+                                            <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text" /> 
                                         </td>	
 								    	<th>
-                                            <label className="formTableLabel boxSizing redFont">计划管控阶段</label>
+                                            <label className="formTableLabel boxSizing">计划管控阶段</label>
                                         </th>
 								    	<td>
                                             <input readOnly="readonly" type="text" id="controlStage" />
@@ -265,16 +317,16 @@ class StagingInformation extends React.Component {
 								    
 								    <tr>
                                         <th>
-                                            <label className="formTableLabel boxSizing redFont">启动开发时间</label>
+                                            <label className="formTableLabel boxSizing">启动开发时间</label>
                                         </th>
 							    		<td>
-                                            <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text" value="" />    
+                                            <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text" />    
                                         </td>	
 								    	<th>
                                             <label className="formTableLabel boxSizing redFont">分期总图</label>
                                         </th>
 								    	<td>
-                                            <button className="btn btnStyle uploadIconBtn">上传</button>
+                                            <button onClick={this.onUpload.bind(this)} className="btn btnStyle uploadIconBtn">上传</button>
                                             <button className="btn btnStyle userApplyIconBtn">编辑</button>
                                         </td>	
 								    </tr>

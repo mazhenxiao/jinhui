@@ -18,6 +18,13 @@ class $iss {
             me = reg.exec(location.hash);
         return me ? me : "";
     }
+    guid(){
+        //guid的生成
+        var S4 = function () {
+            return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
+        };
+        return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+    }
     ajax(opt) {
         let th = this;
         let $o = JSON.parse(JSON.stringify(opt));
@@ -209,15 +216,21 @@ class $iss {
        
     </section>`;
         let opt = {
-            url:"/Home/GetTreeInfo",
+            //url:"/Home/GetTreeInfo",//
+            url:"/Com/IGetOrganizationalUsers",
+            param:{parentid:"13ead391fd4103096735e4945339550b",condition:""},
             title:"选择人员",
             width:800,
             height:300,
             content:str,
             pepole:{},
+            data:[],
+            search:"",
+            callback:$.noop,
             ok(){
                // console.log(opt.pepole);
                 $(window).trigger("chooseTo",opt.pepole)
+                opt.callback(opt.pepole);
             }
         }
         $.extend(opt,arg);
@@ -227,15 +240,29 @@ class $iss {
         }
         opt.content= opt.content.replace(/<%choosePepole%>/ig,_s)
         iss.Alert(opt);
+        var ele;
         let bindData =to=>{
-            let ele = $("#chooseToTreeUl"),add = $("#chooseToAdd"),remo=$("#chooseToRemo");
+            ele = $("#chooseToTreeUl");
+            //opt.data = to;
             ele.tree({
-                data:to,
+                url:`${opt.url}`,
+                queryParams:opt.param,
+                type:"post",
+                onBeforeExpand(node){
+                    opt.param.parentid=node.id;
+                    opt.param.condition="";
+                   
+                },
+                onBeforeLoad(node,param){
+                    console.log(param);
+                },
                 onDblClick(node){
                    
                     opt.pepole[node.id] = node;
                     render();
                 }
+
+
             });
         let render = d=>{
             let rp="",$el = $(".chooseToRight ul");
@@ -248,6 +275,18 @@ class $iss {
            
             $el.html(rp);
         }
+        
+        let time;
+        $(".J_chooseToSearch").on("keyup",arg=>{
+            var th = arg.target,val = th.value;
+            clearTimeout(time);
+            time = setTimeout(a=>{
+               // opt.search=val;
+                opt.param.parentid="";
+                opt.param.condition=encodeURI(val);
+                ele.tree("reload")
+            },5000)
+        })
             $(document).on("click.chooseTo",".chooseToAdd,.chooseToRemo",ev=>{
                 var th = $(ev.target);
                     if(th.hasClass("chooseToAdd")){  //新增
@@ -268,13 +307,11 @@ class $iss {
                 }
             })
         }
-        iss.ajax({
-            url:opt.url,
-            sucess(da){
-                bindData(da)
-            },
-            error(){}
+        setTimeout(function(){
+            bindData();//绑定数据
         })
+        
+   
 
         
     }

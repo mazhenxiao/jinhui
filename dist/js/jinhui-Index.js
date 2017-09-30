@@ -1,4 +1,4 @@
-webpackJsonp([8],{
+webpackJsonp([9],{
 
 /***/ 243:
 /***/ (function(module, exports, __webpack_require__) {
@@ -171,6 +171,8 @@ var ToolsList = function (_React$Component) {
                     iss.hashHistory.push("apply");break;
                 case "projectList":
                     iss.hashHistory.push("projectList");break;
+                case "priceControl":
+                    iss.hashHistory.push("priceControl");break;
             }
         }
     }, {
@@ -299,7 +301,7 @@ var ToolsList = function (_React$Component) {
                                 null,
                                 _react2.default.createElement(
                                     'a',
-                                    { href: 'priceManagement.html' },
+                                    { onClick: this.EVENT_CLICK.bind(this, "priceControl"), href: 'javascript:;' },
                                     '\u4EF7\u683C\u7BA1\u7406'
                                 )
                             ),

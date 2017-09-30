@@ -9,12 +9,6 @@ class Indicators extends React.Component {
     }
     render() {
         return <article className="staging-box">
-               <h3 className="boxGroupTit">
-                    <p>
-                        <span>分期经济指标</span>
-                        <i>（投决会版）</i>
-                    </p>
-				</h3>
                 <section className="boxSizing">
                     <table className="formTable" width="100%">
                             <colgroup>

@@ -14,6 +14,7 @@ class ToolsList extends React.Component {
             case "agenty":iss.hashHistory.push("agenty");break;
             case "apply":iss.hashHistory.push("apply");break;
             case "projectList":iss.hashHistory.push("projectList");break;
+            case "priceControl":iss.hashHistory.push("priceControl");break;
         }
     }
     render() {
@@ -37,7 +38,7 @@ class ToolsList extends React.Component {
                     <a href="#">信息填报</a>
                     <ol className="subMenu">
                         <li><a href="areaManagement.html">面积管理</a></li>
-                        <li><a href="priceManagement.html">价格管理</a></li>
+                        <li><a onClick={this.EVENT_CLICK.bind(this,"priceControl")} href="javascript:;" >价格管理</a></li>
                         <li><a href="InformationProvidedSupply.html">供货</a></li>
                         <li><a href="signingReceivable.html">签约与回款</a></li>
                         <li><a href="keyIssues.html">重点事项</a></li>

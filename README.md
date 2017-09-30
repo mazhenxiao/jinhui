@@ -31,7 +31,7 @@ url:Project/ILandInfo
 |unit| 单位|平米等|
 |edit| 是否只读|+w,+r,+m,只读与可写互斥以最后出现值为准|
 |exec| 公式|{id}*{id}|
-|regExp| 验证|{type:"类型string number date",max:"最大值",min:"最小值" }|
+|regExp| 验证|{type:"类型string number date,到字典表里找相应正则",max:"最大值或{id}",min:"最小值||{id}" }|
 | data | ｛label：”“，val：”“｝ | 如果select data数据key值为txt值 val值为实际值  |
 
 ~~~ json
@@ -46,9 +46,9 @@ url:Project/ILandInfo
     exec:"{控件id}+{id}*{id}",
     edit:"可写+w 只读+r 必填+m",
     regExp:{ 
-        type:"string,number,date",
-        max:"32 2.00 2017-09-06",
-        min:"0 1.00 2017-09-05"    
+        type:"string,number,date字典表里找",
+        max:"32 2.00 2017-09-06或{id}",
+        min:"0 1.00 2017-09-05或{id}"    
     },
     data:[
         {label:"显示内容",val:"实际值"}

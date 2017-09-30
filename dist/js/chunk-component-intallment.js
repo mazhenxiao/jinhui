@@ -1,6 +1,138 @@
 webpackJsonp([1],{
 
-/***/ 1524:
+/***/ 580:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(19);
+
+var _react2 = _interopRequireDefault(_react);
+
+__webpack_require__(65);
+
+__webpack_require__(77);
+
+var _componentStagingInformation = __webpack_require__(601);
+
+var _componentStagingInformation2 = _interopRequireDefault(_componentStagingInformation);
+
+var _componentIndicators = __webpack_require__(602);
+
+var _componentIndicators2 = _interopRequireDefault(_componentIndicators);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*分期  */
+//兼容ie
+
+
+var Intallment = function (_React$Component) {
+    _inherits(Intallment, _React$Component);
+
+    function Intallment(arg) {
+        _classCallCheck(this, Intallment);
+
+        var _this = _possibleConstructorReturn(this, (Intallment.__proto__ || Object.getPrototypeOf(Intallment)).call(this, arg));
+
+        iss.hashHistory.listen(function (local, next) {});
+        return _this;
+    }
+
+    _createClass(Intallment, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {}
+    }, {
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "article",
+                null,
+                _react2.default.createElement(
+                    "div",
+                    null,
+                    _react2.default.createElement(
+                        "h3",
+                        { className: "boxGroupTit" },
+                        _react2.default.createElement(
+                            "p",
+                            null,
+                            _react2.default.createElement(
+                                "span",
+                                null,
+                                "\u5206\u671F\u4FE1\u606F"
+                            ),
+                            _react2.default.createElement(
+                                "i",
+                                null,
+                                "\uFF08",
+                                _react2.default.createElement("i", { className: "redFont" }),
+                                "\u4E3A\u5FC5\u586B\u9879\uFF09"
+                            )
+                        ),
+                        _react2.default.createElement(
+                            "span",
+                            { className: "functionButton" },
+                            _react2.default.createElement(
+                                "a",
+                                { className: "saveIcon ", href: "#" },
+                                "\u6682\u5B58"
+                            ),
+                            _react2.default.createElement(
+                                "a",
+                                { className: "approvalIcon", target: "_blank", href: "#" },
+                                "\u53D1\u8D77\u5BA1\u6279"
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement(_componentStagingInformation2.default, null),
+                _react2.default.createElement(
+                    "div",
+                    null,
+                    _react2.default.createElement(
+                        "h3",
+                        { className: "boxGroupTit" },
+                        _react2.default.createElement(
+                            "p",
+                            null,
+                            _react2.default.createElement(
+                                "span",
+                                null,
+                                "\u5206\u671F\u7ECF\u6D4E\u6307\u6807"
+                            ),
+                            _react2.default.createElement(
+                                "i",
+                                null,
+                                "\uFF08\u6295\u51B3\u4F1A\u7248\uFF09"
+                            )
+                        )
+                    )
+                ),
+                _react2.default.createElement(_componentIndicators2.default, null)
+            );
+        }
+    }]);
+
+    return Intallment;
+}(_react2.default.Component);
+
+exports.default = Intallment;
+
+/***/ }),
+
+/***/ 583:
 /***/ (function(module, exports) {
 
 /*
@@ -83,7 +215,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 1525:
+/***/ 584:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -129,7 +261,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(1526);
+var	fixUrls = __webpack_require__(586);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -443,7 +575,7 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 
-/***/ 1526:
+/***/ 586:
 /***/ (function(module, exports) {
 
 
@@ -539,85 +671,13 @@ module.exports = function (css) {
 
 /***/ }),
 
-/***/ 580:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(19);
-
-var _react2 = _interopRequireDefault(_react);
-
-__webpack_require__(65);
-
-__webpack_require__(77);
-
-var _componentStagingInformation = __webpack_require__(600);
-
-var _componentStagingInformation2 = _interopRequireDefault(_componentStagingInformation);
-
-var _componentIndicators = __webpack_require__(601);
-
-var _componentIndicators2 = _interopRequireDefault(_componentIndicators);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*分期  */
-//兼容ie
-
-
-var Intallment = function (_React$Component) {
-    _inherits(Intallment, _React$Component);
-
-    function Intallment(arg) {
-        _classCallCheck(this, Intallment);
-
-        var _this = _possibleConstructorReturn(this, (Intallment.__proto__ || Object.getPrototypeOf(Intallment)).call(this, arg));
-
-        iss.hashHistory.listen(function (local, next) {});
-        return _this;
-    }
-
-    _createClass(Intallment, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {}
-    }, {
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(
-                "article",
-                null,
-                _react2.default.createElement(_componentStagingInformation2.default, null),
-                _react2.default.createElement(_componentIndicators2.default, null)
-            );
-        }
-    }]);
-
-    return Intallment;
-}(_react2.default.Component);
-
-exports.default = Intallment;
-
-/***/ }),
-
-/***/ 586:
+/***/ 587:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(587);
+var content = __webpack_require__(588);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -625,7 +685,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(1525)(content, options);
+var update = __webpack_require__(584)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -643,64 +703,64 @@ if(false) {
 
 /***/ }),
 
-/***/ 587:
+/***/ 588:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1524)(undefined);
+exports = module.exports = __webpack_require__(583)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".clear {\n  clear: both;\n}\n.boxGroupTit {\n  height: 40px;\n  margin-bottom: 5px ;\n  position: relative;\n  margin-top: 0;\n}\n.boxGroupTit p {\n  height: 40px;\n  line-height: 40px;\n  color: #333333;\n  font-size: 14px;\n  border-bottom: 1px solid #c9c9c9;\n}\n.boxGroupTit p span {\n  display: inline-block;\n  line-height: 40px;\n  border-bottom: 2px solid #31395d;\n}\n.boxGroupTit p i {\n  font-style: normal;\n}\n.boxGroupTit span.functionButton {\n  position: absolute;\n  right: 0;\n  top: 0;\n  width: auto;\n  text-align: right;\n}\n.boxGroupTit span.functionButton a {\n  font-size: 12px;\n  height: 40px;\n  line-height: 40px;\n  display: inline-block;\n  padding-left: 20px;\n  padding-right: 20px;\n  color: #999999 !important;\n  background-repeat: no-repeat;\n  background-position: left center;\n}\n.boxGroupTit span.functionButton a:hover {\n  color: #31395d;\n}\n.boxGroupTit span.functionButton .refresh-icon {\n  background-image: url(" + __webpack_require__(588) + ");\n}\n.boxGroupTit span.functionButton .refresh-icon:hover {\n  background-image: url(" + __webpack_require__(589) + ");\n}\n.boxGroupTit span.functionButton .saveIcon {\n  background-image: url(" + __webpack_require__(590) + ");\n}\n.boxGroupTit span.functionButton .saveIcon:hover {\n  background-image: url(" + __webpack_require__(591) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon {\n  background-image: url(" + __webpack_require__(592) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon:hover {\n  background-image: url(" + __webpack_require__(593) + ");\n}\n.staging-left,\n.staging-right {\n  float: left;\n}\n.projectinFormation {\n  width: 66.6%;\n  height: auto;\n  margin-top: 10px;\n  padding-right: 20px;\n}\n.fieldLocation {\n  margin-top: 10px;\n  width: 33.3%;\n  height: 295px;\n  border: 1px solid #dddddd;\n}\n.carouselStyle .left,\n.carouselStyle .right {\n  background: none;\n}\n.carouselStyle .carousel-control {\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  top: 50%;\n  margin-top: -15px;\n  background: #F1A118;\n}\n.carouselStyle .carousel-control:hover {\n  opacity: 0.8;\n}\n", ""]);
+exports.push([module.i, ".clear {\n  clear: both;\n}\n.boxGroupTit {\n  height: 40px;\n  margin-bottom: 5px ;\n  position: relative;\n  margin-top: 0;\n}\n.boxGroupTit p {\n  height: 40px;\n  line-height: 40px;\n  color: #333333;\n  font-size: 14px;\n  border-bottom: 1px solid #c9c9c9;\n}\n.boxGroupTit p span {\n  display: inline-block;\n  line-height: 40px;\n  border-bottom: 2px solid #31395d;\n}\n.boxGroupTit p i {\n  font-style: normal;\n}\n.boxGroupTit span.functionButton {\n  position: absolute;\n  right: 0;\n  top: 0;\n  width: auto;\n  text-align: right;\n}\n.boxGroupTit span.functionButton a {\n  font-size: 12px;\n  height: 40px;\n  line-height: 40px;\n  display: inline-block;\n  padding-left: 20px;\n  padding-right: 20px;\n  color: #999999 !important;\n  background-repeat: no-repeat;\n  background-position: left center;\n}\n.boxGroupTit span.functionButton a:hover {\n  color: #31395d;\n}\n.boxGroupTit span.functionButton .refresh-icon {\n  background-image: url(" + __webpack_require__(589) + ");\n}\n.boxGroupTit span.functionButton .refresh-icon:hover {\n  background-image: url(" + __webpack_require__(590) + ");\n}\n.boxGroupTit span.functionButton .saveIcon {\n  background-image: url(" + __webpack_require__(591) + ");\n}\n.boxGroupTit span.functionButton .saveIcon:hover {\n  background-image: url(" + __webpack_require__(592) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon {\n  background-image: url(" + __webpack_require__(593) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon:hover {\n  background-image: url(" + __webpack_require__(594) + ");\n}\n.staging-left,\n.staging-right {\n  float: left;\n}\n.projectinFormation {\n  width: 66.6%;\n  height: auto;\n  margin-top: 10px;\n  padding-right: 20px;\n}\n.fieldLocation {\n  margin-top: 10px;\n  width: 33.3%;\n  height: 295px;\n  border: 1px solid #dddddd;\n}\n.carouselStyle .left,\n.carouselStyle .right {\n  background: none;\n}\n.carouselStyle .carousel-control {\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  top: 50%;\n  margin-top: -15px;\n  background: #F1A118;\n}\n.carouselStyle .carousel-control:hover {\n  opacity: 0.8;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 588:
+/***/ 589:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABO0lEQVQ4T6VSsXHDMAwkWLBOJohG8AbRBrE3sBrxWNnZQNlAHUk1zgbWBlEmiD1Bkg3USgWQg45y7Fgn5s4sCeDx/3gQNz6Ymt/tdnd932+IaA0ASehpiagmohdjzNc4dwVQVdWCiN6I6J2ISmNMw838j4gMuEHEzBjzyv8XANbaREr5gYjPY8NfhmEBg6611vUFgPeeC43WupizxlqbSilrpVRyAgjbP5VS91mWtTFvnXMHlngOwKiF1jqNDXPdez+whKDpiYh4MAEANufI+uaAAkA6MAjaH8PAt1JqEZPhnCsBoB0A+O5d1zV8cwBI8zw/xGSwBwBQnDwIUpIY9cB4K4TYaq1/rxDbONa990smjYgrDtlklKfCg4gPQoglAKzGEF0lcYpF2LgnoiMAcHjKc4P/xWBO3s0AP2hInl/EMUEDAAAAAElFTkSuQmCC"
 
 /***/ }),
 
-/***/ 589:
+/***/ 590:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA7ElEQVQ4T6WTgQ0BQRBFnw6ogBJ0QAfogArQAR3ogA7oABWgAnRwJcjb7CbncmcvMcnmkt2ZN//P7nX4MzoN9V1gCcyBQcwpgBOwBV6prg4wBM7AFdgBl5jsvkDBC+DgfhVgtxuwTgk1CgUJFXaqAjxwbTKjGUc7gzLA7k+gB+g3F3ctlgFS7ey3TQSVAvQ0iYWqcDiPKPEXKDRLCvQ9itnvCM3Z8IaKBPDehahAC/rLhTmb8gy0IsDHkosV4Pq6hVxROp8Ce2Cm6qanXIWprg9YbGF4RHUvsU6FRcfSzYTh/foX2loJeW0tNEI/qngqkZ/g9CsAAAAASUVORK5CYII="
 
 /***/ }),
 
-/***/ 590:
+/***/ 591:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA+ElEQVQ4T92TMY6DQAxFxyMx7XKE3GBzg+QoocGaLkfgCHTINHAU9ga7N8gRSOvCXnmUWa0iEEmTIi5Ag/0fxnyDu0Xf93vn3Ec+b9yvdV1/Ww3YhYjOqnoCgPkmnFYAR3uuqqWqtjHGMQPmEMKOmc9WgIjNf4B1VxTFJedDCC0zXxCxzABFRCCiJLwHENEkIo33PnVgeSJKmpcBGhEZvfenrQ5sBgcAaJeGqKqW/0LEdvEThmEomdneUq78BRv2WFXVvAh40AOp7A0Bs7nqyRkkTTaSOfDTOZcW5IGwxfsxRyaARdd1x2zVLYCITDHGtHB/gC3RWv4XGt+9Eawr3zcAAAAASUVORK5CYII="
 
 /***/ }),
 
-/***/ 591:
+/***/ 592:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABC0lEQVQ4T92TQUrEQBBFfzFBxpU5gjewXQjJyjnHkECOkCN4hBwhkOA54moCLqa9wRyhXTlghi/VSUSwGePGhbXopqn6j+ruX4IpzN3WSLS6ms/ndg6nV/v8aLVGdDFpXgpZEOJGIbswQDajiDEhle2b2gNuk8zxGF1jPZR6tn378BWg3eH94jDncYwqWQ+Hfd/GIyDNud81YpLMC78BkrwDqDnfgeZnzV8BtLOhBqLifAdpXgK8F0gVekSCJSBPdtdU4SuYIsblqQAZB39BxOFtVVtbuyBgiQfmmn8HSDKnrvrVG0yacRbUgYIbEH5AfgyBAfGijvSACaI29VZdEJ3tWz9wn4AFomDJB58qtRFyLtVBAAAAAElFTkSuQmCC"
 
 /***/ }),
 
-/***/ 592:
+/***/ 593:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABVklEQVQ4T6WTzXHCQAyFn/bAcAsdxCW4BHcQSogvaH0jHZAOuBlxASoIqSDuAHcQ0gE5cmCVkcdmjDFkMtnbrqRPTz9L+OehvngRmarqExHFqlqq6muWZUWf7xVARGYAosFgME3T9LBcLuMQwpqIZsy87UIuAKvVanQ8Hgvvfdx2zPM8cs4VzBzdBeR5nhDR2Hs/7TqKiDLzleKLB8tERNsbCkpmHt1VYMbFYrElok9mfrF7Lf8NwIaZ578CrGmq+gFgpKp7IopU9d17P24Bd6q6sVIvSqgn8AxgHkIom2zD4bBsJnI6nWLnXAIgsaaeASKytoBmfF2pbWUhhBRAkWXZvgJY951zNmcjX512MIBvIkomk0mlsALUjVv3Lcq94DNARPZ9S2IOZgPw2M3cyKwU3FqSOvsOwJctWCO7XWMDOAB4aBts62wH7M2adevT9v7Gv/zwH4PhtBGvNQeUAAAAAElFTkSuQmCC"
 
 /***/ }),
 
-/***/ 593:
+/***/ 594:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABaklEQVQ4T6WTzU3DQBCF3+BF4oY7wCVsDpHsmzsgxyhypNBB6MB0kBIc2ULcCBXg21ri4O2A0EG4RSJk0Do/bJwlCOGbtTPfvJl5Q/jnR658GQ3HYL4GkQSzBnCnq6J0xR4BZJikAAIsxVjrbCG7A0neWcaEVKti1oYcAKQc+XSxKuuqkHagDPsBkShrVQSnAWESg9DTqhi3AzvRkGuVHyk+VGAqQcycCiB0XRX+SQXmUUZD0+erVvlt8x/2A5B4BGiqVT75HdAdSAjvmQCfGXMiBAw8aZX3voHnNcBT02qrhSQlwohBk+36NgWXQu82As+TAMdEiM1Q9wAZJtk2uFlfW6pZp6XsBvgodfUwbwDSTB+U6iqPncayksH8zp/rWL/cG4NhA2gGx5nLKHbldvIe0ImSucskJsC8AXTlSrYAbpM0Nhaemfgbr9a9nWy7zaaFTpgsQHRpPxjXNR4AYIb109E6r/EvF/4FXk6sEdl++K0AAAAASUVORK5CYII="
 
 /***/ }),
 
-/***/ 600:
+/***/ 601:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -722,6 +782,8 @@ __webpack_require__(77);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -738,18 +800,27 @@ var StagingInformation = function (_React$Component) {
     function StagingInformation(arg) {
         _classCallCheck(this, StagingInformation);
 
-        return _possibleConstructorReturn(this, (StagingInformation.__proto__ || Object.getPrototypeOf(StagingInformation)).call(this, arg));
+        var _this = _possibleConstructorReturn(this, (StagingInformation.__proto__ || Object.getPrototypeOf(StagingInformation)).call(this, arg));
+
+        _this.state = {
+            "stageName": "",
+            "stageCase": "",
+            "stageCode": "",
+            "companyName": "",
+            "companyHead": "",
+            "installmentState": "",
+            "selfSustaining": "",
+            "tradersWay": "",
+            "tableManner": "",
+            "projectType": "",
+            "taxManner": "",
+            "controlStage": ""
+        };
+
+        return _this;
     }
 
     _createClass(StagingInformation, [{
-        key: "componentWillUpdate",
-        value: function componentWillUpdate() {
-            console.log(this.props.location);
-        }
-    }, {
-        key: "componentWillMount",
-        value: function componentWillMount() {}
-    }, {
         key: "componentDidMount",
         value: function componentDidMount() {
             this.bind_combobox();
@@ -759,8 +830,54 @@ var StagingInformation = function (_React$Component) {
         key: "addTodo",
         value: function addTodo(text) {}
     }, {
+        key: "onUpload",
+        value: function onUpload() {
+            iss.upload({
+                accept: {
+                    title: 'Images',
+                    extensions: 'gif,jpg,jpeg,bmp,png',
+                    mimeTypes: 'image/*'
+                },
+                server: 'http://2betop.net/fileupload.php',
+                fileNumLimit: 300,
+                fileSizeLimit: 5 * 1024 * 1024, // 200 M
+                fileSingleSizeLimit: 1 * 1024 * 1024 // 50 M
+            });
+        }
+    }, {
+        key: "handChooseTo",
+        value: function handChooseTo(ev, da) {
+            iss.chooseTo({
+                url: "/Home/GetTreeInfo",
+                title: "选择人员",
+                pepole: {}, //已选人员名单
+                callback: function callback(da) {
+                    console.log(da);
+                }
+            });
+        }
+    }, {
+        key: "handleInputTextChange",
+        value: function handleInputTextChange(e) {
+            var th = this;
+            var target = e.target.id;
+            this.setState(_defineProperty({}, target, e.target.value), function () {
+                console.log(th.state[target]);
+            });
+
+            // console.log(e.target.id);
+            // console.log(e.target.value);
+        }
+    }, {
+        key: "handleSelectTextChange",
+        value: function handleSelectTextChange(e, b, c) {
+            this.setState(_defineProperty({}, e, b));
+            //console.log(this.state);
+        }
+    }, {
         key: "bind_combobox",
         value: function bind_combobox() {
+            var th = this;
             var installmentState = $("#installmentState"); //分期状态
             installmentState.combobox({
                 valueField: "value",
@@ -768,6 +885,7 @@ var StagingInformation = function (_React$Component) {
                 editable: true,
                 readonly: false,
                 panelHeight: "auto",
+                onChange: th.handleSelectTextChange.bind(th, "installmentState"),
                 data: [{ label: "请选择", value: "", "selected": true }, { label: "2017年首开项目", value: "0" }, { label: "2018年首开项目", value: "1" }, { label: "顺工项目", value: "2" }]
             });
             var selfSustaining = $("#selfSustaining"); //自持业态
@@ -777,6 +895,7 @@ var StagingInformation = function (_React$Component) {
                 editable: true,
                 readonly: false,
                 panelHeight: "auto",
+                onChange: th.handleSelectTextChange.bind(th, "selfSustaining"),
                 data: [{ label: "无", value: "", "selected": true }, { label: "酒店", value: "0" }, { label: "写字楼", value: "1" }]
             });
             var tradersWay = $("#tradersWay"); //操盘方式
@@ -786,6 +905,7 @@ var StagingInformation = function (_React$Component) {
                 editable: true,
                 readonly: false,
                 panelHeight: "auto",
+                onChange: th.handleSelectTextChange.bind(th, "tradersWay"),
                 data: [{ label: "请选择", value: "", "selected": true }, { label: "完全操盘", value: "0" }, { label: "派总经理", value: "1" }, { label: "不派总经理", value: "2" }]
             });
             var tableManner = $("#tableManner"); //并表方式
@@ -795,6 +915,7 @@ var StagingInformation = function (_React$Component) {
                 editable: true,
                 readonly: false,
                 panelHeight: "auto",
+                onChange: th.handleSelectTextChange.bind(th, "tableManner"),
                 data: [{ label: "请选择", value: "", "selected": true }, { label: "A并表项目", value: "0" }, { label: "B非并表项目", value: "1" }]
             });
             var projectType = $("#projectType"); //项目类型
@@ -804,6 +925,7 @@ var StagingInformation = function (_React$Component) {
                 editable: true,
                 readonly: false,
                 panelHeight: "auto",
+                onChange: th.handleSelectTextChange.bind(th, "projectType"),
                 data: [{ label: "请选择", value: "", "selected": true }, { label: "全新开发", value: "0" }, { label: "升级改造项目", value: "1" }, { label: "其他", value: "2" }]
             });
             var taxManner = $("#taxManner"); //项目计税方式
@@ -813,6 +935,7 @@ var StagingInformation = function (_React$Component) {
                 editable: true,
                 readonly: false,
                 panelHeight: "auto",
+                onChange: th.handleSelectTextChange.bind(th, "taxManner"),
                 data: [{ label: "请选择", value: "", "selected": true }, { label: "一般计税", value: "0" }, { label: "简易计税", value: "1" }]
             });
             var controlStage = $("#controlStage"); //项目类型
@@ -822,6 +945,7 @@ var StagingInformation = function (_React$Component) {
                 editable: true,
                 readonly: false,
                 panelHeight: "auto",
+                onChange: th.handleSelectTextChange.bind(th, "controlStage"),
                 data: [{ label: "请选择", value: "", "selected": true }, { label: "启动版", value: "0" }, { label: "基准版", value: "1" }, { label: "调整板（第1次）", value: "2" }, { label: "调整版（第2次）", value: "3" }, { label: "调整版（第N次）", value: "4" }, { label: "完结版", value: "5" }]
             });
         }
@@ -831,40 +955,6 @@ var StagingInformation = function (_React$Component) {
             return _react2.default.createElement(
                 "article",
                 { className: "staging-box" },
-                _react2.default.createElement(
-                    "h3",
-                    { className: "boxGroupTit" },
-                    _react2.default.createElement(
-                        "p",
-                        null,
-                        _react2.default.createElement(
-                            "span",
-                            null,
-                            "\u5206\u671F\u4FE1\u606F"
-                        ),
-                        _react2.default.createElement(
-                            "i",
-                            null,
-                            "\uFF08",
-                            _react2.default.createElement("i", { className: "redFont" }),
-                            "\u4E3A\u5FC5\u586B\u9879\uFF09"
-                        )
-                    ),
-                    _react2.default.createElement(
-                        "span",
-                        { className: "functionButton" },
-                        _react2.default.createElement(
-                            "a",
-                            { className: "saveIcon ", href: "#" },
-                            "\u6682\u5B58"
-                        ),
-                        _react2.default.createElement(
-                            "a",
-                            { className: "approvalIcon", target: "_blank", href: "#" },
-                            "\u53D1\u8D77\u5BA1\u6279"
-                        )
-                    )
-                ),
                 _react2.default.createElement(
                     "section",
                     { className: "staging-left boxSizing projectinFormation" },
@@ -897,7 +987,7 @@ var StagingInformation = function (_React$Component) {
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { readOnly: "readonly", className: "inputTextBox inputGray boxSizing", type: "text", value: "" })
+                                    _react2.default.createElement("input", { readOnly: "readonly", className: "inputTextBox inputGray boxSizing", type: "text" })
                                 ),
                                 _react2.default.createElement(
                                     "th",
@@ -911,7 +1001,7 @@ var StagingInformation = function (_React$Component) {
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { className: "inputTextBox boxSizing", type: "text", value: "" })
+                                    _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "stageName", className: "inputTextBox boxSizing", type: "text" })
                                 )
                             ),
                             _react2.default.createElement(
@@ -929,7 +1019,7 @@ var StagingInformation = function (_React$Component) {
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { className: "inputTextBox boxSizing", type: "text", value: "" })
+                                    _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "stageCase", className: "inputTextBox boxSizing", type: "text" })
                                 ),
                                 _react2.default.createElement(
                                     "th",
@@ -943,7 +1033,7 @@ var StagingInformation = function (_React$Component) {
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { className: "inputTextBox boxSizing", type: "text", value: "" })
+                                    _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "stageCode", className: "inputTextBox boxSizing", type: "text" })
                                 )
                             ),
                             _react2.default.createElement(
@@ -1007,7 +1097,7 @@ var StagingInformation = function (_React$Component) {
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { className: "inputTextBox boxSizing", type: "text", value: "" })
+                                    _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "companyName", className: "inputTextBox boxSizing", type: "text" })
                                 )
                             ),
                             _react2.default.createElement(
@@ -1025,21 +1115,22 @@ var StagingInformation = function (_React$Component) {
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { className: "inputTextBox boxSizing", type: "text", value: "" })
+                                    _react2.default.createElement("input", { readOnly: "readonly", onClick: this.handChooseTo.bind(this), id: "companyHead", className: "inputTextBox boxSizing", type: "text" }),
+                                    _react2.default.createElement("img", { className: "symbol headIcon", src: "../../Content/img/head-icon.png" })
                                 ),
                                 _react2.default.createElement(
                                     "th",
                                     null,
                                     _react2.default.createElement(
                                         "label",
-                                        { className: "formTableLabel boxSizing redFont" },
+                                        { className: "formTableLabel boxSizing" },
                                         "\u6743\u76CA\u6BD4\u4F8B"
                                     )
                                 ),
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { readOnly: "readonly", className: "inputTextBox inputGray boxSizing", type: "text", value: "" }),
+                                    _react2.default.createElement("input", { readOnly: "readonly", className: "inputTextBox inputGray boxSizing", type: "text" }),
                                     _react2.default.createElement(
                                         "i",
                                         { className: "symbol" },
@@ -1101,14 +1192,14 @@ var StagingInformation = function (_React$Component) {
                                     null,
                                     _react2.default.createElement(
                                         "label",
-                                        { className: "formTableLabel boxSizing redFont" },
+                                        { className: "formTableLabel boxSizing" },
                                         "\u5206\u671F\u521B\u5EFA\u65E5\u671F"
                                     )
                                 ),
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { readOnly: "readonly", className: "inputTextBox inputGray boxSizing", type: "text", value: "" })
+                                    _react2.default.createElement("input", { readOnly: "readonly", className: "inputTextBox inputGray boxSizing", type: "text" })
                                 )
                             ),
                             _react2.default.createElement(
@@ -1119,21 +1210,21 @@ var StagingInformation = function (_React$Component) {
                                     null,
                                     _react2.default.createElement(
                                         "label",
-                                        { className: "formTableLabel boxSizing redFont" },
+                                        { className: "formTableLabel boxSizing" },
                                         "\u5206\u671F\u66F4\u65B0\u65E5\u671F"
                                     )
                                 ),
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { readOnly: "readonly", className: "inputTextBox inputGray boxSizing", type: "text", value: "" })
+                                    _react2.default.createElement("input", { readOnly: "readonly", className: "inputTextBox inputGray boxSizing", type: "text" })
                                 ),
                                 _react2.default.createElement(
                                     "th",
                                     null,
                                     _react2.default.createElement(
                                         "label",
-                                        { className: "formTableLabel boxSizing redFont" },
+                                        { className: "formTableLabel boxSizing" },
                                         "\u8BA1\u5212\u7BA1\u63A7\u9636\u6BB5"
                                     )
                                 ),
@@ -1151,14 +1242,14 @@ var StagingInformation = function (_React$Component) {
                                     null,
                                     _react2.default.createElement(
                                         "label",
-                                        { className: "formTableLabel boxSizing redFont" },
+                                        { className: "formTableLabel boxSizing" },
                                         "\u542F\u52A8\u5F00\u53D1\u65F6\u95F4"
                                     )
                                 ),
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { readOnly: "readonly", className: "inputTextBox inputGray boxSizing", type: "text", value: "" })
+                                    _react2.default.createElement("input", { readOnly: "readonly", className: "inputTextBox inputGray boxSizing", type: "text" })
                                 ),
                                 _react2.default.createElement(
                                     "th",
@@ -1174,7 +1265,7 @@ var StagingInformation = function (_React$Component) {
                                     null,
                                     _react2.default.createElement(
                                         "button",
-                                        { className: "btn btnStyle uploadIconBtn" },
+                                        { onClick: this.onUpload.bind(this), className: "btn btnStyle uploadIconBtn" },
                                         "\u4E0A\u4F20"
                                     ),
                                     _react2.default.createElement(
@@ -1225,7 +1316,7 @@ exports.default = StagingInformation;
 
 /***/ }),
 
-/***/ 601:
+/***/ 602:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1255,7 +1346,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 //兼容ie
-__webpack_require__(586);
+__webpack_require__(587);
 
 var Indicators = function (_React$Component) {
     _inherits(Indicators, _React$Component);
@@ -1272,24 +1363,6 @@ var Indicators = function (_React$Component) {
             return _react2.default.createElement(
                 "article",
                 { className: "staging-box" },
-                _react2.default.createElement(
-                    "h3",
-                    { className: "boxGroupTit" },
-                    _react2.default.createElement(
-                        "p",
-                        null,
-                        _react2.default.createElement(
-                            "span",
-                            null,
-                            "\u5206\u671F\u7ECF\u6D4E\u6307\u6807"
-                        ),
-                        _react2.default.createElement(
-                            "i",
-                            null,
-                            "\uFF08\u6295\u51B3\u4F1A\u7248\uFF09"
-                        )
-                    )
-                ),
                 _react2.default.createElement(
                     "section",
                     { className: "boxSizing" },

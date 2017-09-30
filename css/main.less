@@ -253,14 +253,13 @@
                         top: 0;
                         height: 20px;
                         width: 20px;
-                        border: 0;
+                        border: 0;   
                     }
                     label {
                         font-size: 14px;
                         color: #fff;
                     }
                   }
-
               }
         }
         .JH-LeftNav{
@@ -270,11 +269,10 @@
                  padding-bottom:10px;
                 border-bottom:#fff solid 1px;
             }
-            .tree-node{
+            .tree-node{   
                 .tree-hit{
                     overflow: initial;
                 }
-                
             }
              .treeBox{
                     height:400px;overflow: hidden;position: relative;top:0;left:0;
@@ -369,4 +367,58 @@ header.HeaderBar{
     .chooseToTree{width:350px;float:left}
     .chooseToBar{ margin:0 350px;border:none}
     .chooseToRight{width:350px;float:right;}
+}
+.price{
+    height: 60px;
+    .price-legend,.price-stage{
+        li{
+            display: inline-block;
+            padding-right: 20px;
+            height: 30px;
+        }
+        i{
+            display: inline-block;  
+            width: 13px;
+            height: 13px;
+            margin-right: 5px;
+            border-radius: 10px;
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+        }
+    }
+    .price-stage{
+        li{
+            cursor: pointer;
+            padding-right: 20px;
+            background-color: #4C72A4;
+            line-height: 30px;
+            color: #FFFFFF;
+        }
+    }
+    .legend-white{
+        background-color: #FFFFFF;
+    }
+    .legend-blue{
+        background-color: #2979FF;
+    }
+    .legend-green{
+        background-color: #00E676;
+    }
+    .legend-red{
+        background-color: #E53935;
+    }
+    .price-left{
+        float: left ;
+    }
+    .price-right{
+        height: 30px;
+        line-height: 30px;
+        float: right;
+        a{
+            font-size: 12px;
+            color: #999999;
+        }
+    }
+}
+.clearboth{
+    clear: both;
 }

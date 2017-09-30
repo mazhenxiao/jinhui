@@ -78,9 +78,27 @@ var rootRout = {
           var app = require('../components/component-newProject.js');//============================分期
           callback(null, app.default);
         }, "component-newProject");
-      }
-    }
-  ]
+      } 
+    },
+    { //价格管理 
+      path:"/priceControl", 
+      getComponent: function (next, callback) {
+        require.ensure([], function (require) {
+          var app = require('../components/component-priceControl.js');//============================价格管理
+          callback(null, app.default);
+        }, "component-priceControl"); 
+      } 
+    },
+/*     { //价格管理-投决会
+      path:"/priceInvestment",
+      getComponent: function (next, callback) {
+        require.ensure([], function (require) {
+          var app = require('../components/component-priceInvestment.js');//============================价格管理-投决会
+          callback(null, app.default);
+        }, "component-priceInvestment"); 
+      } 
+    } */
+  ] 
 }
 ReactDOM.render(<Router history={hashHistory} routes={rootRout}></Router>, document.querySelector("#JH-Router"));
 

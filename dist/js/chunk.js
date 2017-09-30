@@ -34,7 +34,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		10: 0
+/******/ 		11: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -91,7 +91,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "chunk-" + ({"0":"component-newProject","1":"component-intallment","2":"component-identity","3":"component-index","4":"component-supply","5":"component-agenty","6":"component-todo","7":"component-projectList","8":"jinhui-Index","9":"jinhui-OpenIndex"}[chunkId]||chunkId) + ".js";
+/******/ 		script.src = __webpack_require__.p + "chunk-" + ({"0":"component-newProject","1":"component-intallment","2":"component-identity","3":"component-index","4":"component-supply","5":"component-agenty","6":"component-todo","7":"component-projectList","8":"component-priceControl","9":"jinhui-Index","10":"jinhui-OpenIndex"}[chunkId]||chunkId) + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -4293,6 +4293,15 @@ var $iss = function () {
             return me ? me : "";
         }
     }, {
+        key: "guid",
+        value: function guid() {
+            //guid的生成
+            var S4 = function S4() {
+                return ((1 + Math.random()) * 0x10000 | 0).toString(16).substring(1);
+            };
+            return S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4();
+        }
+    }, {
         key: "ajax",
         value: function ajax(opt) {
             var th = this;
@@ -4460,15 +4469,21 @@ var $iss = function () {
             var th = this,
                 str = "<section class=\"chooseTo\">\n        <div class=\"chooseToTree\">\n            \n            <input type=\"text\" class=\"chooseToSearch J_chooseToSearch\" />\n            <ul id=\"chooseToTreeUl\"></ul>\n        </div>\n        <div class=\"chooseToRight\">\n        <ul>\n         <%choosePepole%>\n        </ul>\n        </div>\n        <div class=\"chooseToBar\">\n           \n            <button type=\"button\" class=\"btn btn-info chooseToRemo\" >\u5168\u90E8\u79FB\u9664</button>\n        </div>\n       \n    </section>";
             var opt = {
-                url: "/Home/GetTreeInfo",
+                //url:"/Home/GetTreeInfo",//
+                url: "/Com/IGetOrganizationalUsers",
+                param: { parentid: "13ead391fd4103096735e4945339550b", condition: "" },
                 title: "选择人员",
                 width: 800,
                 height: 300,
                 content: str,
                 pepole: {},
+                data: [],
+                search: "",
+                callback: $.noop,
                 ok: function ok() {
                     // console.log(opt.pepole);
                     $(window).trigger("chooseTo", opt.pepole);
+                    opt.callback(opt.pepole);
                 }
             };
             $.extend(opt, arg);
@@ -4478,12 +4493,21 @@ var $iss = function () {
             }
             opt.content = opt.content.replace(/<%choosePepole%>/ig, _s);
             iss.Alert(opt);
+            var ele;
             var bindData = function bindData(to) {
-                var ele = $("#chooseToTreeUl"),
-                    add = $("#chooseToAdd"),
-                    remo = $("#chooseToRemo");
+                ele = $("#chooseToTreeUl");
+                //opt.data = to;
                 ele.tree({
-                    data: to,
+                    url: "" + opt.url,
+                    queryParams: opt.param,
+                    type: "post",
+                    onBeforeExpand: function onBeforeExpand(node) {
+                        opt.param.parentid = node.id;
+                        opt.param.condition = "";
+                    },
+                    onBeforeLoad: function onBeforeLoad(node, param) {
+                        console.log(param);
+                    },
                     onDblClick: function onDblClick(node) {
 
                         opt.pepole[node.id] = node;
@@ -4502,6 +4526,19 @@ var $iss = function () {
 
                     $el.html(rp);
                 };
+
+                var time = void 0;
+                $(".J_chooseToSearch").on("keyup", function (arg) {
+                    var th = arg.target,
+                        val = th.value;
+                    clearTimeout(time);
+                    time = setTimeout(function (a) {
+                        // opt.search=val;
+                        opt.param.parentid = "";
+                        opt.param.condition = encodeURI(val);
+                        ele.tree("reload");
+                    }, 5000);
+                });
                 $(document).on("click.chooseTo", ".chooseToAdd,.chooseToRemo", function (ev) {
                     var th = $(ev.target);
                     if (th.hasClass("chooseToAdd")) {//新增
@@ -4523,12 +4560,8 @@ var $iss = function () {
                     }
                 });
             };
-            iss.ajax({
-                url: opt.url,
-                sucess: function sucess(da) {
-                    bindData(da);
-                },
-                error: function error() {}
+            setTimeout(function () {
+                bindData(); //绑定数据
             });
         }
     }]);
@@ -16905,6 +16938,14 @@ var rootRout = {
     getComponent: function getComponent(next, callback) {
       __webpack_require__.e/* require.ensure */(0).then((function (require) {
         var app = __webpack_require__(581); //============================分期
+        callback(null, app.default);
+      }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+    }
+  }, { //价格管理 
+    path: "/priceControl",
+    getComponent: function getComponent(next, callback) {
+      __webpack_require__.e/* require.ensure */(8).then((function (require) {
+        var app = __webpack_require__(582); //============================价格管理
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
