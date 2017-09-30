@@ -80,7 +80,7 @@ class DynamicTable extends React.Component {
         }
 
         return da.map((el, ind) => {
-            console.log(el);
+    
             return <li key={ind} className="col-sm-4 col-md-4 col-lg-4">
                 <label className={el.edit.indexOf("+m") >= 0 ? "require" : ""}>{el.label}</label>
                 <i>{el.unit}</i>
@@ -93,11 +93,11 @@ class DynamicTable extends React.Component {
         var th = this,_d = this.props.DynamicData;
         return <article className="tools-dynamicTable">
             
-            <form id="DynamicData">
+
             <ul className="row">
                 {th.setList(_d)}
             </ul>
-            </form>
+ 
         </article>
     }
 }

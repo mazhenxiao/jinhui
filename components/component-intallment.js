@@ -36,7 +36,7 @@ class Intallment extends React.Component {
                  </p>
 			</h3>
         </div>
-        <Indicators />
+        <Indicators local={this.props} />
         </article>
     }     
 

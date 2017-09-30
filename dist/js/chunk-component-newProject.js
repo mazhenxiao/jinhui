@@ -30,6 +30,10 @@ var _toolsDynamicTable2 = _interopRequireDefault(_toolsDynamicTable);
 
 __webpack_require__(605);
 
+var _toolsValidate = __webpack_require__(607);
+
+var _toolsValidate2 = _interopRequireDefault(_toolsValidate);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -37,9 +41,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //兼容ie
-
-
 //专用css
+
+
+//验证字典表
 /*
     pdi id   DynamicData  结构数据 CallBack 数据修改回调
   <DynamicTable pid={this.state.pid} DynamicData={this.state.propsDATA} CallBack={this.BIND_CALLBACK.bind(this)} /> 
@@ -219,6 +224,7 @@ var NewProject = function (_React$Component) {
                             )
                         )
                     ),
+                    _react2.default.createElement("div", null),
                     _react2.default.createElement(
                         "ul",
                         { className: "BIND_LAND_BTN" },
@@ -1493,7 +1499,7 @@ var DynamicTable = function (_React$Component) {
             };
 
             return da.map(function (el, ind) {
-                console.log(el);
+
                 return _react2.default.createElement(
                     "li",
                     { key: ind, className: "col-sm-4 col-md-4 col-lg-4" },
@@ -1524,13 +1530,9 @@ var DynamicTable = function (_React$Component) {
                 "article",
                 { className: "tools-dynamicTable" },
                 _react2.default.createElement(
-                    "form",
-                    { id: "DynamicData" },
-                    _react2.default.createElement(
-                        "ul",
-                        { className: "row" },
-                        th.setList(_d)
-                    )
+                    "ul",
+                    { className: "row" },
+                    th.setList(_d)
                 )
             );
         }
@@ -1587,6 +1589,87 @@ exports.push([module.i, ".tools-dynamicTable {\n  margin-top: 10px;\n}\n.tools-d
 
 // exports
 
+
+/***/ }),
+
+/***/ 607:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    isNonEmpty: function isNonEmpty(value, errorMsg) {
+        //不能为空
+        if (!value.length) {
+            return errorMsg;
+        }
+    },
+    minLength: function minLength(value, length, errorMsg) {
+        //大于
+        if (value.length < length) {
+            return errorMsg;
+        }
+    },
+    maxLength: function maxLength(value, length, errorMsg) {
+        //小于
+        if (value.length < length) {
+            return errorMsg;
+        }
+    },
+    isMobile: function isMobile(value, errorMsg) {
+        //是否为手机号码
+        if (!/(^1[3|5|8][0-9]{9}$)/.test(value)) {
+            return errorMsg;
+        }
+    },
+    isEmail: function isEmail(value, errorMsg) {
+        //是否为邮箱
+        if (!/(^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$)/.test(value)) {
+            return errorMsg;
+        }
+    },
+    between: function between(value, range, errorMsg) {
+        //大于小于
+        var min = parseInt(range.split('-')[0]);
+        var max = parseInt(range.split('-')[1]);
+        if (value.length < min || value.length > max) {
+            return errorMsg;
+        }
+    },
+    onlyEn: function onlyEn(value, errorMsg) {
+        //纯英文
+        if (!/^[A-Za-z]+$/.test(value)) {}
+    },
+    onlyZh: function onlyZh(value, errorMsg) {
+        //纯中文
+        if (!/^[\u4e00-\u9fa5]+$/.test(value)) {
+            return errorMsg;
+        }
+    },
+    onlyNum: function onlyNum(value, errorMsg) {
+        //数字包含小数
+        if (!/^[0-9]+([.][0-9]+){0,1}$/.test(value)) {
+            return errorMsg;
+        }
+    },
+    onlyInt: function onlyInt(value, errorMsg) {
+        //整数
+        if (!/^[0-9]*$/.test(value)) {
+            return errorMsg;
+        }
+    },
+    isChecked: function isChecked(value, errorMsg, el) {
+        var i = 0;
+        var $collection = $(el).find('input:checked');
+        if (!$collection.length) {
+            return errorMsg;
+        }
+    }
+};
 
 /***/ })
 

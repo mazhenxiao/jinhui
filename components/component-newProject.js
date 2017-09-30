@@ -4,6 +4,7 @@ import "babel-polyfill";  //兼容ie
 import NewProjectCount from "./component-newProject-count.js";
 import DynamicTable from "./tools-dynamicTable.js";
 import "../../Content/css/tools-dynamicTable.less";//专用css
+import validate from "./tools-validate.js";//验证字典表
 /*
     pdi id   DynamicData  结构数据 CallBack 数据修改回调
   <DynamicTable pid={this.state.pid} DynamicData={this.state.propsDATA} CallBack={this.BIND_CALLBACK.bind(this)} /> 
@@ -130,6 +131,9 @@ class NewProject extends React.Component {
                         <a className="approvalIcon" href="javascript:;" onClick={this.EVENT_CLICK_NEWLAND.bind(this)}>新增地块</a>
                     </span>
                 </h3>
+                <div>
+             
+                </div>
                 <ul className="BIND_LAND_BTN">
                     {this.BIND_LAND_BTN()}
                 </ul>
