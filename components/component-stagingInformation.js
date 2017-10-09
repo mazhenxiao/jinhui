@@ -8,10 +8,10 @@ class StagingInformation extends React.Component {
     constructor(arg) {
         super(arg);
         this.state ={
-                        "stageName":"",
-                        "stageCase":"",
-                        "stageCode":"",
-                        "companyName":"",
+                        "CASENAME":"",
+                        "STAGENAME":"",
+                        "STAGECODE":"",
+                        "PROJECTCOMPANYNAME":"",
                         "companyHead":"",
                         "installmentState":"",
                         "selfSustaining":"",
@@ -24,9 +24,39 @@ class StagingInformation extends React.Component {
         
         
     }
+    getAjax(){
+        var th = this;
+        iss.ajax({
+            type:"post",
+            url:"/Stage/GetOneBy",
+            data:{
+                id:"7BAC0A5892EF4C29AC4EDEBB8618B675",
+            },
+            sucess(res){
+               console.log(res.rows);
+                th.setState({
+                    "CASENAME":res.rows.CASENAME,
+                    "STAGENAME":res.rows.STAGENAME,
+                    "PROJECTCOMPANYNAME":res.rows.PROJECTCOMPANYNAME,
+                    "STAGEID":res.rows.STAGECODE,
+                    "STAGECREATEDATE":res.rows.STAGECREATEDATE.split('T')[0],
+                    "STAGEUPDATEDATE":res.rows.STAGEUPDATEDATE.split('T')[0],
+                    "STARTDATE":res.rows.STARTDATE.split('T')[0],
+                },arg=>{
+                    console.log(th.state)
+                    th.bind_combobox(res);
+                })
+                
+                
+            },
+            error(e){ 
+
+            }
+        })
+    }
     
     componentDidMount() {
-       this.bind_combobox();
+        this.getAjax();
         //  toolsTab.bindTab(this.props);//绑定头部标签
     }
     addTodo(text) {
@@ -53,9 +83,7 @@ class StagingInformation extends React.Component {
             callback(da){
                 console.log(da);
             }
-
         })
-        
     }
     
     handleInputTextChange (e) {
@@ -75,10 +103,11 @@ class StagingInformation extends React.Component {
         this.setState({
               [e]:b
           }) 
-        //console.log(this.state);
+        console.log(this.state);
     }
     
-    bind_combobox() {
+    bind_combobox(arg) {
+        console.log(arg);
         var th = this;
         let installmentState = $("#installmentState");//分期状态
         installmentState.combobox({
@@ -209,7 +238,7 @@ class StagingInformation extends React.Component {
                                         <label className="formTableLabel boxSizing redFont">分期名称</label>
                                     </th>
                                     <td>
-                                        <input  onChange={this.handleInputTextChange.bind(this)} id="stageName" className="inputTextBox boxSizing" type="text" />
+                                        <input  onChange={this.handleInputTextChange.bind(this)} id="STAGENAME" value={this.state.STAGENAME} className="inputTextBox boxSizing" type="text" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -217,13 +246,13 @@ class StagingInformation extends React.Component {
                                         <label className="formTableLabel boxSizing redFont">分期案名</label>
                                     </th>
                                     <td>
-                                        <input onChange={this.handleInputTextChange.bind(this)} id="stageCase" className="inputTextBox boxSizing" type="text" />
+                                        <input onChange={this.handleInputTextChange.bind(this)} id="CASENAME" value={this.state.CASENAME} className="inputTextBox boxSizing" type="text" />
                                     </td>
                                     <th>
                                         <label className="formTableLabel boxSizing redFont">分期编码</label>
                                     </th>
                                     <td>
-                                        <input onChange={this.handleInputTextChange.bind(this)} id="stageCode" className="inputTextBox boxSizing" type="text" />
+                                        <input onChange={this.handleInputTextChange.bind(this)} id="STAGECODE" value={this.state.STAGECODE} className="inputTextBox boxSizing" type="text" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -251,7 +280,7 @@ class StagingInformation extends React.Component {
                                         <label className="formTableLabel boxSizing redFont">项目公司名称</label>
                                     </th>
                                     <td>
-                                        <input onChange={this.handleInputTextChange.bind(this)} id="companyName" className="inputTextBox boxSizing" type="text" />
+                                        <input onChange={this.handleInputTextChange.bind(this)} id="PROJECTCOMPANYNAME" value={this.state.PROJECTCOMPANYNAME} className="inputTextBox boxSizing" type="text" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -296,7 +325,7 @@ class StagingInformation extends React.Component {
                                             <label className="formTableLabel boxSizing">分期创建日期</label>
                                         </th>
 										<td>
-                                            <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text" />    
+                                            <input readOnly="readonly" id="STAGECREATEDATE" value={this.state.STAGECREATEDATE} className="inputTextBox inputGray boxSizing" type="text" />    
                                         </td>	
 							    		
 								    </tr>
@@ -305,7 +334,7 @@ class StagingInformation extends React.Component {
                                             <label className="formTableLabel boxSizing">分期更新日期</label>
                                         </th>
 							    		<td>
-                                            <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text" /> 
+                                            <input readOnly="readonly" id="STAGEUPDATEDATE" value={this.state.STAGEUPDATEDATE} className="inputTextBox inputGray boxSizing" type="text" /> 
                                         </td>	
 								    	<th>
                                             <label className="formTableLabel boxSizing">计划管控阶段</label>
@@ -320,7 +349,7 @@ class StagingInformation extends React.Component {
                                             <label className="formTableLabel boxSizing">启动开发时间</label>
                                         </th>
 							    		<td>
-                                            <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text" />    
+                                            <input readOnly="readonly" id="STARTDATE" value={this.state.STARTDATE} className="inputTextBox inputGray boxSizing" type="text" />    
                                         </td>	
 								    	<th>
                                             <label className="formTableLabel boxSizing redFont">分期总图</label>

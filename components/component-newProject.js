@@ -29,7 +29,7 @@ class NewProject extends React.Component {
     BIIND_FIST_LAND(){
         let THIS = this;
         if(!this.props.location||!this.props.location.state){ iss.Alert({content:"请选择区域或项目！"})};
-       let id = this.props.location.state.id;
+       let id ="A91BB3051A0848319B45D3D527AC4103" //this.props.location.state.id;
        iss.ajax({
            url:"/Project/INewLand",  //初次请求创建空地块使用
            data:{projectId:id},
@@ -51,7 +51,17 @@ class NewProject extends React.Component {
            url:"/Project/IProjectLandsInfo",
            data:{projectId:id},
            sucess(d){
-               console.log(d)
+               if(d.rows){
+                   var da = {};
+                   d.rows.forEach((el,ind)=>{
+                       da[el.LandId]=el;
+                   })
+                   THIS.setState({
+                    DynamicData:da
+                   },arg=>{
+                       THIS.BIND_LAND_BTN();
+                   })
+               }
            },
            error(){}
        })
@@ -62,7 +72,7 @@ class NewProject extends React.Component {
            // this.DynamicData["pid"]=iss.guid();
               let guid = iss.guid();
               
-             this.state.DynamicData[guid]={pid:guid,data:nd}; //向数据树添加一条数据
+             this.state.DynamicData[guid]={LandId:guid,FieldList:nd}; //向数据树添加一条数据
              this.setState({
                 propsDATA:this.state.newDynamicData,  //新增地块
                 pid:guid
@@ -77,39 +87,50 @@ class NewProject extends React.Component {
             self.addClass("active");
             this.setState({
                 pid:id,
-                propsDATA:this.state.DynamicData[id]["data"]
+                propsDATA:this.state.DynamicData[id]["FieldList"]
             },arg=>{
               //  console.log(this.state.propsDATA)
             });
 
     }
+    SET_PARENTCOUNT(list,d){
+        for(let v in d.parent){
+            console.log(v);
+        }
+        return
+         
+    }
     BIND_CALLBACK(da,e){ //子页面返回callback
-       
+        var th = this;
         var el = e.target.value,list = this.state.DynamicData[this.state.pid];
-         list.data.forEach((d,i)=>{
+         list.FieldList.forEach((d,i)=>{
             if(da.id==d.id){
                 d["val"]=e.target.value; 
+                    if(d["parent"]){
+                        th.SET_PARENTCOUNT(list.FieldList,d)
+                    }
                 return
             }
           
         })
         this.setState({
-            propsDATA:list.data
-        })
+            propsDATA:list.FieldList
+        });
+        
     }
     BIND_LAND_BTN(){ //添加新增地块button
         let map=[],li =this.state.DynamicData,name="新增地块",g=0;
        // console.log(li)
         for(var i in li){
             g+=1;
-            for(var f=0;f<li[i].data.length;f++){
-                if(li[i].data[f]["label"]=="地块名称"){ 
-                    name=li[i].data[f]["val"]||`新增地块${g}`
+            for(var f=0;f<li[i].FieldList.length;f++){
+                if(li[i].FieldList[f]["label"]=="地块名称"){ 
+                    name=li[i].FieldList[f]["val"]||`新增地块${g}`
                     break;
                  }
             }
 
-            map.push(<li onClick={this.EVENT_CLICK_LANDBTN.bind(this,li[i].pid)} key={g} data-id={li[i].pid}>{name}</li>)
+            map.push(<li onClick={this.EVENT_CLICK_LANDBTN.bind(this,li[i].LandId)} key={g} data-id={li[i].LandId}>{name}</li>)
         }
         
   
@@ -132,7 +153,7 @@ class NewProject extends React.Component {
                     </span>
                 </h3>
                 <div>
-             
+               {/*  <DynamicTable pid={"1"} DynamicData={[]} CallBack={this.BIND_CALLBACK.bind(this)} />  */}
                 </div>
                 <ul className="BIND_LAND_BTN">
                     {this.BIND_LAND_BTN()}

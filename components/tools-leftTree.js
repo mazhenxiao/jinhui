@@ -15,7 +15,7 @@ class ToolsTree extends React.Component {
     componentDidMount() {
         var self = this;
         Tree.bindTree("#tree", arg => {
-           
+            iss.id=arg;
             let id;
             switch(arg["level_id"]){
                 case "1": //集团汇总
@@ -24,6 +24,7 @@ class ToolsTree extends React.Component {
                 case "4":id="intallment";break;//分公司
                 case "5":id="newProject";break;//项目
             }
+           
             self.setState({
                 changeState:id,
                 data:arg
@@ -37,6 +38,7 @@ class ToolsTree extends React.Component {
             pathname: `/${th.state.changeState}`,
             state:this.state.data
         }) 
+        
     }
     render() {
         let th = this;

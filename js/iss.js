@@ -104,7 +104,7 @@ class $iss {
         }).on("click.modeclose", ".J_button", function () {
            // let opts = $(this).data("data");
     
-                if(opt.ok()=="false"){
+                if(opt.ok()==false){
                   return
                 }
                 $ele.modal("hide");

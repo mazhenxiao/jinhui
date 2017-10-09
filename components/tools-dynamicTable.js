@@ -80,7 +80,26 @@ class DynamicTable extends React.Component {
         }
 
         return da.map((el, ind) => {
-    
+             if(el.exec){
+                let reg = /\{.*?\}/ig;
+                let arr = el.exec.match(reg);
+                if(arr){
+                     arr.forEach((ee,ii)=>{
+                        let gid = ee.replace(/[{}]/ig,"");
+                        for(let eee = 0 ; eee<da.length;eee++){
+                   
+                            if(da[eee]["id"]==gid){
+                                da[eee]["parent"]=da[eee]["parent"]||{};
+                                da[eee]["parent"][el.id]=el.id;
+                                break; 
+                            }
+                            
+                           
+                        }
+                    }) 
+                  //  console.log(da);
+                }
+             }
             return <li key={ind} className="col-sm-4 col-md-4 col-lg-4">
                 <label className={el.edit.indexOf("+m") >= 0 ? "require" : ""}>{el.label}</label>
                 <i>{el.unit}</i>

@@ -1,6 +1,6 @@
-webpackJsonp([1],{
+webpackJsonp([0],{
 
-/***/ 580:
+/***/ 591:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18,13 +18,13 @@ var _react2 = _interopRequireDefault(_react);
 
 __webpack_require__(65);
 
-__webpack_require__(77);
+__webpack_require__(79);
 
-var _componentStagingInformation = __webpack_require__(601);
+var _componentStagingInformation = __webpack_require__(615);
 
 var _componentStagingInformation2 = _interopRequireDefault(_componentStagingInformation);
 
-var _componentIndicators = __webpack_require__(602);
+var _componentIndicators = __webpack_require__(616);
 
 var _componentIndicators2 = _interopRequireDefault(_componentIndicators);
 
@@ -132,7 +132,7 @@ exports.default = Intallment;
 
 /***/ }),
 
-/***/ 583:
+/***/ 593:
 /***/ (function(module, exports) {
 
 /*
@@ -215,7 +215,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 584:
+/***/ 594:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -261,7 +261,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(586);
+var	fixUrls = __webpack_require__(596);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -575,7 +575,7 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 
-/***/ 586:
+/***/ 596:
 /***/ (function(module, exports) {
 
 
@@ -671,96 +671,7 @@ module.exports = function (css) {
 
 /***/ }),
 
-/***/ 587:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(588);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(584)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./intallment.less", function() {
-			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./intallment.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ 588:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(583)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, ".clear {\n  clear: both;\n}\n.boxGroupTit {\n  height: 40px;\n  margin-bottom: 5px ;\n  position: relative;\n  margin-top: 0;\n}\n.boxGroupTit p {\n  height: 40px;\n  line-height: 40px;\n  color: #333333;\n  font-size: 14px;\n  border-bottom: 1px solid #c9c9c9;\n}\n.boxGroupTit p span {\n  display: inline-block;\n  line-height: 40px;\n  border-bottom: 2px solid #31395d;\n}\n.boxGroupTit p i {\n  font-style: normal;\n}\n.boxGroupTit span.functionButton {\n  position: absolute;\n  right: 0;\n  top: 0;\n  width: auto;\n  text-align: right;\n}\n.boxGroupTit span.functionButton a {\n  font-size: 12px;\n  height: 40px;\n  line-height: 40px;\n  display: inline-block;\n  padding-left: 20px;\n  padding-right: 20px;\n  color: #999999 !important;\n  background-repeat: no-repeat;\n  background-position: left center;\n}\n.boxGroupTit span.functionButton a:hover {\n  color: #31395d;\n}\n.boxGroupTit span.functionButton .refresh-icon {\n  background-image: url(" + __webpack_require__(589) + ");\n}\n.boxGroupTit span.functionButton .refresh-icon:hover {\n  background-image: url(" + __webpack_require__(590) + ");\n}\n.boxGroupTit span.functionButton .saveIcon {\n  background-image: url(" + __webpack_require__(591) + ");\n}\n.boxGroupTit span.functionButton .saveIcon:hover {\n  background-image: url(" + __webpack_require__(592) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon {\n  background-image: url(" + __webpack_require__(593) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon:hover {\n  background-image: url(" + __webpack_require__(594) + ");\n}\n.staging-left,\n.staging-right {\n  float: left;\n}\n.projectinFormation {\n  width: 66.6%;\n  height: auto;\n  margin-top: 10px;\n  padding-right: 20px;\n}\n.fieldLocation {\n  margin-top: 10px;\n  width: 33.3%;\n  height: 295px;\n  border: 1px solid #dddddd;\n}\n.carouselStyle .left,\n.carouselStyle .right {\n  background: none;\n}\n.carouselStyle .carousel-control {\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  top: 50%;\n  margin-top: -15px;\n  background: #F1A118;\n}\n.carouselStyle .carousel-control:hover {\n  opacity: 0.8;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ 589:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABO0lEQVQ4T6VSsXHDMAwkWLBOJohG8AbRBrE3sBrxWNnZQNlAHUk1zgbWBlEmiD1Bkg3USgWQg45y7Fgn5s4sCeDx/3gQNz6Ymt/tdnd932+IaA0ASehpiagmohdjzNc4dwVQVdWCiN6I6J2ISmNMw838j4gMuEHEzBjzyv8XANbaREr5gYjPY8NfhmEBg6611vUFgPeeC43WupizxlqbSilrpVRyAgjbP5VS91mWtTFvnXMHlngOwKiF1jqNDXPdez+whKDpiYh4MAEANufI+uaAAkA6MAjaH8PAt1JqEZPhnCsBoB0A+O5d1zV8cwBI8zw/xGSwBwBQnDwIUpIY9cB4K4TYaq1/rxDbONa990smjYgrDtlklKfCg4gPQoglAKzGEF0lcYpF2LgnoiMAcHjKc4P/xWBO3s0AP2hInl/EMUEDAAAAAElFTkSuQmCC"
-
-/***/ }),
-
-/***/ 590:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA7ElEQVQ4T6WTgQ0BQRBFnw6ogBJ0QAfogArQAR3ogA7oABWgAnRwJcjb7CbncmcvMcnmkt2ZN//P7nX4MzoN9V1gCcyBQcwpgBOwBV6prg4wBM7AFdgBl5jsvkDBC+DgfhVgtxuwTgk1CgUJFXaqAjxwbTKjGUc7gzLA7k+gB+g3F3ctlgFS7ey3TQSVAvQ0iYWqcDiPKPEXKDRLCvQ9itnvCM3Z8IaKBPDehahAC/rLhTmb8gy0IsDHkosV4Pq6hVxROp8Ce2Cm6qanXIWprg9YbGF4RHUvsU6FRcfSzYTh/foX2loJeW0tNEI/qngqkZ/g9CsAAAAASUVORK5CYII="
-
-/***/ }),
-
-/***/ 591:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA+ElEQVQ4T92TMY6DQAxFxyMx7XKE3GBzg+QoocGaLkfgCHTINHAU9ga7N8gRSOvCXnmUWa0iEEmTIi5Ag/0fxnyDu0Xf93vn3Ec+b9yvdV1/Ww3YhYjOqnoCgPkmnFYAR3uuqqWqtjHGMQPmEMKOmc9WgIjNf4B1VxTFJedDCC0zXxCxzABFRCCiJLwHENEkIo33PnVgeSJKmpcBGhEZvfenrQ5sBgcAaJeGqKqW/0LEdvEThmEomdneUq78BRv2WFXVvAh40AOp7A0Bs7nqyRkkTTaSOfDTOZcW5IGwxfsxRyaARdd1x2zVLYCITDHGtHB/gC3RWv4XGt+9Eawr3zcAAAAASUVORK5CYII="
-
-/***/ }),
-
-/***/ 592:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABC0lEQVQ4T92TQUrEQBBFfzFBxpU5gjewXQjJyjnHkECOkCN4hBwhkOA54moCLqa9wRyhXTlghi/VSUSwGePGhbXopqn6j+ruX4IpzN3WSLS6ms/ndg6nV/v8aLVGdDFpXgpZEOJGIbswQDajiDEhle2b2gNuk8zxGF1jPZR6tn378BWg3eH94jDncYwqWQ+Hfd/GIyDNud81YpLMC78BkrwDqDnfgeZnzV8BtLOhBqLifAdpXgK8F0gVekSCJSBPdtdU4SuYIsblqQAZB39BxOFtVVtbuyBgiQfmmn8HSDKnrvrVG0yacRbUgYIbEH5AfgyBAfGijvSACaI29VZdEJ3tWz9wn4AFomDJB58qtRFyLtVBAAAAAElFTkSuQmCC"
-
-/***/ }),
-
-/***/ 593:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABVklEQVQ4T6WTzXHCQAyFn/bAcAsdxCW4BHcQSogvaH0jHZAOuBlxASoIqSDuAHcQ0gE5cmCVkcdmjDFkMtnbrqRPTz9L+OehvngRmarqExHFqlqq6muWZUWf7xVARGYAosFgME3T9LBcLuMQwpqIZsy87UIuAKvVanQ8Hgvvfdx2zPM8cs4VzBzdBeR5nhDR2Hs/7TqKiDLzleKLB8tERNsbCkpmHt1VYMbFYrElok9mfrF7Lf8NwIaZ578CrGmq+gFgpKp7IopU9d17P24Bd6q6sVIvSqgn8AxgHkIom2zD4bBsJnI6nWLnXAIgsaaeASKytoBmfF2pbWUhhBRAkWXZvgJY951zNmcjX512MIBvIkomk0mlsALUjVv3Lcq94DNARPZ9S2IOZgPw2M3cyKwU3FqSOvsOwJctWCO7XWMDOAB4aBts62wH7M2adevT9v7Gv/zwH4PhtBGvNQeUAAAAAElFTkSuQmCC"
-
-/***/ }),
-
-/***/ 594:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABaklEQVQ4T6WTzU3DQBCF3+BF4oY7wCVsDpHsmzsgxyhypNBB6MB0kBIc2ULcCBXg21ri4O2A0EG4RSJk0Do/bJwlCOGbtTPfvJl5Q/jnR658GQ3HYL4GkQSzBnCnq6J0xR4BZJikAAIsxVjrbCG7A0neWcaEVKti1oYcAKQc+XSxKuuqkHagDPsBkShrVQSnAWESg9DTqhi3AzvRkGuVHyk+VGAqQcycCiB0XRX+SQXmUUZD0+erVvlt8x/2A5B4BGiqVT75HdAdSAjvmQCfGXMiBAw8aZX3voHnNcBT02qrhSQlwohBk+36NgWXQu82As+TAMdEiM1Q9wAZJtk2uFlfW6pZp6XsBvgodfUwbwDSTB+U6iqPncayksH8zp/rWL/cG4NhA2gGx5nLKHbldvIe0ImSucskJsC8AXTlSrYAbpM0Nhaemfgbr9a9nWy7zaaFTpgsQHRpPxjXNR4AYIb109E6r/EvF/4FXk6sEdl++K0AAAAASUVORK5CYII="
-
-/***/ }),
-
-/***/ 601:
+/***/ 597:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -778,7 +689,415 @@ var _react2 = _interopRequireDefault(_react);
 
 __webpack_require__(65);
 
-__webpack_require__(77);
+__webpack_require__(79);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /** 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * 用来处理动态生成表格
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               */
+
+//兼容ie
+var DynamicTable = function (_React$Component) {
+    _inherits(DynamicTable, _React$Component);
+
+    function DynamicTable(arg) {
+        _classCallCheck(this, DynamicTable);
+
+        var _this = _possibleConstructorReturn(this, (DynamicTable.__proto__ || Object.getPrototypeOf(DynamicTable)).call(this, arg));
+
+        _this.count = 0; //初始化记录
+        _this.rule = {}; //验证
+        _this.id = "DynamicTable-" + iss.guid;
+        _this.state = { //数据层
+            url: "",
+            data: _this.props.DynamicData || [], //数据
+            selected: {}
+        };
+
+        return _this;
+    }
+
+    _createClass(DynamicTable, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {}
+    }, {
+        key: "componentDidUpdate",
+        value: function componentDidUpdate(prevProps, prevState) {
+            var th = this;
+            //this.setState({data:this.props.DynamicData})
+
+            /*   if (this.count == 0) {
+                  this.count = 1;
+                  this.BIND_INPUT_STATE();
+              } */
+        }
+    }, {
+        key: "BIND_INPUT_STATE",
+        value: function BIND_INPUT_STATE() {
+            var $da = this.state.data;
+            $da.forEach(function (da, ind) {});
+        }
+    }, {
+        key: "EVENT_CHANGE_DYNAMIC",
+        value: function EVENT_CHANGE_DYNAMIC(d, e) {
+            //自定义input事件
+            if (d == null) {
+                return "";
+            } else {
+                return d;
+            }
+            //   let val = e.target.value;
+
+            //  let selected = this.state.selected;
+            // this.props.CallBack(d,val)       
+        }
+    }, {
+        key: "getPost",
+        value: function getPost() {
+            var th = this;
+            iss.ajax({
+                type: "POST",
+                url: th.props.url,
+                sucess: function sucess(da) {
+                    var data = typeof da.data == "string" ? JSON.parse(da.data) : da.data;
+                    th.setState({
+                        data: da.rows
+                    });
+                },
+                error: function error(e) {}
+            });
+        }
+    }, {
+        key: "setList",
+        value: function setList(da) {
+            var _this2 = this;
+
+            // console.log(da)
+            var typeBox = function typeBox(el) {
+
+                if (el.type == "select") {
+                    var list = el.data.map(function (_d, _i) {
+                        return _react2.default.createElement(
+                            "option",
+                            { key: _i, value: _d.val },
+                            _d.label
+                        );
+                    });
+                    return _react2.default.createElement(
+                        "select",
+                        { name: el.id, onChange: _this2.props.CallBack.bind(_this2, el), value: el.val || "" },
+                        list
+                    );
+                } else {
+                    return _react2.default.createElement("input", { name: el.id, id: el.id, "data-pid": el.pid, value: el.val || "", placeholder: el.edit.indexOf("+m") >= 0 ? "此处为必填项" : "请输入内容", type: "text", onChange: _this2.props.CallBack.bind(_this2, el), readOnly: el.edit.indexOf("+r") >= 0 });
+                }
+            };
+
+            return da.map(function (el, ind) {
+                if (el.exec) {
+                    var reg = /\{.*?\}/ig;
+                    var arr = el.exec.match(reg);
+                    if (arr) {
+                        arr.forEach(function (ee, ii) {
+                            var gid = ee.replace(/[{}]/ig, "");
+                            for (var eee = 0; eee < da.length; eee++) {
+
+                                if (da[eee]["id"] == gid) {
+                                    da[eee]["parent"] = da[eee]["parent"] || {};
+                                    da[eee]["parent"][el.id] = el.id;
+                                    break;
+                                }
+                            }
+                        });
+                        //  console.log(da);
+                    }
+                }
+                return _react2.default.createElement(
+                    "li",
+                    { key: ind, className: "col-sm-4 col-md-4 col-lg-4" },
+                    _react2.default.createElement(
+                        "label",
+                        { className: el.edit.indexOf("+m") >= 0 ? "require" : "" },
+                        el.label
+                    ),
+                    _react2.default.createElement(
+                        "i",
+                        null,
+                        el.unit
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        null,
+                        typeBox(el)
+                    )
+                );
+            });
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var th = this,
+                _d = this.props.DynamicData;
+            return _react2.default.createElement(
+                "article",
+                { className: "tools-dynamicTable" },
+                _react2.default.createElement(
+                    "ul",
+                    { className: "row" },
+                    th.setList(_d)
+                )
+            );
+        }
+    }]);
+
+    return DynamicTable;
+}(_react2.default.Component);
+
+exports.default = DynamicTable;
+
+/***/ }),
+
+/***/ 598:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(599);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(594)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./tools-dynamicTable.less", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./tools-dynamicTable.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 599:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(593)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".tools-dynamicTable {\n  margin-top: 10px;\n}\n.tools-dynamicTable ul li {\n  height: 40px;\n  overflow: hidden;\n}\n.tools-dynamicTable ul li label {\n  font-size: 12px;\n  color: #333;\n  font-weight: normal;\n  width: 110px;\n  text-align: right;\n  padding-top: 5px;\n  float: left;\n}\n.tools-dynamicTable ul li div {\n  display: block;\n  margin: 0 65px 0 115px;\n}\n.tools-dynamicTable ul li div input {\n  width: 100%;\n  padding: 3px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li div select {\n  width: 100%;\n  height: 25px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li i {\n  font-style: normal;\n  width: 60px;\n  float: right;\n  padding-top: 3px;\n}\n.BIND_LAND_BTN {\n  padding: 10px;\n}\n.BIND_LAND_BTN li {\n  display: inline-block;\n  padding: 5px 10px;\n  border: #ddd solid 1px;\n  cursor: pointer;\n  margin: 10px;\n}\n.BIND_LAND_BTN li.active {\n  background: #e4e4e4;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 600:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    isNonEmpty: function isNonEmpty(value, errorMsg) {
+        //不能为空
+        if (!value.length) {
+            return errorMsg;
+        }
+    },
+    minLength: function minLength(value, length, errorMsg) {
+        //大于
+        if (value.length < length) {
+            return errorMsg;
+        }
+    },
+    maxLength: function maxLength(value, length, errorMsg) {
+        //小于
+        if (value.length < length) {
+            return errorMsg;
+        }
+    },
+    isMobile: function isMobile(value, errorMsg) {
+        //是否为手机号码
+        if (!/(^1[3|5|8][0-9]{9}$)/.test(value)) {
+            return errorMsg;
+        }
+    },
+    isEmail: function isEmail(value, errorMsg) {
+        //是否为邮箱
+        if (!/(^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$)/.test(value)) {
+            return errorMsg;
+        }
+    },
+    between: function between(value, range, errorMsg) {
+        //大于小于
+        var min = parseInt(range.split('-')[0]);
+        var max = parseInt(range.split('-')[1]);
+        if (value.length < min || value.length > max) {
+            return errorMsg;
+        }
+    },
+    onlyEn: function onlyEn(value, errorMsg) {
+        //纯英文
+        if (!/^[A-Za-z]+$/.test(value)) {}
+    },
+    onlyZh: function onlyZh(value, errorMsg) {
+        //纯中文
+        if (!/^[\u4e00-\u9fa5]+$/.test(value)) {
+            return errorMsg;
+        }
+    },
+    onlyNum: function onlyNum(value, errorMsg) {
+        //数字包含小数
+        if (!/^[0-9]+([.][0-9]+){0,1}$/.test(value)) {
+            return errorMsg;
+        }
+    },
+    onlyInt: function onlyInt(value, errorMsg) {
+        //整数
+        if (!/^[0-9]*$/.test(value)) {
+            return errorMsg;
+        }
+    },
+    isChecked: function isChecked(value, errorMsg, el) {
+        var i = 0;
+        var $collection = $(el).find('input:checked');
+        if (!$collection.length) {
+            return errorMsg;
+        }
+    }
+};
+
+/***/ }),
+
+/***/ 601:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(602);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(594)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./intallment.less", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./intallment.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 602:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(593)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".clear {\n  clear: both;\n}\n.boxGroupTit {\n  height: 40px;\n  margin-bottom: 5px ;\n  position: relative;\n  margin-top: 0;\n}\n.boxGroupTit p {\n  height: 40px;\n  line-height: 40px;\n  color: #333333;\n  font-size: 14px;\n  border-bottom: 1px solid #c9c9c9;\n}\n.boxGroupTit p span {\n  display: inline-block;\n  line-height: 40px;\n  border-bottom: 2px solid #31395d;\n}\n.boxGroupTit p i {\n  font-style: normal;\n}\n.boxGroupTit span.functionButton {\n  position: absolute;\n  right: 0;\n  top: 0;\n  width: auto;\n  text-align: right;\n}\n.boxGroupTit span.functionButton a {\n  font-size: 12px;\n  height: 40px;\n  line-height: 40px;\n  display: inline-block;\n  padding-left: 20px;\n  padding-right: 20px;\n  color: #999999 !important;\n  background-repeat: no-repeat;\n  background-position: left center;\n}\n.boxGroupTit span.functionButton a:hover {\n  color: #31395d;\n}\n.boxGroupTit span.functionButton .refresh-icon {\n  background-image: url(" + __webpack_require__(603) + ");\n}\n.boxGroupTit span.functionButton .refresh-icon:hover {\n  background-image: url(" + __webpack_require__(604) + ");\n}\n.boxGroupTit span.functionButton .saveIcon {\n  background-image: url(" + __webpack_require__(605) + ");\n}\n.boxGroupTit span.functionButton .saveIcon:hover {\n  background-image: url(" + __webpack_require__(606) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon {\n  background-image: url(" + __webpack_require__(607) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon:hover {\n  background-image: url(" + __webpack_require__(608) + ");\n}\n.staging-left,\n.staging-right {\n  float: left;\n}\n.projectinFormation {\n  width: 66.6%;\n  height: auto;\n  margin-top: 10px;\n  padding-right: 20px;\n}\n.fieldLocation {\n  margin-top: 10px;\n  width: 33.3%;\n  height: 295px;\n  border: 1px solid #dddddd;\n}\n.carouselStyle .left,\n.carouselStyle .right {\n  background: none;\n}\n.carouselStyle .carousel-control {\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  top: 50%;\n  margin-top: -15px;\n  background: #F1A118;\n}\n.carouselStyle .carousel-control:hover {\n  opacity: 0.8;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 603:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABO0lEQVQ4T6VSsXHDMAwkWLBOJohG8AbRBrE3sBrxWNnZQNlAHUk1zgbWBlEmiD1Bkg3USgWQg45y7Fgn5s4sCeDx/3gQNz6Ymt/tdnd932+IaA0ASehpiagmohdjzNc4dwVQVdWCiN6I6J2ISmNMw838j4gMuEHEzBjzyv8XANbaREr5gYjPY8NfhmEBg6611vUFgPeeC43WupizxlqbSilrpVRyAgjbP5VS91mWtTFvnXMHlngOwKiF1jqNDXPdez+whKDpiYh4MAEANufI+uaAAkA6MAjaH8PAt1JqEZPhnCsBoB0A+O5d1zV8cwBI8zw/xGSwBwBQnDwIUpIY9cB4K4TYaq1/rxDbONa990smjYgrDtlklKfCg4gPQoglAKzGEF0lcYpF2LgnoiMAcHjKc4P/xWBO3s0AP2hInl/EMUEDAAAAAElFTkSuQmCC"
+
+/***/ }),
+
+/***/ 604:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA7ElEQVQ4T6WTgQ0BQRBFnw6ogBJ0QAfogArQAR3ogA7oABWgAnRwJcjb7CbncmcvMcnmkt2ZN//P7nX4MzoN9V1gCcyBQcwpgBOwBV6prg4wBM7AFdgBl5jsvkDBC+DgfhVgtxuwTgk1CgUJFXaqAjxwbTKjGUc7gzLA7k+gB+g3F3ctlgFS7ey3TQSVAvQ0iYWqcDiPKPEXKDRLCvQ9itnvCM3Z8IaKBPDehahAC/rLhTmb8gy0IsDHkosV4Pq6hVxROp8Ce2Cm6qanXIWprg9YbGF4RHUvsU6FRcfSzYTh/foX2loJeW0tNEI/qngqkZ/g9CsAAAAASUVORK5CYII="
+
+/***/ }),
+
+/***/ 605:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA+ElEQVQ4T92TMY6DQAxFxyMx7XKE3GBzg+QoocGaLkfgCHTINHAU9ga7N8gRSOvCXnmUWa0iEEmTIi5Ag/0fxnyDu0Xf93vn3Ec+b9yvdV1/Ww3YhYjOqnoCgPkmnFYAR3uuqqWqtjHGMQPmEMKOmc9WgIjNf4B1VxTFJedDCC0zXxCxzABFRCCiJLwHENEkIo33PnVgeSJKmpcBGhEZvfenrQ5sBgcAaJeGqKqW/0LEdvEThmEomdneUq78BRv2WFXVvAh40AOp7A0Bs7nqyRkkTTaSOfDTOZcW5IGwxfsxRyaARdd1x2zVLYCITDHGtHB/gC3RWv4XGt+9Eawr3zcAAAAASUVORK5CYII="
+
+/***/ }),
+
+/***/ 606:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABC0lEQVQ4T92TQUrEQBBFfzFBxpU5gjewXQjJyjnHkECOkCN4hBwhkOA54moCLqa9wRyhXTlghi/VSUSwGePGhbXopqn6j+ruX4IpzN3WSLS6ms/ndg6nV/v8aLVGdDFpXgpZEOJGIbswQDajiDEhle2b2gNuk8zxGF1jPZR6tn378BWg3eH94jDncYwqWQ+Hfd/GIyDNud81YpLMC78BkrwDqDnfgeZnzV8BtLOhBqLifAdpXgK8F0gVekSCJSBPdtdU4SuYIsblqQAZB39BxOFtVVtbuyBgiQfmmn8HSDKnrvrVG0yacRbUgYIbEH5AfgyBAfGijvSACaI29VZdEJ3tWz9wn4AFomDJB58qtRFyLtVBAAAAAElFTkSuQmCC"
+
+/***/ }),
+
+/***/ 607:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABVklEQVQ4T6WTzXHCQAyFn/bAcAsdxCW4BHcQSogvaH0jHZAOuBlxASoIqSDuAHcQ0gE5cmCVkcdmjDFkMtnbrqRPTz9L+OehvngRmarqExHFqlqq6muWZUWf7xVARGYAosFgME3T9LBcLuMQwpqIZsy87UIuAKvVanQ8Hgvvfdx2zPM8cs4VzBzdBeR5nhDR2Hs/7TqKiDLzleKLB8tERNsbCkpmHt1VYMbFYrElok9mfrF7Lf8NwIaZ578CrGmq+gFgpKp7IopU9d17P24Bd6q6sVIvSqgn8AxgHkIom2zD4bBsJnI6nWLnXAIgsaaeASKytoBmfF2pbWUhhBRAkWXZvgJY951zNmcjX512MIBvIkomk0mlsALUjVv3Lcq94DNARPZ9S2IOZgPw2M3cyKwU3FqSOvsOwJctWCO7XWMDOAB4aBts62wH7M2adevT9v7Gv/zwH4PhtBGvNQeUAAAAAElFTkSuQmCC"
+
+/***/ }),
+
+/***/ 608:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABaklEQVQ4T6WTzU3DQBCF3+BF4oY7wCVsDpHsmzsgxyhypNBB6MB0kBIc2ULcCBXg21ri4O2A0EG4RSJk0Do/bJwlCOGbtTPfvJl5Q/jnR658GQ3HYL4GkQSzBnCnq6J0xR4BZJikAAIsxVjrbCG7A0neWcaEVKti1oYcAKQc+XSxKuuqkHagDPsBkShrVQSnAWESg9DTqhi3AzvRkGuVHyk+VGAqQcycCiB0XRX+SQXmUUZD0+erVvlt8x/2A5B4BGiqVT75HdAdSAjvmQCfGXMiBAw8aZX3voHnNcBT02qrhSQlwohBk+36NgWXQu82As+TAMdEiM1Q9wAZJtk2uFlfW6pZp6XsBvgodfUwbwDSTB+U6iqPncayksH8zp/rWL/cG4NhA2gGx5nLKHbldvIe0ImSucskJsC8AXTlSrYAbpM0Nhaemfgbr9a9nWy7zaaFTpgsQHRpPxjXNR4AYIb109E6r/EvF/4FXk6sEdl++K0AAAAASUVORK5CYII="
+
+/***/ }),
+
+/***/ 615:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(19);
+
+var _react2 = _interopRequireDefault(_react);
+
+__webpack_require__(65);
+
+__webpack_require__(79);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -803,10 +1122,10 @@ var StagingInformation = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (StagingInformation.__proto__ || Object.getPrototypeOf(StagingInformation)).call(this, arg));
 
         _this.state = {
-            "stageName": "",
-            "stageCase": "",
-            "stageCode": "",
-            "companyName": "",
+            "CASENAME": "",
+            "STAGENAME": "",
+            "STAGECODE": "",
+            "PROJECTCOMPANYNAME": "",
             "companyHead": "",
             "installmentState": "",
             "selfSustaining": "",
@@ -821,9 +1140,37 @@ var StagingInformation = function (_React$Component) {
     }
 
     _createClass(StagingInformation, [{
+        key: "getAjax",
+        value: function getAjax() {
+            var th = this;
+            iss.ajax({
+                type: "post",
+                url: "/Stage/GetOneBy",
+                data: {
+                    id: "7BAC0A5892EF4C29AC4EDEBB8618B675"
+                },
+                sucess: function sucess(res) {
+                    console.log(res.rows);
+                    th.setState({
+                        "CASENAME": res.rows.CASENAME,
+                        "STAGENAME": res.rows.STAGENAME,
+                        "PROJECTCOMPANYNAME": res.rows.PROJECTCOMPANYNAME,
+                        "STAGEID": res.rows.STAGECODE,
+                        "STAGECREATEDATE": res.rows.STAGECREATEDATE.split('T')[0],
+                        "STAGEUPDATEDATE": res.rows.STAGEUPDATEDATE.split('T')[0],
+                        "STARTDATE": res.rows.STARTDATE.split('T')[0]
+                    }, function (arg) {
+                        console.log(th.state);
+                        th.bind_combobox(res);
+                    });
+                },
+                error: function error(e) {}
+            });
+        }
+    }, {
         key: "componentDidMount",
         value: function componentDidMount() {
-            this.bind_combobox();
+            this.getAjax();
             //  toolsTab.bindTab(this.props);//绑定头部标签
         }
     }, {
@@ -872,11 +1219,12 @@ var StagingInformation = function (_React$Component) {
         key: "handleSelectTextChange",
         value: function handleSelectTextChange(e, b, c) {
             this.setState(_defineProperty({}, e, b));
-            //console.log(this.state);
+            console.log(this.state);
         }
     }, {
         key: "bind_combobox",
-        value: function bind_combobox() {
+        value: function bind_combobox(arg) {
+            console.log(arg);
             var th = this;
             var installmentState = $("#installmentState"); //分期状态
             installmentState.combobox({
@@ -1001,7 +1349,7 @@ var StagingInformation = function (_React$Component) {
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "stageName", className: "inputTextBox boxSizing", type: "text" })
+                                    _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "STAGENAME", value: this.state.STAGENAME, className: "inputTextBox boxSizing", type: "text" })
                                 )
                             ),
                             _react2.default.createElement(
@@ -1019,7 +1367,7 @@ var StagingInformation = function (_React$Component) {
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "stageCase", className: "inputTextBox boxSizing", type: "text" })
+                                    _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "CASENAME", value: this.state.CASENAME, className: "inputTextBox boxSizing", type: "text" })
                                 ),
                                 _react2.default.createElement(
                                     "th",
@@ -1033,7 +1381,7 @@ var StagingInformation = function (_React$Component) {
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "stageCode", className: "inputTextBox boxSizing", type: "text" })
+                                    _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "STAGECODE", value: this.state.STAGECODE, className: "inputTextBox boxSizing", type: "text" })
                                 )
                             ),
                             _react2.default.createElement(
@@ -1097,7 +1445,7 @@ var StagingInformation = function (_React$Component) {
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "companyName", className: "inputTextBox boxSizing", type: "text" })
+                                    _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "PROJECTCOMPANYNAME", value: this.state.PROJECTCOMPANYNAME, className: "inputTextBox boxSizing", type: "text" })
                                 )
                             ),
                             _react2.default.createElement(
@@ -1199,7 +1547,7 @@ var StagingInformation = function (_React$Component) {
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { readOnly: "readonly", className: "inputTextBox inputGray boxSizing", type: "text" })
+                                    _react2.default.createElement("input", { readOnly: "readonly", id: "STAGECREATEDATE", value: this.state.STAGECREATEDATE, className: "inputTextBox inputGray boxSizing", type: "text" })
                                 )
                             ),
                             _react2.default.createElement(
@@ -1217,7 +1565,7 @@ var StagingInformation = function (_React$Component) {
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { readOnly: "readonly", className: "inputTextBox inputGray boxSizing", type: "text" })
+                                    _react2.default.createElement("input", { readOnly: "readonly", id: "STAGEUPDATEDATE", value: this.state.STAGEUPDATEDATE, className: "inputTextBox inputGray boxSizing", type: "text" })
                                 ),
                                 _react2.default.createElement(
                                     "th",
@@ -1249,7 +1597,7 @@ var StagingInformation = function (_React$Component) {
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { readOnly: "readonly", className: "inputTextBox inputGray boxSizing", type: "text" })
+                                    _react2.default.createElement("input", { readOnly: "readonly", id: "STARTDATE", value: this.state.STARTDATE, className: "inputTextBox inputGray boxSizing", type: "text" })
                                 ),
                                 _react2.default.createElement(
                                     "th",
@@ -1316,7 +1664,7 @@ exports.default = StagingInformation;
 
 /***/ }),
 
-/***/ 602:
+/***/ 616:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1332,19 +1680,27 @@ var _react = __webpack_require__(19);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = __webpack_require__(80);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
 __webpack_require__(65);
 
-__webpack_require__(77);
+__webpack_require__(79);
 
-var _toolsDynamicTable = __webpack_require__(604);
+var _toolsDynamicTable = __webpack_require__(597);
 
 var _toolsDynamicTable2 = _interopRequireDefault(_toolsDynamicTable);
 
-__webpack_require__(605);
+__webpack_require__(598);
 
-var _toolsValidate = __webpack_require__(607);
+var _toolsValidate = __webpack_require__(600);
 
 var _toolsValidate2 = _interopRequireDefault(_toolsValidate);
+
+var _componentIndicatorsWinopen = __webpack_require__(617);
+
+var _componentIndicatorsWinopen2 = _interopRequireDefault(_componentIndicatorsWinopen);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1356,9 +1712,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 //兼容ie
-__webpack_require__(587); //专用css
-
+__webpack_require__(601); //专用css
 //验证字典表
+
+//弹出选择地块
 var Indicators = function (_React$Component) {
     _inherits(Indicators, _React$Component);
 
@@ -1382,59 +1739,59 @@ var Indicators = function (_React$Component) {
     }
 
     _createClass(Indicators, [{
-        key: "BIND_CreateTable",
+        key: 'BIND_CreateTable',
         value: function BIND_CreateTable() {
             var list = this.state.GetLandQuotaByProId;
             if (list.length) {
                 var arr = [];
                 return list.forEach(function (el, ind) {
                     arr.push(_react2.default.createElement(
-                        "tr",
+                        'tr',
                         { id: el.ID },
                         _react2.default.createElement(
-                            "td",
+                            'td',
                             null,
                             ind + 1
                         ),
                         _react2.default.createElement(
-                            "td",
+                            'td',
                             null,
                             el.Name
                         ),
-                        _react2.default.createElement("td", null),
+                        _react2.default.createElement('td', null),
                         _react2.default.createElement(
-                            "td",
+                            'td',
                             null,
-                            "\u662F"
+                            '\u662F'
                         ),
                         _react2.default.createElement(
-                            "td",
-                            { "class": "tdRight" },
-                            "100,000"
+                            'td',
+                            { 'class': 'tdRight' },
+                            '100,000'
                         ),
                         _react2.default.createElement(
-                            "td",
-                            { "class": "tdRight" },
-                            "80,000"
+                            'td',
+                            { 'class': 'tdRight' },
+                            '80,000'
                         ),
-                        _react2.default.createElement("td", null)
+                        _react2.default.createElement('td', null)
                     ));
                 });
                 return arr;
             } else {
                 return _react2.default.createElement(
-                    "tr",
+                    'tr',
                     null,
                     _react2.default.createElement(
-                        "td",
+                        'td',
                         null,
-                        " \u65E0\u5730\u5757"
+                        ' \u65E0\u5730\u5757'
                     )
                 );
             }
         }
     }, {
-        key: "BIIND_FIST_LAND",
+        key: 'BIIND_FIST_LAND',
         value: function BIIND_FIST_LAND() {
             var th = this;
 
@@ -1452,21 +1809,9 @@ var Indicators = function (_React$Component) {
                 },
                 error: function error(e) {}
             });
-
-            iss.ajax({ //分期列表
-                url: "/Stage/GetLandQuotaByProId",
-                type: "get",
-                data: { projectId: "A91BB3051A0848319B45D3D527AC4103" },
-                sucess: function sucess(d) {
-                    th.setState({
-                        "GetLandQuotaByProId": d.rows
-                    });
-                },
-                error: function error() {}
-            });
         }
     }, {
-        key: "BIND_GETACOUNT",
+        key: 'BIND_GETACOUNT',
         value: function BIND_GETACOUNT() {
             var th = this;
 
@@ -1480,16 +1825,31 @@ var Indicators = function (_React$Component) {
             });
         }
     }, {
-        key: "BIND_CALLBACK",
+        key: 'BIND_CALLBACK',
         value: function BIND_CALLBACK() {}
     }, {
-        key: "componentDidMount",
+        key: 'EVENT_SELECTMISSIF',
+        value: function EVENT_SELECTMISSIF() {
+            //动态创建选择地块
+            iss.Alert({
+                title: "选择地块",
+                width: 1000,
+                height: 400,
+                content: '<div id="selectMassif"></div>',
+                ok: function ok() {
+                    return false;
+                }
+            });
+            _reactDom2.default.render(_react2.default.createElement(_componentIndicatorsWinopen2.default, { guid: 'A91BB3051A0848319B45D3D527AC4103' }), document.querySelector("#selectMassif"));
+        }
+    }, {
+        key: 'componentDidMount',
         value: function componentDidMount() {
             this.BIIND_FIST_LAND(); //初次获取数据
             this.BIND_GETACOUNT(); //初次获取统计数据
         }
     }, {
-        key: "componentWillMount",
+        key: 'componentWillMount',
         value: function componentWillMount() {
             if (!this.props.local.location || !this.props.local.location.state) {
                 iss.Alert({ content: "请选择区域或项目！" });
@@ -1500,102 +1860,102 @@ var Indicators = function (_React$Component) {
             }
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             return _react2.default.createElement(
-                "article",
-                { className: "staging-box" },
+                'article',
+                { className: 'staging-box' },
                 _react2.default.createElement(
-                    "section",
-                    { className: "boxSizing" },
+                    'section',
+                    { className: 'boxSizing' },
                     _react2.default.createElement(_toolsDynamicTable2.default, { pid: iss.guid(), DynamicData: this.state.AcountData, CallBack: this.BIND_CALLBACK.bind(this) })
                 ),
                 _react2.default.createElement(
-                    "section",
+                    'section',
                     null,
                     _react2.default.createElement(
-                        "h3",
-                        { className: "boxGroupTit" },
+                        'h3',
+                        { className: 'boxGroupTit' },
                         _react2.default.createElement(
-                            "p",
+                            'p',
                             null,
                             _react2.default.createElement(
-                                "span",
+                                'span',
                                 null,
-                                "\u5206\u671F\u5360\u7528\u571F\u5730"
+                                '\u5206\u671F\u5360\u7528\u571F\u5730'
                             ),
-                            _react2.default.createElement("i", null)
+                            _react2.default.createElement('i', null)
                         ),
                         _react2.default.createElement(
-                            "span",
-                            { className: "functionButton" },
+                            'span',
+                            { className: 'functionButton' },
                             _react2.default.createElement(
-                                "a",
-                                { className: "refresh-icon addIcon ClickThePopUp1", href: "#" },
-                                "\u9009\u62E9\u5730\u5757"
+                                'a',
+                                { className: 'refresh-icon addIcon ClickThePopUp1', onClick: this.EVENT_SELECTMISSIF.bind(this), href: 'javascript:;' },
+                                '\u9009\u62E9\u5730\u5757'
                             ),
                             _react2.default.createElement(
-                                "a",
-                                { className: "refresh-icon deleteIcon", href: "#" },
-                                "\u5220\u9664\u5730\u5757"
+                                'a',
+                                { className: 'refresh-icon deleteIcon', href: '#' },
+                                '\u5220\u9664\u5730\u5757'
                             )
                         )
                     ),
                     _react2.default.createElement(
-                        "div",
+                        'div',
                         null,
                         _react2.default.createElement(
-                            "table",
-                            { className: "table table-new-project table-new-projectC parcelInforBox" },
+                            'table',
+                            { className: 'table table-new-project table-new-projectC parcelInforBox' },
                             _react2.default.createElement(
-                                "tbody",
+                                'tbody',
                                 null,
                                 _react2.default.createElement(
-                                    "tr",
+                                    'tr',
                                     null,
                                     _react2.default.createElement(
-                                        "td",
-                                        { className: "table-new-project-tit1" },
-                                        "\u5E8F\u53F7"
+                                        'td',
+                                        { className: 'table-new-project-tit1' },
+                                        '\u5E8F\u53F7'
                                     ),
                                     _react2.default.createElement(
-                                        "td",
-                                        { className: "table-new-project-tit1" },
-                                        "\u5730\u5757\u540D\u79F0"
+                                        'td',
+                                        { className: 'table-new-project-tit1' },
+                                        '\u5730\u5757\u540D\u79F0'
                                     ),
                                     _react2.default.createElement(
-                                        "td",
-                                        { className: "table-new-project-tit1" },
-                                        "\u5730\u5757\u7F16\u53F7"
+                                        'td',
+                                        { className: 'table-new-project-tit1' },
+                                        '\u5730\u5757\u7F16\u53F7'
                                     ),
                                     _react2.default.createElement(
-                                        "td",
-                                        { className: "table-new-project-tit1" },
-                                        "\u662F\u5426\u90E8\u5206\u5F00\u53D1"
+                                        'td',
+                                        { className: 'table-new-project-tit1' },
+                                        '\u662F\u5426\u90E8\u5206\u5F00\u53D1'
                                     ),
                                     _react2.default.createElement(
-                                        "td",
-                                        { className: "table-new-project-tit1" },
-                                        "\u603B\u5EFA\u7B51\u9762\u79EF\uFF08\u33A1\uFF09"
+                                        'td',
+                                        { className: 'table-new-project-tit1' },
+                                        '\u603B\u5EFA\u7B51\u9762\u79EF\uFF08\u33A1\uFF09'
                                     ),
                                     _react2.default.createElement(
-                                        "td",
-                                        { className: "table-new-project-tit1" },
-                                        "\u603B\u8BA1\u5BB9\u5EFA\u7B51\u9762\u79EF\uFF08\u33A1\uFF09"
+                                        'td',
+                                        { className: 'table-new-project-tit1' },
+                                        '\u603B\u8BA1\u5BB9\u5EFA\u7B51\u9762\u79EF\uFF08\u33A1\uFF09'
                                     ),
                                     _react2.default.createElement(
-                                        "td",
-                                        { className: "table-new-project-tit1" },
-                                        "\u76F8\u5173\u5206\u671F"
+                                        'td',
+                                        { className: 'table-new-project-tit1' },
+                                        '\u76F8\u5173\u5206\u671F'
                                     )
                                 )
                             )
                         ),
                         _react2.default.createElement(
-                            "table",
-                            { className: "table" },
+                            'table',
+                            { className: 'table' },
                             _react2.default.createElement(
-                                "tbody",
+                                'tbody',
                                 null,
                                 this.BIND_CreateTable(this)
                             )
@@ -1613,7 +1973,7 @@ exports.default = Indicators;
 
 /***/ }),
 
-/***/ 604:
+/***/ 617:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1631,7 +1991,7 @@ var _react2 = _interopRequireDefault(_react);
 
 __webpack_require__(65);
 
-__webpack_require__(77);
+__webpack_require__(79);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1639,279 +1999,74 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /** 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * 用来处理动态生成表格
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               */
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 //兼容ie
-var DynamicTable = function (_React$Component) {
-    _inherits(DynamicTable, _React$Component);
 
-    function DynamicTable(arg) {
-        _classCallCheck(this, DynamicTable);
+var Winopen = function (_React$Component) {
+    _inherits(Winopen, _React$Component);
 
-        var _this = _possibleConstructorReturn(this, (DynamicTable.__proto__ || Object.getPrototypeOf(DynamicTable)).call(this, arg));
+    function Winopen(arg) {
+        _classCallCheck(this, Winopen);
 
-        _this.count = 0; //初始化记录
-        _this.rule = {}; //验证
-        _this.id = "DynamicTable-" + iss.guid;
-        _this.state = { //数据层
-            url: "",
-            data: _this.props.DynamicData || [], //数据
-            selected: {}
+        var _this = _possibleConstructorReturn(this, (Winopen.__proto__ || Object.getPrototypeOf(Winopen)).call(this, arg));
+
+        _this.state = {
+            GetLandQuotaByProId: []
         };
-
+        _this.getAjax(_this.props.guid);
         return _this;
     }
 
-    _createClass(DynamicTable, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {}
-    }, {
-        key: "componentDidUpdate",
-        value: function componentDidUpdate(prevProps, prevState) {
-            var th = this;
-            //this.setState({data:this.props.DynamicData})
-
-            /*   if (this.count == 0) {
-                  this.count = 1;
-                  this.BIND_INPUT_STATE();
-              } */
-        }
-    }, {
-        key: "BIND_INPUT_STATE",
-        value: function BIND_INPUT_STATE() {
-            var $da = this.state.data;
-            $da.forEach(function (da, ind) {});
-        }
-    }, {
-        key: "EVENT_CHANGE_DYNAMIC",
-        value: function EVENT_CHANGE_DYNAMIC(d, e) {
-            //自定义input事件
-            if (d == null) {
-                return "";
-            } else {
-                return d;
-            }
-            //   let val = e.target.value;
-
-            //  let selected = this.state.selected;
-            // this.props.CallBack(d,val)       
-        }
-    }, {
-        key: "getPost",
-        value: function getPost() {
-            var th = this;
-            iss.ajax({
-                type: "POST",
-                url: th.props.url,
-                sucess: function sucess(da) {
-                    var data = typeof da.data == "string" ? JSON.parse(da.data) : da.data;
-                    th.setState({
-                        data: da.rows
-                    });
-                },
-                error: function error(e) {}
+    _createClass(Winopen, [{
+        key: "open",
+        value: function open() {
+            iss.Alert({
+                title: "选择地块",
+                width: 1000,
+                height: 400,
+                content: "<div id=\"selectMassif\"></div>",
+                ok: function ok() {
+                    return false;
+                }
             });
         }
     }, {
-        key: "setList",
-        value: function setList(da) {
-            var _this2 = this;
-
-            // console.log(da)
-            var typeBox = function typeBox(el) {
-
-                if (el.type == "select") {
-                    var list = el.data.map(function (_d, _i) {
-                        return _react2.default.createElement(
-                            "option",
-                            { key: _i, value: _d.val },
-                            _d.label
-                        );
+        key: "BIND_CreateUL",
+        value: function BIND_CreateUL() {
+            var th = this;
+        }
+    }, {
+        key: "getAjax",
+        value: function getAjax(id) {
+            var th = this;
+            iss.ajax({ //分期列表
+                url: "/Stage/GetLandQuotaByProId",
+                type: "get",
+                data: { projectId: id },
+                sucess: function sucess(d) {
+                    th.setState({
+                        "GetLandQuotaByProId": d.rows
                     });
-                    return _react2.default.createElement(
-                        "select",
-                        { name: el.id, onChange: _this2.props.CallBack.bind(_this2, el), value: el.val || "" },
-                        list
-                    );
-                } else {
-                    return _react2.default.createElement("input", { name: el.id, id: el.id, "data-pid": el.pid, value: el.val || "", placeholder: el.edit.indexOf("+m") >= 0 ? "此处为必填项" : "请输入内容", type: "text", onChange: _this2.props.CallBack.bind(_this2, el), readOnly: el.edit.indexOf("+r") >= 0 });
-                }
-            };
-
-            return da.map(function (el, ind) {
-
-                return _react2.default.createElement(
-                    "li",
-                    { key: ind, className: "col-sm-4 col-md-4 col-lg-4" },
-                    _react2.default.createElement(
-                        "label",
-                        { className: el.edit.indexOf("+m") >= 0 ? "require" : "" },
-                        el.label
-                    ),
-                    _react2.default.createElement(
-                        "i",
-                        null,
-                        el.unit
-                    ),
-                    _react2.default.createElement(
-                        "div",
-                        null,
-                        typeBox(el)
-                    )
-                );
+                },
+                error: function error() {}
             });
         }
     }, {
         key: "render",
         value: function render() {
-            var th = this,
-                _d = this.props.DynamicData;
             return _react2.default.createElement(
-                "article",
-                { className: "tools-dynamicTable" },
-                _react2.default.createElement(
-                    "ul",
-                    { className: "row" },
-                    th.setList(_d)
-                )
+                "div",
+                { className: "" },
+                this.BIND_CreateUL()
             );
         }
     }]);
 
-    return DynamicTable;
+    return Winopen;
 }(_react2.default.Component);
 
-exports.default = DynamicTable;
-
-/***/ }),
-
-/***/ 605:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(606);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(584)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./tools-dynamicTable.less", function() {
-			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./tools-dynamicTable.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ 606:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(583)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, ".tools-dynamicTable {\n  margin-top: 10px;\n}\n.tools-dynamicTable ul li {\n  height: 40px;\n  overflow: hidden;\n}\n.tools-dynamicTable ul li label {\n  font-size: 12px;\n  color: #333;\n  font-weight: normal;\n  width: 110px;\n  text-align: right;\n  padding-top: 5px;\n  float: left;\n}\n.tools-dynamicTable ul li div {\n  display: block;\n  margin: 0 65px 0 115px;\n}\n.tools-dynamicTable ul li div input {\n  width: 100%;\n  padding: 3px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li div select {\n  width: 100%;\n  height: 25px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li i {\n  font-style: normal;\n  width: 60px;\n  float: right;\n  padding-top: 3px;\n}\n.BIND_LAND_BTN {\n  padding: 10px;\n}\n.BIND_LAND_BTN li {\n  display: inline-block;\n  padding: 5px 10px;\n  border: #ddd solid 1px;\n  cursor: pointer;\n  margin: 10px;\n}\n.BIND_LAND_BTN li.active {\n  background: #e4e4e4;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ 607:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    isNonEmpty: function isNonEmpty(value, errorMsg) {
-        //不能为空
-        if (!value.length) {
-            return errorMsg;
-        }
-    },
-    minLength: function minLength(value, length, errorMsg) {
-        //大于
-        if (value.length < length) {
-            return errorMsg;
-        }
-    },
-    maxLength: function maxLength(value, length, errorMsg) {
-        //小于
-        if (value.length < length) {
-            return errorMsg;
-        }
-    },
-    isMobile: function isMobile(value, errorMsg) {
-        //是否为手机号码
-        if (!/(^1[3|5|8][0-9]{9}$)/.test(value)) {
-            return errorMsg;
-        }
-    },
-    isEmail: function isEmail(value, errorMsg) {
-        //是否为邮箱
-        if (!/(^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$)/.test(value)) {
-            return errorMsg;
-        }
-    },
-    between: function between(value, range, errorMsg) {
-        //大于小于
-        var min = parseInt(range.split('-')[0]);
-        var max = parseInt(range.split('-')[1]);
-        if (value.length < min || value.length > max) {
-            return errorMsg;
-        }
-    },
-    onlyEn: function onlyEn(value, errorMsg) {
-        //纯英文
-        if (!/^[A-Za-z]+$/.test(value)) {}
-    },
-    onlyZh: function onlyZh(value, errorMsg) {
-        //纯中文
-        if (!/^[\u4e00-\u9fa5]+$/.test(value)) {
-            return errorMsg;
-        }
-    },
-    onlyNum: function onlyNum(value, errorMsg) {
-        //数字包含小数
-        if (!/^[0-9]+([.][0-9]+){0,1}$/.test(value)) {
-            return errorMsg;
-        }
-    },
-    onlyInt: function onlyInt(value, errorMsg) {
-        //整数
-        if (!/^[0-9]*$/.test(value)) {
-            return errorMsg;
-        }
-    },
-    isChecked: function isChecked(value, errorMsg, el) {
-        var i = 0;
-        var $collection = $(el).find('input:checked');
-        if (!$collection.length) {
-            return errorMsg;
-        }
-    }
-};
+exports.default = Winopen;
 
 /***/ })
 

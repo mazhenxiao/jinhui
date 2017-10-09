@@ -1,6 +1,6 @@
-webpackJsonp([9],{
+webpackJsonp([8],{
 
-/***/ 243:
+/***/ 249:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,25 +16,25 @@ var _react = __webpack_require__(19);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(78);
+var _reactDom = __webpack_require__(80);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-__webpack_require__(77);
+__webpack_require__(79);
 
 var _iss = __webpack_require__(65);
 
 var _iss2 = _interopRequireDefault(_iss);
 
-var _router = __webpack_require__(231);
+var _router = __webpack_require__(237);
 
 var _router2 = _interopRequireDefault(_router);
 
-var _toolsList = __webpack_require__(570);
+var _toolsList = __webpack_require__(581);
 
 var _toolsList2 = _interopRequireDefault(_toolsList);
 
-var _toolsLeftTree = __webpack_require__(571);
+var _toolsLeftTree = __webpack_require__(582);
 
 var _toolsLeftTree2 = _interopRequireDefault(_toolsLeftTree);
 
@@ -119,7 +119,7 @@ new main();
 
 /***/ }),
 
-/***/ 570:
+/***/ 581:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -131,13 +131,13 @@ var _react = __webpack_require__(19);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(78);
+var _reactDom = __webpack_require__(80);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
 __webpack_require__(65);
 
-__webpack_require__(77);
+__webpack_require__(79);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -161,7 +161,7 @@ var ToolsList = function (_React$Component) {
     _createClass(ToolsList, [{
         key: 'EVENT_CLICK',
         value: function EVENT_CLICK(str, th) {
-
+            console.log(this);
             switch (str) {
                 case "index":
                     iss.hashHistory.push("index");break;
@@ -172,7 +172,9 @@ var ToolsList = function (_React$Component) {
                 case "projectList":
                     iss.hashHistory.push("projectList");break;
                 case "priceControl":
-                    iss.hashHistory.push("priceControl");break;
+                    iss.hashHistory.push({
+                        pathname: "priceControl"
+                    });break;
             }
         }
     }, {
@@ -382,7 +384,7 @@ _reactDom2.default.render(_react2.default.createElement(ToolsList, null), docume
 
 /***/ }),
 
-/***/ 571:
+/***/ 582:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -394,17 +396,17 @@ var _react = __webpack_require__(19);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(78);
+var _reactDom = __webpack_require__(80);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-__webpack_require__(77);
+__webpack_require__(79);
 
 var _iss = __webpack_require__(65);
 
 var _iss2 = _interopRequireDefault(_iss);
 
-var _toolsTree = __webpack_require__(572);
+var _toolsTree = __webpack_require__(583);
 
 var _toolsTree2 = _interopRequireDefault(_toolsTree);
 
@@ -439,7 +441,7 @@ var ToolsTree = function (_React$Component) {
         value: function componentDidMount() {
             var self = this;
             _toolsTree2.default.bindTree("#tree", function (arg) {
-
+                _iss2.default.id = arg;
                 var id = void 0;
                 switch (arg["level_id"]) {
                     case "1": //集团汇总
@@ -451,6 +453,7 @@ var ToolsTree = function (_React$Component) {
                     case "5":
                         id = "newProject";break; //项目
                 }
+
                 self.setState({
                     changeState: id,
                     data: arg
@@ -558,7 +561,7 @@ _reactDom2.default.render(_react2.default.createElement(ToolsTree, null), docume
 
 /***/ }),
 
-/***/ 572:
+/***/ 583:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -663,6 +666,7 @@ var $tree = function () {
                 url: th.state.url,
                 sucess: function sucess(da) {
                     th.ele.tree("loadData", da);
+                    _iss2.default.id = da[0];
                 },
                 error: function error(e) {}
             });
@@ -716,4 +720,4 @@ exports.default = tree;
 
 /***/ })
 
-},[243]);
+},[249]);

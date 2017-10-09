@@ -81,6 +81,7 @@ class $tree {
             url:th.state.url,
             sucess(da){
                 th.ele.tree("loadData",da);
+                iss.id=da[0];
             },
             error(e){
 

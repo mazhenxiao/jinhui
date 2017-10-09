@@ -1,11 +1,13 @@
 // 分期经济指标（投决会版）
 import React from 'react';
+import ReactDOM from 'react-dom';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 require("../../Content/css/intallment.less");
 import DynamicTable from "./tools-dynamicTable.js";
 import "../../Content/css/tools-dynamicTable.less";//专用css
 import validate from "./tools-validate.js";//验证字典表
+import Winopen from "./component-indicators-winopen.js"; //弹出选择地块
 class Indicators extends React.Component {
     constructor(arg) {
         super(arg);
@@ -68,17 +70,7 @@ class Indicators extends React.Component {
             }
         })
 
-        iss.ajax({ //分期列表
-            url: "/Stage/GetLandQuotaByProId",
-            type: "get",
-            data: { projectId: "A91BB3051A0848319B45D3D527AC4103" },
-            sucess(d) {
-                th.setState({
-                    "GetLandQuotaByProId": d.rows
-                })
-            },
-            error() { }
-        })
+       
     }
     BIND_GETACOUNT() {
         let th = this;
@@ -94,6 +86,18 @@ class Indicators extends React.Component {
     }
     BIND_CALLBACK() {
 
+    }
+    EVENT_SELECTMISSIF(){  //动态创建选择地块
+        iss.Alert({
+            title:"选择地块",
+            width:1000,
+            height:400,
+            content:`<div id="selectMassif"></div>`,
+            ok(){
+                 return false;
+            }
+        });
+        ReactDOM.render(<Winopen guid="A91BB3051A0848319B45D3D527AC4103" />,document.querySelector("#selectMassif"))
     }
     componentDidMount() {
         this.BIIND_FIST_LAND();//初次获取数据
@@ -113,7 +117,7 @@ class Indicators extends React.Component {
             </section>
             <section>
                 <h3 className="boxGroupTit"><p><span>分期占用土地</span><i></i></p>
-                    <span className="functionButton"><a className="refresh-icon addIcon ClickThePopUp1" href="#">选择地块</a><a className="refresh-icon deleteIcon" href="#">删除地块</a></span>
+                    <span className="functionButton"><a className="refresh-icon addIcon ClickThePopUp1" onClick={this.EVENT_SELECTMISSIF.bind(this)} href="javascript:;">选择地块</a><a className="refresh-icon deleteIcon" href="#">删除地块</a></span>
                 </h3>
                 <div>
 
@@ -143,5 +147,7 @@ class Indicators extends React.Component {
     }
 
 }
+
+
 
 export default Indicators;

@@ -8,13 +8,15 @@ class ToolsList extends React.Component {
         super(arg)
     }
     EVENT_CLICK(str,th) {
-      
+        console.log(this);
         switch(str){
             case "index":iss.hashHistory.push("index");break;
             case "agenty":iss.hashHistory.push("agenty");break;
             case "apply":iss.hashHistory.push("apply");break;
             case "projectList":iss.hashHistory.push("projectList");break;
-            case "priceControl":iss.hashHistory.push("priceControl");break;
+            case "priceControl":iss.hashHistory.push({
+                pathname:"priceControl"
+            });break;
         }
     }
     render() {

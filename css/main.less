@@ -408,6 +408,7 @@ header.HeaderBar{
     }
     .price-left{
         float: left ;
+        top:4px !important;
     }
     .price-right{
         height: 30px;
@@ -421,4 +422,54 @@ header.HeaderBar{
 }
 .clearboth{
     clear: both;
+}
+.opers{
+    li{
+        padding: 0px !important;
+        margin: 0px !important;
+        margin-left: 15px !important;
+    }
+    span{
+        float: initial !important;
+        border:none !important;
+        height: 25px;
+        font-size: 12px;
+        color: #999999;
+        line-height: 25px;
+        vertical-align: middle;
+        padding: 0 !important;
+        margin: 0 !important;
+        top: 0 !important;
+    }
+}
+
+.jh-icons{
+    .jh-icon{
+        clear: both;
+        display: inline-block;
+        width: 16px;
+        height: 15px;
+        position: relative;
+        vertical-align: middle;
+        margin-left: 0px;
+        margin-right: 3px;
+    }
+    .jh-icons-edit{
+        background-image:url(../img/editor-icon.png);
+    }
+.jh-icons-export{
+    background-image:url(../img/importEXcel-icon.png);
+}
+    &:hover{
+        .jh-icons-edit{
+                background-image:url(../img/editor-icon-hover.png);
+        } 
+        .jh-icons-export{
+                background-image:url(../img/importEXcel-icon-hover.png);
+        }
+        span{
+                color:#333;
+        }
+    }
+
 }

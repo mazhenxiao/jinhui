@@ -80,7 +80,7 @@ var rootRout = {
         }, "component-newProject");
       } 
     },
-    { //价格管理 
+    /* { //价格管理 
       path:"/priceControl", 
       getComponent: function (next, callback) {
         require.ensure([], function (require) {
@@ -89,15 +89,15 @@ var rootRout = {
         }, "component-priceControl"); 
       } 
     },
-/*     { //价格管理-投决会
+     { //价格管理-投决会
       path:"/priceInvestment",
       getComponent: function (next, callback) {
         require.ensure([], function (require) {
           var app = require('../components/component-priceInvestment.js');//============================价格管理-投决会
           callback(null, app.default);
-        }, "component-priceInvestment"); 
+        }, "component-priceInvestment");  
       } 
-    } */
+    } */ 
   ] 
 }
 ReactDOM.render(<Router history={hashHistory} routes={rootRout}></Router>, document.querySelector("#JH-Router"));

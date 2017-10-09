@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XMLGridTitle>
+  <!--面积列表头部-->
+  <AreaTitle>
+    <GridTitle>
+      <!--表头行数-->
+      <TitleRowCount>2</TitleRowCount>
+      <!--表头行属性，rindex为行号-->
+      <TitleRowInfo rindex ="1" filed ="" align="center" title="总建筑面积（㎡/个）" colspan="3" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="1" filed ="" align="center" title="实际建筑面积（㎡/个）" colspan="3" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="1" filed ="" align="center" title="可租售面积（㎡/个）" colspan="7" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="1" filed ="" align="center" title="非可租售面积（㎡/个）" colspan="3" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="1" filed ="" align="center" title="赠送面积（㎡/个）" colspan="3" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="1" filed ="" align="center" title="层数" colspan="3" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="楼栋/业态" colspan="1" rowspan ="2" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="是否有产权" colspan="1" rowspan ="2" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="是否精装" colspan="1" rowspan ="2" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="层高属性" colspan="1" rowspan ="2" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="标准层层高" colspan="1" rowspan ="2" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="总面积" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="地上" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="地下" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="总实际面积" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="地上" colspan="1" rowspan ="2" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="地下" colspan="1" rowspan ="2" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="总可售面积" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="地上—可售" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="地下—可售" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="总可租面积" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="地上—可租" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="地下—可租" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="总非可租售面积" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="地上—非可租售" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="总赠送面积" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="地上赠送" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="地下赠送" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="精装修户数" colspan="1" rowspan ="2" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="总层数" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="地上层数" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="地下层数" colspan="1" rowspan ="1" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="单元数" colspan="1" rowspan ="2" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="电梯数" colspan="1" rowspan ="2" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="平均每户面积（㎡/个）" colspan="1" rowspan ="2" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="住宅户数" colspan="1" rowspan ="2" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="别墅车库门数量（个）" colspan="1" rowspan ="2" width="120" fix ="true" />
+      <TitleRowInfo rindex ="2" filed ="1" align="center" title="建筑物基底面积（㎡/个）" colspan="1" rowspan ="2" width="120" fix ="true" />
+    </GridTitle>
+  </AreaTitle>
+  <!--价格列表头部-->
+</XMLGridTitle>

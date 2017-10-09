@@ -6,112 +6,140 @@ class NewProjectCount extends React.Component {
     constructor(arg) {
         super(arg);
         this.state ={
-            "projectName":"",
-            "stageName":"",
-            "projectAddress":"",
-            "tradersWay":"",
+            "PROJECTNAME":"",
+            "CASENAME":"",
+            "PROJECTADDRESS":"",
+            "TRADERMODE":"",
             "belongCity":"",
-            "developmentWay":"",
+            "PROJECTTYPE":"",
             "companyHead":"",
-            
+
+            "EQUITYRATIO":"",
+            "PROJECTCODE":"",
+            "PRINCIPAL":"",
         }
         iss.hashHistory.listen((local, next) => {
             console.log(arguments)
         })
-        this.getAjax();
+        
         
     }
+
     getAjax(){
-    //    let projectId = this.props.location.state.id;
+        var th = this;
+       // console.log(th);
+    //   let projectId = this.props.location.state.id;
        //console.log(this.props.location)
         iss.ajax({
             type:"post",
             url:"/Project/IProjectInfo",
             data:{
-                projectId:"A91BB3051A0848319B45D3D527AC4103"
+                projectId:"A91BB3051A0848319B45D3D527AC4103",
             },
             sucess(res){
-
+               console.log(res.rows);
+               console.log(res.rows.SelectOptions.TRADERMODE)
+                th.setState({
+                    "PROJECTNAME":res.rows.BaseFormInfo.PROJECTNAME,
+                    "CASENAME":res.rows.BaseFormInfo.CASENAME,
+                    "EQUITYRATIO":res.rows.BaseFormInfo.EQUITYRATIO,
+                    "PROJECTCODE":res.rows.BaseFormInfo.PROJECTCODE,
+                    "PRINCIPAL":res.rows.BaseFormInfo.PRINCIPAL,
+                    "PROJECTADDRESS":res.rows.BaseFormInfo.PROJECTADDRESS,
+                    "PROJECTTYPE":res.rows.BaseFormInfo.PROJECTTYPE,
+                    // this.state.PROJECTTYPE
+                    "TRADERMODE":res.rows.BaseFormInfo.TRADERMODE,
+                },arg=>{
+                    //console.log(th.state)
+                    th.bind_combobox(res);
+                })
+                
+                
             },
-            error(e){
+            error(e){ 
 
             }
         })
     }
+    
     componentDidMount() {
-        this.bind_combobox();
+        this.getAjax();
+        // this.bind_combobox();
     }
-    handleInputTextChange (e) {
+    handChooseTo(ev,da){
+        iss.chooseTo({
+            url:"/Home/GetTreeInfo",
+            title:"选择人员",
+            pepole:{},  //已选人员名单
+            callback(da){
+               // console.log(da);
+            }
+        })
+        
+    }
+    handleInputTextChange (e){
         var th = this;
         let target = e.target.id
+        
          this.setState({
            [target]: e.target.value // 将表单元素的值的变化映射到state中
          },()=>{
-            console.log(this.state) 
-         }) 
-      
-       // console.log(e.target.id);
-       // console.log(e.target.value);
-      
+            //console.log(this.state) 
+         })
+        //console.log(e.target.id);
+        //console.log(e.target.value);
     }
     handleSelectTextChange(e,b,c){
         this.setState({
               [e]:b
-          }) 
-        //console.log(this.state);
+          })
+       // console.log(this.state);
     }
-    bind_combobox() {
+    bind_combobox(arg) {
         var th = this;
-        let belongCity = $("#belongCity")//所属城市
+        let belongCity = this.belongCity = $("#belongCity")//所属城市
+        console.log(arg);
+       // return;
         belongCity.combobox({
-            valueField: "value",
+            valueField: "val",
             textField: "label",
             editable: true,
             readonly: false,
             panelHeight:"auto",
             onChange:th.handleSelectTextChange.bind(th,"belongCity"),
             data: [
-                { label: "请选择", value: "", "selected": true },
-                { label: "北京", value: "0" },
-                { label: "上海", value: "1" },
-                { label: "广州", value: "2" }
+                { label: "请选择", val: "" , "selected": true },
+                { label: "北京", val: "0"},
+                { label: "上海", val: "1" },
+                { label: "广州", val: "2" }
             ]
         });
-        let developmentWay = $("#developmentWay")//项目开发方式
+        let developmentWay = $("#PROJECTTYPE")//项目开发方式
         developmentWay.combobox({
-            valueField: "value",
+            valueField: "val",
             textField: "label",
             editable: true,
             readonly: false,
             panelHeight:"auto",
-            onChange:th.handleSelectTextChange.bind(th,"developmentWay"),
-            data: [
-                { label: "请选择", value: "", "selected": true },
-                { label: "在售（建）", value: "0" },
-                { label: "竣备", value: "1" },
-                { label: "交房", value: "2" }
-            ]
+            onChange:th.handleSelectTextChange.bind(th,"PROJECTTYPE"),
+            data:arg.rows.SelectOptions.PROJECTTYPE,
         });
-        let tradersWay = $("#tradersWay");//操盘方式
+        developmentWay.combobox("select",arg.rows.BaseFormInfo.PROJECTTYPE);
+
+        let tradersWay = $("#TRADERMODE");//操盘方式
         tradersWay.combobox({
-            valueField: "value",
+            valueField: "val",
             textField: "label",
             editable: true,
             readonly: false,
             panelHeight:"auto",
-            onChange:th.handleSelectTextChange.bind(th,"tradersWay"),
-            data: [
-                { label: "请选择", value: "", "selected": true },
-                { label: "完全操盘", value: "0" },
-                { label: "派总经理", value: "1" },
-                { label: "不派总经理", value: "2" }
-            ]
+            onChange:th.handleSelectTextChange.bind(th,"TRADERMODE"),
+            data:arg.rows.SelectOptions.TRADERMODE,
+        
         });
-        
-        
+        tradersWay.combobox("select",arg.rows.BaseFormInfo.TRADERMODE);
     }
     render() {
-       
         return <section>
             <article className="staging-box">
 
@@ -138,7 +166,7 @@ class NewProjectCount extends React.Component {
                                     <label className="formTableLabel boxSizing">所属区域</label>
                                 </th>
                                 <td>
-                                    <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text" />
+                                    <input readOnly="readonly"  className="inputTextBox inputGray boxSizing" type="text" />
                                 </td>
                                 <th>
                                     <label className="formTableLabel boxSizing">城市公司</label>
@@ -158,7 +186,7 @@ class NewProjectCount extends React.Component {
                                     <label className="formTableLabel boxSizing">获取状态</label>
                                 </th>
                                 <td>
-                                    拟获取/已获取
+                                    <p id="OBTAINTSTATUS">拟获取/已获取</p>
                                 </td>
                             </tr>
                             <tr>
@@ -166,13 +194,13 @@ class NewProjectCount extends React.Component {
                                     <label className="formTableLabel boxSizing redFont">项目名称</label>
                                 </th>
                                 <td>
-                                    <input   onKeyUp={this.handleInputTextChange.bind(this)} id="projectName" className="inputTextBox boxSizing" type="text" />
+                                    <input onChange={this.handleInputTextChange.bind(this)} id="PROJECTNAME" value={this.state.PROJECTNAME} className="inputTextBox boxSizing" type="text" />
                                 </td>
                                 <th>
                                     <label className="formTableLabel boxSizing redFont">项目案名</label>
                                 </th>
                                 <td>
-                                <input   onChange={this.handleInputTextChange.bind(this)} id="stageName" className="inputTextBox boxSizing" type="text" />
+                                <input onChange={this.handleInputTextChange.bind(this)} id="CASENAME" value={this.state.CASENAME} className="inputTextBox boxSizing" type="text" />
                                 </td>
                             </tr>
                             <tr>
@@ -180,14 +208,14 @@ class NewProjectCount extends React.Component {
                                     <label className="formTableLabel boxSizing">权益比例</label>
                                 </th>
                                 <td>
-                                    <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text" />
+                                    <input readOnly="readonly" id="EQUITYRATIO" value={this.state.EQUITYRATIO} className="inputTextBox inputGray boxSizing" type="text" />
                                     <i className="symbol">%</i>
                                 </td>
                                 <th>
                                     <label className="formTableLabel boxSizing">项目编号</label>
                                 </th>
                                 <td>
-                                    <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text" />
+                                    <input readOnly="readonly" id="PROJECTCODE" value={this.state.PROJECTCODE} className="inputTextBox inputGray boxSizing" type="text" />
                                 </td>
                             </tr>
 
@@ -196,13 +224,13 @@ class NewProjectCount extends React.Component {
                                     <label className="formTableLabel boxSizing redFont">项目开发方式</label>
                                 </th>
                                 <td>
-                                    <input type="text" id="developmentWay" />
+                                    <input type="text" id="PROJECTTYPE" />
                                 </td>
                                 <th>
                                     <label className="formTableLabel boxSizing redFont">地理位置</label>
                                 </th>
                                 <td>
-                                    <button className="btn btnStyle uploadIconBtn">标记地理位置</button>
+                                    <button className="btn btnStyle uploadIconBtn" id="LOCATION">标记地理位置</button>
                                 </td>
                             </tr>
                             <tr>
@@ -210,7 +238,7 @@ class NewProjectCount extends React.Component {
                                     <label className="formTableLabel boxSizing redFont">操盘方式</label>
                                 </th>
                                 <td>
-                                    <input type="text" id="tradersWay" />
+                                    <input type="text" id="TRADERMODE" />
                                 </td>
                                 <th>
                                     <label className="formTableLabel boxSizing redFont">项目总图</label>
@@ -226,7 +254,7 @@ class NewProjectCount extends React.Component {
                                     <label className="formTableLabel boxSizing redFont">项目负责人</label>
                                 </th>
                                 <td>
-                                    <input readOnly="readonly" onChange={this.handleInputTextChange.bind(this)} id="companyHead" className="inputTextBox boxSizing" type="text" />
+                                    <input readOnly="readonly" onClick={this.handChooseTo.bind(this)} onChange={this.handleInputTextChange.bind(this)} id="PRINCIPAL" value={this.state.PRINCIPAL} className="inputTextBox boxSizing" type="text" />
                                     <img className="symbol headIcon" src="../../Content/img/head-icon.png" />
                                 </td>
                                 <th>
@@ -242,7 +270,7 @@ class NewProjectCount extends React.Component {
                                     <label className="formTableLabel boxSizing redFont">项目地址</label>
                                 </th>
                                 <td colSpan="3">
-                                <input   onChange={this.handleInputTextChange.bind(this)} id="projectAddress" className="inputTextBox boxSizing" type="text" />
+                                <input   onChange={this.handleInputTextChange.bind(this)} id="PROJECTADDRESS" value={this.state.PROJECTADDRESS} className="inputTextBox boxSizing" type="text" />
                                 </td>
                                
                             </tr>
@@ -254,13 +282,13 @@ class NewProjectCount extends React.Component {
                 </section>
                 <section className="staging-right boxSizing fieldLocation fl">
                     {/* bootstrap 轮播图 */}
-                    <div id="myCarousel" className="carousel slide">
+                    <div id="myCarousel" className="carousel slide carouselStyle">
                         <div className="carousel-inner">
                             <div className="item active">
-                                <iframe src="" width="100%"></iframe>
+                                <iframe src="" width="100%" height="295px"></iframe>
                             </div>
                             <div className="item">
-                                <iframe src="" width="100%"></iframe>
+                                <iframe src="" width="100%" height="295px"></iframe>
                             </div>
                         </div>
                         {/* 轮播（Carousel）导航 */}
