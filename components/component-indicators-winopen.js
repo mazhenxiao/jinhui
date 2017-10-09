@@ -11,20 +11,10 @@ class Winopen extends React.Component{
         }
         this.getAjax(this.props.guid);
     }
-    open(){
-        iss.Alert({
-            title:"选择地块",
-            width:1000,
-            height:400,
-            content:`<div id="selectMassif"></div>`,
-            ok(){
-                return false
-            }
-        });
-         
-    }
+ 
     BIND_CreateUL(){
         let th = this;
+        
     }
     getAjax(id){
         var th = this;
@@ -36,6 +26,7 @@ class Winopen extends React.Component{
                 th.setState({
                     "GetLandQuotaByProId": d.rows
                 })
+                console.log(d);
             },
             error() { }
         })

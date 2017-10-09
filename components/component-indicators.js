@@ -117,7 +117,10 @@ class Indicators extends React.Component {
             </section>
             <section>
                 <h3 className="boxGroupTit"><p><span>分期占用土地</span><i></i></p>
-                    <span className="functionButton"><a className="refresh-icon addIcon ClickThePopUp1" onClick={this.EVENT_SELECTMISSIF.bind(this)} href="javascript:;">选择地块</a><a className="refresh-icon deleteIcon" href="#">删除地块</a></span>
+                    <span className="functionButton">
+                        <a className="refresh-icon addIcon ClickThePopUp1" onClick={this.EVENT_SELECTMISSIF.bind(this)} href="javascript:;">选择地块</a>
+                        <a className="refresh-icon deleteIcon" href="#">删除地块</a>
+                    </span>
                 </h3>
                 <div>
 

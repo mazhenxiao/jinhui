@@ -1,6 +1,6 @@
-webpackJsonp([0],{
+webpackJsonp([1],{
 
-/***/ 581:
+/***/ 592:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18,19 +18,19 @@ var _react2 = _interopRequireDefault(_react);
 
 __webpack_require__(65);
 
-__webpack_require__(77);
+__webpack_require__(79);
 
-var _componentNewProjectCount = __webpack_require__(607);
+var _componentNewProjectCount = __webpack_require__(618);
 
 var _componentNewProjectCount2 = _interopRequireDefault(_componentNewProjectCount);
 
-var _toolsDynamicTable = __webpack_require__(587);
+var _toolsDynamicTable = __webpack_require__(597);
 
 var _toolsDynamicTable2 = _interopRequireDefault(_toolsDynamicTable);
 
-__webpack_require__(588);
+__webpack_require__(598);
 
-var _toolsValidate = __webpack_require__(590);
+var _toolsValidate = __webpack_require__(600);
 
 var _toolsValidate2 = _interopRequireDefault(_toolsValidate);
 
@@ -40,13 +40,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //ºÊ»›ie
-//◊®”√css
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } //ÂÖºÂÆπie
+//‰∏ìÁî®css
 
 
-//—È÷§◊÷µ‰±Ì
+//È™åËØÅÂ≠óÂÖ∏Ë°®
 /*
-    pdi id   DynamicData  Ω·ππ ˝æ› CallBack  ˝æ›–ﬁ∏ƒªÿµ˜
+    pdi id   DynamicData  ÁªìÊûÑÊï∞ÊçÆ CallBack Êï∞ÊçÆ‰øÆÊîπÂõûË∞É
   <DynamicTable pid={this.state.pid} DynamicData={this.state.propsDATA} CallBack={this.BIND_CALLBACK.bind(this)} /> 
  */
 var NewProject = function (_React$Component) {
@@ -60,9 +60,9 @@ var NewProject = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (NewProject.__proto__ || Object.getPrototypeOf(NewProject)).call(this, arg));
 
         _this.state = {
-            newDynamicData: {}, //ø’ ˝æ›
-            DynamicData: {}, //“—¥Ê‘⁄ ˝æ›
-            propsDATA: [], //œ‘ æ ˝æ›
+            newDynamicData: {}, //Á©∫Êï∞ÊçÆ
+            DynamicData: {}, //Â∑≤Â≠òÂú®Êï∞ÊçÆ
+            propsDATA: [], //ÊòæÁ§∫Êï∞ÊçÆ
             pid: "",
             states: false
         };
@@ -81,11 +81,11 @@ var NewProject = function (_React$Component) {
         value: function BIIND_FIST_LAND() {
             var THIS = this;
             if (!this.props.location || !this.props.location.state) {
-                iss.Alert({ content: "«Î—°‘Ò«¯”ÚªÚœÓƒø£°" });
+                iss.Alert({ content: "ËØ∑ÈÄâÊã©Âå∫ÂüüÊàñÈ°πÁõÆÔºÅ" });
             };
             var id = "A91BB3051A0848319B45D3D527AC4103"; //this.props.location.state.id;
             iss.ajax({
-                url: "/Project/INewLand", //≥ı¥Œ«Î«Û¥¥Ω®ø’µÿøÈ π”√
+                url: "/Project/INewLand", //ÂàùÊ¨°ËØ∑Ê±ÇÂàõÂª∫Á©∫Âú∞Âùó‰ΩøÁî®
                 data: { projectId: id },
                 sucess: function sucess(d) {
 
@@ -120,16 +120,16 @@ var NewProject = function (_React$Component) {
     }, {
         key: "EVENT_CLICK_NEWLAND",
         value: function EVENT_CLICK_NEWLAND() {
-            //–¬‘ˆµÿøÈ
+            //Êñ∞Â¢ûÂú∞Âùó
             var th = this,
                 nd = JSON.parse(JSON.stringify(this.state.newDynamicData));
             if (this.state.states) {
                 // this.DynamicData["pid"]=iss.guid();
                 var guid = iss.guid();
 
-                this.state.DynamicData[guid] = { LandId: guid, FieldList: nd }; //œÚ ˝æ› ˜ÃÌº”“ªÃı ˝æ›
+                this.state.DynamicData[guid] = { LandId: guid, FieldList: nd }; //ÂêëÊï∞ÊçÆÊ†ëÊ∑ªÂä†‰∏ÄÊù°Êï∞ÊçÆ
                 this.setState({
-                    propsDATA: this.state.newDynamicData, //–¬‘ˆµÿøÈ
+                    propsDATA: this.state.newDynamicData, //Êñ∞Â¢ûÂú∞Âùó
                     pid: guid
                 });
             }
@@ -137,7 +137,7 @@ var NewProject = function (_React$Component) {
     }, {
         key: "EVENT_CLICK_LANDBTN",
         value: function EVENT_CLICK_LANDBTN(id, e) {
-            //«–ªªµÿøÈ
+            //ÂàáÊç¢Âú∞Âùó
             // console.log(this.state.DynamicData[id]["data"]);
             var self = $(e.target),
                 pa = self.parent();
@@ -151,15 +151,50 @@ var NewProject = function (_React$Component) {
             });
         }
     }, {
+        key: "SET_PARENTCOUNT",
+        value: function SET_PARENTCOUNT(list, d) {
+            var da = {};
+            /* for(let v in d.parent){
+                list.forEach((el,ind)=>{
+                    if(el.id==v){
+                        da[v]=el
+                    }
+                })
+            } */
+            var data = list.forEach(function (el, ind) {
+                for (var i in d.parent) {
+                    if (el.id == i) {
+                        (function () {
+                            var exec = el.exec;
+                            var reg = /{.*?}/ig;
+                            var arr = exec.match(reg);
+                            if (arr) {
+                                arr.forEach(function (ee, ii) {
+                                    var regs = new RegExp("" + ee, "ig");
+                                    exec = exec.replace(regs, ~~el.child[ee.replace(/[{}]/ig, "")].val);
+                                });
+                                el.val = eval(exec);
+                            }
+                        })();
+                    }
+                }
+            });
+            console.log(d);
+            return;
+        }
+    }, {
         key: "BIND_CALLBACK",
         value: function BIND_CALLBACK(da, e) {
-            //◊”“≥√Ê∑µªÿcallback
-
+            //Â≠êÈ°µÈù¢ËøîÂõûcallback
+            var th = this;
             var el = e.target.value,
                 list = this.state.DynamicData[this.state.pid];
             list.FieldList.forEach(function (d, i) {
                 if (da.id == d.id) {
                     d["val"] = e.target.value;
+                    if (d["parent"]) {
+                        th.SET_PARENTCOUNT(list.FieldList, d);
+                    }
                     return;
                 }
             });
@@ -170,16 +205,16 @@ var NewProject = function (_React$Component) {
     }, {
         key: "BIND_LAND_BTN",
         value: function BIND_LAND_BTN() {
-            //ÃÌº”–¬‘ˆµÿøÈbutton
+            //Ê∑ªÂä†Êñ∞Â¢ûÂú∞Âùóbutton
             var map = [],
                 li = this.state.DynamicData,
-                name = "–¬‘ˆµÿøÈ",
+                name = "Êñ∞Â¢ûÂú∞Âùó",
                 g = 0;
             // console.log(li)
             for (var i in li) {
                 g += 1;
                 for (var f = 0; f < li[i].FieldList.length; f++) {
-                    if (li[i].FieldList[f]["label"] == "µÿøÈ√˚≥∆") {
+                    if (li[i].FieldList[f]["label"] == "Âú∞ÂùóÂêçÁß∞") {
                         name = li[i].FieldList[f]["val"] || "\u65B0\u589E\u5730\u5757" + g;
                         break;
                     }
@@ -253,8 +288,547 @@ exports.default = NewProject;
 
 /***/ }),
 
-/***/ 583:
+/***/ 593:
 /***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
+
+/***/ 594:
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
+});
+
+var getElement = (function (fn) {
+	var memo = {};
+
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			memo[selector] = fn.call(this, selector);
+		}
+
+		return memo[selector]
+	};
+})(function (target) {
+	return document.querySelector(target)
+});
+
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
+
+var	fixUrls = __webpack_require__(596);
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton) options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+	if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	options.attrs.type = "text/css";
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	options.attrs.type = "text/css";
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = options.transform(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+
+/***/ 596:
+/***/ (function(module, exports) {
+
+
+/**
+ * When source maps are enabled, `style-loader` uses a link element with a data-uri to
+ * embed the css on the page. This breaks all relative urls because now they are relative to a
+ * bundle instead of the current page.
+ *
+ * One solution is to only use full urls, but that may be impossible.
+ *
+ * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
+ *
+ * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
+ *
+ */
+
+module.exports = function (css) {
+  // get current location
+  var location = typeof window !== "undefined" && window.location;
+
+  if (!location) {
+    throw new Error("fixUrls requires window.location");
+  }
+
+	// blank or null?
+	if (!css || typeof css !== "string") {
+	  return css;
+  }
+
+  var baseUrl = location.protocol + "//" + location.host;
+  var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+
+	// convert each url(...)
+	/*
+	This regular expression is just a way to recursively match brackets within
+	a string.
+
+	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+	   (  = Start a capturing group
+	     (?:  = Start a non-capturing group
+	         [^)(]  = Match anything that isn't a parentheses
+	         |  = OR
+	         \(  = Match a start parentheses
+	             (?:  = Start another non-capturing groups
+	                 [^)(]+  = Match anything that isn't a parentheses
+	                 |  = OR
+	                 \(  = Match a start parentheses
+	                     [^)(]*  = Match anything that isn't a parentheses
+	                 \)  = Match a end parentheses
+	             )  = End Group
+              *\) = Match anything and then a close parens
+          )  = Close non-capturing group
+          *  = Match anything
+       )  = Close capturing group
+	 \)  = Match a close parens
+
+	 /gi  = Get all matches, not the first.  Be case insensitive.
+	 */
+	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function(fullMatch, origUrl) {
+		// strip quotes (if they exist)
+		var unquotedOrigUrl = origUrl
+			.trim()
+			.replace(/^"(.*)"$/, function(o, $1){ return $1; })
+			.replace(/^'(.*)'$/, function(o, $1){ return $1; });
+
+		// already a full url? no change
+		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
+		  return fullMatch;
+		}
+
+		// convert the url to a full url
+		var newUrl;
+
+		if (unquotedOrigUrl.indexOf("//") === 0) {
+		  	//TODO: should we add protocol?
+			newUrl = unquotedOrigUrl;
+		} else if (unquotedOrigUrl.indexOf("/") === 0) {
+			// path should be relative to the base url
+			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+		} else {
+			// path should be relative to current directory
+			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+		}
+
+		// send back the fixed url(...)
+		return "url(" + JSON.stringify(newUrl) + ")";
+	});
+
+	// send back the fixed css
+	return fixedCss;
+};
+
+
+/***/ }),
+
+/***/ 597:
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
@@ -271,7 +845,7 @@ var _react2 = _interopRequireDefault(_react);
 
 __webpack_require__(65);
 
-__webpack_require__(77);
+__webpack_require__(79);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -280,10 +854,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /** 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * ”√¿¥¥¶¿Ì∂ØÃ¨…˙≥…±Ì∏Ò
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Áî®Êù•Â§ÑÁêÜÂä®ÊÄÅÁîüÊàêË°®Ê†º
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
-//ºÊ»›ie
+//ÂÖºÂÆπie
 var DynamicTable = function (_React$Component) {
     _inherits(DynamicTable, _React$Component);
 
@@ -292,12 +866,12 @@ var DynamicTable = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (DynamicTable.__proto__ || Object.getPrototypeOf(DynamicTable)).call(this, arg));
 
-        _this.count = 0; //≥ı ºªØº«¬º
-        _this.rule = {}; //—È÷§
+        _this.count = 0; //ÂàùÂßãÂåñËÆ∞ÂΩï
+        _this.rule = {}; //È™åËØÅ
         _this.id = "DynamicTable-" + iss.guid;
-        _this.state = { // ˝æ›≤„
+        _this.state = { //Êï∞ÊçÆÂ±Ç
             url: "",
-            data: _this.props.DynamicData || [], // ˝æ›
+            data: _this.props.DynamicData || [], //Êï∞ÊçÆ
             selected: {}
         };
 
@@ -327,7 +901,7 @@ var DynamicTable = function (_React$Component) {
     }, {
         key: "EVENT_CHANGE_DYNAMIC",
         value: function EVENT_CHANGE_DYNAMIC(d, e) {
-            //◊‘∂®“Âinput ¬º˛
+            //Ëá™ÂÆö‰πâinput‰∫ã‰ª∂
             if (d == null) {
                 return "";
             } else {
@@ -376,7 +950,7 @@ var DynamicTable = function (_React$Component) {
                         list
                     );
                 } else {
-                    return _react2.default.createElement("input", { name: el.id, id: el.id, "data-pid": el.pid, value: el.val || "", placeholder: el.edit.indexOf("+m") >= 0 ? "¥À¥¶Œ™±ÿÃÓœÓ" : "«Î ‰»Îƒ⁄»›", type: "text", onChange: _this2.props.CallBack.bind(_this2, el), readOnly: el.edit.indexOf("+r") >= 0 });
+                    return _react2.default.createElement("input", { name: el.id, id: el.id, "data-pid": el.pid, value: el.val || "", placeholder: el.edit.indexOf("+m") >= 0 ? "Ê≠§Â§Ñ‰∏∫ÂøÖÂ°´È°π" : "ËØ∑ËæìÂÖ•ÂÜÖÂÆπ", type: "text", onChange: _this2.props.CallBack.bind(_this2, el), readOnly: el.edit.indexOf("+r") >= 0 });
                 }
             };
 
@@ -384,20 +958,24 @@ var DynamicTable = function (_React$Component) {
                 if (el.exec) {
                     var reg = /\{.*?\}/ig;
                     var arr = el.exec.match(reg);
+
                     if (arr) {
-                        /*  arr.forEach((ee,ii)=>{
-                             let gid = ee.replace(/[{}]/ig,"");
-                             for(let eee = 0 ; eee<da.length;eee++){
-                                 console.log(eee);
-                                 if(da[eee][id]==gid){
-                                     da[iii]["parent"]=da[iii]["parent"]||[];
-                                     da[iii]["parent"].push(ee.id);
-                                     return;
-                                 }
-                                 console.log("===========")
-                                
-                             }
-                         }) */
+                        var child = {};
+                        arr.forEach(function (ee, ii) {
+                            var gid = ee.replace(/[{}]/ig, "");
+                            for (var eee = 0; eee < da.length; eee++) {
+
+                                if (da[eee]["id"] == gid) {
+                                    da[eee]["parent"] = da[eee]["parent"] || {};
+                                    da[eee]["parent"][el.id] = el.id;
+                                    child[gid] = child[gid] || {};
+                                    child[gid] = da[eee];
+                                    break;
+                                }
+                            }
+                        });
+                        el["child"] = child;
+                        //  console.log(da);
                     }
                 }
                 return _react2.default.createElement(
@@ -445,13 +1023,13 @@ exports.default = DynamicTable;
 
 /***/ }),
 
-/***/ 588:
+/***/ 598:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(589);
+var content = __webpack_require__(599);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -459,7 +1037,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(584)(content, options);
+var update = __webpack_require__(594)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -477,10 +1055,10 @@ if(false) {
 
 /***/ }),
 
-/***/ 589:
+/***/ 599:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(583)(undefined);
+exports = module.exports = __webpack_require__(593)(undefined);
 // imports
 
 
@@ -492,7 +1070,7 @@ exports.push([module.i, ".tools-dynamicTable {\n  margin-top: 10px;\n}\n.tools-d
 
 /***/ }),
 
-/***/ 590:
+/***/ 600:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -503,37 +1081,37 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
     isNonEmpty: function isNonEmpty(value, errorMsg) {
-        //≤ªƒ‹Œ™ø’
+        //‰∏çËÉΩ‰∏∫Á©∫
         if (!value.length) {
             return errorMsg;
         }
     },
     minLength: function minLength(value, length, errorMsg) {
-        //¥Û”⁄
+        //Â§ß‰∫é
         if (value.length < length) {
             return errorMsg;
         }
     },
     maxLength: function maxLength(value, length, errorMsg) {
-        //–°”⁄
+        //Â∞è‰∫é
         if (value.length < length) {
             return errorMsg;
         }
     },
     isMobile: function isMobile(value, errorMsg) {
-        // «∑ÒŒ™ ÷ª˙∫≈¬Î
+        //ÊòØÂê¶‰∏∫ÊâãÊú∫Âè∑Á†Å
         if (!/(^1[3|5|8][0-9]{9}$)/.test(value)) {
             return errorMsg;
         }
     },
     isEmail: function isEmail(value, errorMsg) {
-        // «∑ÒŒ™” œ‰
+        //ÊòØÂê¶‰∏∫ÈÇÆÁÆ±
         if (!/(^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$)/.test(value)) {
             return errorMsg;
         }
     },
     between: function between(value, range, errorMsg) {
-        //¥Û”⁄–°”⁄
+        //Â§ß‰∫éÂ∞è‰∫é
         var min = parseInt(range.split('-')[0]);
         var max = parseInt(range.split('-')[1]);
         if (value.length < min || value.length > max) {
@@ -541,23 +1119,23 @@ exports.default = {
         }
     },
     onlyEn: function onlyEn(value, errorMsg) {
-        //¥ø”¢Œƒ
+        //Á∫ØËã±Êñá
         if (!/^[A-Za-z]+$/.test(value)) {}
     },
     onlyZh: function onlyZh(value, errorMsg) {
-        //¥ø÷–Œƒ
+        //Á∫Ø‰∏≠Êñá
         if (!/^[\u4e00-\u9fa5]+$/.test(value)) {
             return errorMsg;
         }
     },
     onlyNum: function onlyNum(value, errorMsg) {
-        // ˝◊÷∞¸∫¨–° ˝
+        //Êï∞Â≠óÂåÖÂê´Â∞èÊï∞
         if (!/^[0-9]+([.][0-9]+){0,1}$/.test(value)) {
             return errorMsg;
         }
     },
     onlyInt: function onlyInt(value, errorMsg) {
-        //’˚ ˝
+        //Êï¥Êï∞
         if (!/^[0-9]*$/.test(value)) {
             return errorMsg;
         }
@@ -573,13 +1151,13 @@ exports.default = {
 
 /***/ }),
 
-/***/ 591:
+/***/ 601:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(592);
+var content = __webpack_require__(602);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -587,7 +1165,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(584)(content, options);
+var update = __webpack_require__(594)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -605,64 +1183,64 @@ if(false) {
 
 /***/ }),
 
-/***/ 592:
+/***/ 602:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(583)(undefined);
+exports = module.exports = __webpack_require__(593)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".clear {\n  clear: both;\n}\n.boxGroupTit {\n  height: 40px;\n  margin-bottom: 5px ;\n  position: relative;\n  margin-top: 0;\n}\n.boxGroupTit p {\n  height: 40px;\n  line-height: 40px;\n  color: #333333;\n  font-size: 14px;\n  border-bottom: 1px solid #c9c9c9;\n}\n.boxGroupTit p span {\n  display: inline-block;\n  line-height: 40px;\n  border-bottom: 2px solid #31395d;\n}\n.boxGroupTit p i {\n  font-style: normal;\n}\n.boxGroupTit span.functionButton {\n  position: absolute;\n  right: 0;\n  top: 0;\n  width: auto;\n  text-align: right;\n}\n.boxGroupTit span.functionButton a {\n  font-size: 12px;\n  height: 40px;\n  line-height: 40px;\n  display: inline-block;\n  padding-left: 20px;\n  padding-right: 20px;\n  color: #999999 !important;\n  background-repeat: no-repeat;\n  background-position: left center;\n}\n.boxGroupTit span.functionButton a:hover {\n  color: #31395d;\n}\n.boxGroupTit span.functionButton .refresh-icon {\n  background-image: url(" + __webpack_require__(593) + ");\n}\n.boxGroupTit span.functionButton .refresh-icon:hover {\n  background-image: url(" + __webpack_require__(594) + ");\n}\n.boxGroupTit span.functionButton .saveIcon {\n  background-image: url(" + __webpack_require__(595) + ");\n}\n.boxGroupTit span.functionButton .saveIcon:hover {\n  background-image: url(" + __webpack_require__(596) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon {\n  background-image: url(" + __webpack_require__(597) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon:hover {\n  background-image: url(" + __webpack_require__(598) + ");\n}\n.staging-left,\n.staging-right {\n  float: left;\n}\n.projectinFormation {\n  width: 66.6%;\n  height: auto;\n  margin-top: 10px;\n  padding-right: 20px;\n}\n.fieldLocation {\n  margin-top: 10px;\n  width: 33.3%;\n  height: 295px;\n  border: 1px solid #dddddd;\n}\n.carouselStyle .left,\n.carouselStyle .right {\n  background: none;\n}\n.carouselStyle .carousel-control {\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  top: 50%;\n  margin-top: -15px;\n  background: #F1A118;\n}\n.carouselStyle .carousel-control:hover {\n  opacity: 0.8;\n}\n", ""]);
+exports.push([module.i, ".clear {\n  clear: both;\n}\n.boxGroupTit {\n  height: 40px;\n  margin-bottom: 5px ;\n  position: relative;\n  margin-top: 0;\n}\n.boxGroupTit p {\n  height: 40px;\n  line-height: 40px;\n  color: #333333;\n  font-size: 14px;\n  border-bottom: 1px solid #c9c9c9;\n}\n.boxGroupTit p span {\n  display: inline-block;\n  line-height: 40px;\n  border-bottom: 2px solid #31395d;\n}\n.boxGroupTit p i {\n  font-style: normal;\n}\n.boxGroupTit span.functionButton {\n  position: absolute;\n  right: 0;\n  top: 0;\n  width: auto;\n  text-align: right;\n}\n.boxGroupTit span.functionButton a {\n  font-size: 12px;\n  height: 40px;\n  line-height: 40px;\n  display: inline-block;\n  padding-left: 20px;\n  padding-right: 20px;\n  color: #999999 !important;\n  background-repeat: no-repeat;\n  background-position: left center;\n}\n.boxGroupTit span.functionButton a:hover {\n  color: #31395d;\n}\n.boxGroupTit span.functionButton .refresh-icon {\n  background-image: url(" + __webpack_require__(603) + ");\n}\n.boxGroupTit span.functionButton .refresh-icon:hover {\n  background-image: url(" + __webpack_require__(604) + ");\n}\n.boxGroupTit span.functionButton .saveIcon {\n  background-image: url(" + __webpack_require__(605) + ");\n}\n.boxGroupTit span.functionButton .saveIcon:hover {\n  background-image: url(" + __webpack_require__(606) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon {\n  background-image: url(" + __webpack_require__(607) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon:hover {\n  background-image: url(" + __webpack_require__(608) + ");\n}\n.staging-left,\n.staging-right {\n  float: left;\n}\n.projectinFormation {\n  width: 66.6%;\n  height: auto;\n  margin-top: 10px;\n  padding-right: 20px;\n}\n.fieldLocation {\n  margin-top: 10px;\n  width: 33.3%;\n  height: 295px;\n  border: 1px solid #dddddd;\n}\n.carouselStyle .left,\n.carouselStyle .right {\n  background: none;\n}\n.carouselStyle .carousel-control {\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  top: 50%;\n  margin-top: -15px;\n  background: #F1A118;\n}\n.carouselStyle .carousel-control:hover {\n  opacity: 0.8;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 593:
+/***/ 603:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABO0lEQVQ4T6VSsXHDMAwkWLBOJohG8AbRBrE3sBrxWNnZQNlAHUk1zgbWBlEmiD1Bkg3USgWQg45y7Fgn5s4sCeDx/3gQNz6Ymt/tdnd932+IaA0ASehpiagmohdjzNc4dwVQVdWCiN6I6J2ISmNMw838j4gMuEHEzBjzyv8XANbaREr5gYjPY8NfhmEBg6611vUFgPeeC43WupizxlqbSilrpVRyAgjbP5VS91mWtTFvnXMHlngOwKiF1jqNDXPdez+whKDpiYh4MAEANufI+uaAAkA6MAjaH8PAt1JqEZPhnCsBoB0A+O5d1zV8cwBI8zw/xGSwBwBQnDwIUpIY9cB4K4TYaq1/rxDbONa990smjYgrDtlklKfCg4gPQoglAKzGEF0lcYpF2LgnoiMAcHjKc4P/xWBO3s0AP2hInl/EMUEDAAAAAElFTkSuQmCC"
 
 /***/ }),
 
-/***/ 594:
+/***/ 604:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA7ElEQVQ4T6WTgQ0BQRBFnw6ogBJ0QAfogArQAR3ogA7oABWgAnRwJcjb7CbncmcvMcnmkt2ZN//P7nX4MzoN9V1gCcyBQcwpgBOwBV6prg4wBM7AFdgBl5jsvkDBC+DgfhVgtxuwTgk1CgUJFXaqAjxwbTKjGUc7gzLA7k+gB+g3F3ctlgFS7ey3TQSVAvQ0iYWqcDiPKPEXKDRLCvQ9itnvCM3Z8IaKBPDehahAC/rLhTmb8gy0IsDHkosV4Pq6hVxROp8Ce2Cm6qanXIWprg9YbGF4RHUvsU6FRcfSzYTh/foX2loJeW0tNEI/qngqkZ/g9CsAAAAASUVORK5CYII="
 
 /***/ }),
 
-/***/ 595:
+/***/ 605:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA+ElEQVQ4T92TMY6DQAxFxyMx7XKE3GBzg+QoocGaLkfgCHTINHAU9ga7N8gRSOvCXnmUWa0iEEmTIi5Ag/0fxnyDu0Xf93vn3Ec+b9yvdV1/Ww3YhYjOqnoCgPkmnFYAR3uuqqWqtjHGMQPmEMKOmc9WgIjNf4B1VxTFJedDCC0zXxCxzABFRCCiJLwHENEkIo33PnVgeSJKmpcBGhEZvfenrQ5sBgcAaJeGqKqW/0LEdvEThmEomdneUq78BRv2WFXVvAh40AOp7A0Bs7nqyRkkTTaSOfDTOZcW5IGwxfsxRyaARdd1x2zVLYCITDHGtHB/gC3RWv4XGt+9Eawr3zcAAAAASUVORK5CYII="
 
 /***/ }),
 
-/***/ 596:
+/***/ 606:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABC0lEQVQ4T92TQUrEQBBFfzFBxpU5gjewXQjJyjnHkECOkCN4hBwhkOA54moCLqa9wRyhXTlghi/VSUSwGePGhbXopqn6j+ruX4IpzN3WSLS6ms/ndg6nV/v8aLVGdDFpXgpZEOJGIbswQDajiDEhle2b2gNuk8zxGF1jPZR6tn378BWg3eH94jDncYwqWQ+Hfd/GIyDNud81YpLMC78BkrwDqDnfgeZnzV8BtLOhBqLifAdpXgK8F0gVekSCJSBPdtdU4SuYIsblqQAZB39BxOFtVVtbuyBgiQfmmn8HSDKnrvrVG0yacRbUgYIbEH5AfgyBAfGijvSACaI29VZdEJ3tWz9wn4AFomDJB58qtRFyLtVBAAAAAElFTkSuQmCC"
 
 /***/ }),
 
-/***/ 597:
+/***/ 607:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABVklEQVQ4T6WTzXHCQAyFn/bAcAsdxCW4BHcQSogvaH0jHZAOuBlxASoIqSDuAHcQ0gE5cmCVkcdmjDFkMtnbrqRPTz9L+OehvngRmarqExHFqlqq6muWZUWf7xVARGYAosFgME3T9LBcLuMQwpqIZsy87UIuAKvVanQ8Hgvvfdx2zPM8cs4VzBzdBeR5nhDR2Hs/7TqKiDLzleKLB8tERNsbCkpmHt1VYMbFYrElok9mfrF7Lf8NwIaZ578CrGmq+gFgpKp7IopU9d17P24Bd6q6sVIvSqgn8AxgHkIom2zD4bBsJnI6nWLnXAIgsaaeASKytoBmfF2pbWUhhBRAkWXZvgJY951zNmcjX512MIBvIkomk0mlsALUjVv3Lcq94DNARPZ9S2IOZgPw2M3cyKwU3FqSOvsOwJctWCO7XWMDOAB4aBts62wH7M2adevT9v7Gv/zwH4PhtBGvNQeUAAAAAElFTkSuQmCC"
 
 /***/ }),
 
-/***/ 598:
+/***/ 608:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABaklEQVQ4T6WTzU3DQBCF3+BF4oY7wCVsDpHsmzsgxyhypNBB6MB0kBIc2ULcCBXg21ri4O2A0EG4RSJk0Do/bJwlCOGbtTPfvJl5Q/jnR658GQ3HYL4GkQSzBnCnq6J0xR4BZJikAAIsxVjrbCG7A0neWcaEVKti1oYcAKQc+XSxKuuqkHagDPsBkShrVQSnAWESg9DTqhi3AzvRkGuVHyk+VGAqQcycCiB0XRX+SQXmUUZD0+erVvlt8x/2A5B4BGiqVT75HdAdSAjvmQCfGXMiBAw8aZX3voHnNcBT02qrhSQlwohBk+36NgWXQu82As+TAMdEiM1Q9wAZJtk2uFlfW6pZp6XsBvgodfUwbwDSTB+U6iqPncayksH8zp/rWL/cG4NhA2gGx5nLKHbldvIe0ImSucskJsC8AXTlSrYAbpM0Nhaemfgbr9a9nWy7zaaFTpgsQHRpPxjXNR4AYIb109E6r/EvF/4FXk6sEdl++K0AAAAASUVORK5CYII="
 
 /***/ }),
 
-/***/ 607:
+/***/ 618:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -680,7 +1258,7 @@ var _react2 = _interopRequireDefault(_react);
 
 __webpack_require__(65);
 
-__webpack_require__(77);
+__webpack_require__(79);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -692,8 +1270,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-//ºÊ»›ie
-__webpack_require__(591);
+//ÂÖºÂÆπie
+__webpack_require__(601);
 
 var NewProjectCount = function (_React$Component) {
     _inherits(NewProjectCount, _React$Component);
@@ -717,7 +1295,6 @@ var NewProjectCount = function (_React$Component) {
             "EQUITYRATIO": "",
             "PROJECTCODE": "",
             "PRINCIPAL": ""
-
         };
         iss.hashHistory.listen(function (local, next) {
             console.log(_arguments);
@@ -750,11 +1327,10 @@ var NewProjectCount = function (_React$Component) {
                         "PRINCIPAL": res.rows.BaseFormInfo.PRINCIPAL,
                         "PROJECTADDRESS": res.rows.BaseFormInfo.PROJECTADDRESS,
                         "PROJECTTYPE": res.rows.BaseFormInfo.PROJECTTYPE,
-
                         // this.state.PROJECTTYPE
                         "TRADERMODE": res.rows.BaseFormInfo.TRADERMODE
                     }, function (arg) {
-                        console.log(th.state);
+                        //console.log(th.state)
                         th.bind_combobox(res);
                     });
                 },
@@ -772,8 +1348,8 @@ var NewProjectCount = function (_React$Component) {
         value: function handChooseTo(ev, da) {
             iss.chooseTo({
                 url: "/Home/GetTreeInfo",
-                title: "—°‘Ò»À‘±",
-                pepole: {}, //“——°»À‘±√˚µ•
+                title: "ÈÄâÊã©‰∫∫Âëò",
+                pepole: {}, //Â∑≤ÈÄâ‰∫∫ÂëòÂêçÂçï
                 callback: function callback(da) {
                     // console.log(da);
                 }
@@ -784,6 +1360,7 @@ var NewProjectCount = function (_React$Component) {
         value: function handleInputTextChange(e) {
             var th = this;
             var target = e.target.id;
+
             this.setState(_defineProperty({}, target, e.target.value), function () {
                 //console.log(this.state) 
             });
@@ -800,7 +1377,7 @@ var NewProjectCount = function (_React$Component) {
         key: "bind_combobox",
         value: function bind_combobox(arg) {
             var th = this;
-            var belongCity = this.belongCity = $("#belongCity"); //À˘ Ù≥« –
+            var belongCity = this.belongCity = $("#belongCity"); //ÊâÄÂ±ûÂüéÂ∏Ç
             console.log(arg);
             // return;
             belongCity.combobox({
@@ -810,9 +1387,9 @@ var NewProjectCount = function (_React$Component) {
                 readonly: false,
                 panelHeight: "auto",
                 onChange: th.handleSelectTextChange.bind(th, "belongCity"),
-                data: [{ label: "«Î—°‘Ò", val: "", "selected": true }, { label: "±±æ©", val: "0" }, { label: "…œ∫£", val: "1" }, { label: "π„÷›", val: "2" }]
+                data: [{ label: "ËØ∑ÈÄâÊã©", val: "", "selected": true }, { label: "Âåó‰∫¨", val: "0" }, { label: "‰∏äÊµ∑", val: "1" }, { label: "ÂπøÂ∑û", val: "2" }]
             });
-            var developmentWay = $("#PROJECTTYPE"); //œÓƒøø™∑¢∑Ω Ω
+            var developmentWay = $("#PROJECTTYPE"); //È°πÁõÆÂºÄÂèëÊñπÂºè
             developmentWay.combobox({
                 valueField: "val",
                 textField: "label",
@@ -820,12 +1397,11 @@ var NewProjectCount = function (_React$Component) {
                 readonly: false,
                 panelHeight: "auto",
                 onChange: th.handleSelectTextChange.bind(th, "PROJECTTYPE"),
-                data: arg.rows.SelectOptions.PROJECTTYPE,
-                select: arg.rows.BaseFormInfo.PROJECTTYPE
+                data: arg.rows.SelectOptions.PROJECTTYPE
             });
             developmentWay.combobox("select", arg.rows.BaseFormInfo.PROJECTTYPE);
 
-            var tradersWay = $("#TRADERMODE"); //≤Ÿ≈Ã∑Ω Ω
+            var tradersWay = $("#TRADERMODE"); //ÊìçÁõòÊñπÂºè
             tradersWay.combobox({
                 valueField: "val",
                 textField: "label",
