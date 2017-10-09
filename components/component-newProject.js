@@ -94,9 +94,33 @@ class NewProject extends React.Component {
 
     }
     SET_PARENTCOUNT(list,d){
-        for(let v in d.parent){
-            console.log(v);
-        }
+        let da = {};
+        /* for(let v in d.parent){
+            list.forEach((el,ind)=>{
+                if(el.id==v){
+                    da[v]=el
+                }
+            })
+        } */
+        let data = list.forEach((el,ind)=>{
+           for(var  i in d.parent){
+            if(el.id==i){
+                let exec = el.exec;
+                let reg = /{.*?}/ig; 
+                let arr = exec.match(reg);
+                if(arr){
+                    arr.forEach((ee,ii)=>{
+                        let regs = new RegExp(`${ee}`,"ig");
+                        exec=exec.replace(regs,~~el.child[ee.replace(/[{}]/ig,"")].val)
+                    });
+                   el.val=eval(exec);
+                }
+                
+                
+            }   
+           }
+        })
+        console.log(d);
         return
          
     }

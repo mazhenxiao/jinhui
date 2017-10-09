@@ -98,7 +98,7 @@ var rootRout = {
         }, "component-priceInvestment");  
       } 
     } */ 
-  ] 
+  ]  
 }
 ReactDOM.render(<Router history={hashHistory} routes={rootRout}></Router>, document.querySelector("#JH-Router"));
 

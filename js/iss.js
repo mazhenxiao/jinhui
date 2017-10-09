@@ -217,7 +217,7 @@ class $iss {
     </section>`;
         let opt = {
             //url:"/Home/GetTreeInfo",//
-            url:"/Com/IGetOrganizationalUsers",
+            url:"/Commen/IGetOrganizationalUsers",
             param:{parentid:"13ead391fd4103096735e4945339550b",condition:""},
             title:"选择人员",
             width:800,

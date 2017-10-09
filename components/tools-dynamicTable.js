@@ -83,7 +83,9 @@ class DynamicTable extends React.Component {
              if(el.exec){
                 let reg = /\{.*?\}/ig;
                 let arr = el.exec.match(reg);
+               
                 if(arr){
+                    let child = {};
                      arr.forEach((ee,ii)=>{
                         let gid = ee.replace(/[{}]/ig,"");
                         for(let eee = 0 ; eee<da.length;eee++){
@@ -91,12 +93,15 @@ class DynamicTable extends React.Component {
                             if(da[eee]["id"]==gid){
                                 da[eee]["parent"]=da[eee]["parent"]||{};
                                 da[eee]["parent"][el.id]=el.id;
-                                break; 
+                                child[gid]=child[gid]||{};
+                                child[gid]=da[eee];
+                                break;  
                             }
                             
                            
                         }
                     }) 
+                    el["child"] = child;
                   //  console.log(da);
                 }
              }
