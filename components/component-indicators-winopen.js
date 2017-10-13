@@ -8,9 +8,11 @@ class Winopen extends React.Component{
     constructor(arg){
         super(arg);
         this.state={
-            listArr:[],/*地块信息*/
-            selectId:this.props.selId/*选择过的地块*/
+            listArr:this.props.selArr,/*地块信息*/
+            selectId:this.props.selId,/*选择过的地块*/
+            status:this.props.status,/*选择地块或编辑地块*/
         }
+        
         this.getAjax(this.props.guid);
         
     }
@@ -26,8 +28,8 @@ class Winopen extends React.Component{
             return <div key={obj.ID} className="aBuiltSection">
                     <div className="aBuilt_Title">
                         <span>{obj.Name}</span>
-                        <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==1} defaultValue="1" onClick={th.evAllOrParDev.bind(th,obj.ID)} />全部开发</span>
-                        <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==2} defaultValue="2" onClick={th.evAllOrParDev.bind(th,obj.ID)} />部分开发</span>
+                        <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==1} defaultValue="1" onChange={th.evAllOrParDev.bind(th,obj.ID)} />全部开发</span>
+                        <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==2} defaultValue="2" onChange={th.evAllOrParDev.bind(th,obj.ID)} />部分开发</span>
                     </div>
                     <ul className={obj.IsAllDevel==0? "aBuilt_Con hide":"aBuilt_Con"} >
                         {
@@ -80,6 +82,13 @@ class Winopen extends React.Component{
     }
     getAjax(id){
         var th = this;
+        /*如果是编辑，则不请求数据*/
+        let status=th.state.status;
+        console.log("进入弹框==查看编辑数据"+status);
+        console.log(this.state.listArr);
+        if(status=="edit"){
+            return false;
+        }
         iss.ajax({
             url: "/Stage/IGetLandQuotaByProId",
             type: "get",

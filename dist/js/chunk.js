@@ -17272,7 +17272,6 @@ var rootRout = {
     }
 
   }]
-
 };
 _reactDom2.default.render(_react2.default.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory, routes: rootRout }), document.querySelector("#JH-Router"));
 exports.default = rootRout;

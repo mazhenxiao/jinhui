@@ -1719,16 +1719,27 @@ var Indicators = function (_React$Component) {
             states: false,
             AcountData: [], //汇总数据
             winAllBuiltData: [], /*分期占用土地table*/
-            winopenDATA: [], /*alert中选择地块信息(这个里面不包括已经选择过的地块)*/
+            winopenDATA: [], /*alert中选择地块信息(这个里面不包括已经选择过的地块)或者编辑选中的地块*/
             winopenSelId: "", /*alert中保存选择过的地块Id,逗号分隔*/
             landStageArr: [] /*分期占用土地=相关分期*/
         };
         return _this;
     }
-    /*分期占用土地*/
+    /*编辑分块事件*/
 
 
     _createClass(Indicators, [{
+        key: 'evBuiltEditTr',
+        value: function evBuiltEditTr(selObj, event) {
+            var th = this;
+            var selArr = [];
+            selArr.push(selObj);
+            th.BIND_WINOPEN(selArr);
+            th.EVENT_SELECTMISSIF('edit', selArr);
+        }
+        /*分期占用土地*/
+
+    }, {
         key: 'BIND_CreateTable',
         value: function BIND_CreateTable() {
             var th = this;
@@ -1739,7 +1750,7 @@ var Indicators = function (_React$Component) {
                 return list.map(function (obj, index) {
                     return _react2.default.createElement(
                         'tr',
-                        { id: obj.ID, key: obj.ID },
+                        { id: obj.ID, key: obj.ID, onClick: th.evBuiltEditTr.bind(th, obj) },
                         _react2.default.createElement(
                             'td',
                             null,
@@ -1834,30 +1845,43 @@ var Indicators = function (_React$Component) {
             this.setState({
                 winopenDATA: da
             });
-            console.log("=======弹框中的地块信息");
+            console.log("=======弹框中的地块信息或编辑选中的地块信息");
             console.log(da);
         }
-        /*alert-选择地块保存*/
+        /*alert-选择地块保存
+        @param editOrSel判断是编辑地块或选择地块
+        */
 
     }, {
         key: 'ev_saveBuiltInfor',
-        value: function ev_saveBuiltInfor() {
+        value: function ev_saveBuiltInfor(editOrSel) {
             var th = this;
             var listArr = th.state.winopenDATA;
+            var filterListArr = []; /*如果是选择地块：过滤选择过的地块；*/
             var allListArr = th.state.winAllBuiltData;
+            if (editOrSel == "edit") {
+                allListArr.forEach(function (obj, index) {
+                    if (obj.ID == listArr[0]["ID"]) {
+                        obj = listArr[0];
+                    }
+                });
+            } else {
+                listArr.forEach(function (obj, index) {
+                    if (obj.IsAllDevel != 0) {
+                        filterListArr.push(obj);
+                    }
+                });
+            }
 
-            listArr.forEach(function (obj, index) {
-                if (obj.IsAllDevel != 0) {
-                    allListArr.push(obj);
-                }
-            });
-
+            allListArr = allListArr.concat(filterListArr);
+            console.log("===========汇总对象===========");
+            console.log(allListArr);
             var selIDs = []; /*保存选择过的地块id*/
             iss.ajax({
                 url: "/Stage/IRetLandDynaticFieldSum",
                 type: "post",
                 data: {
-                    data: JSON.stringify(listArr)
+                    data: JSON.stringify(allListArr)
                 },
                 sucess: function sucess(d) {
                     console.log("返回的是分期经济指标（投决会版）");
@@ -1868,7 +1892,8 @@ var Indicators = function (_React$Component) {
                     });
                     th.setState({
                         winopenSelId: selIDs.join(","),
-                        winAllBuiltData: allListArr
+                        winAllBuiltData: allListArr,
+                        winopenDATA: []
                     });
                 },
                 error: function error(d) {
@@ -1880,7 +1905,7 @@ var Indicators = function (_React$Component) {
 
     }, {
         key: 'EVENT_SELECTMISSIF',
-        value: function EVENT_SELECTMISSIF() {
+        value: function EVENT_SELECTMISSIF(editOrSel, selArr) {
             var th = this;
             var id = th.state.treeId;
             iss.Alert({
@@ -1889,11 +1914,11 @@ var Indicators = function (_React$Component) {
                 height: 400,
                 content: '<div id="alertBuiltBlock"></div>',
                 ok: function ok() {
-                    th.ev_saveBuiltInfor();
+                    th.ev_saveBuiltInfor(editOrSel);
                 }
             });
-            console.log(id);
-            _reactDom2.default.render(_react2.default.createElement(_componentIndicatorsWinopen2.default, { guid: id, selId: th.state.winopenSelId, callback: this.BIND_WINOPEN.bind(this) }), document.querySelector("#alertBuiltBlock"));
+
+            _reactDom2.default.render(_react2.default.createElement(_componentIndicatorsWinopen2.default, { guid: id, selId: th.state.winopenSelId, selArr: selArr, status: editOrSel, callback: this.BIND_WINOPEN.bind(this) }), document.querySelector("#alertBuiltBlock"));
         }
         /*分期占用土地=获取相关分期*/
 
@@ -1939,6 +1964,7 @@ var Indicators = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            var selArr = [];
             return _react2.default.createElement(
                 'article',
                 { className: 'staging-box' },
@@ -1968,7 +1994,7 @@ var Indicators = function (_React$Component) {
                             { className: 'functionButton' },
                             _react2.default.createElement(
                                 'a',
-                                { className: 'refresh-icon addIcon ClickThePopUp1', onClick: this.EVENT_SELECTMISSIF.bind(this), href: 'javascript:;' },
+                                { className: 'refresh-icon addIcon ClickThePopUp1', onClick: this.EVENT_SELECTMISSIF.bind(this, 'select', selArr), href: 'javascript:;' },
                                 '\u9009\u62E9\u5730\u5757'
                             ),
                             _react2.default.createElement(
@@ -2134,9 +2160,11 @@ var Winopen = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Winopen.__proto__ || Object.getPrototypeOf(Winopen)).call(this, arg));
 
         _this.state = {
-            listArr: [], /*地块信息*/
-            selectId: _this.props.selId /*选择过的地块*/
+            listArr: _this.props.selArr, /*地块信息*/
+            selectId: _this.props.selId, /*选择过的地块*/
+            status: _this.props.status /*选择地块或编辑地块*/
         };
+
         _this.getAjax(_this.props.guid);
 
         return _this;
@@ -2168,13 +2196,13 @@ var Winopen = function (_React$Component) {
                         _react2.default.createElement(
                             "span",
                             { className: "radioSpan" },
-                            _react2.default.createElement("input", { type: "radio", name: 'radio' + obj.ID, checked: obj.IsAllDevel == 1, defaultValue: "1", onClick: th.evAllOrParDev.bind(th, obj.ID) }),
+                            _react2.default.createElement("input", { type: "radio", name: 'radio' + obj.ID, checked: obj.IsAllDevel == 1, defaultValue: "1", onChange: th.evAllOrParDev.bind(th, obj.ID) }),
                             "\u5168\u90E8\u5F00\u53D1"
                         ),
                         _react2.default.createElement(
                             "span",
                             { className: "radioSpan" },
-                            _react2.default.createElement("input", { type: "radio", name: 'radio' + obj.ID, checked: obj.IsAllDevel == 2, defaultValue: "2", onClick: th.evAllOrParDev.bind(th, obj.ID) }),
+                            _react2.default.createElement("input", { type: "radio", name: 'radio' + obj.ID, checked: obj.IsAllDevel == 2, defaultValue: "2", onChange: th.evAllOrParDev.bind(th, obj.ID) }),
                             "\u90E8\u5206\u5F00\u53D1"
                         )
                     ),
@@ -2245,6 +2273,13 @@ var Winopen = function (_React$Component) {
         key: "getAjax",
         value: function getAjax(id) {
             var th = this;
+            /*如果是编辑，则不请求数据*/
+            var status = th.state.status;
+            console.log("进入弹框==查看编辑数据" + status);
+            console.log(this.state.listArr);
+            if (status == "edit") {
+                return false;
+            }
             iss.ajax({
                 url: "/Stage/IGetLandQuotaByProId",
                 type: "get",

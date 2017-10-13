@@ -21,10 +21,19 @@ class Indicators extends React.Component {
             states: false,
             AcountData: [],//汇总数据
             winAllBuiltData:[],/*分期占用土地table*/
-            winopenDATA:[],/*alert中选择地块信息(这个里面不包括已经选择过的地块)*/
+            winopenDATA:[],/*alert中选择地块信息(这个里面不包括已经选择过的地块)或者编辑选中的地块*/
             winopenSelId:"",/*alert中保存选择过的地块Id,逗号分隔*/
-            landStageArr:[]/*分期占用土地=相关分期*/
+            landStageArr:[],/*分期占用土地=相关分期*/
         }
+    }
+    /*编辑分块事件*/
+    evBuiltEditTr(selObj,event){
+        var th=this;
+        let selArr=[];
+        selArr.push(selObj);
+        th.BIND_WINOPEN(selArr);
+        th.EVENT_SELECTMISSIF('edit',selArr);
+        
     }
     /*分期占用土地*/
     BIND_CreateTable() {
@@ -34,7 +43,7 @@ class Indicators extends React.Component {
         if (list.length) {
             
             return list.map((obj, index) => {
-                return <tr id={obj.ID} key={obj.ID}>
+                return <tr id={obj.ID} key={obj.ID} onClick={th.evBuiltEditTr.bind(th,obj)}>
                     <td>{index + 1}</td>
                     <td>{obj.Name}</td>
                     <td>{obj.FieldList[1].val}</td>
@@ -92,27 +101,40 @@ class Indicators extends React.Component {
       this.setState({
         winopenDATA:da
       });
-      console.log("=======弹框中的地块信息");
+      console.log("=======弹框中的地块信息或编辑选中的地块信息");
       console.log(da);
     }
-    /*alert-选择地块保存*/
-    ev_saveBuiltInfor(){
+    /*alert-选择地块保存
+    @param editOrSel判断是编辑地块或选择地块
+    */
+    ev_saveBuiltInfor(editOrSel){
         var th = this;
         let listArr=th.state.winopenDATA;
+        let filterListArr=[];/*如果是选择地块：过滤选择过的地块；*/
         let allListArr=th.state.winAllBuiltData;
-
-        listArr.forEach((obj,index)=>{
-            if(obj.IsAllDevel!=0){
-                allListArr.push(obj);
-            }
-        });
-
+        if(editOrSel=="edit"){
+            allListArr.forEach((obj,index)=>{
+                if(obj.ID==listArr[0]["ID"]){
+                    obj=listArr[0];
+                }
+            });
+        }else{
+            listArr.forEach((obj,index)=>{
+                if(obj.IsAllDevel!=0){
+                    filterListArr.push(obj);
+                }
+            });
+        }
+        
+        allListArr=allListArr.concat(filterListArr);
+        console.log("===========汇总对象===========");
+        console.log(allListArr);
         let selIDs=[];/*保存选择过的地块id*/
         iss.ajax({
             url: "/Stage/IRetLandDynaticFieldSum",
             type: "post",
             data:{
-                data:JSON.stringify(listArr)
+                data:JSON.stringify(allListArr)
             },
             sucess(d) {
                 console.log("返回的是分期经济指标（投决会版）");
@@ -123,7 +145,8 @@ class Indicators extends React.Component {
                 });
                 th.setState({
                     winopenSelId:selIDs.join(","),
-                    winAllBuiltData:allListArr
+                    winAllBuiltData:allListArr,
+                    winopenDATA:[]
                 });
                 
             },
@@ -133,7 +156,7 @@ class Indicators extends React.Component {
         })
     }
     /*选择地块事件*/
-    EVENT_SELECTMISSIF(){
+    EVENT_SELECTMISSIF(editOrSel,selArr){
         var th=this;
         var id=th.state.treeId;
         iss.Alert({
@@ -142,11 +165,11 @@ class Indicators extends React.Component {
             height:400,
             content:`<div id="alertBuiltBlock"></div>`,
             ok(){
-                th.ev_saveBuiltInfor();
+                th.ev_saveBuiltInfor(editOrSel);
             }
         });
-        console.log(id);
-        ReactDOM.render(<Winopen guid={id} selId={th.state.winopenSelId} callback={this.BIND_WINOPEN.bind(this)} />,document.querySelector("#alertBuiltBlock"));
+        
+        ReactDOM.render(<Winopen guid={id} selId={th.state.winopenSelId} selArr={selArr} status={editOrSel} callback={this.BIND_WINOPEN.bind(this)} />,document.querySelector("#alertBuiltBlock"));
     }
     /*分期占用土地=获取相关分期*/
     evIGetLandStageShow(){
@@ -183,6 +206,7 @@ class Indicators extends React.Component {
         // }
     }
     render() {
+        var selArr=[];
         return <article className="staging-box">
             <section className="boxSizing">
                 <DynamicTable pid={iss.guid()} DynamicData={this.state.AcountData} CallBack={this.BIND_CALLBACK.bind(this)} />
@@ -190,7 +214,7 @@ class Indicators extends React.Component {
             <section>
                 <h3 className="boxGroupTit"><p><span>分期占用土地</span><i></i></p>
                     <span className="functionButton">
-                        <a className="refresh-icon addIcon ClickThePopUp1" onClick={this.EVENT_SELECTMISSIF.bind(this)} href="javascript:;">选择地块</a>
+                        <a className="refresh-icon addIcon ClickThePopUp1" onClick={this.EVENT_SELECTMISSIF.bind(this,'select',selArr)} href="javascript:;">选择地块</a>
                         <a className="refresh-icon deleteIcon" href="#">删除地块</a>
                     </span>
                 </h3>
