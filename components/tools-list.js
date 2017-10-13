@@ -5,7 +5,7 @@ import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 class ToolsList extends React.Component {
     constructor(arg) {
-        super(arg)
+        super(arg) 
     }
     EVENT_CLICK(str,th) {
         console.log(this);
@@ -16,6 +16,9 @@ class ToolsList extends React.Component {
             case "projectList":iss.hashHistory.push("projectList");break;
             case "priceControl":iss.hashHistory.push({
                 pathname:"priceControl"
+            });break;
+            case "areaManagement":iss.hashHistory.push({
+                pathname:"areaManagement"
             });break;
         }
     }
@@ -39,7 +42,7 @@ class ToolsList extends React.Component {
                 <li>
                     <a href="#">信息填报</a>
                     <ol className="subMenu">
-                        <li><a href="areaManagement.html">面积管理</a></li>
+                        <li><a onClick={this.EVENT_CLICK.bind(this,"areaManagement")} href="javascript:;" >面积管理</a></li>
                         <li><a onClick={this.EVENT_CLICK.bind(this,"priceControl")} href="javascript:;" >价格管理</a></li>
                         <li><a href="InformationProvidedSupply.html">供货</a></li>
                         <li><a href="signingReceivable.html">签约与回款</a></li>

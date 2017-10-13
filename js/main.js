@@ -11,12 +11,12 @@ class main{
     var th = this;
  
     this.TransHeight();
-    this.bindScroll();
+    this.bindScroll();   
     this.bingBar();
     //document.addEventListener("fullscreenchange",th.TransHeight,false);
    // document.addEventListener("mozfullscreenchange",th.TransHeight,false);
    // document.addEventListener("msfullscreenchange",th.TransHeight,false);
-     window.onresize = this.TransHeight;
+     window.onresize = this.TransHeight;    
   }
   TransHeight(){
     let JH_Nav = document.querySelector(".JH-Nav"),JH_Content = document.querySelector(".JH-Content"),h=640;
@@ -32,7 +32,6 @@ class main{
         if(top>=60){
           if(JHNav.hasClass("fixed")){return}
           JHNav.addClass("fixed");
-
         }else{
           JHNav.removeClass("fixed");
         }

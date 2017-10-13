@@ -75,7 +75,7 @@ class DynamicTable extends React.Component {
                 })
                 return <select name={el.id} onChange={this.props.CallBack.bind(this,el)}  value={el.val||""}>{list}</select>
             }else{ 
-              return <input   name={el.id} id={el.id} data-pid={el.pid} value={el.val||""}  placeholder={el.edit.indexOf("+m")>=0? "此处为必填项":"请输入内容"} type="text"  onChange={this.props.CallBack.bind(this,el)}  readOnly={el.edit.indexOf("+r")>=0}  />
+              return <input   name={el.id} id={el.id} data-pid={el.pid} value={el.val||""}  placeholder={el.edit.indexOf("+m")>=0? "此处为必填项":""} type="text"  onChange={this.props.CallBack.bind(this,el)}  readOnly={el.edit.indexOf("+r")>=0}  />
             }
         }
 

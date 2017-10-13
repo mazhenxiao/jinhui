@@ -8,7 +8,7 @@ class Intallment extends React.Component {
     constructor(arg) {
         super(arg);
          iss.hashHistory.listen((local,next)=>{
-        })
+        })   
     }    
     componentDidMount(){
         
@@ -26,7 +26,7 @@ class Intallment extends React.Component {
                         <a className="approvalIcon" target="_blank" href="#">发起审批</a>
                     </span>
 			</h3>
-        </div>
+        </div> 
         <StagingInformation  />
         <div>
             <h3 className="boxGroupTit">
@@ -37,7 +37,7 @@ class Intallment extends React.Component {
 			</h3>
         </div>
         <Indicators local={this.props} />
-        </article>
+        </article> 
     }     
 
 }

@@ -69,7 +69,8 @@ class $iss {
             content: "",
             width: "600px",
             height: "400px",
-            ok: $.noop
+            ok: $.noop,
+            cancel:false
         }
         $.extend(opt, arg);
         let str = `<div class="modal fade" tabindex="-1" role="dialog" >
@@ -83,7 +84,8 @@ class $iss {
               <div>${opt.content}</div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary J_button" >确定</button>
+              <button type="button" class="btn btn-primary J_ok" >确定</button>
+              <button type="button" class="btn btn-primary J_cancel ${opt.cancel? 'btn-show':'btn-hide'}" >取消</button>
             </div>
           </div>
         </div>
@@ -101,18 +103,25 @@ class $iss {
         })
         $ele.modal({
             show: true
-        }).on("click.modeclose", ".J_button", function () {
+        }).on("click.modeclose", ".J_ok,.J_cancel", function () {
            // let opts = $(this).data("data");
-    
+              let self = $(this);
+              if(self.hasClass("J_ok")){
                 if(opt.ok()==false){
-                  return
-                }
+                    return
+                  }
+              }else if(self.hasClass("J_cancel")){
+                 if(opt.cancel()==false){
+                     return
+                 }
+              }
+                
                 $ele.modal("hide");
         }).on("hide.bs.modal",arg=>{
             $(".modal").remove();
             $(".modal-backdrop").remove();
         })
-
+        
     }
     upload(arg) {
         var th = this;

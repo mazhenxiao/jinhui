@@ -9,6 +9,7 @@ class ToolsTree extends React.Component {
 
         this.state = {
             data:"",
+            changeCurrent:"",
             changeState: iss.getQuert("intallment") ? "intallment" : iss.getQuert("newProject")? "newProject":""
         }
     }
@@ -16,32 +17,46 @@ class ToolsTree extends React.Component {
         var self = this;
         Tree.bindTree("#tree", arg => {
             iss.id=arg;
-            let id;
+            let id,current;
             switch(arg["level_id"]){
                 case "1": //集团汇总
-                case "2":  //大区汇总
-                case "3":iss.hashHistory.replace({pathname:"index",state:arg});break;//分区
-                case "4":id="intallment";break;//分公司
-                case "5":id="newProject";break;//项目
+                case "2":iss.hashHistory.replace({pathname:"index",state:arg});break;//总部
+                case "3":iss.hashHistory.replace({pathname:"index",state:arg});id="newProject";break;//项目
+                case "4":iss.hashHistory.replace({pathname:"index",state:arg,query:{statu:"show"}});id="intallment";current="newProject";break;//分公司
+                case "5":"";iss.hashHistory.replace({pathname:"index",state:arg,query:{statu:"show"}});current="intallment";break;//分区;
             }
-           
+            console.log(current)
             self.setState({
                 changeState:id,
+                changeCurrent:current,
                 data:arg
             })
         });
     }
     addTodo() {
         var th = this;
-       
-         iss.hashHistory.replace({
-            pathname: `/${th.state.changeState}`,
-            state:this.state.data
-        }) 
-        
+         if(th.state.changeState=="newProject"||th.state.changeState=="intallment"){
+            iss.hashHistory.replace({
+                pathname: `/${th.state.changeState}`,
+                state:this.state.data
+            }) 
+         }
+    }
+    editTodo(arg){
+        var th = this;
+        console.log(th.state.changeCurrent)
+         if(th.state.changeCurrent=="newProject"||th.state.changeCurrent=="intallment"){
+           iss.hashHistory.replace({
+               pathname: `/${th.state.changeCurrent}`,
+               query:{
+                   statu:"edit"  
+               }
+           })     
+        } 
+
     }
     render() {
-        let th = this;
+        let th = this; 
         let setBar = arg => {
             console.log(th.state.changeState)
             if (th.state.changeState == "") {
@@ -52,7 +67,7 @@ class ToolsTree extends React.Component {
             } else {
                 return <div>
                     <a href="javascript:;"  className="iconBoxJin projectDelete"></a>
-                    <a href="javascript:;" className="iconBoxJin projectBian"></a>
+                    <a href="javascript:;" onClick={this.editTodo.bind(this)} className="iconBoxJin projectBian"></a>
                     <a href="javascript:;" onClick={this.addTodo.bind(this)} className="iconBoxJin projectAdd"></a>
                 </div>
 

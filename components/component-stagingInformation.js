@@ -3,7 +3,7 @@ import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 // import Abc from "xxx.js";
-
+      
 class StagingInformation extends React.Component {
     constructor(arg) {
         super(arg);
@@ -13,53 +13,72 @@ class StagingInformation extends React.Component {
                         "STAGECODE":"",
                         "PROJECTCOMPANYNAME":"",
                         "companyHead":"",
-                        "installmentState":"",
-                        "selfSustaining":"",
-                        "tradersWay":"",
-                        "tableManner":"",
-                        "projectType":"",
-                        "taxManner":"",
-                        "controlStage":"",
-        }
-        
-        
+
+                        "STATUS":"",
+                        "ISELFPRODUCTTYPE":"",
+                        "TRADERMODE":"",
+                        "MERGEWAY":"",
+                        "PROJECTTYPE":"",
+                        "TAXINGWAY":"",
+                        "PLANSTAGE":"",
+                        "PROJECTNAME":"",
+        }  
+
+      
     }
+
     getAjax(){
         var th = this;
         iss.ajax({
             type:"post",
-            url:"/Stage/GetOneBy",
+            url:"/Stage/IGetInitInfo",   
             data:{
-                id:"7BAC0A5892EF4C29AC4EDEBB8618B675",
+                reqtype:"Add",
+                projectId:iss.id.id,
             },
             sucess(res){
-               console.log(res.rows);
-                th.setState({
-                    "CASENAME":res.rows.CASENAME,
-                    "STAGENAME":res.rows.STAGENAME,
-                    "PROJECTCOMPANYNAME":res.rows.PROJECTCOMPANYNAME,
-                    "STAGEID":res.rows.STAGECODE,
-                    "STAGECREATEDATE":res.rows.STAGECREATEDATE.split('T')[0],
-                    "STAGEUPDATEDATE":res.rows.STAGEUPDATEDATE.split('T')[0],
-                    "STARTDATE":res.rows.STARTDATE.split('T')[0],
+               console.log(res.rows.BaseFormInfo.CASENAME);   
+                th.setState({ 
+                    "CASENAME":res.rows.BaseFormInfo.CASENAME,
+                    "STAGENAME":res.rows.BaseFormInfo.STAGENAME,
+                    "PROJECTCOMPANYNAME":res.rows.BaseFormInfo.PROJECTCOMPANYNAME,
+                    "STAGEID":res.rows.BaseFormInfo.STAGECODE,
+                    "STAGECREATEDATE":res.rows.BaseFormInfo.STAGECREATEDATE.split('T')[0],
+                    "STAGEUPDATEDATE":res.rows.BaseFormInfo.STAGEUPDATEDATE.split('T')[0],
+                    "STARTDATE":res.rows.BaseFormInfo.STARTDATE.split('T')[0],
+
+                    "STATUS":res.rows.BaseFormInfo.STATUS,
+                    "ISELFPRODUCTTYPE":res.rows.BaseFormInfo.ISELFPRODUCTTYPE,
+                    "TRADERMODE":res.rows.BaseFormInfo.TRADERMODE,
+                    "MERGEWAY":res.rows.BaseFormInfo.MERGEWAY,
+                    "PROJECTTYPE":res.rows.BaseFormInfo.PROJECTTYPE,
+                    "TAXINGWAY":res.rows.BaseFormInfo.TAXINGWAY,
+                    "PLANSTAGE":res.rows.BaseFormInfo.PLANSTAGE,
+                    "PROJECTNAME":res.rows.BaseFormInfo.PROJECTNAME,
+                    "ID":res.rows.BaseFormInfo.ID,
+                   
                 },arg=>{
-                    console.log(th.state)
+                    //console.log(th.state)
                     th.bind_combobox(res);
                 })
                 
-                
             },
-            error(e){ 
-
+            error(e){   
+ 
             }
         })
     }
-    
-    componentDidMount() {
-        this.getAjax();
+    componentDidMount() {  
+          
+            let id=iss.id;
+            if(id=="1E1CB1E95A864AFA961392C3E3644642"||!id){
+                iss.hashHistory.replace({pathname:"index"});
+            }else{
+                this.getAjax();
+            }
         //  toolsTab.bindTab(this.props);//绑定头部标签
     }
-    addTodo(text) {
+    addTodo(text) {  
         
     }
     onUpload(){
@@ -75,30 +94,32 @@ class StagingInformation extends React.Component {
             fileSingleSizeLimit: 1 * 1024 * 1024    // 50 M
         })
     }
-    handChooseTo(ev,da){
+    handChooseTo(ev,da){  
         iss.chooseTo({
             url:"/Home/GetTreeInfo",
             title:"选择人员",
             pepole:{},  //已选人员名单
             callback(da){
-                console.log(da);
+                //console.log(da);
             }
         })
-    }
-    
+    }   
+     
     handleInputTextChange (e) {
         var th = this;
         let target = e.target.id
          this.setState({
            [target]: e.target.value // 将表单元素的值的变化映射到state中
          },()=>{
-            console.log(th.state[target]) 
+            //console.log(th.state[target]) 
+            console.log(th.state);  
          }) 
       
        // console.log(e.target.id);
-       // console.log(e.target.value);
+       //console.log(e.target.value);
+       
       
-    }
+    }  
     handleSelectTextChange(e,b,c){
         this.setState({
               [e]:b
@@ -107,117 +128,126 @@ class StagingInformation extends React.Component {
     }
     
     bind_combobox(arg) {
-        console.log(arg);
+        console.log(arg.rows.SelectOptions.STATUS);
         var th = this;
-        let installmentState = $("#installmentState");//分期状态
+        let installmentState = $("#STATUS");//分期状态
         installmentState.combobox({
-            valueField: "value",
+            valueField: "val",
             textField: "label",
             editable: true,
             readonly: false,
             panelHeight:"auto",
-            onChange:th.handleSelectTextChange.bind(th,"installmentState"),
-            data: [
-                { label: "请选择", value: "", "selected": true },
-                { label: "2017年首开项目", value: "0" },
-                { label: "2018年首开项目", value: "1" },
-                { label: "顺工项目", value: "2" }
-            ]
-        });
-        let selfSustaining = $("#selfSustaining");//自持业态
-        selfSustaining.combobox({
-            valueField: "value",
-            textField: "label",
-            editable: true,
-            readonly: false,
-            panelHeight:"auto",
-            onChange:th.handleSelectTextChange.bind(th,"selfSustaining"),
-            data: [
-                { label: "无", value: "", "selected": true },
-                { label: "酒店", value: "0" },
-                { label: "写字楼", value: "1" }
-            ]
-        });
-        let tradersWay = $("#tradersWay");//操盘方式
-        tradersWay.combobox({
-            valueField: "value",
-            textField: "label",
-            editable: true,
-            readonly: false,
-            panelHeight:"auto",
-            onChange:th.handleSelectTextChange.bind(th,"tradersWay"),
-            data: [
-                { label: "请选择", value: "", "selected": true },
-                { label: "完全操盘", value: "0" },
-                { label: "派总经理", value: "1" },
-                { label: "不派总经理", value: "2" }
-            ]
-        });
-        let tableManner = $("#tableManner");//并表方式
-        tableManner.combobox({
-            valueField: "value",
-            textField: "label",
-            editable: true,
-            readonly: false,
-            panelHeight:"auto",
-            onChange:th.handleSelectTextChange.bind(th,"tableManner"),
-            data: [
-                { label: "请选择", value: "", "selected": true },
-                { label: "A并表项目", value: "0" },
-                { label: "B非并表项目", value: "1" }
-            ]
-        });
-        let projectType = $("#projectType");//项目类型
-        projectType.combobox({
-            valueField: "value",
-            textField: "label",
-            editable: true,
-            readonly: false,
-            panelHeight:"auto",
-            onChange:th.handleSelectTextChange.bind(th,"projectType"),
-            data: [
-                { label: "请选择", value: "", "selected": true },
-                { label: "全新开发", value: "0" },
-                { label: "升级改造项目", value: "1" },
-                { label: "其他", value: "2" }
-            ]
-        });
-        let taxManner = $("#taxManner");//项目计税方式
-        taxManner.combobox({
-            valueField: "value",
-            textField: "label",
-            editable: true,
-            readonly: false,
-            panelHeight:"auto",
-            onChange:th.handleSelectTextChange.bind(th,"taxManner"),
-            data: [
-                { label: "请选择", value: "", "selected": true },
-                { label: "一般计税", value: "0" },
-                { label: "简易计税", value: "1" }
-            ]
-        });
-        let controlStage = $("#controlStage");//项目类型
-        controlStage.combobox({
-            valueField: "value",
-            textField: "label",
-            editable: true,
-            readonly: false,
-            panelHeight:"auto",
-            onChange:th.handleSelectTextChange.bind(th,"controlStage"),
-            data: [
-                { label: "请选择", value: "", "selected": true },
-                { label: "启动版", value: "0" },
-                { label: "基准版", value: "1" },
-                { label: "调整板（第1次）", value: "2" },
-                { label: "调整版（第2次）", value: "3" },
-                { label: "调整版（第N次）", value: "4" },
-                { label: "完结版", value: "5" }
-            ]
+            onChange:th.handleSelectTextChange.bind(th,"STATUS"),
+            data:arg.rows.SelectOptions.STATUS,
         });
         
-        
-    }
+        if(arg.rows.BaseFormInfo.STATUS==0){
+            installmentState.combobox("select","");
+        }else{
+            installmentState.combobox("select",arg.rows.BaseFormInfo.STATUS);
+        }
 
+        let selfSustaining = $("#ISELFPRODUCTTYPE");//自持业态
+        selfSustaining.combobox({
+            valueField: "val",
+            textField: "label",
+            editable: true,
+            readonly: false,
+            panelHeight:"auto",
+            onChange:th.handleSelectTextChange.bind(th,"ISELFPRODUCTTYPE"),
+            data:arg.rows.SelectOptions.ISELFPRODUCTTYPE,
+        });
+        if(arg.rows.BaseFormInfo.ISELFPRODUCTTYPE==0){
+            selfSustaining.combobox("select","");
+        }else{
+            selfSustaining.combobox("select",arg.rows.BaseFormInfo.ISELFPRODUCTTYPE);
+        }
+        
+
+        let tradersWay = $("#TRADERMODE");//操盘方式
+        tradersWay.combobox({
+            valueField: "val",
+            textField: "label",
+            editable: true,
+            readonly: false,
+            panelHeight:"auto",
+            onChange:th.handleSelectTextChange.bind(th,"TRADERMODE"),
+            data:arg.rows.SelectOptions.TRADERMODE,
+        });
+        if(arg.rows.BaseFormInfo.TRADERMODE==0){
+            tradersWay.combobox("select","");
+        }else{
+            tradersWay.combobox("select",arg.rows.BaseFormInfo.TRADERMODE);
+        }
+        
+
+        let tableManner = $("#MERGEWAY");//并表方式
+        tableManner.combobox({
+            valueField: "val",
+            textField: "label",
+            editable: true,
+            readonly: false,
+            panelHeight:"auto",
+            onChange:th.handleSelectTextChange.bind(th,"MERGEWAY"),
+            data:arg.rows.SelectOptions.MERGEWAY,
+        });
+        if(arg.rows.BaseFormInfo.MERGEWAY==0){
+            tableManner.combobox("select","");
+        }else{
+            tableManner.combobox("select",arg.rows.BaseFormInfo.MERGEWAY);
+        }
+        
+
+        let projectType = $("#PROJECTTYPE");//项目类型
+        projectType.combobox({
+            valueField: "val",
+            textField: "label",
+            editable: true,
+            readonly: false,
+            panelHeight:"auto",
+            onChange:th.handleSelectTextChange.bind(th,"PROJECTTYPE"),
+            data:arg.rows.SelectOptions.PROJECTTYPE,
+        });
+        if(arg.rows.BaseFormInfo.PROJECTTYPE==0){
+            projectType.combobox("select","");
+        }else{
+            projectType.combobox("select",arg.rows.BaseFormInfo.PROJECTTYPE);
+        }
+        
+
+        let taxManner = $("#TAXINGWAY");//项目计税方式
+        taxManner.combobox({
+            valueField: "val",
+            textField: "label",
+            editable: true,
+            readonly: false,
+            panelHeight:"auto",
+            onChange:th.handleSelectTextChange.bind(th,"TAXINGWAY"),
+            data:arg.rows.SelectOptions.TAXINGWAY,
+        });
+        if(arg.rows.BaseFormInfo.TAXINGWAY==0){
+            taxManner.combobox("select","");
+        }else{
+            taxManner.combobox("select",arg.rows.BaseFormInfo.TAXINGWAY);
+        }
+        
+
+        let controlStage = $("#PLANSTAGE");//计划管控阶段
+        controlStage.combobox({
+            valueField: "val",
+            textField: "label",
+            editable: true,
+            readonly: false,
+            panelHeight:"auto",
+            onChange:th.handleSelectTextChange.bind(th,"PLANSTAGE"),
+            data:arg.rows.SelectOptions.PLANSTAGE,
+        });
+        if(arg.rows.BaseFormInfo.PLANSTAGE){
+            controlStage.combobox("select","");
+        }else{
+            controlStage.combobox("select",arg.rows.BaseFormInfo.PLANSTAGE);
+        } 
+    }
     render() {
         return <article className="staging-box">
                 <section className="staging-left boxSizing projectinFormation">
@@ -232,13 +262,13 @@ class StagingInformation extends React.Component {
                                         <label className="formTableLabel boxSizing">项目名称</label>
                                     </th>
                                     <td>
-                                        <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text"  />
+                                        <input readOnly="readonly" id="PROJECTNAME" value={this.state.PROJECTNAME||""} className="inputTextBox inputGray boxSizing" type="text"  />
                                     </td>
                                     <th>
                                         <label className="formTableLabel boxSizing redFont">分期名称</label>
                                     </th>
                                     <td>
-                                        <input  onChange={this.handleInputTextChange.bind(this)} id="STAGENAME" value={this.state.STAGENAME} className="inputTextBox boxSizing" type="text" />
+                                        <input  onChange={this.handleInputTextChange.bind(this)} id="STAGENAME" value={this.state.STAGENAME||""} className="inputTextBox boxSizing" type="text" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -246,13 +276,13 @@ class StagingInformation extends React.Component {
                                         <label className="formTableLabel boxSizing redFont">分期案名</label>
                                     </th>
                                     <td>
-                                        <input onChange={this.handleInputTextChange.bind(this)} id="CASENAME" value={this.state.CASENAME} className="inputTextBox boxSizing" type="text" />
+                                        <input onChange={this.handleInputTextChange.bind(this)} id="CASENAME" value={this.state.CASENAME||""} className="inputTextBox boxSizing" type="text" />
                                     </td>
                                     <th>
                                         <label className="formTableLabel boxSizing redFont">分期编码</label>
                                     </th>
                                     <td>
-                                        <input onChange={this.handleInputTextChange.bind(this)} id="STAGECODE" value={this.state.STAGECODE} className="inputTextBox boxSizing" type="text" />
+                                        <input onChange={this.handleInputTextChange.bind(this)} id="STAGECODE" value={this.state.STAGECODE||""} className="inputTextBox boxSizing" type="text" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -260,13 +290,13 @@ class StagingInformation extends React.Component {
                                         <label className="formTableLabel boxSizing redFont">分期状态</label>
                                     </th>
                                     <td>
-                                        <input type="text" id="installmentState" />
+                                        <input type="text" id="STATUS" />
                                     </td>
                                     <th>
                                         <label className="formTableLabel boxSizing redFont">自持物业</label>
                                     </th>
                                     <td>
-                                        <input type="text" id="selfSustaining" />
+                                        <input type="text" id="ISELFPRODUCTTYPE" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -274,13 +304,13 @@ class StagingInformation extends React.Component {
                                         <label className="formTableLabel boxSizing redFont">操盘方式</label>
                                     </th>
                                     <td>
-                                        <input type="text" id="tradersWay" />
+                                        <input type="text" id="TRADERMODE" />
                                     </td>
                                     <th>
                                         <label className="formTableLabel boxSizing redFont">项目公司名称</label>
                                     </th>
                                     <td>
-                                        <input onChange={this.handleInputTextChange.bind(this)} id="PROJECTCOMPANYNAME" value={this.state.PROJECTCOMPANYNAME} className="inputTextBox boxSizing" type="text" />
+                                        <input onChange={this.handleInputTextChange.bind(this)} id="PROJECTCOMPANYNAME" value={this.state.PROJECTCOMPANYNAME||""} className="inputTextBox boxSizing" type="text" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -303,29 +333,29 @@ class StagingInformation extends React.Component {
 									    <th>
                                             <label className="formTableLabel boxSizing redFont">并表方式</label>
                                         </th>
-										<td>
-                                            <input  type="text" id="tableManner" />
+										<td>   
+                                            <input  type="text" id="MERGEWAY" />
 										</td>	
 							    		<th>
                                             <label className="formTableLabel boxSizing redFont">项目类型</label>
                                         </th>
 								    	<td>
-                                            <input type="text" id="projectType" />
+                                            <input type="text" id="PROJECTTYPE" />
 								    	</td>	
 								    	
-								</tr>
+								</tr>  
 								    <tr>
                                         <th>
                                             <label className="formTableLabel boxSizing redFont">项目计税方式</label>
                                         </th>
 								    	<td>
-                                            <input type="text" id="taxManner" />
+                                            <input type="text" id="TAXINGWAY" />
 								    	</td>	
                                         <th>
                                             <label className="formTableLabel boxSizing">分期创建日期</label>
                                         </th>
 										<td>
-                                            <input readOnly="readonly" id="STAGECREATEDATE" value={this.state.STAGECREATEDATE} className="inputTextBox inputGray boxSizing" type="text" />    
+                                            <input readOnly="readonly" id="STAGECREATEDATE" value={this.state.STAGECREATEDATE||""} className="inputTextBox inputGray boxSizing" type="text" />    
                                         </td>	
 							    		
 								    </tr>
@@ -334,13 +364,13 @@ class StagingInformation extends React.Component {
                                             <label className="formTableLabel boxSizing">分期更新日期</label>
                                         </th>
 							    		<td>
-                                            <input readOnly="readonly" id="STAGEUPDATEDATE" value={this.state.STAGEUPDATEDATE} className="inputTextBox inputGray boxSizing" type="text" /> 
+                                            <input readOnly="readonly" id="STAGEUPDATEDATE" value={this.state.STAGEUPDATEDATE||""} className="inputTextBox inputGray boxSizing" type="text" /> 
                                         </td>	
 								    	<th>
                                             <label className="formTableLabel boxSizing">计划管控阶段</label>
                                         </th>
 								    	<td>
-                                            <input readOnly="readonly" type="text" id="controlStage" />
+                                            <input readOnly="readonly" type="text" id="PLANSTAGE" />
 								    	</td>	
 								    </tr>
 								    
@@ -349,7 +379,7 @@ class StagingInformation extends React.Component {
                                             <label className="formTableLabel boxSizing">启动开发时间</label>
                                         </th>
 							    		<td>
-                                            <input readOnly="readonly" id="STARTDATE" value={this.state.STARTDATE} className="inputTextBox inputGray boxSizing" type="text" />    
+                                            <input readOnly="readonly" id="STARTDATE" value={this.state.STARTDATE||""} className="inputTextBox inputGray boxSizing" type="text" />    
                                         </td>	
 								    	<th>
                                             <label className="formTableLabel boxSizing redFont">分期总图</label>

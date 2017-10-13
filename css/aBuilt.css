@@ -1,0 +1,60 @@
+.aBuiltMain {
+  padding: 0 20px;
+  font-size: 12px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  height: 400px;
+}
+.aBuiltMain .aBuilt_Title {
+  font-size: 14px;
+  margin: 12px 0 2px;
+  line-height: 36px;
+  background: #ddd;
+}
+.aBuiltMain .aBuilt_Title span {
+  display: inline-block;
+}
+.aBuiltMain .aBuilt_Title span:first-child {
+  padding-right: 20px;
+  padding-left: 6px;
+  width: 110px;
+}
+.aBuiltMain .aBuilt_Title span:nth-child(2) {
+  padding-right: 10px;
+}
+.aBuiltMain .aBuilt_Title span.radioSpan input[type=radio] {
+  margin: 0;
+  vertical-align: middle;
+}
+.aBuiltMain .aBuilt_Con {
+  height: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.aBuiltMain .aBuilt_Con li {
+  float: left;
+  width: 33.33%;
+  min-height: 30px;
+  line-height: 30px;
+  margin-top: 10px;
+}
+.aBuiltMain .aBuilt_Con li label {
+  font-weight: normal;
+  margin-bottom: 0px;
+  padding-right: 6px;
+  text-align: right;
+  width: 110px;
+}
+.aBuiltMain .aBuilt_Con li input {
+  border: #ddd solid 1px;
+  height: 28px;
+}
+.aBuiltMain .aBuilt_Con li input[readonly] {
+  background: #ddd;
+}
+.aBuiltMain .aBuilt_Con li:nth-child(2) {
+  width: 66.67%;
+}
+.aBuiltMain .aBuilt_Con.hide {
+  display: none;
+}

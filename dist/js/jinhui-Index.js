@@ -1,4 +1,4 @@
-webpackJsonp([8],{
+webpackJsonp([21],{
 
 /***/ 249:
 /***/ (function(module, exports, __webpack_require__) {
@@ -175,6 +175,10 @@ var ToolsList = function (_React$Component) {
                     iss.hashHistory.push({
                         pathname: "priceControl"
                     });break;
+                case "areaManagement":
+                    iss.hashHistory.push({
+                        pathname: "areaManagement"
+                    });break;
             }
         }
     }, {
@@ -294,7 +298,7 @@ var ToolsList = function (_React$Component) {
                                 null,
                                 _react2.default.createElement(
                                     'a',
-                                    { href: 'areaManagement.html' },
+                                    { onClick: this.EVENT_CLICK.bind(this, "areaManagement"), href: 'javascript:;' },
                                     '\u9762\u79EF\u7BA1\u7406'
                                 )
                             ),
@@ -431,6 +435,7 @@ var ToolsTree = function (_React$Component) {
 
         _this.state = {
             data: "",
+            changeCurrent: "",
             changeState: _iss2.default.getQuert("intallment") ? "intallment" : _iss2.default.getQuert("newProject") ? "newProject" : ""
         };
         return _this;
@@ -442,20 +447,23 @@ var ToolsTree = function (_React$Component) {
             var self = this;
             _toolsTree2.default.bindTree("#tree", function (arg) {
                 _iss2.default.id = arg;
-                var id = void 0;
+                var id = void 0,
+                    current = void 0;
                 switch (arg["level_id"]) {
                     case "1": //集团汇总
-                    case "2": //大区汇总
+                    case "2":
+                        _iss2.default.hashHistory.replace({ pathname: "index", state: arg });break; //总部
                     case "3":
-                        _iss2.default.hashHistory.replace({ pathname: "index", state: arg });break; //分区
+                        _iss2.default.hashHistory.replace({ pathname: "index", state: arg });id = "newProject";break; //项目
                     case "4":
-                        id = "intallment";break; //分公司
+                        _iss2.default.hashHistory.replace({ pathname: "index", state: arg, query: { statu: "show" } });id = "intallment";current = "newProject";break; //分公司
                     case "5":
-                        id = "newProject";break; //项目
+                        "";_iss2.default.hashHistory.replace({ pathname: "index", state: arg, query: { statu: "show" } });current = "intallment";break; //分区;
                 }
-
+                console.log(current);
                 self.setState({
                     changeState: id,
+                    changeCurrent: current,
                     data: arg
                 });
             });
@@ -464,11 +472,26 @@ var ToolsTree = function (_React$Component) {
         key: 'addTodo',
         value: function addTodo() {
             var th = this;
-
-            _iss2.default.hashHistory.replace({
-                pathname: '/' + th.state.changeState,
-                state: this.state.data
-            });
+            if (th.state.changeState == "newProject" || th.state.changeState == "intallment") {
+                _iss2.default.hashHistory.replace({
+                    pathname: '/' + th.state.changeState,
+                    state: this.state.data
+                });
+            }
+        }
+    }, {
+        key: 'editTodo',
+        value: function editTodo(arg) {
+            var th = this;
+            console.log(th.state.changeCurrent);
+            if (th.state.changeCurrent == "newProject" || th.state.changeCurrent == "intallment") {
+                _iss2.default.hashHistory.replace({
+                    pathname: '/' + th.state.changeCurrent,
+                    query: {
+                        statu: "edit"
+                    }
+                });
+            }
         }
     }, {
         key: 'render',
@@ -490,7 +513,7 @@ var ToolsTree = function (_React$Component) {
                         'div',
                         null,
                         _react2.default.createElement('a', { href: 'javascript:;', className: 'iconBoxJin projectDelete' }),
-                        _react2.default.createElement('a', { href: 'javascript:;', className: 'iconBoxJin projectBian' }),
+                        _react2.default.createElement('a', { href: 'javascript:;', onClick: _this2.editTodo.bind(_this2), className: 'iconBoxJin projectBian' }),
                         _react2.default.createElement('a', { href: 'javascript:;', onClick: _this2.addTodo.bind(_this2), className: 'iconBoxJin projectAdd' })
                     );
                 }

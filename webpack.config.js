@@ -3,7 +3,7 @@ var webapck = require("webpack");
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin"); //thunk
 var compress = require("webpack/lib/optimize/UglifyJsPlugin"); //压缩
 var DedupePlugin = require("webpack/lib/optimize/DedupePlugin"); //多文件
-var ImageminPlugin = require('imagemin-webpack-plugin').default;//图片压缩
+// var ImageminPlugin = require('imagemin-webpack-plugin').default;//图片压缩
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 // console.log(path.join(__dirname,"/source/"));
 const extractLESS = new ExtractTextPlugin('./Content/dist/css/[name].min.css');
@@ -62,12 +62,12 @@ var config = {
         new DedupePlugin({
             'process.env': {NODE_ENV: '"production"'}
         }),
-        new ImageminPlugin({
-            disable: process.env.NODE_ENV !== 'production', // Disable during development 
-            pngquant: {
-              quality: '95-100'
-            }
-          })
+        // new ImageminPlugin({
+        //     disable: process.env.NODE_ENV !== 'production', // Disable during development 
+        //     pngquant: {
+        //       quality: '95-100'
+        //     }
+        //   })
     ],
     resolve:{   
        // modules:[path.resolve(__dirname,"/source/"),"node_modules"],

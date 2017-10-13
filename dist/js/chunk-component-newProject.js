@@ -1,6 +1,6 @@
-webpackJsonp([1],{
+webpackJsonp([2],{
 
-/***/ 592:
+/***/ 594:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9,6 +9,8 @@ webpackJsonp([1],{
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -20,17 +22,17 @@ __webpack_require__(65);
 
 __webpack_require__(79);
 
-var _componentNewProjectCount = __webpack_require__(618);
+var _componentNewProjectCount = __webpack_require__(637);
 
 var _componentNewProjectCount2 = _interopRequireDefault(_componentNewProjectCount);
 
-var _toolsDynamicTable = __webpack_require__(597);
+var _toolsDynamicTable = __webpack_require__(613);
 
 var _toolsDynamicTable2 = _interopRequireDefault(_toolsDynamicTable);
 
-__webpack_require__(598);
+__webpack_require__(614);
 
-var _toolsValidate = __webpack_require__(600);
+var _toolsValidate = __webpack_require__(638);
 
 var _toolsValidate2 = _interopRequireDefault(_toolsValidate);
 
@@ -53,8 +55,6 @@ var NewProject = function (_React$Component) {
     _inherits(NewProject, _React$Component);
 
     function NewProject(arg) {
-        var _arguments = arguments;
-
         _classCallCheck(this, NewProject);
 
         var _this = _possibleConstructorReturn(this, (NewProject.__proto__ || Object.getPrototypeOf(NewProject)).call(this, arg));
@@ -63,19 +63,41 @@ var NewProject = function (_React$Component) {
             newDynamicData: {}, //空数据
             DynamicData: {}, //已存在数据
             propsDATA: [], //显示数据
+            CountData: [], //统计
             pid: "",
-            states: false
+            states: false,
+            countText: "统计数据过期",
+            NewProjectCountDATA: [],
+            statu: "show"
         };
         iss.hashHistory.listen(function (local, next) {
-            console.log(_arguments);
+            //console.log(arguments)
         });
-        _this.BIIND_FIST_LAND();
+        _this.BIIND_FIST_LAND(); //获取地块信息
+        _this.time = ""; //延时变量
+        _this.firstData = []; //初始化数据
         return _this;
     }
 
     _createClass(NewProject, [{
+        key: "componentWillMount",
+        value: function componentWillMount() {
+            var local = this.props.location;
+            if (local.query["statu"]) {
+                this.setState({ statu: this.props.location.query.statu });
+            }
+        }
+    }, {
         key: "componentDidMount",
         value: function componentDidMount() {}
+    }, {
+        key: "BIND_NewProjectCountDATA",
+        value: function BIND_NewProjectCountDATA(data) {
+            console.log(data);
+            this.setState({
+                NewProjectCountDATA: data
+            });
+        }
     }, {
         key: "BIIND_FIST_LAND",
         value: function BIIND_FIST_LAND() {
@@ -83,12 +105,11 @@ var NewProject = function (_React$Component) {
             if (!this.props.location || !this.props.location.state) {
                 iss.Alert({ content: "请选择区域或项目！" });
             };
-            var id = "A91BB3051A0848319B45D3D527AC4103"; //this.props.location.state.id;
+            var id = iss.id; //"A91BB3051A0848319B45D3D527AC4103" //this.props.location.state.id;
             iss.ajax({
                 url: "/Project/INewLand", //初次请求创建空地块使用
                 data: { projectId: id },
                 sucess: function sucess(d) {
-
                     if (d["rows"]) {
                         THIS.state.states = true;
                         THIS.setState({
@@ -98,23 +119,49 @@ var NewProject = function (_React$Component) {
                 },
                 error: function error(e) {}
             });
-            iss.ajax({
+            iss.ajax({ //获取已有地块
                 url: "/Project/IProjectLandsInfo",
                 data: { projectId: id },
                 sucess: function sucess(d) {
                     if (d.rows) {
                         var da = {};
                         d.rows.forEach(function (el, ind) {
+                            if (ind == 0) {
+                                //初次加载地块
+
+                                THIS.setState({
+                                    propsDATA: el["FieldList"]
+                                });
+                            }
                             da[el.LandId] = el;
                         });
+
                         THIS.setState({
                             DynamicData: da
                         }, function (arg) {
                             THIS.BIND_LAND_BTN();
                         });
+                        console.log(da);
                     }
                 },
                 error: function error() {}
+            });
+            //Project/ILandsStatistics  土地动态统计
+            iss.ajax({
+                url: "/Project/ILandsStatistics",
+                sucess: function sucess(a) {
+
+                    if (a["rows"]) {
+                        THIS.setState({
+                            CountData: a["rows"]
+                        }, function (arg) {
+                            setTimeout(function (arg) {
+
+                                THIS.BIND_COUNT_GETMAP();
+                            }, 2000);
+                        });
+                    }
+                }
             });
         }
     }, {
@@ -139,8 +186,12 @@ var NewProject = function (_React$Component) {
         value: function EVENT_CLICK_LANDBTN(id, e) {
             //切换地块
             // console.log(this.state.DynamicData[id]["data"]);
+
             var self = $(e.target),
                 pa = self.parent();
+            if (self.hasClass("icon-delete")) {
+                return;
+            }
             pa.find("li").removeClass("active");
             self.addClass("active");
             this.setState({
@@ -153,18 +204,12 @@ var NewProject = function (_React$Component) {
     }, {
         key: "SET_PARENTCOUNT",
         value: function SET_PARENTCOUNT(list, d) {
+            //地块计算
             var da = {};
-            /* for(let v in d.parent){
-                list.forEach((el,ind)=>{
-                    if(el.id==v){
-                        da[v]=el
-                    }
-                })
-            } */
             var data = list.forEach(function (el, ind) {
                 for (var i in d.parent) {
                     if (el.id == i) {
-                        (function () {
+                        var _ret = function () {
                             var exec = el.exec;
                             var reg = /{.*?}/ig;
                             var arr = exec.match(reg);
@@ -174,18 +219,23 @@ var NewProject = function (_React$Component) {
                                     exec = exec.replace(regs, ~~el.child[ee.replace(/[{}]/ig, "")].val);
                                 });
                                 el.val = eval(exec);
+                                return {
+                                    v: void 0
+                                };
                             }
-                        })();
+                        }();
+
+                        if ((typeof _ret === "undefined" ? "undefined" : _typeof(_ret)) === "object") return _ret.v;
                     }
                 }
             });
-            console.log(d);
             return;
         }
     }, {
         key: "BIND_CALLBACK",
         value: function BIND_CALLBACK(da, e) {
             //子页面返回callback
+            // if(this.time){ clearTimeout(this.time) }
             var th = this;
             var el = e.target.value,
                 list = this.state.DynamicData[this.state.pid];
@@ -200,6 +250,45 @@ var NewProject = function (_React$Component) {
             });
             this.setState({
                 propsDATA: list.FieldList
+            });
+
+            // th.time=setTimeout(arg=>{
+            th.BIND_COUNT_GETMAP();
+            //},1000);
+        }
+    }, {
+        key: "EVENT_CLICK_DELETE",
+        value: function EVENT_CLICK_DELETE(id, ev) {
+            //删除地块
+            var data = this.state.DynamicData;
+            var th = this;
+            iss.Alert({
+                title: "提示",
+                width: 300,
+                content: "<div class=\"Alert\">\u662F\u5426\u5220\u9664\u5730\u5757</div>",
+                ok: function ok() {
+                    delete data[id];
+                    var fda = [],
+                        iii = 0,
+                        _id = "";
+                    for (var v in data) {
+                        if (iii == 1) {
+                            break;
+                        }
+                        fda = data[v]["FieldList"];
+                        _id = data[v]["LandId"];
+                        iii += 1;
+                    }
+
+                    th.setState({
+                        DynamicData: data,
+                        propsDATA: fda,
+                        pid: _id
+                    }, function (arg) {
+                        th.BIND_COUNT_GETMAP();
+                    });
+                },
+                cancel: function cancel() {}
             });
         }
     }, {
@@ -223,11 +312,120 @@ var NewProject = function (_React$Component) {
                 map.push(_react2.default.createElement(
                     "li",
                     { onClick: this.EVENT_CLICK_LANDBTN.bind(this, li[i].LandId), key: g, "data-id": li[i].LandId },
-                    name
+                    name,
+                    _react2.default.createElement("span", { className: "icon-delete", onClick: this.EVENT_CLICK_DELETE.bind(this, li[i].LandId) })
                 ));
             }
 
             return map;
+        }
+    }, {
+        key: "BIND_COUNT_DATACALLBACK",
+        value: function BIND_COUNT_DATACALLBACK(da) {//地块统计
+
+        }
+    }, {
+        key: "EVENT_CLICK_REFASH",
+        value: function EVENT_CLICK_REFASH() {//刷新
+            //this.BIND_COUNT_GETMAP(); //重新统计数据
+        }
+    }, {
+        key: "BIND_COUNT_GETMAP",
+        value: function BIND_COUNT_GETMAP() {
+            //地块统计
+            var da = this.state.CountData,
+                th = this;
+            var t = new Date().getTime();
+            da.forEach(function (el, ind) {
+                var reg = /\{.*?\}[\+\-\*\/]/,
+                    regcount = /\{.*?\}/ig,
+                    arr = regcount.exec(el.exec || ""),
+                    list = th.state.DynamicData;
+                if (el.exec && !reg.exec(el.exec)) {
+                    if (arr && arr[0]) {
+                        var _ret2 = function () {
+                            var _id = arr[0].replace(/[{}]/ig, ""),
+                                _str = [];
+                            for (var v in list) {
+                                list[v]["FieldList"].forEach(function (ee, ii) {
+                                    if (ee["id"] == _id) {
+                                        _str.push(~~ee["val"]);
+                                        return;
+                                    }
+                                });
+                            }
+                            el.val = eval(_str.join("+"));
+                            return {
+                                v: void 0
+                            };
+                        }();
+
+                        if ((typeof _ret2 === "undefined" ? "undefined" : _typeof(_ret2)) === "object") return _ret2.v;
+                    }
+                }
+            });
+            th.setState({
+                CountData: da
+            });
+            var t2 = (new Date().getTime() - t) / 1000;
+            console.log(t2);
+        }
+    }, {
+        key: "EVENT_CLICK_POSTAPP",
+        value: function EVENT_CLICK_POSTAPP() {
+            var th = this;
+            var landInfoListJson = [];
+            for (var vv in this.state.DynamicData) {
+                landInfoListJson.push(this.state.DynamicData[vv]);
+            }
+            iss.ajax({
+                type: "POST",
+                url: "/Project/ISave",
+                data: {
+                    projectJson: JSON.stringify(this.state.NewProjectCountDATA),
+                    landInfoListJson: JSON.stringify(landInfoListJson),
+                    editType: "Submit"
+                },
+                success: function success(data) {
+                    if (data.errno == 0) {
+                        //do something 
+                    } else {
+                        console.log("1");
+                    }
+                },
+                error: function error(er) {
+                    console.log('错误');
+                }
+            });
+            iss.hashHistory.push({ pathname: "/newProjectApproval", state: iss.id });
+        }
+    }, {
+        key: "EVENT_CLICK_SAVE",
+        value: function EVENT_CLICK_SAVE() {
+            var th = this;
+            var landInfoListJson = [];
+            for (var vv in this.state.DynamicData) {
+                landInfoListJson.push(this.state.DynamicData[vv]);
+            }
+            iss.ajax({
+                type: "POST",
+                url: "/Project/ISave",
+                data: {
+                    projectJson: JSON.stringify(this.state.NewProjectCountDATA),
+                    landInfoListJson: JSON.stringify(landInfoListJson),
+                    editType: "Save"
+                },
+                success: function success(data) {
+                    if (data.errno == 0) {
+                        //do something 
+                    } else {
+                        console.log("1");
+                    }
+                },
+                error: function error(er) {
+                    console.log('错误');
+                }
+            });
         }
     }, {
         key: "render",
@@ -236,7 +434,45 @@ var NewProject = function (_React$Component) {
             return _react2.default.createElement(
                 "article",
                 null,
-                _react2.default.createElement(_componentNewProjectCount2.default, null),
+                _react2.default.createElement(
+                    "section",
+                    null,
+                    _react2.default.createElement(
+                        "h3",
+                        { className: "boxGroupTit" },
+                        _react2.default.createElement(
+                            "p",
+                            null,
+                            _react2.default.createElement(
+                                "span",
+                                null,
+                                "\u9879\u76EE\u4FE1\u606F"
+                            ),
+                            _react2.default.createElement(
+                                "i",
+                                null,
+                                "\uFF08",
+                                _react2.default.createElement("i", { className: "redFont" }),
+                                "\u4E3A\u5FC5\u586B\u9879\uFF09"
+                            )
+                        ),
+                        _react2.default.createElement(
+                            "span",
+                            { className: "functionButton" },
+                            _react2.default.createElement(
+                                "a",
+                                { className: "saveIcon ", onClick: this.EVENT_CLICK_SAVE.bind(this), href: "#" },
+                                "\u6682\u5B58"
+                            ),
+                            _react2.default.createElement(
+                                "a",
+                                { className: "approvalIcon", onClick: this.EVENT_CLICK_POSTAPP.bind(this), href: "javascript:;" },
+                                "\u53D1\u8D77\u5BA1\u6279"
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(_componentNewProjectCount2.default, { local: this.props.location, NewProjectCountDATA: this.BIND_NewProjectCountDATA.bind(this) })
+                ),
                 _react2.default.createElement(
                     "section",
                     null,
@@ -269,7 +505,11 @@ var NewProject = function (_React$Component) {
                             )
                         )
                     ),
-                    _react2.default.createElement("div", null),
+                    _react2.default.createElement(
+                        "div",
+                        null,
+                        _react2.default.createElement(_toolsDynamicTable2.default, { pid: "countdata", DynamicData: this.state.CountData, CallBack: this.BIND_COUNT_DATACALLBACK.bind(this) })
+                    ),
                     _react2.default.createElement(
                         "ul",
                         { className: "BIND_LAND_BTN" },
@@ -288,7 +528,7 @@ exports.default = NewProject;
 
 /***/ }),
 
-/***/ 593:
+/***/ 606:
 /***/ (function(module, exports) {
 
 /*
@@ -371,7 +611,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 594:
+/***/ 607:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -417,7 +657,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(596);
+var	fixUrls = __webpack_require__(608);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -731,7 +971,7 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 
-/***/ 596:
+/***/ 608:
 /***/ (function(module, exports) {
 
 
@@ -827,7 +1067,7 @@ module.exports = function (css) {
 
 /***/ }),
 
-/***/ 597:
+/***/ 613:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -950,7 +1190,7 @@ var DynamicTable = function (_React$Component) {
                         list
                     );
                 } else {
-                    return _react2.default.createElement("input", { name: el.id, id: el.id, "data-pid": el.pid, value: el.val || "", placeholder: el.edit.indexOf("+m") >= 0 ? "此处为必填项" : "请输入内容", type: "text", onChange: _this2.props.CallBack.bind(_this2, el), readOnly: el.edit.indexOf("+r") >= 0 });
+                    return _react2.default.createElement("input", { name: el.id, id: el.id, "data-pid": el.pid, value: el.val || "", placeholder: el.edit.indexOf("+m") >= 0 ? "此处为必填项" : "", type: "text", onChange: _this2.props.CallBack.bind(_this2, el), readOnly: el.edit.indexOf("+r") >= 0 });
                 }
             };
 
@@ -1023,13 +1263,13 @@ exports.default = DynamicTable;
 
 /***/ }),
 
-/***/ 598:
+/***/ 614:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(599);
+var content = __webpack_require__(615);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1037,7 +1277,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(594)(content, options);
+var update = __webpack_require__(607)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -1055,22 +1295,625 @@ if(false) {
 
 /***/ }),
 
-/***/ 599:
+/***/ 615:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(593)(undefined);
+exports = module.exports = __webpack_require__(606)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".tools-dynamicTable {\n  margin-top: 10px;\n}\n.tools-dynamicTable ul li {\n  height: 40px;\n  overflow: hidden;\n}\n.tools-dynamicTable ul li label {\n  font-size: 12px;\n  color: #333;\n  font-weight: normal;\n  width: 110px;\n  text-align: right;\n  padding-top: 5px;\n  float: left;\n}\n.tools-dynamicTable ul li div {\n  display: block;\n  margin: 0 65px 0 115px;\n}\n.tools-dynamicTable ul li div input {\n  width: 100%;\n  padding: 3px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li div select {\n  width: 100%;\n  height: 25px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li i {\n  font-style: normal;\n  width: 60px;\n  float: right;\n  padding-top: 3px;\n}\n.BIND_LAND_BTN {\n  padding: 10px;\n}\n.BIND_LAND_BTN li {\n  display: inline-block;\n  padding: 5px 10px;\n  border: #ddd solid 1px;\n  cursor: pointer;\n  margin: 10px;\n}\n.BIND_LAND_BTN li.active {\n  background: #e4e4e4;\n}\n", ""]);
+exports.push([module.i, ".tools-dynamicTable {\n  margin-top: 10px;\n}\n.tools-dynamicTable ul li {\n  height: 40px;\n  overflow: hidden;\n}\n.tools-dynamicTable ul li label {\n  font-size: 12px;\n  color: #333;\n  font-weight: normal;\n  width: 110px;\n  text-align: right;\n  padding-top: 5px;\n  float: left;\n}\n.tools-dynamicTable ul li div {\n  display: block;\n  margin: 0 65px 0 115px;\n}\n.tools-dynamicTable ul li div input {\n  width: 100%;\n  padding: 3px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li div select {\n  width: 100%;\n  height: 25px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li i {\n  font-style: normal;\n  width: 60px;\n  float: right;\n  padding-top: 3px;\n}\n.BIND_LAND_BTN {\n  padding: 10px;\n}\n.BIND_LAND_BTN li {\n  display: inline-block;\n  padding: 5px 10px;\n  border: #ddd solid 1px;\n  cursor: pointer;\n  margin: 10px;\n  position: relative;\n  top: 0;\n  left: 0;\n}\n.BIND_LAND_BTN li.active {\n  background: #e4e4e4;\n}\n.BIND_LAND_BTN li .icon-delete {\n  position: absolute;\n  top: -10px;\n  right: -10px;\n  display: none;\n}\n.BIND_LAND_BTN li:hover .icon-delete {\n  display: block;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 600:
+/***/ 616:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(617);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(607)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./intallment.less", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./intallment.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 617:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(606)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".clear {\n  clear: both;\n}\n.boxGroupTit {\n  height: 40px;\n  margin-bottom: 5px ;\n  position: relative;\n  margin-top: 0;\n}\n.boxGroupTit p {\n  height: 40px;\n  line-height: 40px;\n  color: #333333;\n  font-size: 14px;\n  border-bottom: 1px solid #c9c9c9;\n}\n.boxGroupTit p span {\n  display: inline-block;\n  line-height: 40px;\n  border-bottom: 2px solid #31395d;\n}\n.boxGroupTit p i {\n  font-style: normal;\n}\n.boxGroupTit span.functionButton {\n  position: absolute;\n  right: 0;\n  top: 0;\n  width: auto;\n  text-align: right;\n}\n.boxGroupTit span.functionButton a {\n  font-size: 12px;\n  height: 40px;\n  line-height: 40px;\n  display: inline-block;\n  padding-left: 20px;\n  padding-right: 20px;\n  color: #999999 !important;\n  background-repeat: no-repeat;\n  background-position: left center;\n}\n.boxGroupTit span.functionButton a:hover {\n  color: #31395d;\n}\n.boxGroupTit span.functionButton .refresh-icon {\n  background-image: url(" + __webpack_require__(618) + ");\n}\n.boxGroupTit span.functionButton .refresh-icon:hover {\n  background-image: url(" + __webpack_require__(619) + ");\n}\n.boxGroupTit span.functionButton .saveIcon {\n  background-image: url(" + __webpack_require__(620) + ");\n}\n.boxGroupTit span.functionButton .saveIcon:hover {\n  background-image: url(" + __webpack_require__(621) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon {\n  background-image: url(" + __webpack_require__(622) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon:hover {\n  background-image: url(" + __webpack_require__(623) + ");\n}\n.staging-left,\n.staging-right {\n  float: left;\n}\n.projectinFormation {\n  width: 66.6%;\n  height: auto;\n  margin-top: 10px;\n  padding-right: 20px;\n}\n.fieldLocation {\n  margin-top: 10px;\n  width: 33.3%;\n  height: 295px;\n  border: 1px solid #dddddd;\n}\n.carouselStyle .left,\n.carouselStyle .right {\n  background: none;\n}\n.carouselStyle .carousel-control {\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  top: 50%;\n  margin-top: -15px;\n  background: #F1A118;\n}\n.carouselStyle .carousel-control:hover {\n  opacity: 0.8;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 618:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABO0lEQVQ4T6VSsXHDMAwkWLBOJohG8AbRBrE3sBrxWNnZQNlAHUk1zgbWBlEmiD1Bkg3USgWQg45y7Fgn5s4sCeDx/3gQNz6Ymt/tdnd932+IaA0ASehpiagmohdjzNc4dwVQVdWCiN6I6J2ISmNMw838j4gMuEHEzBjzyv8XANbaREr5gYjPY8NfhmEBg6611vUFgPeeC43WupizxlqbSilrpVRyAgjbP5VS91mWtTFvnXMHlngOwKiF1jqNDXPdez+whKDpiYh4MAEANufI+uaAAkA6MAjaH8PAt1JqEZPhnCsBoB0A+O5d1zV8cwBI8zw/xGSwBwBQnDwIUpIY9cB4K4TYaq1/rxDbONa990smjYgrDtlklKfCg4gPQoglAKzGEF0lcYpF2LgnoiMAcHjKc4P/xWBO3s0AP2hInl/EMUEDAAAAAElFTkSuQmCC"
+
+/***/ }),
+
+/***/ 619:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA7ElEQVQ4T6WTgQ0BQRBFnw6ogBJ0QAfogArQAR3ogA7oABWgAnRwJcjb7CbncmcvMcnmkt2ZN//P7nX4MzoN9V1gCcyBQcwpgBOwBV6prg4wBM7AFdgBl5jsvkDBC+DgfhVgtxuwTgk1CgUJFXaqAjxwbTKjGUc7gzLA7k+gB+g3F3ctlgFS7ey3TQSVAvQ0iYWqcDiPKPEXKDRLCvQ9itnvCM3Z8IaKBPDehahAC/rLhTmb8gy0IsDHkosV4Pq6hVxROp8Ce2Cm6qanXIWprg9YbGF4RHUvsU6FRcfSzYTh/foX2loJeW0tNEI/qngqkZ/g9CsAAAAASUVORK5CYII="
+
+/***/ }),
+
+/***/ 620:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA+ElEQVQ4T92TMY6DQAxFxyMx7XKE3GBzg+QoocGaLkfgCHTINHAU9ga7N8gRSOvCXnmUWa0iEEmTIi5Ag/0fxnyDu0Xf93vn3Ec+b9yvdV1/Ww3YhYjOqnoCgPkmnFYAR3uuqqWqtjHGMQPmEMKOmc9WgIjNf4B1VxTFJedDCC0zXxCxzABFRCCiJLwHENEkIo33PnVgeSJKmpcBGhEZvfenrQ5sBgcAaJeGqKqW/0LEdvEThmEomdneUq78BRv2WFXVvAh40AOp7A0Bs7nqyRkkTTaSOfDTOZcW5IGwxfsxRyaARdd1x2zVLYCITDHGtHB/gC3RWv4XGt+9Eawr3zcAAAAASUVORK5CYII="
+
+/***/ }),
+
+/***/ 621:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABC0lEQVQ4T92TQUrEQBBFfzFBxpU5gjewXQjJyjnHkECOkCN4hBwhkOA54moCLqa9wRyhXTlghi/VSUSwGePGhbXopqn6j+ruX4IpzN3WSLS6ms/ndg6nV/v8aLVGdDFpXgpZEOJGIbswQDajiDEhle2b2gNuk8zxGF1jPZR6tn378BWg3eH94jDncYwqWQ+Hfd/GIyDNud81YpLMC78BkrwDqDnfgeZnzV8BtLOhBqLifAdpXgK8F0gVekSCJSBPdtdU4SuYIsblqQAZB39BxOFtVVtbuyBgiQfmmn8HSDKnrvrVG0yacRbUgYIbEH5AfgyBAfGijvSACaI29VZdEJ3tWz9wn4AFomDJB58qtRFyLtVBAAAAAElFTkSuQmCC"
+
+/***/ }),
+
+/***/ 622:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABVklEQVQ4T6WTzXHCQAyFn/bAcAsdxCW4BHcQSogvaH0jHZAOuBlxASoIqSDuAHcQ0gE5cmCVkcdmjDFkMtnbrqRPTz9L+OehvngRmarqExHFqlqq6muWZUWf7xVARGYAosFgME3T9LBcLuMQwpqIZsy87UIuAKvVanQ8Hgvvfdx2zPM8cs4VzBzdBeR5nhDR2Hs/7TqKiDLzleKLB8tERNsbCkpmHt1VYMbFYrElok9mfrF7Lf8NwIaZ578CrGmq+gFgpKp7IopU9d17P24Bd6q6sVIvSqgn8AxgHkIom2zD4bBsJnI6nWLnXAIgsaaeASKytoBmfF2pbWUhhBRAkWXZvgJY951zNmcjX512MIBvIkomk0mlsALUjVv3Lcq94DNARPZ9S2IOZgPw2M3cyKwU3FqSOvsOwJctWCO7XWMDOAB4aBts62wH7M2adevT9v7Gv/zwH4PhtBGvNQeUAAAAAElFTkSuQmCC"
+
+/***/ }),
+
+/***/ 623:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABaklEQVQ4T6WTzU3DQBCF3+BF4oY7wCVsDpHsmzsgxyhypNBB6MB0kBIc2ULcCBXg21ri4O2A0EG4RSJk0Do/bJwlCOGbtTPfvJl5Q/jnR658GQ3HYL4GkQSzBnCnq6J0xR4BZJikAAIsxVjrbCG7A0neWcaEVKti1oYcAKQc+XSxKuuqkHagDPsBkShrVQSnAWESg9DTqhi3AzvRkGuVHyk+VGAqQcycCiB0XRX+SQXmUUZD0+erVvlt8x/2A5B4BGiqVT75HdAdSAjvmQCfGXMiBAw8aZX3voHnNcBT02qrhSQlwohBk+36NgWXQu82As+TAMdEiM1Q9wAZJtk2uFlfW6pZp6XsBvgodfUwbwDSTB+U6iqPncayksH8zp/rWL/cG4NhA2gGx5nLKHbldvIe0ImSucskJsC8AXTlSrYAbpM0Nhaemfgbr9a9nWy7zaaFTpgsQHRpPxjXNR4AYIb109E6r/EvF/4FXk6sEdl++K0AAAAASUVORK5CYII="
+
+/***/ }),
+
+/***/ 637:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(19);
+
+var _react2 = _interopRequireDefault(_react);
+
+__webpack_require__(65);
+
+__webpack_require__(79);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+//兼容ie
+
+// import Province from "./tools-LevelLinkage.js";
+__webpack_require__(616);
+
+var NewProjectCount = function (_React$Component) {
+    _inherits(NewProjectCount, _React$Component);
+
+    function NewProjectCount(arg) {
+        _classCallCheck(this, NewProjectCount);
+
+        var _this = _possibleConstructorReturn(this, (NewProjectCount.__proto__ || Object.getPrototypeOf(NewProjectCount)).call(this, arg));
+
+        _this.state = {
+            "CompanyAreaName": "",
+            "CompanyCityName": "",
+            "PROJECTNAME": "",
+            "CASENAME": "",
+            "PROJECTADDRESS": "",
+            "TRADERMODE": "",
+            "PROJECTTYPE": "",
+            "EQUITYRATIO": "",
+            "PROJECTCODE": "",
+            "PRINCIPAL": ""
+            // "cityCompany":iss.id.text,
+        };
+        iss.hashHistory.listen(function (local, next) {
+            //console.log(arguments)
+        });
+
+        return _this;
+    }
+
+    _createClass(NewProjectCount, [{
+        key: "getAjax",
+        value: function getAjax() {
+            var th = this;
+            // console.log(th);
+            //   let projectId = this.props.location.state.id;
+            var statu = this.props.local.query.statu;
+            var json = {};
+            var urlProject;
+            //console.log(statu)
+            if (statu == "edit") {
+                urlProject = "/Project/IProjectInfo";
+                json.projectId = iss.id.id;
+            } else {
+                urlProject = "/Project/INewProject";
+                json.cityId = iss.id.id;
+            }
+            iss.ajax({
+                type: "post",
+                //url:"/Project/IProjectInfo",  
+                url: urlProject,
+                data: json,
+                sucess: function sucess(res) {
+                    //console.log(res.rows);
+                    // console.log(res.rows.SelectOptions.TRADERMODE)
+                    th.setState({
+                        "PROJECTNAME": res.rows.BaseFormInfo.Project.PROJECTNAME,
+                        "CASENAME": res.rows.BaseFormInfo.Project.CASENAME,
+                        "EQUITYRATIO": res.rows.BaseFormInfo.Project.EQUITYRATIO,
+                        "PROJECTCODE": res.rows.BaseFormInfo.Project.PROJECTCODE,
+                        "PRINCIPAL": res.rows.BaseFormInfo.Project.PRINCIPAL,
+                        "PROJECTADDRESS": res.rows.BaseFormInfo.Project.PROJECTADDRESS,
+                        //"PROJECTTYPE":res.rows.BaseFormInfo.Project.PROJECTTYPE,
+                        "TRADERMODE": res.rows.BaseFormInfo.Project.TRADERMODE,
+                        "ObtainStatusName": res.rows.BaseFormInfo.ObtainStatusName,
+                        "CompanyAreaName": res.rows.BaseFormInfo.CompanyAreaName,
+                        "CompanyCityName": res.rows.BaseFormInfo.CompanyCityName,
+                        "ID": res.rows.BaseFormInfo.Project.ID,
+                        "PARENTID": res.rows.BaseFormInfo.Project.PARENTID
+                    }, function (arg) {
+                        //console.log(th.state)
+                        th.bind_combobox(res);
+                    });
+                },
+                error: function error(e) {}
+            });
+        }
+    }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var id = iss.id;
+            if (id == "1E1CB1E95A864AFA961392C3E3644642" || !id) {
+                iss.hashHistory.replace({ pathname: "index" });
+            } else {
+                this.getAjax();
+            }
+            // this.bind_combobox();
+        }
+    }, {
+        key: "BIND_CHANGE_DATA",
+        value: function BIND_CHANGE_DATA(data) {
+            this.props.NewProjectCountDATA(data);
+        }
+    }, {
+        key: "handChooseTo",
+        value: function handChooseTo(ev, da) {
+            iss.chooseTo({
+                url: "/Home/GetTreeInfo",
+                title: "选择人员",
+                pepole: {}, //已选人员名单
+                callback: function callback(da) {
+                    // console.log(da);
+                }
+            });
+        }
+    }, {
+        key: "handleInputTextChange",
+        value: function handleInputTextChange(e) {
+            var _this2 = this;
+
+            var th = this;
+            var target = e.target.id;
+
+            this.setState(_defineProperty({}, target, e.target.value), function () {
+                th.BIND_CHANGE_DATA(_this2.state);
+            });
+            // console.log(e.target.id);
+            //console.log(e.target.value);
+        }
+    }, {
+        key: "handleSelectTextChange",
+        value: function handleSelectTextChange(e, b, c) {
+            var _this3 = this;
+
+            var th = this;
+            this.setState(_defineProperty({}, e, b), function () {
+                th.BIND_CHANGE_DATA(_this3.state);
+            });
+            //console.log(this.state);  
+        }
+    }, {
+        key: "bind_combobox",
+        value: function bind_combobox(arg) {
+            var th = this;
+            console.log(arg);
+            var belongCity = this.belongCity = $("#belongCity"); //所属城市
+            belongCity.combo({
+                required: true,
+                editable: false,
+                panelWidth: "452px",
+                panelHeight: "auto"
+            });
+            // $('#linkage').appendTo(belongCity.combo('panel'));
+            // $('#linkage select').click(function(){
+            //     var v = $('#linkage select option:selected').text();
+            //     belongCity.combo('setText', v)
+            //     $('#linkage #town').click(function(){
+            //         belongCity.combo('hidePanel');
+            //     })
+            // });
+
+            /*let developmentWay = $("#PROJECTTYPE")//项目开发方式
+            developmentWay.combobox({
+                valueField: "val",
+                textField: "label",
+                editable: true,
+                readonly: false, 
+                panelHeight:"auto",
+                onChange:th.handleSelectTextChange.bind(th,"PROJECTTYPE"),
+                data:arg.rows.SelectOptions.PROJECTTYPE, 
+            });
+            developmentWay.combobox("select",arg.rows.BaseFormInfo.Project.PROJECTTYPE);
+            */
+            var tradersWay = $("#TRADERMODE"); //操盘方式
+            tradersWay.combobox({
+                valueField: "val",
+                textField: "label",
+                editable: true,
+                readonly: false,
+                panelHeight: "auto",
+                onChange: th.handleSelectTextChange.bind(th, "TRADERMODE"),
+                data: arg.rows.SelectOptions.TRADERMODE
+
+            });
+            tradersWay.combobox("select", arg.rows.BaseFormInfo.Project.TRADERMODE);
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "section",
+                null,
+                _react2.default.createElement(
+                    "article",
+                    { className: "staging-box" },
+                    _react2.default.createElement(
+                        "section",
+                        { className: "staging-left boxSizing projectinFormation" },
+                        _react2.default.createElement(
+                            "table",
+                            { className: "formTable", width: "100%" },
+                            _react2.default.createElement(
+                                "colgroup",
+                                null,
+                                _react2.default.createElement("col", { width: "150" }),
+                                _react2.default.createElement("col", { width: "" }),
+                                _react2.default.createElement("col", { width: "150" }),
+                                _react2.default.createElement("col", { width: "" })
+                            ),
+                            _react2.default.createElement(
+                                "tbody",
+                                null,
+                                _react2.default.createElement(
+                                    "tr",
+                                    null,
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        _react2.default.createElement(
+                                            "label",
+                                            { className: "formTableLabel boxSizing" },
+                                            "\u6240\u5C5E\u533A\u57DF"
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        _react2.default.createElement("input", { readOnly: "readonly", id: "CompanyAreaName", value: this.state.CompanyAreaName || "", className: "inputTextBox inputGray boxSizing", type: "text" })
+                                    ),
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        _react2.default.createElement(
+                                            "label",
+                                            { className: "formTableLabel boxSizing" },
+                                            "\u57CE\u5E02\u516C\u53F8"
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        _react2.default.createElement("input", { readOnly: "readonly", id: "CompanyCityName", value: this.state.CompanyCityName || "", className: "inputTextBox inputGray boxSizing", type: "text" })
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "tr",
+                                    null,
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        _react2.default.createElement(
+                                            "label",
+                                            { className: "formTableLabel boxSizing redFont" },
+                                            "\u6240\u5C5E\u57CE\u5E02"
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        _react2.default.createElement("input", { className: "inputTextBox boxSizing", type: "text" })
+                                    ),
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        _react2.default.createElement(
+                                            "label",
+                                            { className: "formTableLabel boxSizing" },
+                                            "\u83B7\u53D6\u72B6\u6001"
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        "td",
+                                        { id: "ObtainStatusName" },
+                                        this.state.ObtainStatusName
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "tr",
+                                    null,
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        _react2.default.createElement(
+                                            "label",
+                                            { className: "formTableLabel boxSizing redFont" },
+                                            "\u9879\u76EE\u540D\u79F0"
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "PROJECTNAME", value: this.state.PROJECTNAME || "", className: "inputTextBox boxSizing", type: "text" })
+                                    ),
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        _react2.default.createElement(
+                                            "label",
+                                            { className: "formTableLabel boxSizing redFont" },
+                                            "\u9879\u76EE\u6848\u540D"
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "CASENAME", value: this.state.CASENAME || "", className: "inputTextBox boxSizing", type: "text" })
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "tr",
+                                    null,
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        _react2.default.createElement(
+                                            "label",
+                                            { className: "formTableLabel boxSizing" },
+                                            "\u6743\u76CA\u6BD4\u4F8B"
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        _react2.default.createElement("input", { readOnly: "readonly", id: "EQUITYRATIO", value: this.state.EQUITYRATIO || "", className: "inputTextBox inputGray boxSizing", type: "text" }),
+                                        _react2.default.createElement(
+                                            "i",
+                                            { className: "symbol" },
+                                            "%"
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        _react2.default.createElement(
+                                            "label",
+                                            { className: "formTableLabel boxSizing" },
+                                            "\u9879\u76EE\u7F16\u53F7"
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        _react2.default.createElement("input", { readOnly: "readonly", id: "PROJECTCODE", value: this.state.PROJECTCODE || "", className: "inputTextBox inputGray boxSizing", type: "text" })
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "tr",
+                                    null,
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        _react2.default.createElement(
+                                            "label",
+                                            { className: "formTableLabel boxSizing redFont" },
+                                            "\u64CD\u76D8\u65B9\u5F0F"
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        _react2.default.createElement("input", { type: "text", id: "TRADERMODE" })
+                                    ),
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        _react2.default.createElement(
+                                            "label",
+                                            { className: "formTableLabel boxSizing redFont" },
+                                            "\u9879\u76EE\u8D1F\u8D23\u4EBA"
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        _react2.default.createElement("input", { readOnly: "readonly", onClick: this.handChooseTo.bind(this), onChange: this.handleInputTextChange.bind(this), id: "PRINCIPAL", value: this.state.PRINCIPAL || "", className: "inputTextBox boxSizing", type: "text" }),
+                                        _react2.default.createElement("img", { className: "symbol headIcon", src: "../../Content/img/head-icon.png" })
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "tr",
+                                    null,
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        _react2.default.createElement(
+                                            "label",
+                                            { className: "formTableLabel boxSizing redFont" },
+                                            "\u5730\u7406\u4F4D\u7F6E"
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        _react2.default.createElement(
+                                            "button",
+                                            { className: "btn btnStyle uploadIconBtn", id: "LOCATION" },
+                                            "\u6807\u8BB0\u5730\u7406\u4F4D\u7F6E"
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        _react2.default.createElement(
+                                            "label",
+                                            { className: "formTableLabel boxSizing redFont" },
+                                            "\u9879\u76EE\u603B\u56FE"
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        "td",
+                                        null,
+                                        _react2.default.createElement(
+                                            "button",
+                                            { className: "btn btnStyle uploadIconBtn" },
+                                            "\u4E0A\u4F20"
+                                        ),
+                                        _react2.default.createElement(
+                                            "button",
+                                            { className: "btn btnStyle userApplyIconBtn" },
+                                            "\u7F16\u8F91"
+                                        )
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "tr",
+                                    null,
+                                    _react2.default.createElement(
+                                        "th",
+                                        null,
+                                        _react2.default.createElement(
+                                            "label",
+                                            { className: "formTableLabel boxSizing redFont" },
+                                            "\u9879\u76EE\u5730\u5740"
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        "td",
+                                        { colSpan: "3" },
+                                        _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "PROJECTADDRESS", value: this.state.PROJECTADDRESS || "", className: "inputTextBox boxSizing", type: "text" })
+                                    )
+                                )
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        "section",
+                        { className: "staging-right boxSizing fieldLocation fl" },
+                        _react2.default.createElement(
+                            "div",
+                            { id: "myCarousel", className: "carousel slide carouselStyle" },
+                            _react2.default.createElement(
+                                "div",
+                                { className: "carousel-inner" },
+                                _react2.default.createElement(
+                                    "div",
+                                    { className: "item active" },
+                                    _react2.default.createElement("iframe", { src: "", width: "100%", height: "295px" })
+                                ),
+                                _react2.default.createElement(
+                                    "div",
+                                    { className: "item" },
+                                    _react2.default.createElement("iframe", { src: "", width: "100%", height: "295px" })
+                                )
+                            ),
+                            _react2.default.createElement(
+                                "a",
+                                { className: "carousel-control left", href: "#myCarousel",
+                                    "data-slide": "prev" },
+                                "\u2039"
+                            ),
+                            _react2.default.createElement(
+                                "a",
+                                { className: "carousel-control right", href: "#myCarousel",
+                                    "data-slide": "next" },
+                                "\u203A"
+                            )
+                        )
+                    ),
+                    _react2.default.createElement("div", { className: "clear" })
+                )
+            );
+        }
+    }]);
+
+    return NewProjectCount;
+}(_react2.default.Component);
+
+exports.default = NewProjectCount;
+
+/***/ }),
+
+/***/ 638:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1148,636 +1991,6 @@ exports.default = {
         }
     }
 };
-
-/***/ }),
-
-/***/ 601:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(602);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(594)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./intallment.less", function() {
-			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./intallment.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ 602:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(593)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, ".clear {\n  clear: both;\n}\n.boxGroupTit {\n  height: 40px;\n  margin-bottom: 5px ;\n  position: relative;\n  margin-top: 0;\n}\n.boxGroupTit p {\n  height: 40px;\n  line-height: 40px;\n  color: #333333;\n  font-size: 14px;\n  border-bottom: 1px solid #c9c9c9;\n}\n.boxGroupTit p span {\n  display: inline-block;\n  line-height: 40px;\n  border-bottom: 2px solid #31395d;\n}\n.boxGroupTit p i {\n  font-style: normal;\n}\n.boxGroupTit span.functionButton {\n  position: absolute;\n  right: 0;\n  top: 0;\n  width: auto;\n  text-align: right;\n}\n.boxGroupTit span.functionButton a {\n  font-size: 12px;\n  height: 40px;\n  line-height: 40px;\n  display: inline-block;\n  padding-left: 20px;\n  padding-right: 20px;\n  color: #999999 !important;\n  background-repeat: no-repeat;\n  background-position: left center;\n}\n.boxGroupTit span.functionButton a:hover {\n  color: #31395d;\n}\n.boxGroupTit span.functionButton .refresh-icon {\n  background-image: url(" + __webpack_require__(603) + ");\n}\n.boxGroupTit span.functionButton .refresh-icon:hover {\n  background-image: url(" + __webpack_require__(604) + ");\n}\n.boxGroupTit span.functionButton .saveIcon {\n  background-image: url(" + __webpack_require__(605) + ");\n}\n.boxGroupTit span.functionButton .saveIcon:hover {\n  background-image: url(" + __webpack_require__(606) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon {\n  background-image: url(" + __webpack_require__(607) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon:hover {\n  background-image: url(" + __webpack_require__(608) + ");\n}\n.staging-left,\n.staging-right {\n  float: left;\n}\n.projectinFormation {\n  width: 66.6%;\n  height: auto;\n  margin-top: 10px;\n  padding-right: 20px;\n}\n.fieldLocation {\n  margin-top: 10px;\n  width: 33.3%;\n  height: 295px;\n  border: 1px solid #dddddd;\n}\n.carouselStyle .left,\n.carouselStyle .right {\n  background: none;\n}\n.carouselStyle .carousel-control {\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  top: 50%;\n  margin-top: -15px;\n  background: #F1A118;\n}\n.carouselStyle .carousel-control:hover {\n  opacity: 0.8;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ 603:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABO0lEQVQ4T6VSsXHDMAwkWLBOJohG8AbRBrE3sBrxWNnZQNlAHUk1zgbWBlEmiD1Bkg3USgWQg45y7Fgn5s4sCeDx/3gQNz6Ymt/tdnd932+IaA0ASehpiagmohdjzNc4dwVQVdWCiN6I6J2ISmNMw838j4gMuEHEzBjzyv8XANbaREr5gYjPY8NfhmEBg6611vUFgPeeC43WupizxlqbSilrpVRyAgjbP5VS91mWtTFvnXMHlngOwKiF1jqNDXPdez+whKDpiYh4MAEANufI+uaAAkA6MAjaH8PAt1JqEZPhnCsBoB0A+O5d1zV8cwBI8zw/xGSwBwBQnDwIUpIY9cB4K4TYaq1/rxDbONa990smjYgrDtlklKfCg4gPQoglAKzGEF0lcYpF2LgnoiMAcHjKc4P/xWBO3s0AP2hInl/EMUEDAAAAAElFTkSuQmCC"
-
-/***/ }),
-
-/***/ 604:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA7ElEQVQ4T6WTgQ0BQRBFnw6ogBJ0QAfogArQAR3ogA7oABWgAnRwJcjb7CbncmcvMcnmkt2ZN//P7nX4MzoN9V1gCcyBQcwpgBOwBV6prg4wBM7AFdgBl5jsvkDBC+DgfhVgtxuwTgk1CgUJFXaqAjxwbTKjGUc7gzLA7k+gB+g3F3ctlgFS7ey3TQSVAvQ0iYWqcDiPKPEXKDRLCvQ9itnvCM3Z8IaKBPDehahAC/rLhTmb8gy0IsDHkosV4Pq6hVxROp8Ce2Cm6qanXIWprg9YbGF4RHUvsU6FRcfSzYTh/foX2loJeW0tNEI/qngqkZ/g9CsAAAAASUVORK5CYII="
-
-/***/ }),
-
-/***/ 605:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA+ElEQVQ4T92TMY6DQAxFxyMx7XKE3GBzg+QoocGaLkfgCHTINHAU9ga7N8gRSOvCXnmUWa0iEEmTIi5Ag/0fxnyDu0Xf93vn3Ec+b9yvdV1/Ww3YhYjOqnoCgPkmnFYAR3uuqqWqtjHGMQPmEMKOmc9WgIjNf4B1VxTFJedDCC0zXxCxzABFRCCiJLwHENEkIo33PnVgeSJKmpcBGhEZvfenrQ5sBgcAaJeGqKqW/0LEdvEThmEomdneUq78BRv2WFXVvAh40AOp7A0Bs7nqyRkkTTaSOfDTOZcW5IGwxfsxRyaARdd1x2zVLYCITDHGtHB/gC3RWv4XGt+9Eawr3zcAAAAASUVORK5CYII="
-
-/***/ }),
-
-/***/ 606:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABC0lEQVQ4T92TQUrEQBBFfzFBxpU5gjewXQjJyjnHkECOkCN4hBwhkOA54moCLqa9wRyhXTlghi/VSUSwGePGhbXopqn6j+ruX4IpzN3WSLS6ms/ndg6nV/v8aLVGdDFpXgpZEOJGIbswQDajiDEhle2b2gNuk8zxGF1jPZR6tn378BWg3eH94jDncYwqWQ+Hfd/GIyDNud81YpLMC78BkrwDqDnfgeZnzV8BtLOhBqLifAdpXgK8F0gVekSCJSBPdtdU4SuYIsblqQAZB39BxOFtVVtbuyBgiQfmmn8HSDKnrvrVG0yacRbUgYIbEH5AfgyBAfGijvSACaI29VZdEJ3tWz9wn4AFomDJB58qtRFyLtVBAAAAAElFTkSuQmCC"
-
-/***/ }),
-
-/***/ 607:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABVklEQVQ4T6WTzXHCQAyFn/bAcAsdxCW4BHcQSogvaH0jHZAOuBlxASoIqSDuAHcQ0gE5cmCVkcdmjDFkMtnbrqRPTz9L+OehvngRmarqExHFqlqq6muWZUWf7xVARGYAosFgME3T9LBcLuMQwpqIZsy87UIuAKvVanQ8Hgvvfdx2zPM8cs4VzBzdBeR5nhDR2Hs/7TqKiDLzleKLB8tERNsbCkpmHt1VYMbFYrElok9mfrF7Lf8NwIaZ578CrGmq+gFgpKp7IopU9d17P24Bd6q6sVIvSqgn8AxgHkIom2zD4bBsJnI6nWLnXAIgsaaeASKytoBmfF2pbWUhhBRAkWXZvgJY951zNmcjX512MIBvIkomk0mlsALUjVv3Lcq94DNARPZ9S2IOZgPw2M3cyKwU3FqSOvsOwJctWCO7XWMDOAB4aBts62wH7M2adevT9v7Gv/zwH4PhtBGvNQeUAAAAAElFTkSuQmCC"
-
-/***/ }),
-
-/***/ 608:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABaklEQVQ4T6WTzU3DQBCF3+BF4oY7wCVsDpHsmzsgxyhypNBB6MB0kBIc2ULcCBXg21ri4O2A0EG4RSJk0Do/bJwlCOGbtTPfvJl5Q/jnR658GQ3HYL4GkQSzBnCnq6J0xR4BZJikAAIsxVjrbCG7A0neWcaEVKti1oYcAKQc+XSxKuuqkHagDPsBkShrVQSnAWESg9DTqhi3AzvRkGuVHyk+VGAqQcycCiB0XRX+SQXmUUZD0+erVvlt8x/2A5B4BGiqVT75HdAdSAjvmQCfGXMiBAw8aZX3voHnNcBT02qrhSQlwohBk+36NgWXQu82As+TAMdEiM1Q9wAZJtk2uFlfW6pZp6XsBvgodfUwbwDSTB+U6iqPncayksH8zp/rWL/cG4NhA2gGx5nLKHbldvIe0ImSucskJsC8AXTlSrYAbpM0Nhaemfgbr9a9nWy7zaaFTpgsQHRpPxjXNR4AYIb109E6r/EvF/4FXk6sEdl++K0AAAAASUVORK5CYII="
-
-/***/ }),
-
-/***/ 618:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(19);
-
-var _react2 = _interopRequireDefault(_react);
-
-__webpack_require__(65);
-
-__webpack_require__(79);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-//兼容ie
-__webpack_require__(601);
-
-var NewProjectCount = function (_React$Component) {
-    _inherits(NewProjectCount, _React$Component);
-
-    function NewProjectCount(arg) {
-        var _arguments = arguments;
-
-        _classCallCheck(this, NewProjectCount);
-
-        var _this = _possibleConstructorReturn(this, (NewProjectCount.__proto__ || Object.getPrototypeOf(NewProjectCount)).call(this, arg));
-
-        _this.state = {
-            "PROJECTNAME": "",
-            "CASENAME": "",
-            "PROJECTADDRESS": "",
-            "TRADERMODE": "",
-            "belongCity": "",
-            "PROJECTTYPE": "",
-            "companyHead": "",
-
-            "EQUITYRATIO": "",
-            "PROJECTCODE": "",
-            "PRINCIPAL": ""
-        };
-        iss.hashHistory.listen(function (local, next) {
-            console.log(_arguments);
-        });
-
-        return _this;
-    }
-
-    _createClass(NewProjectCount, [{
-        key: "getAjax",
-        value: function getAjax() {
-            var th = this;
-            // console.log(th);
-            //   let projectId = this.props.location.state.id;
-            //console.log(this.props.location)
-            iss.ajax({
-                type: "post",
-                url: "/Project/IProjectInfo",
-                data: {
-                    projectId: "A91BB3051A0848319B45D3D527AC4103"
-                },
-                sucess: function sucess(res) {
-                    console.log(res.rows);
-                    console.log(res.rows.SelectOptions.TRADERMODE);
-                    th.setState({
-                        "PROJECTNAME": res.rows.BaseFormInfo.PROJECTNAME,
-                        "CASENAME": res.rows.BaseFormInfo.CASENAME,
-                        "EQUITYRATIO": res.rows.BaseFormInfo.EQUITYRATIO,
-                        "PROJECTCODE": res.rows.BaseFormInfo.PROJECTCODE,
-                        "PRINCIPAL": res.rows.BaseFormInfo.PRINCIPAL,
-                        "PROJECTADDRESS": res.rows.BaseFormInfo.PROJECTADDRESS,
-                        "PROJECTTYPE": res.rows.BaseFormInfo.PROJECTTYPE,
-                        // this.state.PROJECTTYPE
-                        "TRADERMODE": res.rows.BaseFormInfo.TRADERMODE
-                    }, function (arg) {
-                        //console.log(th.state)
-                        th.bind_combobox(res);
-                    });
-                },
-                error: function error(e) {}
-            });
-        }
-    }, {
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            this.getAjax();
-            // this.bind_combobox();
-        }
-    }, {
-        key: "handChooseTo",
-        value: function handChooseTo(ev, da) {
-            iss.chooseTo({
-                url: "/Home/GetTreeInfo",
-                title: "选择人员",
-                pepole: {}, //已选人员名单
-                callback: function callback(da) {
-                    // console.log(da);
-                }
-            });
-        }
-    }, {
-        key: "handleInputTextChange",
-        value: function handleInputTextChange(e) {
-            var th = this;
-            var target = e.target.id;
-
-            this.setState(_defineProperty({}, target, e.target.value), function () {
-                //console.log(this.state) 
-            });
-            //console.log(e.target.id);
-            //console.log(e.target.value);
-        }
-    }, {
-        key: "handleSelectTextChange",
-        value: function handleSelectTextChange(e, b, c) {
-            this.setState(_defineProperty({}, e, b));
-            // console.log(this.state);
-        }
-    }, {
-        key: "bind_combobox",
-        value: function bind_combobox(arg) {
-            var th = this;
-            var belongCity = this.belongCity = $("#belongCity"); //所属城市
-            console.log(arg);
-            // return;
-            belongCity.combobox({
-                valueField: "val",
-                textField: "label",
-                editable: true,
-                readonly: false,
-                panelHeight: "auto",
-                onChange: th.handleSelectTextChange.bind(th, "belongCity"),
-                data: [{ label: "请选择", val: "", "selected": true }, { label: "北京", val: "0" }, { label: "上海", val: "1" }, { label: "广州", val: "2" }]
-            });
-            var developmentWay = $("#PROJECTTYPE"); //项目开发方式
-            developmentWay.combobox({
-                valueField: "val",
-                textField: "label",
-                editable: true,
-                readonly: false,
-                panelHeight: "auto",
-                onChange: th.handleSelectTextChange.bind(th, "PROJECTTYPE"),
-                data: arg.rows.SelectOptions.PROJECTTYPE
-            });
-            developmentWay.combobox("select", arg.rows.BaseFormInfo.PROJECTTYPE);
-
-            var tradersWay = $("#TRADERMODE"); //操盘方式
-            tradersWay.combobox({
-                valueField: "val",
-                textField: "label",
-                editable: true,
-                readonly: false,
-                panelHeight: "auto",
-                onChange: th.handleSelectTextChange.bind(th, "TRADERMODE"),
-                data: arg.rows.SelectOptions.TRADERMODE
-
-            });
-            tradersWay.combobox("select", arg.rows.BaseFormInfo.TRADERMODE);
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(
-                "section",
-                null,
-                _react2.default.createElement(
-                    "article",
-                    { className: "staging-box" },
-                    _react2.default.createElement(
-                        "h3",
-                        { className: "boxGroupTit" },
-                        _react2.default.createElement(
-                            "p",
-                            null,
-                            _react2.default.createElement(
-                                "span",
-                                null,
-                                "\u9879\u76EE\u4FE1\u606F"
-                            ),
-                            _react2.default.createElement(
-                                "i",
-                                null,
-                                "\uFF08",
-                                _react2.default.createElement("i", { className: "redFont" }),
-                                "\u4E3A\u5FC5\u586B\u9879\uFF09"
-                            )
-                        ),
-                        _react2.default.createElement(
-                            "span",
-                            { className: "functionButton" },
-                            _react2.default.createElement(
-                                "a",
-                                { className: "saveIcon ", href: "#" },
-                                "\u6682\u5B58"
-                            ),
-                            _react2.default.createElement(
-                                "a",
-                                { className: "approvalIcon", target: "_blank", href: "#" },
-                                "\u53D1\u8D77\u5BA1\u6279"
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        "section",
-                        { className: "staging-left boxSizing projectinFormation" },
-                        _react2.default.createElement(
-                            "table",
-                            { className: "formTable", width: "100%" },
-                            _react2.default.createElement(
-                                "colgroup",
-                                null,
-                                _react2.default.createElement("col", { width: "150" }),
-                                _react2.default.createElement("col", { width: "" }),
-                                _react2.default.createElement("col", { width: "150" }),
-                                _react2.default.createElement("col", { width: "" })
-                            ),
-                            _react2.default.createElement(
-                                "tbody",
-                                null,
-                                _react2.default.createElement(
-                                    "tr",
-                                    null,
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing" },
-                                            "\u6240\u5C5E\u533A\u57DF"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { readOnly: "readonly", className: "inputTextBox inputGray boxSizing", type: "text" })
-                                    ),
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing" },
-                                            "\u57CE\u5E02\u516C\u53F8"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { readOnly: "readonly", className: "inputTextBox inputGray boxSizing", type: "text" })
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "tr",
-                                    null,
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u6240\u5C5E\u57CE\u5E02"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { type: "text", id: "belongCity" })
-                                    ),
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing" },
-                                            "\u83B7\u53D6\u72B6\u6001"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement(
-                                            "p",
-                                            { id: "OBTAINTSTATUS" },
-                                            "\u62DF\u83B7\u53D6/\u5DF2\u83B7\u53D6"
-                                        )
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "tr",
-                                    null,
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u9879\u76EE\u540D\u79F0"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "PROJECTNAME", value: this.state.PROJECTNAME, className: "inputTextBox boxSizing", type: "text" })
-                                    ),
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u9879\u76EE\u6848\u540D"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "CASENAME", value: this.state.CASENAME, className: "inputTextBox boxSizing", type: "text" })
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "tr",
-                                    null,
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing" },
-                                            "\u6743\u76CA\u6BD4\u4F8B"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { readOnly: "readonly", id: "EQUITYRATIO", value: this.state.EQUITYRATIO, className: "inputTextBox inputGray boxSizing", type: "text" }),
-                                        _react2.default.createElement(
-                                            "i",
-                                            { className: "symbol" },
-                                            "%"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing" },
-                                            "\u9879\u76EE\u7F16\u53F7"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { readOnly: "readonly", id: "PROJECTCODE", value: this.state.PROJECTCODE, className: "inputTextBox inputGray boxSizing", type: "text" })
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "tr",
-                                    null,
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u9879\u76EE\u5F00\u53D1\u65B9\u5F0F"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { type: "text", id: "PROJECTTYPE" })
-                                    ),
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u5730\u7406\u4F4D\u7F6E"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement(
-                                            "button",
-                                            { className: "btn btnStyle uploadIconBtn", id: "LOCATION" },
-                                            "\u6807\u8BB0\u5730\u7406\u4F4D\u7F6E"
-                                        )
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "tr",
-                                    null,
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u64CD\u76D8\u65B9\u5F0F"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { type: "text", id: "TRADERMODE" })
-                                    ),
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u9879\u76EE\u603B\u56FE"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement(
-                                            "button",
-                                            { className: "btn btnStyle uploadIconBtn" },
-                                            "\u4E0A\u4F20"
-                                        ),
-                                        _react2.default.createElement(
-                                            "button",
-                                            { className: "btn btnStyle userApplyIconBtn" },
-                                            "\u7F16\u8F91"
-                                        )
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "tr",
-                                    null,
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u9879\u76EE\u8D1F\u8D23\u4EBA"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { readOnly: "readonly", onClick: this.handChooseTo.bind(this), onChange: this.handleInputTextChange.bind(this), id: "PRINCIPAL", value: this.state.PRINCIPAL, className: "inputTextBox boxSizing", type: "text" }),
-                                        _react2.default.createElement("img", { className: "symbol headIcon", src: "../../Content/img/head-icon.png" })
-                                    ),
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement("label", { className: "formTableLabel boxSizing" })
-                                    ),
-                                    _react2.default.createElement("td", null)
-                                ),
-                                _react2.default.createElement(
-                                    "tr",
-                                    null,
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u9879\u76EE\u5730\u5740"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        { colSpan: "3" },
-                                        _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "PROJECTADDRESS", value: this.state.PROJECTADDRESS, className: "inputTextBox boxSizing", type: "text" })
-                                    )
-                                )
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        "section",
-                        { className: "staging-right boxSizing fieldLocation fl" },
-                        _react2.default.createElement(
-                            "div",
-                            { id: "myCarousel", className: "carousel slide carouselStyle" },
-                            _react2.default.createElement(
-                                "div",
-                                { className: "carousel-inner" },
-                                _react2.default.createElement(
-                                    "div",
-                                    { className: "item active" },
-                                    _react2.default.createElement("iframe", { src: "", width: "100%", height: "295px" })
-                                ),
-                                _react2.default.createElement(
-                                    "div",
-                                    { className: "item" },
-                                    _react2.default.createElement("iframe", { src: "", width: "100%", height: "295px" })
-                                )
-                            ),
-                            _react2.default.createElement(
-                                "a",
-                                { className: "carousel-control left", href: "#myCarousel",
-                                    "data-slide": "prev" },
-                                "\u2039"
-                            ),
-                            _react2.default.createElement(
-                                "a",
-                                { className: "carousel-control right", href: "#myCarousel",
-                                    "data-slide": "next" },
-                                "\u203A"
-                            )
-                        )
-                    ),
-                    _react2.default.createElement("div", { className: "clear" })
-                )
-            );
-        }
-    }]);
-
-    return NewProjectCount;
-}(_react2.default.Component);
-
-exports.default = NewProjectCount;
 
 /***/ })
 
