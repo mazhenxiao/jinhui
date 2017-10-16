@@ -73,6 +73,26 @@ class DynamicTable extends React.Component {
             th.props.CallBack.call(th,el)
         })
     }
+    EVENT_CHANGE_INPUT(da,ev){ //input修改
+        var th = this;
+        if(th.Bind_checked(da,ev.target.value)){
+            th.props.CallBack(da,ev)
+        }
+    }
+    Bind_checked(da,val){ //检测数据
+        let reg = eval(`(${da.regExp})`);
+        if(reg&&reg.type.indexOf("number")>=0){
+            let regs = /\d/,num = (/\d+/).exec(reg.type);
+            if(reg["max"]){  //范围限制带添加
+
+            }
+                if(num){
+                    return !(new RegExp(`\\.\\d{${parseInt(num[0])+1}}`)).test(val);
+                }
+                return regs.test(val);
+        }
+        return true
+    }
     setList(da) {
        // console.log(da)
         let typeBox=el=>{
@@ -86,7 +106,7 @@ class DynamicTable extends React.Component {
                 return <input   name={el.id} className="esayuiDate" id={el.id} data-pid={el.pid} value={el.val||""}  placeholder={el.edit.indexOf("+m")>=0? "":""} type="text"  onClick={this.setEventDate.bind(this,el)}  readOnly="true"  />
             }else{ 
                 
-              return <input   name={el.id} id={el.id} data-pid={el.pid} value={el.val||""}  placeholder={el.edit.indexOf("+m")>=0? "":""} type="text"  onChange={this.props.CallBack.bind(this,el)}  readOnly={el.edit.indexOf("+r")>=0}  />
+              return <input   name={el.id} id={el.id} data-pid={el.pid} value={el.val||""}  placeholder={el.edit.indexOf("+m")>=0? "":""} type="text"  onChange={this.EVENT_CHANGE_INPUT.bind(this,el)}  readOnly={el.edit.indexOf("+r")>=0}  />
             }
         }
 

@@ -533,7 +533,7 @@ var NewProject = function (_React$Component) {
                             { className: "functionButton" },
                             _react2.default.createElement(
                                 "a",
-                                { className: "approvalIcon", href: "javascript:;", onClick: this.EVENT_CLICK_NEWLAND.bind(this) },
+                                { className: "addDik-icon", href: "javascript:;", onClick: this.EVENT_CLICK_NEWLAND.bind(this) },
                                 "\u65B0\u589E\u5730\u5757"
                             )
                         )
@@ -1217,6 +1217,33 @@ var DynamicTable = function (_React$Component) {
             });
         }
     }, {
+        key: "EVENT_CHANGE_INPUT",
+        value: function EVENT_CHANGE_INPUT(da, ev) {
+            //input修改
+            var th = this;
+            if (th.Bind_checked(da, ev.target.value)) {
+                th.props.CallBack(da, ev);
+            }
+        }
+    }, {
+        key: "Bind_checked",
+        value: function Bind_checked(da, val) {
+            //检测数据
+            var reg = eval("(" + da.regExp + ")");
+            if (reg && reg.type.indexOf("number") >= 0) {
+                var regs = /\d/,
+                    num = /\d+/.exec(reg.type);
+                if (reg["max"]) {//范围限制带添加
+
+                }
+                if (num) {
+                    return !new RegExp("\\.\\d{" + (parseInt(num[0]) + 1) + "}").test(val);
+                }
+                return regs.test(val);
+            }
+            return true;
+        }
+    }, {
         key: "setList",
         value: function setList(da) {
             var _this2 = this;
@@ -1241,7 +1268,7 @@ var DynamicTable = function (_React$Component) {
                     return _react2.default.createElement("input", { name: el.id, className: "esayuiDate", id: el.id, "data-pid": el.pid, value: el.val || "", placeholder: el.edit.indexOf("+m") >= 0 ? "" : "", type: "text", onClick: _this2.setEventDate.bind(_this2, el), readOnly: "true" });
                 } else {
 
-                    return _react2.default.createElement("input", { name: el.id, id: el.id, "data-pid": el.pid, value: el.val || "", placeholder: el.edit.indexOf("+m") >= 0 ? "" : "", type: "text", onChange: _this2.props.CallBack.bind(_this2, el), readOnly: el.edit.indexOf("+r") >= 0 });
+                    return _react2.default.createElement("input", { name: el.id, id: el.id, "data-pid": el.pid, value: el.val || "", placeholder: el.edit.indexOf("+m") >= 0 ? "" : "", type: "text", onChange: _this2.EVENT_CHANGE_INPUT.bind(_this2, el), readOnly: el.edit.indexOf("+r") >= 0 });
                 }
             };
 
@@ -1355,7 +1382,7 @@ exports = module.exports = __webpack_require__(606)(undefined);
 
 
 // module
-exports.push([module.i, ".tools-dynamicTable {\n  margin-top: 10px;\n}\n.tools-dynamicTable ul li {\n  height: 40px;\n  overflow: hidden;\n}\n.tools-dynamicTable ul li label {\n  font-size: 12px;\n  color: #333;\n  font-weight: normal;\n  width: 110px;\n  text-align: right;\n  padding-top: 5px;\n  float: left;\n}\n.tools-dynamicTable ul li div {\n  display: block;\n  margin: 0 65px 0 115px;\n}\n.tools-dynamicTable ul li div input {\n  width: 100%;\n  padding: 3px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li div select {\n  width: 100%;\n  height: 25px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li i {\n  font-style: normal;\n  width: 60px;\n  float: right;\n  padding-top: 3px;\n}\n.tools-dynamicTable ul li i.date {\n  display: inline-block;\n  height: 30px;\n  background: url(" + __webpack_require__(617) + ") no-repeat 3px 50%;\n}\n.BIND_LAND_BTN {\n  padding: 10px;\n}\n.BIND_LAND_BTN li {\n  display: inline-block;\n  padding: 5px 10px;\n  border: #ddd solid 1px;\n  cursor: pointer;\n  margin: 10px;\n  position: relative;\n  top: 0;\n  left: 0;\n}\n.BIND_LAND_BTN li.active {\n  background: #e4e4e4;\n}\n.BIND_LAND_BTN li .icon-delete {\n  position: absolute;\n  top: -10px;\n  right: -10px;\n  display: none;\n}\n.BIND_LAND_BTN li:hover .icon-delete {\n  display: block;\n}\n", ""]);
+exports.push([module.i, ".tools-dynamicTable {\n  margin-top: 10px;\n}\n.tools-dynamicTable ul li {\n  height: 40px;\n  overflow: hidden;\n}\n.tools-dynamicTable ul li label {\n  font-size: 12px;\n  color: #333;\n  font-weight: normal;\n  width: 110px;\n  text-align: right;\n  padding-top: 5px;\n  float: left;\n}\n.tools-dynamicTable ul li div {\n  display: block;\n  margin: 0 65px 0 115px;\n}\n.tools-dynamicTable ul li div input {\n  width: 100%;\n  padding: 3px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li div input[readonly] {\n  background: #fbfbfb;\n}\n.tools-dynamicTable ul li div select {\n  width: 100%;\n  height: 25px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li i {\n  font-style: normal;\n  width: 60px;\n  float: right;\n  padding-top: 3px;\n}\n.tools-dynamicTable ul li i.date {\n  display: inline-block;\n  height: 30px;\n  background: url(" + __webpack_require__(617) + ") no-repeat 3px 50%;\n}\n.BIND_LAND_BTN {\n  padding: 10px;\n}\n.BIND_LAND_BTN li {\n  display: inline-block;\n  padding: 5px 10px;\n  border: #ddd solid 1px;\n  cursor: pointer;\n  margin: 10px;\n  position: relative;\n  top: 0;\n  left: 0;\n}\n.BIND_LAND_BTN li.active {\n  background: #e4e4e4;\n}\n.BIND_LAND_BTN li .icon-delete {\n  position: absolute;\n  top: -10px;\n  right: -10px;\n  display: none;\n}\n.BIND_LAND_BTN li:hover .icon-delete {\n  display: block;\n}\n", ""]);
 
 // exports
 
@@ -1574,7 +1601,7 @@ var ApprovalControlNode = function (_React$Component) {
             var id = ev.target.value;
             this.selectedFlows.forEach(function (el, ind) {
                 if (el.ContextGuid == da.Id) {
-                    console.log(id);
+                    // console.log(id);
                     el.Participants = [id];
                     return;
                 }
@@ -1671,6 +1698,7 @@ var ApprovalControlNode = function (_React$Component) {
                 return;
             }
             var list = this.state.InfoData[0]["Flows"];
+            th.selectedFlows = [];
             return list.map(function (el, ind) {
                 var submit = { //提交数据
                     ContextGuid: el.Id, //自己id
@@ -1683,6 +1711,7 @@ var ApprovalControlNode = function (_React$Component) {
                 },
                     userArra = [];
                 th.selectedFlows.push(submit); //按地址引用先push后修改
+
                 if (el.Type == "Approve" && th.type == "edit" && el.Users.length >= 2) {
 
                     return _react2.default.createElement(
@@ -1733,6 +1762,9 @@ var ApprovalControlNode = function (_React$Component) {
                     );
                 } else {
                     var str = el.Users.map(function (vv, jj) {
+                        for (var i = 0; i < userArra.length; i++) {
+                            //  if(userArra[i]["Id"])
+                        }
                         userArra.push(vv.UId);
                         return vv.Name + (jj == el.Users.length - 1 ? "" : ",");
                     });
@@ -2050,7 +2082,7 @@ var NewProjectCount = function (_React$Component) {
                 urlProject = "/Project/INewProject";
                 json.cityId = iss.id.id;
             }
-            iss.ajax({
+            iss.ajax({ //获取数据
                 type: "post",
                 //url:"/Project/IProjectInfo",  
                 url: urlProject,
@@ -2075,6 +2107,7 @@ var NewProjectCount = function (_React$Component) {
                     }, function (arg) {
                         //console.log(th.state)
                         th.bind_combobox(res);
+                        th.BIND_CHANGE_DATA(th.state);
                     });
                 },
                 error: function error(e) {}
@@ -2173,7 +2206,7 @@ var NewProjectCount = function (_React$Component) {
             this.time = setTimeout(function (arg) {
                 iss.ajax({
                     type: "POST",
-                    url: "Project/IProjectNameExists",
+                    url: "/Project/IProjectNameExists",
                     data: {
                         name: name
                     },
@@ -2200,25 +2233,25 @@ var NewProjectCount = function (_React$Component) {
     }, {
         key: "BIND_EditMapMark",
         value: function BIND_EditMapMark(event) {
-            window.open(this.state.mapUrl + "/Admin/EditMapMark?project_id=" + this.state.ID + "&cityname=" + this.state.CompanyCityName);
+            window.open(this.state.mapUrl + "/Admin/EditMapMark?project_id=" + this.state.ID + "&cityname=" + this.state.CompanyCityName + "&callback=callback");
         } //点击标记地理位置
 
     }, {
         key: "BIND_EditProject",
         value: function BIND_EditProject(event) {
-            window.open(this.state.mapUrl + "/Admin/EditProject?project_id=" + this.state.ID + "&project_map_id=project" + this.state.ID);
+            window.open(this.state.mapUrl + "/Admin/EditProject?project_id=" + this.state.ID + "&project_map_id=project" + this.state.ID + "&callback=callback");
         } //点击编辑项目总图
 
     }, {
         key: "BIND_maps",
         value: function BIND_maps() {
-            window.open(this.state.mapUrl + "/Map/Project?project_id=" + this.state.ID + "&project_map_id=project" + this.state.ID);
+            window.open(this.state.mapUrl + "/Map/Project?project_id=" + this.state.ID + "&project_map_id=project" + this.state.ID + "&callback=callback");
         } //点击预览项目总图
 
     }, {
         key: "BIND_mapmark",
         value: function BIND_mapmark() {
-            window.open(this.state.mapUrl + "/map/mapmark?project_id=" + this.state.ID + "&cityname=" + this.state.CompanyCityName);
+            window.open(this.state.mapUrl + "/map/mapmark?project_id=" + this.state.ID + "&cityname=" + this.state.CompanyCityName + "&callback=callback");
         } //点击预览地理位置
 
     }, {
@@ -2234,241 +2267,245 @@ var NewProjectCount = function (_React$Component) {
                         "section",
                         { className: "staging-left boxSizing projectinFormation" },
                         _react2.default.createElement(
-                            "table",
-                            { className: "formTable", width: "100%" },
+                            "from",
+                            { id: "FromProjectInfo" },
                             _react2.default.createElement(
-                                "colgroup",
-                                null,
-                                _react2.default.createElement("col", { width: "150" }),
-                                _react2.default.createElement("col", { width: "" }),
-                                _react2.default.createElement("col", { width: "150" }),
-                                _react2.default.createElement("col", { width: "" })
-                            ),
-                            _react2.default.createElement(
-                                "tbody",
-                                null,
+                                "table",
+                                { className: "formTable", width: "100%" },
                                 _react2.default.createElement(
-                                    "tr",
+                                    "colgroup",
                                     null,
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing" },
-                                            "\u6240\u5C5E\u533A\u57DF"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { readOnly: "readonly", id: "CompanyAreaName", value: this.state.CompanyAreaName || "", className: "inputTextBox inputGray boxSizing", type: "text" })
-                                    ),
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing" },
-                                            "\u57CE\u5E02\u516C\u53F8"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { readOnly: "readonly", id: "CompanyCityName", value: this.state.CompanyCityName || "", className: "inputTextBox inputGray boxSizing", type: "text" })
-                                    )
+                                    _react2.default.createElement("col", { width: "150" }),
+                                    _react2.default.createElement("col", { width: "" }),
+                                    _react2.default.createElement("col", { width: "150" }),
+                                    _react2.default.createElement("col", { width: "" })
                                 ),
                                 _react2.default.createElement(
-                                    "tr",
+                                    "tbody",
                                     null,
                                     _react2.default.createElement(
-                                        "th",
+                                        "tr",
                                         null,
                                         _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u6240\u5C5E\u57CE\u5E02"
+                                            "th",
+                                            null,
+                                            _react2.default.createElement(
+                                                "label",
+                                                { className: "formTableLabel boxSizing" },
+                                                "\u6240\u5C5E\u533A\u57DF"
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            "td",
+                                            null,
+                                            _react2.default.createElement("input", { readOnly: "readonly", id: "CompanyAreaName", value: this.state.CompanyAreaName || "", className: "inputTextBox inputGray boxSizing", type: "text" })
+                                        ),
+                                        _react2.default.createElement(
+                                            "th",
+                                            null,
+                                            _react2.default.createElement(
+                                                "label",
+                                                { className: "formTableLabel boxSizing" },
+                                                "\u57CE\u5E02\u516C\u53F8"
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            "td",
+                                            null,
+                                            _react2.default.createElement("input", { readOnly: "readonly", id: "CompanyCityName", value: this.state.CompanyCityName || "", className: "inputTextBox inputGray boxSizing", type: "text" })
                                         )
                                     ),
                                     _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { className: "inputTextBox boxSizing", type: "text" })
-                                    ),
-                                    _react2.default.createElement(
-                                        "th",
+                                        "tr",
                                         null,
                                         _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing" },
-                                            "\u83B7\u53D6\u72B6\u6001"
+                                            "th",
+                                            null,
+                                            _react2.default.createElement(
+                                                "label",
+                                                { className: "formTableLabel boxSizing redFont" },
+                                                "\u6240\u5C5E\u57CE\u5E02"
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            "td",
+                                            null,
+                                            _react2.default.createElement("input", { className: "inputTextBox boxSizing", type: "text" })
+                                        ),
+                                        _react2.default.createElement(
+                                            "th",
+                                            null,
+                                            _react2.default.createElement(
+                                                "label",
+                                                { className: "formTableLabel boxSizing" },
+                                                "\u83B7\u53D6\u72B6\u6001"
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            "td",
+                                            { id: "ObtainStatusName" },
+                                            this.state.ObtainStatusName
                                         )
                                     ),
                                     _react2.default.createElement(
-                                        "td",
-                                        { id: "ObtainStatusName" },
-                                        this.state.ObtainStatusName
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "tr",
-                                    null,
-                                    _react2.default.createElement(
-                                        "th",
+                                        "tr",
                                         null,
                                         _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u9879\u76EE\u540D\u79F0"
+                                            "th",
+                                            null,
+                                            _react2.default.createElement(
+                                                "label",
+                                                { className: "formTableLabel boxSizing redFont" },
+                                                "\u9879\u76EE\u540D\u79F0"
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            "td",
+                                            null,
+                                            _react2.default.createElement("input", { onChange: this.BIND_CHECKPROJECTNAME.bind(this), id: "PROJECTNAME", value: this.state.PROJECTNAME || "", className: "inputTextBox boxSizing", type: "text" })
+                                        ),
+                                        _react2.default.createElement(
+                                            "th",
+                                            null,
+                                            _react2.default.createElement(
+                                                "label",
+                                                { className: "formTableLabel boxSizing redFont" },
+                                                "\u9879\u76EE\u6848\u540D"
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            "td",
+                                            null,
+                                            _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "CASENAME", value: this.state.CASENAME || "", className: "inputTextBox boxSizing", type: "text" })
                                         )
                                     ),
                                     _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { onChange: this.BIND_CHECKPROJECTNAME.bind(this), id: "PROJECTNAME", value: this.state.PROJECTNAME || "", className: "inputTextBox boxSizing", type: "text" })
-                                    ),
-                                    _react2.default.createElement(
-                                        "th",
+                                        "tr",
                                         null,
                                         _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u9879\u76EE\u6848\u540D"
+                                            "th",
+                                            null,
+                                            _react2.default.createElement(
+                                                "label",
+                                                { className: "formTableLabel boxSizing" },
+                                                "\u6743\u76CA\u6BD4\u4F8B"
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            "td",
+                                            null,
+                                            _react2.default.createElement("input", { readOnly: "readonly", id: "EQUITYRATIO", value: this.state.EQUITYRATIO || "", className: "inputTextBox inputGray boxSizing", type: "text" }),
+                                            _react2.default.createElement(
+                                                "i",
+                                                { className: "symbol" },
+                                                "%"
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            "th",
+                                            null,
+                                            _react2.default.createElement(
+                                                "label",
+                                                { className: "formTableLabel boxSizing" },
+                                                "\u9879\u76EE\u7F16\u53F7"
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            "td",
+                                            null,
+                                            _react2.default.createElement("input", { readOnly: "readonly", id: "PROJECTCODE", value: this.state.PROJECTCODE || "", className: "inputTextBox inputGray boxSizing", type: "text" })
                                         )
                                     ),
                                     _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "CASENAME", value: this.state.CASENAME || "", className: "inputTextBox boxSizing", type: "text" })
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "tr",
-                                    null,
-                                    _react2.default.createElement(
-                                        "th",
+                                        "tr",
                                         null,
                                         _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing" },
-                                            "\u6743\u76CA\u6BD4\u4F8B"
+                                            "th",
+                                            null,
+                                            _react2.default.createElement(
+                                                "label",
+                                                { className: "formTableLabel boxSizing redFont" },
+                                                "\u64CD\u76D8\u65B9\u5F0F"
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            "td",
+                                            null,
+                                            _react2.default.createElement("input", { type: "text", id: "TRADERMODE" })
+                                        ),
+                                        _react2.default.createElement(
+                                            "th",
+                                            null,
+                                            _react2.default.createElement(
+                                                "label",
+                                                { className: "formTableLabel boxSizing redFont" },
+                                                "\u5730\u7406\u4F4D\u7F6E"
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            "td",
+                                            null,
+                                            _react2.default.createElement(
+                                                "button",
+                                                { className: "btn btnStyle uploadIconBtn", onClick: this.BIND_EditMapMark.bind(this), id: "LOCATION" },
+                                                "\u6807\u8BB0\u5730\u7406\u4F4D\u7F6E"
+                                            )
                                         )
                                     ),
                                     _react2.default.createElement(
-                                        "td",
+                                        "tr",
                                         null,
-                                        _react2.default.createElement("input", { readOnly: "readonly", id: "EQUITYRATIO", value: this.state.EQUITYRATIO || "", className: "inputTextBox inputGray boxSizing", type: "text" }),
                                         _react2.default.createElement(
-                                            "i",
-                                            { className: "symbol" },
-                                            "%"
+                                            "th",
+                                            null,
+                                            _react2.default.createElement(
+                                                "label",
+                                                { className: "formTableLabel boxSizing redFont" },
+                                                "\u9879\u76EE\u8D1F\u8D23\u4EBA"
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            "td",
+                                            null,
+                                            _react2.default.createElement("input", { readOnly: "readonly", onClick: this.handChooseTo.bind(this), id: "PRINCIPAL", value: this.state.PRINCIPAL || "", className: "inputTextBox boxSizing", type: "text" }),
+                                            _react2.default.createElement("img", { className: "symbol headIcon", src: "../../Content/img/head-icon.png" })
+                                        ),
+                                        _react2.default.createElement(
+                                            "th",
+                                            null,
+                                            _react2.default.createElement(
+                                                "label",
+                                                { className: "formTableLabel boxSizing redFont" },
+                                                "\u9879\u76EE\u603B\u56FE"
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            "td",
+                                            null,
+                                            _react2.default.createElement(
+                                                "button",
+                                                { className: "btn btnStyle uploadIconBtn", onClick: this.BIND_EditProject.bind(this) },
+                                                "\u6807\u8BB0\u5206\u671F"
+                                            )
                                         )
                                     ),
                                     _react2.default.createElement(
-                                        "th",
+                                        "tr",
                                         null,
                                         _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing" },
-                                            "\u9879\u76EE\u7F16\u53F7"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { readOnly: "readonly", id: "PROJECTCODE", value: this.state.PROJECTCODE || "", className: "inputTextBox inputGray boxSizing", type: "text" })
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "tr",
-                                    null,
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
+                                            "th",
+                                            null,
+                                            _react2.default.createElement(
+                                                "label",
+                                                { className: "formTableLabel boxSizing redFont" },
+                                                "\u9879\u76EE\u5730\u5740"
+                                            )
+                                        ),
                                         _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u64CD\u76D8\u65B9\u5F0F"
+                                            "td",
+                                            { colSpan: "3" },
+                                            _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "PROJECTADDRESS", value: this.state.PROJECTADDRESS || "", className: "inputTextBox boxSizing", type: "text" })
                                         )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { type: "text", id: "TRADERMODE" })
-                                    ),
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u5730\u7406\u4F4D\u7F6E"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement(
-                                            "button",
-                                            { className: "btn btnStyle uploadIconBtn", onClick: this.BIND_EditMapMark.bind(this), id: "LOCATION" },
-                                            "\u6807\u8BB0\u5730\u7406\u4F4D\u7F6E"
-                                        )
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "tr",
-                                    null,
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u9879\u76EE\u8D1F\u8D23\u4EBA"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement("input", { readOnly: "readonly", onClick: this.handChooseTo.bind(this), id: "PRINCIPAL", value: this.state.PRINCIPAL || "", className: "inputTextBox boxSizing", type: "text" }),
-                                        _react2.default.createElement("img", { className: "symbol headIcon", src: "../../Content/img/head-icon.png" })
-                                    ),
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u9879\u76EE\u603B\u56FE"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        null,
-                                        _react2.default.createElement(
-                                            "button",
-                                            { className: "btn btnStyle uploadIconBtn", onClick: this.BIND_EditProject.bind(this) },
-                                            "\u6807\u8BB0\u5206\u671F"
-                                        )
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "tr",
-                                    null,
-                                    _react2.default.createElement(
-                                        "th",
-                                        null,
-                                        _react2.default.createElement(
-                                            "label",
-                                            { className: "formTableLabel boxSizing redFont" },
-                                            "\u9879\u76EE\u5730\u5740"
-                                        )
-                                    ),
-                                    _react2.default.createElement(
-                                        "td",
-                                        { colSpan: "3" },
-                                        _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "PROJECTADDRESS", value: this.state.PROJECTADDRESS || "", className: "inputTextBox boxSizing", type: "text" })
                                     )
                                 )
                             )
@@ -2517,6 +2554,7 @@ var NewProjectCount = function (_React$Component) {
     return NewProjectCount;
 }(_react2.default.Component);
 
+window["callback"] = function (str, data) {};
 exports.default = NewProjectCount;
 
 /***/ })

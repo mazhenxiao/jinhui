@@ -45,7 +45,7 @@ class NewProjectCount extends React.Component {
             urlProject="/Project/INewProject";
             json.cityId=iss.id.id;
        }
-        iss.ajax({
+        iss.ajax({  //获取数据
             type:"post",
             //url:"/Project/IProjectInfo",  
             url:urlProject,  
@@ -70,7 +70,7 @@ class NewProjectCount extends React.Component {
                 },arg=>{
                     //console.log(th.state)
                     th.bind_combobox(res);
-                    
+                    th.BIND_CHANGE_DATA(th.state);
                 })
             },
             error(e){ 
@@ -158,7 +158,7 @@ class NewProjectCount extends React.Component {
         this.time = setTimeout(arg=>{
             iss.ajax({
                 type:"POST",
-                url:"Project/IProjectNameExists",
+                url:"/Project/IProjectNameExists",
                 data:{
                     name:name,
                 },
@@ -181,21 +181,22 @@ class NewProjectCount extends React.Component {
         $(event.target).attr("src","../../Content/img/xmViewError.png");
     }//加载暂无
     BIND_EditMapMark(event){
-        window.open(this.state.mapUrl+"/Admin/EditMapMark?project_id="+this.state.ID+"&cityname="+this.state.CompanyCityName);    
+        window.open(this.state.mapUrl+"/Admin/EditMapMark?project_id="+this.state.ID+"&cityname="+this.state.CompanyCityName+"&callback=callback");    
     }//点击标记地理位置
     BIND_EditProject(event){
-        window.open(this.state.mapUrl+"/Admin/EditProject?project_id="+this.state.ID+"&project_map_id=project"+this.state.ID);    
+        window.open(this.state.mapUrl+"/Admin/EditProject?project_id="+this.state.ID+"&project_map_id=project"+this.state.ID+"&callback=callback");    
     } //点击编辑项目总图
     BIND_maps(){
-        window.open(this.state.mapUrl+"/Map/Project?project_id="+this.state.ID+"&project_map_id=project"+this.state.ID);    
+        window.open(this.state.mapUrl+"/Map/Project?project_id="+this.state.ID+"&project_map_id=project"+this.state.ID+"&callback=callback");    
     } //点击预览项目总图
     BIND_mapmark(){
-        window.open(this.state.mapUrl+"/map/mapmark?project_id="+this.state.ID+"&cityname="+this.state.CompanyCityName)
+        window.open(this.state.mapUrl+"/map/mapmark?project_id="+this.state.ID+"&cityname="+this.state.CompanyCityName+"&callback=callback")
     }//点击预览地理位置
     render() {
         return <section>
             <article className="staging-box">
                 <section className="staging-left boxSizing projectinFormation">
+                    <from id="FromProjectInfo">
                     <table className="formTable" width="100%">
                         <colgroup>
                             <col width="150" /><col width="" />
@@ -297,13 +298,10 @@ class NewProjectCount extends React.Component {
                                 <td colSpan="3">
                                 <input   onChange={this.handleInputTextChange.bind(this)} id="PROJECTADDRESS" value={this.state.PROJECTADDRESS||""} className="inputTextBox boxSizing" type="text" />
                                 </td>
-                               
                             </tr>
-
-                           
-
                         </tbody>
                     </table>
+                    </from>
                 </section>
                 <section className="staging-right boxSizing fieldLocation fl">
                     {/* bootstrap 轮播图 */}
@@ -327,5 +325,9 @@ class NewProjectCount extends React.Component {
             </article>
         </section>
     }
+}
+
+window["callback"]=(str,data)=>{
+      
 }
 export default NewProjectCount;

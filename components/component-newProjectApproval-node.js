@@ -74,7 +74,7 @@ class ApprovalControlNode extends React.Component {
         var id = (ev.target.value);
         this.selectedFlows.forEach((el, ind) => {
             if (el.ContextGuid == da.Id) {
-                console.log(id);
+               // console.log(id);
                 el.Participants = [id];
                 return;
             }
@@ -162,6 +162,7 @@ class ApprovalControlNode extends React.Component {
         var th = this;
         if (!this.state.InfoData.length) { return }
         let list = this.state.InfoData[0]["Flows"];
+        th.selectedFlows=[];
         return list.map((el, ind) => {
             let submit =
                 { //提交数据
@@ -174,6 +175,7 @@ class ApprovalControlNode extends React.Component {
                     RunFlowId: "0"//流程节点
                 }, userArra = [];
             th.selectedFlows.push(submit);  //按地址引用先push后修改
+
             if (el.Type == "Approve" && th.type == "edit" && el.Users.length >= 2) {
 
                 return <li key={ind}>
@@ -203,6 +205,9 @@ class ApprovalControlNode extends React.Component {
                 </li>
             } else {
                 let str = el.Users.map((vv, jj) => {
+                    for(let i=0;i<userArra.length;i++){
+                      //  if(userArra[i]["Id"])
+                    }
                     userArra.push(vv.UId);
                     return vv.Name + (jj == el.Users.length - 1 ? "" : ",")
                 })

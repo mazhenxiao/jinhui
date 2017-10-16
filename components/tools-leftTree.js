@@ -121,10 +121,10 @@ class ToolsTree extends React.Component {
                     {setBar()}
                 </div>
             </header>
-            <div className="JH-LeftNav">
-                <p className="JH-TreeTitle">
+            <div className="JH-LeftNav"> 
+             {/*    <p className="JH-TreeTitle">
                     项目名称
-                    </p>
+                    </p> */}
                 <div className="treeBox">
                     <ul id="tree"></ul>
                 </div>

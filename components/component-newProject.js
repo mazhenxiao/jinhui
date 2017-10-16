@@ -369,7 +369,7 @@ class NewProject extends React.Component {
                         <i>（<i className="redFont"></i>为必填项）</i>
                     </p>
                     <span className="functionButton">
-                        <a className="approvalIcon" href="javascript:;" onClick={this.EVENT_CLICK_NEWLAND.bind(this)}>新增地块</a>
+                        <a className="addDik-icon" href="javascript:;" onClick={this.EVENT_CLICK_NEWLAND.bind(this)}>新增地块</a>
                     </span>
                 </h3>
                 <div>

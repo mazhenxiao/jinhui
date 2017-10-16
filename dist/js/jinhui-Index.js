@@ -605,11 +605,6 @@ var ToolsTree = function (_React$Component) {
                     'div',
                     { className: 'JH-LeftNav' },
                     _react2.default.createElement(
-                        'p',
-                        { className: 'JH-TreeTitle' },
-                        '\u9879\u76EE\u540D\u79F0'
-                    ),
-                    _react2.default.createElement(
                         'div',
                         { className: 'treeBox' },
                         _react2.default.createElement('ul', { id: 'tree' })
