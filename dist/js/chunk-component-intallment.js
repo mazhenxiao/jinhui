@@ -1,6 +1,6 @@
-webpackJsonp([1],{
+webpackJsonp([0],{
 
-/***/ 593:
+/***/ 592:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20,11 +20,11 @@ __webpack_require__(65);
 
 __webpack_require__(79);
 
-var _componentStagingInformation = __webpack_require__(630);
+var _componentStagingInformation = __webpack_require__(636);
 
 var _componentStagingInformation2 = _interopRequireDefault(_componentStagingInformation);
 
-var _componentIndicators = __webpack_require__(631);
+var _componentIndicators = __webpack_require__(637);
 
 var _componentIndicators2 = _interopRequireDefault(_componentIndicators);
 
@@ -46,16 +46,129 @@ var Intallment = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Intallment.__proto__ || Object.getPrototypeOf(Intallment)).call(this, arg));
 
+        _this.state = {
+            StagingInformationDATA: {}, /*分期信息*/
+            landList: [], /*分期占用土地*/
+            status: "show",
+            STAGEVERSIONID_guid: iss.guid(),
+            STAGEID_guid: iss.guid()
+        };
         iss.hashHistory.listen(function (local, next) {});
         return _this;
     }
 
     _createClass(Intallment, [{
+        key: "componentWillMount",
+        value: function componentWillMount() {
+
+            var location = this.props.location;
+            if (location.query["status"]) {
+                this.setState({
+                    status: this.props.location.query.status
+                });
+            }
+        }
+    }, {
         key: "componentDidMount",
         value: function componentDidMount() {}
     }, {
+        key: "BIND_StagingInformationDATA",
+        value: function BIND_StagingInformationDATA(data) {
+            console.log(data);
+            this.setState({
+                StagingInformationDATA: data
+            }, function () {
+                //   this.getAjax();
+            });
+        }
+        /*分期占用土地==数据*/
+
+    }, {
+        key: "evLandList",
+        value: function evLandList(landArr) {
+            console.log("最终地块信息");
+            console.log(landArr);
+            var th = this;
+            th.setState({
+                landList: landArr
+            });
+        }
+    }, {
+        key: "EVENT_CLICK_POSTAPP",
+        value: function EVENT_CLICK_POSTAPP() {
+            var status = this.props.location.query.status;
+            var th = this;
+            var SumbitType;
+            var dta = th.state.StagingInformationDATA;
+
+            dta.LandList = th.state.landList;
+            if (status == "edit") {
+                SumbitType = "Edit";
+            } else if (status == "add") {
+                SumbitType = "Add";
+            } else if (status == "upgrade") {
+                SumbitType = "Upgrade";
+                dta.STAGEVERSIONID = this.state.STAGEVERSIONID_guid;
+                dta.STAGEVERSIONIDOLD = iss.id.id;
+                dta.STAGEID = this.state.STAGEID_guid;
+            }
+            //    console.log(dta);
+
+            iss.ajax({
+                type: "POST",
+                url: "/Stage/IToCreate",
+                data: {
+                    data: JSON.stringify(dta),
+                    SumbitType: SumbitType,
+                    EditType: "Submit"
+                },
+                success: function success(data) {},
+                error: function error(er) {
+                    console.log('错误');
+                }
+            });
+        }
+    }, {
+        key: "EVENT_CLICK_SAVE",
+        value: function EVENT_CLICK_SAVE() {
+            var status = this.props.location.query.status;
+            var th = this;
+            var SumbitType;
+            var dta = th.state.StagingInformationDATA;
+
+            dta.LandList = th.state.landList;
+            if (status == "edit") {
+                SumbitType = "Edit";
+            } else if (status == "add") {
+                SumbitType = "Add";
+            } else if (status == "upgrade") {
+                SumbitType = "Upgrade";
+                dta.STAGEVERSIONID = this.state.STAGEVERSIONID_guid;
+                dta.STAGEVERSIONIDOLD = iss.id.id;
+                dta.STAGEID = this.state.STAGEID_guid;
+            }
+
+            iss.ajax({
+                type: "POST",
+                url: "/Stage/IToCreate",
+                data: {
+                    data: JSON.stringify(dta),
+                    SumbitType: SumbitType,
+                    EditType: "Submit"
+                },
+                success: function success(data) {},
+                error: function error(er) {
+                    console.log('错误');
+                }
+            });
+        }
+    }, {
+        key: "getAjax",
+        value: function getAjax() {}
+    }, {
         key: "render",
         value: function render() {
+            var th = this;
             return _react2.default.createElement(
                 "article",
                 null,
@@ -86,18 +199,18 @@ var Intallment = function (_React$Component) {
                             { className: "functionButton" },
                             _react2.default.createElement(
                                 "a",
-                                { className: "saveIcon ", href: "#" },
+                                { className: "saveIcon", onClick: this.EVENT_CLICK_SAVE.bind(this), href: "#" },
                                 "\u6682\u5B58"
                             ),
                             _react2.default.createElement(
                                 "a",
-                                { className: "approvalIcon", target: "_blank", href: "#" },
+                                { className: "approvalIcon", onClick: this.EVENT_CLICK_POSTAPP.bind(this), href: "#" },
                                 "\u53D1\u8D77\u5BA1\u6279"
                             )
                         )
                     )
                 ),
-                _react2.default.createElement(_componentStagingInformation2.default, null),
+                _react2.default.createElement(_componentStagingInformation2.default, { location: this.props.location, StagingInformationDATA: this.BIND_StagingInformationDATA.bind(this) }),
                 _react2.default.createElement(
                     "div",
                     null,
@@ -110,17 +223,12 @@ var Intallment = function (_React$Component) {
                             _react2.default.createElement(
                                 "span",
                                 null,
-                                "\u5206\u671F\u7ECF\u6D4E\u6307\u6807"
-                            ),
-                            _react2.default.createElement(
-                                "i",
-                                null,
-                                "\uFF08\u6295\u51B3\u4F1A\u7248\uFF09"
+                                "\u5206\u671F\u89C4\u5212\u6761\u4EF6\u6307\u6807"
                             )
                         )
                     )
                 ),
-                _react2.default.createElement(_componentIndicators2.default, { local: this.props })
+                _react2.default.createElement(_componentIndicators2.default, { local: this.props, callback: th.evLandList.bind(th) })
             );
         }
     }]);
@@ -261,7 +369,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(608);
+var	fixUrls = __webpack_require__(609);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -575,7 +683,7 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 
-/***/ 608:
+/***/ 609:
 /***/ (function(module, exports) {
 
 
@@ -671,7 +779,7 @@ module.exports = function (css) {
 
 /***/ }),
 
-/***/ 613:
+/***/ 614:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -773,6 +881,16 @@ var DynamicTable = function (_React$Component) {
             });
         }
     }, {
+        key: "setEventDate",
+        value: function setEventDate(el, ev) {
+            var th = this;
+            var de = new Date().Format("yyyy-MM-dd");
+            iss.calendar(de, function (arg) {
+                el.val = arg;
+                th.props.CallBack.call(th, el);
+            });
+        }
+    }, {
         key: "setList",
         value: function setList(da) {
             var _this2 = this;
@@ -793,8 +911,11 @@ var DynamicTable = function (_React$Component) {
                         { name: el.id, onChange: _this2.props.CallBack.bind(_this2, el), value: el.val || "" },
                         list
                     );
+                } else if (el.type == "date") {
+                    return _react2.default.createElement("input", { name: el.id, className: "esayuiDate", id: el.id, "data-pid": el.pid, value: el.val || "", placeholder: el.edit.indexOf("+m") >= 0 ? "" : "", type: "text", onClick: _this2.setEventDate.bind(_this2, el), readOnly: "true" });
                 } else {
-                    return _react2.default.createElement("input", { name: el.id, id: el.id, "data-pid": el.pid, value: el.val || "", placeholder: el.edit.indexOf("+m") >= 0 ? "此处为必填项" : "", type: "text", onChange: _this2.props.CallBack.bind(_this2, el), readOnly: el.edit.indexOf("+r") >= 0 });
+
+                    return _react2.default.createElement("input", { name: el.id, id: el.id, "data-pid": el.pid, value: el.val || "", placeholder: el.edit.indexOf("+m") >= 0 ? "" : "", type: "text", onChange: _this2.props.CallBack.bind(_this2, el), readOnly: el.edit.indexOf("+r") >= 0 });
                 }
             };
 
@@ -822,15 +943,16 @@ var DynamicTable = function (_React$Component) {
                         //  console.log(da);
                     }
                 }
+                var classNames = el["colspan"] ? "col-sm-" + el["colspan"] + " col-md-" + el["colspan"] + " col-lg-" + el["colspan"] : "col-sm-4 col-md-4 col-lg-4";
                 return _react2.default.createElement(
                     "li",
-                    { key: ind, className: "col-sm-4 col-md-4 col-lg-4" },
+                    { key: ind, className: classNames },
                     _react2.default.createElement(
                         "label",
                         { className: el.edit.indexOf("+m") >= 0 ? "require" : "" },
                         el.label
                     ),
-                    _react2.default.createElement(
+                    el.type == "date" ? _react2.default.createElement("i", { className: "date" }) : _react2.default.createElement(
                         "i",
                         null,
                         el.unit
@@ -867,13 +989,13 @@ exports.default = DynamicTable;
 
 /***/ }),
 
-/***/ 614:
+/***/ 615:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(615);
+var content = __webpack_require__(616);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -899,7 +1021,7 @@ if(false) {
 
 /***/ }),
 
-/***/ 615:
+/***/ 616:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(606)(undefined);
@@ -907,20 +1029,27 @@ exports = module.exports = __webpack_require__(606)(undefined);
 
 
 // module
-exports.push([module.i, ".tools-dynamicTable {\n  margin-top: 10px;\n}\n.tools-dynamicTable ul li {\n  height: 40px;\n  overflow: hidden;\n}\n.tools-dynamicTable ul li label {\n  font-size: 12px;\n  color: #333;\n  font-weight: normal;\n  width: 110px;\n  text-align: right;\n  padding-top: 5px;\n  float: left;\n}\n.tools-dynamicTable ul li div {\n  display: block;\n  margin: 0 65px 0 115px;\n}\n.tools-dynamicTable ul li div input {\n  width: 100%;\n  padding: 3px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li div select {\n  width: 100%;\n  height: 25px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li i {\n  font-style: normal;\n  width: 60px;\n  float: right;\n  padding-top: 3px;\n}\n.BIND_LAND_BTN {\n  padding: 10px;\n}\n.BIND_LAND_BTN li {\n  display: inline-block;\n  padding: 5px 10px;\n  border: #ddd solid 1px;\n  cursor: pointer;\n  margin: 10px;\n  position: relative;\n  top: 0;\n  left: 0;\n}\n.BIND_LAND_BTN li.active {\n  background: #e4e4e4;\n}\n.BIND_LAND_BTN li .icon-delete {\n  position: absolute;\n  top: -10px;\n  right: -10px;\n  display: none;\n}\n.BIND_LAND_BTN li:hover .icon-delete {\n  display: block;\n}\n", ""]);
+exports.push([module.i, ".tools-dynamicTable {\n  margin-top: 10px;\n}\n.tools-dynamicTable ul li {\n  height: 40px;\n  overflow: hidden;\n}\n.tools-dynamicTable ul li label {\n  font-size: 12px;\n  color: #333;\n  font-weight: normal;\n  width: 110px;\n  text-align: right;\n  padding-top: 5px;\n  float: left;\n}\n.tools-dynamicTable ul li div {\n  display: block;\n  margin: 0 65px 0 115px;\n}\n.tools-dynamicTable ul li div input {\n  width: 100%;\n  padding: 3px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li div select {\n  width: 100%;\n  height: 25px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li i {\n  font-style: normal;\n  width: 60px;\n  float: right;\n  padding-top: 3px;\n}\n.tools-dynamicTable ul li i.date {\n  display: inline-block;\n  height: 30px;\n  background: url(" + __webpack_require__(617) + ") no-repeat 3px 50%;\n}\n.BIND_LAND_BTN {\n  padding: 10px;\n}\n.BIND_LAND_BTN li {\n  display: inline-block;\n  padding: 5px 10px;\n  border: #ddd solid 1px;\n  cursor: pointer;\n  margin: 10px;\n  position: relative;\n  top: 0;\n  left: 0;\n}\n.BIND_LAND_BTN li.active {\n  background: #e4e4e4;\n}\n.BIND_LAND_BTN li .icon-delete {\n  position: absolute;\n  top: -10px;\n  right: -10px;\n  display: none;\n}\n.BIND_LAND_BTN li:hover .icon-delete {\n  display: block;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 616:
+/***/ 617:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,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"
+
+/***/ }),
+
+/***/ 618:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(617);
+var content = __webpack_require__(619);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -946,7 +1075,7 @@ if(false) {
 
 /***/ }),
 
-/***/ 617:
+/***/ 619:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(606)(undefined);
@@ -954,56 +1083,56 @@ exports = module.exports = __webpack_require__(606)(undefined);
 
 
 // module
-exports.push([module.i, ".clear {\n  clear: both;\n}\n.boxGroupTit {\n  height: 40px;\n  margin-bottom: 5px ;\n  position: relative;\n  margin-top: 0;\n}\n.boxGroupTit p {\n  height: 40px;\n  line-height: 40px;\n  color: #333333;\n  font-size: 14px;\n  border-bottom: 1px solid #c9c9c9;\n}\n.boxGroupTit p span {\n  display: inline-block;\n  line-height: 40px;\n  border-bottom: 2px solid #31395d;\n}\n.boxGroupTit p i {\n  font-style: normal;\n}\n.boxGroupTit span.functionButton {\n  position: absolute;\n  right: 0;\n  top: 0;\n  width: auto;\n  text-align: right;\n}\n.boxGroupTit span.functionButton a {\n  font-size: 12px;\n  height: 40px;\n  line-height: 40px;\n  display: inline-block;\n  padding-left: 20px;\n  padding-right: 20px;\n  color: #999999 !important;\n  background-repeat: no-repeat;\n  background-position: left center;\n}\n.boxGroupTit span.functionButton a:hover {\n  color: #31395d;\n}\n.boxGroupTit span.functionButton .refresh-icon {\n  background-image: url(" + __webpack_require__(618) + ");\n}\n.boxGroupTit span.functionButton .refresh-icon:hover {\n  background-image: url(" + __webpack_require__(619) + ");\n}\n.boxGroupTit span.functionButton .saveIcon {\n  background-image: url(" + __webpack_require__(620) + ");\n}\n.boxGroupTit span.functionButton .saveIcon:hover {\n  background-image: url(" + __webpack_require__(621) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon {\n  background-image: url(" + __webpack_require__(622) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon:hover {\n  background-image: url(" + __webpack_require__(623) + ");\n}\n.staging-left,\n.staging-right {\n  float: left;\n}\n.projectinFormation {\n  width: 66.6%;\n  height: auto;\n  margin-top: 10px;\n  padding-right: 20px;\n}\n.fieldLocation {\n  margin-top: 10px;\n  width: 33.3%;\n  height: 295px;\n  border: 1px solid #dddddd;\n}\n.carouselStyle .left,\n.carouselStyle .right {\n  background: none;\n}\n.carouselStyle .carousel-control {\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  top: 50%;\n  margin-top: -15px;\n  background: #F1A118;\n}\n.carouselStyle .carousel-control:hover {\n  opacity: 0.8;\n}\n", ""]);
+exports.push([module.i, ".clear {\n  clear: both;\n}\n.boxGroupTit {\n  height: 40px;\n  margin-bottom: 5px ;\n  position: relative;\n  margin-top: 0;\n}\n.boxGroupTit p {\n  height: 40px;\n  line-height: 40px;\n  color: #333333;\n  font-size: 14px;\n  border-bottom: 1px solid #c9c9c9;\n}\n.boxGroupTit p span {\n  display: inline-block;\n  line-height: 40px;\n  border-bottom: 2px solid #31395d;\n}\n.boxGroupTit p i {\n  font-style: normal;\n}\n.boxGroupTit span.functionButton {\n  position: absolute;\n  right: 0;\n  top: 0;\n  width: auto;\n  text-align: right;\n}\n.boxGroupTit span.functionButton a {\n  font-size: 12px;\n  height: 40px;\n  line-height: 40px;\n  display: inline-block;\n  padding-left: 20px;\n  padding-right: 20px;\n  color: #999999 !important;\n  background-repeat: no-repeat;\n  background-position: left center;\n}\n.boxGroupTit span.functionButton a:hover {\n  color: #31395d;\n}\n.boxGroupTit span.functionButton .refresh-icon {\n  background-image: url(" + __webpack_require__(620) + ");\n}\n.boxGroupTit span.functionButton .refresh-icon:hover {\n  background-image: url(" + __webpack_require__(621) + ");\n}\n.boxGroupTit span.functionButton .saveIcon {\n  background-image: url(" + __webpack_require__(622) + ");\n}\n.boxGroupTit span.functionButton .saveIcon:hover {\n  background-image: url(" + __webpack_require__(623) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon {\n  background-image: url(" + __webpack_require__(624) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon:hover {\n  background-image: url(" + __webpack_require__(625) + ");\n}\n.staging-left,\n.staging-right {\n  float: left;\n}\n.projectinFormation {\n  width: 66.6%;\n  height: auto;\n  margin-top: 10px;\n  padding-right: 20px;\n}\n.fieldLocation {\n  margin-top: 10px;\n  width: 33.3%;\n  height: 295px;\n  border: 1px solid #dddddd;\n}\n.carouselStyle .left,\n.carouselStyle .right {\n  background: none;\n}\n.carouselStyle .carousel-control {\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  top: 50%;\n  margin-top: -15px;\n  background: #F1A118;\n}\n.carouselStyle .carousel-control:hover {\n  opacity: 0.8;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 618:
+/***/ 620:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABO0lEQVQ4T6VSsXHDMAwkWLBOJohG8AbRBrE3sBrxWNnZQNlAHUk1zgbWBlEmiD1Bkg3USgWQg45y7Fgn5s4sCeDx/3gQNz6Ymt/tdnd932+IaA0ASehpiagmohdjzNc4dwVQVdWCiN6I6J2ISmNMw838j4gMuEHEzBjzyv8XANbaREr5gYjPY8NfhmEBg6611vUFgPeeC43WupizxlqbSilrpVRyAgjbP5VS91mWtTFvnXMHlngOwKiF1jqNDXPdez+whKDpiYh4MAEANufI+uaAAkA6MAjaH8PAt1JqEZPhnCsBoB0A+O5d1zV8cwBI8zw/xGSwBwBQnDwIUpIY9cB4K4TYaq1/rxDbONa990smjYgrDtlklKfCg4gPQoglAKzGEF0lcYpF2LgnoiMAcHjKc4P/xWBO3s0AP2hInl/EMUEDAAAAAElFTkSuQmCC"
 
 /***/ }),
 
-/***/ 619:
+/***/ 621:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA7ElEQVQ4T6WTgQ0BQRBFnw6ogBJ0QAfogArQAR3ogA7oABWgAnRwJcjb7CbncmcvMcnmkt2ZN//P7nX4MzoN9V1gCcyBQcwpgBOwBV6prg4wBM7AFdgBl5jsvkDBC+DgfhVgtxuwTgk1CgUJFXaqAjxwbTKjGUc7gzLA7k+gB+g3F3ctlgFS7ey3TQSVAvQ0iYWqcDiPKPEXKDRLCvQ9itnvCM3Z8IaKBPDehahAC/rLhTmb8gy0IsDHkosV4Pq6hVxROp8Ce2Cm6qanXIWprg9YbGF4RHUvsU6FRcfSzYTh/foX2loJeW0tNEI/qngqkZ/g9CsAAAAASUVORK5CYII="
 
 /***/ }),
 
-/***/ 620:
+/***/ 622:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA+ElEQVQ4T92TMY6DQAxFxyMx7XKE3GBzg+QoocGaLkfgCHTINHAU9ga7N8gRSOvCXnmUWa0iEEmTIi5Ag/0fxnyDu0Xf93vn3Ec+b9yvdV1/Ww3YhYjOqnoCgPkmnFYAR3uuqqWqtjHGMQPmEMKOmc9WgIjNf4B1VxTFJedDCC0zXxCxzABFRCCiJLwHENEkIo33PnVgeSJKmpcBGhEZvfenrQ5sBgcAaJeGqKqW/0LEdvEThmEomdneUq78BRv2WFXVvAh40AOp7A0Bs7nqyRkkTTaSOfDTOZcW5IGwxfsxRyaARdd1x2zVLYCITDHGtHB/gC3RWv4XGt+9Eawr3zcAAAAASUVORK5CYII="
 
 /***/ }),
 
-/***/ 621:
+/***/ 623:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABC0lEQVQ4T92TQUrEQBBFfzFBxpU5gjewXQjJyjnHkECOkCN4hBwhkOA54moCLqa9wRyhXTlghi/VSUSwGePGhbXopqn6j+ruX4IpzN3WSLS6ms/ndg6nV/v8aLVGdDFpXgpZEOJGIbswQDajiDEhle2b2gNuk8zxGF1jPZR6tn378BWg3eH94jDncYwqWQ+Hfd/GIyDNud81YpLMC78BkrwDqDnfgeZnzV8BtLOhBqLifAdpXgK8F0gVekSCJSBPdtdU4SuYIsblqQAZB39BxOFtVVtbuyBgiQfmmn8HSDKnrvrVG0yacRbUgYIbEH5AfgyBAfGijvSACaI29VZdEJ3tWz9wn4AFomDJB58qtRFyLtVBAAAAAElFTkSuQmCC"
 
 /***/ }),
 
-/***/ 622:
+/***/ 624:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABVklEQVQ4T6WTzXHCQAyFn/bAcAsdxCW4BHcQSogvaH0jHZAOuBlxASoIqSDuAHcQ0gE5cmCVkcdmjDFkMtnbrqRPTz9L+OehvngRmarqExHFqlqq6muWZUWf7xVARGYAosFgME3T9LBcLuMQwpqIZsy87UIuAKvVanQ8Hgvvfdx2zPM8cs4VzBzdBeR5nhDR2Hs/7TqKiDLzleKLB8tERNsbCkpmHt1VYMbFYrElok9mfrF7Lf8NwIaZ578CrGmq+gFgpKp7IopU9d17P24Bd6q6sVIvSqgn8AxgHkIom2zD4bBsJnI6nWLnXAIgsaaeASKytoBmfF2pbWUhhBRAkWXZvgJY951zNmcjX512MIBvIkomk0mlsALUjVv3Lcq94DNARPZ9S2IOZgPw2M3cyKwU3FqSOvsOwJctWCO7XWMDOAB4aBts62wH7M2adevT9v7Gv/zwH4PhtBGvNQeUAAAAAElFTkSuQmCC"
 
 /***/ }),
 
-/***/ 623:
+/***/ 625:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABaklEQVQ4T6WTzU3DQBCF3+BF4oY7wCVsDpHsmzsgxyhypNBB6MB0kBIc2ULcCBXg21ri4O2A0EG4RSJk0Do/bJwlCOGbtTPfvJl5Q/jnR658GQ3HYL4GkQSzBnCnq6J0xR4BZJikAAIsxVjrbCG7A0neWcaEVKti1oYcAKQc+XSxKuuqkHagDPsBkShrVQSnAWESg9DTqhi3AzvRkGuVHyk+VGAqQcycCiB0XRX+SQXmUUZD0+erVvlt8x/2A5B4BGiqVT75HdAdSAjvmQCfGXMiBAw8aZX3voHnNcBT02qrhSQlwohBk+36NgWXQu82As+TAMdEiM1Q9wAZJtk2uFlfW6pZp6XsBvgodfUwbwDSTB+U6iqPncayksH8zp/rWL/cG4NhA2gGx5nLKHbldvIe0ImSucskJsC8AXTlSrYAbpM0Nhaemfgbr9a9nWy7zaaFTpgsQHRpPxjXNR4AYIb109E6r/EvF/4FXk6sEdl++K0AAAAASUVORK5CYII="
 
 /***/ }),
 
-/***/ 630:
+/***/ 636:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1050,8 +1179,7 @@ var StagingInformation = function (_React$Component) {
             "STAGENAME": "",
             "STAGECODE": "",
             "PROJECTCOMPANYNAME": "",
-            "companyHead": "",
-
+            "STAGEID": "",
             "STATUS": "",
             "ISELFPRODUCTTYPE": "",
             "TRADERMODE": "",
@@ -1059,9 +1187,14 @@ var StagingInformation = function (_React$Component) {
             "PROJECTTYPE": "",
             "TAXINGWAY": "",
             "PLANSTAGE": "",
-            "PROJECTNAME": ""
+            "PROJECTNAME": "",
+            "PRINCIPAL": "",
+            "ID": "",
+            "GROUPNUMBER": "",
+            "mapUrl": "http://192.168.11.164:82"
         };
 
+        _this.tiem = "";
         return _this;
     }
 
@@ -1069,20 +1202,33 @@ var StagingInformation = function (_React$Component) {
         key: "getAjax",
         value: function getAjax() {
             var th = this;
+            var status = this.props.location.query.status;
+            var reqtype;
+            var json = {};
+            if (status == "edit") {
+                json.Id = iss.id.id;
+                json.reqtype = "Edit";
+            } else if (status == "add") {
+                json.projectId = iss.id.id;
+                json.reqtype = "Add";
+            } else if (status == "upgrade") {
+                json.versionId = iss.id.id;
+                json.reqtype = "Upgrade";
+                $("#GROUPNUMBER").attr("readonly", "readonly");
+                $("#GROUPNUMBER").addClass("inputGray");
+            }
             iss.ajax({
                 type: "post",
                 url: "/Stage/IGetInitInfo",
-                data: {
-                    reqtype: "Add",
-                    projectId: iss.id.id
-                },
-                sucess: function sucess(res) {
-                    console.log(res.rows.BaseFormInfo.CASENAME);
+                data: json,
+                success: function success(res) {
+                    console.log(res.rows);
                     th.setState({
                         "CASENAME": res.rows.BaseFormInfo.CASENAME,
                         "STAGENAME": res.rows.BaseFormInfo.STAGENAME,
                         "PROJECTCOMPANYNAME": res.rows.BaseFormInfo.PROJECTCOMPANYNAME,
-                        "STAGEID": res.rows.BaseFormInfo.STAGECODE,
+                        "STAGEID": res.rows.BaseFormInfo.STAGEID,
+                        "STAGECODE": res.rows.BaseFormInfo.STAGECODE,
                         "STAGECREATEDATE": res.rows.BaseFormInfo.STAGECREATEDATE.split('T')[0],
                         "STAGEUPDATEDATE": res.rows.BaseFormInfo.STAGEUPDATEDATE.split('T')[0],
                         "STARTDATE": res.rows.BaseFormInfo.STARTDATE.split('T')[0],
@@ -1095,7 +1241,9 @@ var StagingInformation = function (_React$Component) {
                         "TAXINGWAY": res.rows.BaseFormInfo.TAXINGWAY,
                         "PLANSTAGE": res.rows.BaseFormInfo.PLANSTAGE,
                         "PROJECTNAME": res.rows.BaseFormInfo.PROJECTNAME,
-                        "ID": res.rows.BaseFormInfo.ID
+                        "ID": res.rows.BaseFormInfo.ID,
+                        "PRINCIPAL": res.rows.BaseFormInfo.PRINCIPAL,
+                        "GROUPNUMBER": res.rows.BaseFormInfo.GROUPNUMBER
 
                     }, function (arg) {
                         //console.log(th.state)
@@ -1136,25 +1284,36 @@ var StagingInformation = function (_React$Component) {
             });
         }
     }, {
+        key: "BIND_CHANGE_DATA",
+        value: function BIND_CHANGE_DATA(data) {
+            this.props.StagingInformationDATA(data);
+        }
+    }, {
         key: "handChooseTo",
         value: function handChooseTo(ev, da) {
+            var th = this;
             iss.chooseTo({
                 url: "/Home/GetTreeInfo",
                 title: "选择人员",
                 pepole: {}, //已选人员名单
                 callback: function callback(da) {
-                    //console.log(da);
+                    console.log(da);
+                    th.setState({
+                        "PRINCIPAL": da
+                    });
                 }
             });
         }
     }, {
         key: "handleInputTextChange",
         value: function handleInputTextChange(e) {
+            var _this2 = this;
+
             var th = this;
             var target = e.target.id;
             this.setState(_defineProperty({}, target, e.target.value), function () {
                 //console.log(th.state[target]) 
-                console.log(th.state);
+                th.BIND_CHANGE_DATA(_this2.state);
             });
 
             // console.log(e.target.id);
@@ -1164,8 +1323,14 @@ var StagingInformation = function (_React$Component) {
     }, {
         key: "handleSelectTextChange",
         value: function handleSelectTextChange(e, b, c) {
-            this.setState(_defineProperty({}, e, b));
-            console.log(this.state);
+            var _this3 = this;
+
+            var th = this;
+            this.setState(_defineProperty({}, e, b), function () {
+                //console.log(th.state[target]) 
+                th.BIND_CHANGE_DATA(_this3.state);
+            });
+            // console.log(this.state);
         }
     }, {
         key: "bind_combobox",
@@ -1183,8 +1348,8 @@ var StagingInformation = function (_React$Component) {
                 data: arg.rows.SelectOptions.STATUS
             });
 
-            if (arg.rows.BaseFormInfo.STATUS == 0) {
-                installmentState.combobox("select", "");
+            if (arg.rows.BaseFormInfo.STATUS == 0 || arg.rows.BaseFormInfo.STATUS == null) {
+                installmentState.combobox("select", 0);
             } else {
                 installmentState.combobox("select", arg.rows.BaseFormInfo.STATUS);
             }
@@ -1199,12 +1364,11 @@ var StagingInformation = function (_React$Component) {
                 onChange: th.handleSelectTextChange.bind(th, "ISELFPRODUCTTYPE"),
                 data: arg.rows.SelectOptions.ISELFPRODUCTTYPE
             });
-            if (arg.rows.BaseFormInfo.ISELFPRODUCTTYPE == 0) {
-                selfSustaining.combobox("select", "");
+            if (arg.rows.BaseFormInfo.ISELFPRODUCTTYPE == 0 || arg.rows.BaseFormInfo.ISELFPRODUCTTYPE == null) {
+                selfSustaining.combobox("select", 0);
             } else {
                 selfSustaining.combobox("select", arg.rows.BaseFormInfo.ISELFPRODUCTTYPE);
             }
-
             var tradersWay = $("#TRADERMODE"); //操盘方式
             tradersWay.combobox({
                 valueField: "val",
@@ -1215,7 +1379,7 @@ var StagingInformation = function (_React$Component) {
                 onChange: th.handleSelectTextChange.bind(th, "TRADERMODE"),
                 data: arg.rows.SelectOptions.TRADERMODE
             });
-            if (arg.rows.BaseFormInfo.TRADERMODE == 0) {
+            if (arg.rows.BaseFormInfo.TRADERMODE == 0 || arg.rows.BaseFormInfo.TRADERMODE == null) {
                 tradersWay.combobox("select", "");
             } else {
                 tradersWay.combobox("select", arg.rows.BaseFormInfo.TRADERMODE);
@@ -1231,7 +1395,7 @@ var StagingInformation = function (_React$Component) {
                 onChange: th.handleSelectTextChange.bind(th, "MERGEWAY"),
                 data: arg.rows.SelectOptions.MERGEWAY
             });
-            if (arg.rows.BaseFormInfo.MERGEWAY == 0) {
+            if (arg.rows.BaseFormInfo.MERGEWAY == 0 || arg.rows.BaseFormInfo.MERGEWAY == null) {
                 tableManner.combobox("select", "");
             } else {
                 tableManner.combobox("select", arg.rows.BaseFormInfo.MERGEWAY);
@@ -1247,7 +1411,7 @@ var StagingInformation = function (_React$Component) {
                 onChange: th.handleSelectTextChange.bind(th, "PROJECTTYPE"),
                 data: arg.rows.SelectOptions.PROJECTTYPE
             });
-            if (arg.rows.BaseFormInfo.PROJECTTYPE == 0) {
+            if (arg.rows.BaseFormInfo.PROJECTTYPE == 0 || arg.rows.BaseFormInfo.PROJECTTYPE == null) {
                 projectType.combobox("select", "");
             } else {
                 projectType.combobox("select", arg.rows.BaseFormInfo.PROJECTTYPE);
@@ -1263,7 +1427,7 @@ var StagingInformation = function (_React$Component) {
                 onChange: th.handleSelectTextChange.bind(th, "TAXINGWAY"),
                 data: arg.rows.SelectOptions.TAXINGWAY
             });
-            if (arg.rows.BaseFormInfo.TAXINGWAY == 0) {
+            if (arg.rows.BaseFormInfo.TAXINGWAY == 0 || arg.rows.BaseFormInfo.TAXINGWAY == null) {
                 taxManner.combobox("select", "");
             } else {
                 taxManner.combobox("select", arg.rows.BaseFormInfo.TAXINGWAY);
@@ -1279,12 +1443,72 @@ var StagingInformation = function (_React$Component) {
                 onChange: th.handleSelectTextChange.bind(th, "PLANSTAGE"),
                 data: arg.rows.SelectOptions.PLANSTAGE
             });
-            if (arg.rows.BaseFormInfo.PLANSTAGE) {
+            if (arg.rows.BaseFormInfo.PLANSTAGE == 0 || arg.rows.BaseFormInfo.PLANSTAGE == null) {
                 controlStage.combobox("select", "");
             } else {
                 controlStage.combobox("select", arg.rows.BaseFormInfo.PLANSTAGE);
             }
         }
+    }, {
+        key: "BIND_CHECKPROJECTNAME",
+        value: function BIND_CHECKPROJECTNAME(ev) {
+            //检查姓名名称是否冲突
+            var th = this;
+            var projectid = iss.id.id;
+            var name = ev.target.value;
+            this.setState({
+                STAGENAME: name
+            });
+            clearTimeout(this.time);
+            this.time = setTimeout(function (arg) {
+                iss.ajax({
+                    type: "POST",
+                    url: "/Stage/ICheckStageName",
+                    data: {
+                        projectid: projectid,
+                        name: name
+                    },
+                    success: function success(data) {
+                        if (data["rows"] == true) {
+                            th.BIND_CHANGE_DATA(th.state);
+                        } else {
+                            alert("错误");
+                        }
+                    },
+                    error: function error(er) {
+                        console.log('错误');
+                    }
+                });
+            }, 500);
+        }
+    }, {
+        key: "xmViewError",
+        value: function xmViewError(event) {
+            // this.attr("src","../img/xmViewError.png")
+            $(event.target).attr("src", "../../Content/img/xmViewError.png");
+        }
+    }, {
+        key: "BIND_EditStage",
+        value: function BIND_EditStage() {
+            window.open(this.state.mapUrl + "/Admin/EditStage?stage_id=" + this.state.STAGEID + "&stage_map_id=stage" + this.state.STAGEID);
+        }
+    }, {
+        key: "BIND_EditPushPlate",
+        value: function BIND_EditPushPlate() {
+            window.open(this.state.mapUrl + "/Admin/EditPushPlate?stage_id=" + this.state.STAGEID + "&stage_map_id=stage" + this.state.STAGEID);
+        }
+    }, {
+        key: "BIND_mapsStage",
+        value: function BIND_mapsStage() {
+            window.open(this.state.mapUrl + "/Map/Stage?stage_id=" + this.state.STAGEID + "&stage_map_id=stage" + this.state.STAGEID);
+        } //点击分期总图预览
+
+    }, {
+        key: "BIND_mapsTp",
+        value: function BIND_mapsTp() {
+            window.open(this.state.mapUrl + "/Map/PUSHPLATE?stage_id=" + this.state.STAGEID + "&stage_map_id=stage" + this.state.STAGEID);
+        } //点击推盘图预览
+
     }, {
         key: "render",
         value: function render() {
@@ -1337,7 +1561,7 @@ var StagingInformation = function (_React$Component) {
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "STAGENAME", value: this.state.STAGENAME || "", className: "inputTextBox boxSizing", type: "text" })
+                                    _react2.default.createElement("input", { onChange: this.BIND_CHECKPROJECTNAME.bind(this), id: "STAGENAME", value: this.state.STAGENAME || "", className: "inputTextBox boxSizing", type: "text" })
                                 )
                             ),
                             _react2.default.createElement(
@@ -1451,7 +1675,7 @@ var StagingInformation = function (_React$Component) {
                                 _react2.default.createElement(
                                     "td",
                                     null,
-                                    _react2.default.createElement("input", { readOnly: "readonly", onClick: this.handChooseTo.bind(this), id: "companyHead", className: "inputTextBox boxSizing", type: "text" }),
+                                    _react2.default.createElement("input", { readOnly: "readonly", onClick: this.handChooseTo.bind(this), id: "PRINCIPAL", value: this.state.PRINCIPAL || "", className: "inputTextBox boxSizing", type: "text" }),
                                     _react2.default.createElement("img", { className: "symbol headIcon", src: "../../Content/img/head-icon.png" })
                                 ),
                                 _react2.default.createElement(
@@ -1601,13 +1825,44 @@ var StagingInformation = function (_React$Component) {
                                     null,
                                     _react2.default.createElement(
                                         "button",
-                                        { onClick: this.onUpload.bind(this), className: "btn btnStyle uploadIconBtn" },
-                                        "\u4E0A\u4F20"
-                                    ),
+                                        { onClick: this.BIND_EditStage.bind(this), className: "btn btnStyle uploadIconBtn" },
+                                        "\u4E0A\u4F20/\u7F16\u8F91\u5206\u671F\u603B\u56FE"
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                "tr",
+                                null,
+                                _react2.default.createElement(
+                                    "th",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        { className: "formTableLabel boxSizing redFont" },
+                                        "\u7EC4\u56E2"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { onChange: this.handleInputTextChange.bind(this), id: "GROUPNUMBER", value: this.state.GROUPNUMBER || "", className: "inputTextBox boxSizing", type: "text" })
+                                ),
+                                _react2.default.createElement(
+                                    "th",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        { className: "formTableLabel boxSizing redFont" },
+                                        "\u63A8\u76D8\u56FE"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
                                     _react2.default.createElement(
                                         "button",
-                                        { className: "btn btnStyle userApplyIconBtn" },
-                                        "\u7F16\u8F91"
+                                        { onClick: this.BIND_EditPushPlate.bind(this), className: "btn btnStyle uploadIconBtn" },
+                                        "\u4E0A\u4F20/\u7F16\u8F91\u63A8\u76D8\u56FE"
                                     )
                                 )
                             )
@@ -1626,12 +1881,12 @@ var StagingInformation = function (_React$Component) {
                             _react2.default.createElement(
                                 "div",
                                 { className: "item active" },
-                                _react2.default.createElement("iframe", { src: "", width: "100%", height: "295px" })
+                                _react2.default.createElement("img", { src: this.state.mapUrl + "/Content/maps/source/stage" + this.state.STAGEID + "_s.jpg", onError: this.xmViewError.bind(this), onClick: this.BIND_mapsStage.bind(this), width: "100%", height: "295px" })
                             ),
                             _react2.default.createElement(
                                 "div",
                                 { className: "item" },
-                                _react2.default.createElement("iframe", { src: "", width: "100%", height: "295px" })
+                                _react2.default.createElement("img", { src: this.state.mapUrl + "/Map/Stage?stage_id=" + this.state.STAGEID + "&stage_map_id=stage" + this.state.STAGEID, onError: this.xmViewError.bind(this), onClick: this.BIND_mapsTp.bind(this), width: "100%", height: "295px" })
                             )
                         ),
                         _react2.default.createElement("a", { className: "carousel-control left glyphicon glyphicon-menu-left", href: "#myCarousel",
@@ -1652,7 +1907,7 @@ exports.default = StagingInformation;
 
 /***/ }),
 
-/***/ 631:
+/***/ 637:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1676,15 +1931,17 @@ __webpack_require__(65);
 
 __webpack_require__(79);
 
-var _toolsDynamicTable = __webpack_require__(613);
+__webpack_require__(638);
+
+var _toolsDynamicTable = __webpack_require__(614);
 
 var _toolsDynamicTable2 = _interopRequireDefault(_toolsDynamicTable);
 
-__webpack_require__(614);
+__webpack_require__(615);
 
-__webpack_require__(632);
+__webpack_require__(639);
 
-var _componentIndicatorsWinopen = __webpack_require__(634);
+var _componentIndicatorsWinopen = __webpack_require__(641);
 
 var _componentIndicatorsWinopen2 = _interopRequireDefault(_componentIndicatorsWinopen);
 
@@ -1695,10 +1952,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // 分期经济指标（投决会版）
-
-
 //兼容ie
-__webpack_require__(616); //专用css
+
+
+__webpack_require__(618); //专用css
 /*表格*/
 
 //弹出选择地块
@@ -1717,7 +1974,7 @@ var Indicators = function (_React$Component) {
             pid: "",
             treeId: iss.id.id, //左侧树id
             states: false,
-            AcountData: [], //汇总数据
+            AcountData: [], /*分期规划条件指标-汇总数据*/
             winAllBuiltData: [], /*分期占用土地table*/
             winopenDATA: [], /*alert中选择地块信息(这个里面不包括已经选择过的地块)或者编辑选中的地块*/
             winopenSelId: "", /*alert中保存选择过的地块Id,逗号分隔*/
@@ -1725,10 +1982,83 @@ var Indicators = function (_React$Component) {
         };
         return _this;
     }
-    /*编辑分块事件*/
+
+    /*编辑分期，初次获取分期占用土地数据，并汇总数据*/
 
 
     _createClass(Indicators, [{
+        key: 'evGetLandData',
+        value: function evGetLandData() {
+            var th = this;
+            var status = th.props.local.location.query.status;
+            var allListArr = [];
+            var selIDs = [];
+            /*新建分期则不用请求*/
+            if (status != "add") {
+                iss.ajax({
+                    url: "/Stage/IGetLandQuotaByVersionId",
+                    type: "get",
+                    data: {
+                        versionId: iss.id.id,
+                        projectid: iss.id.parentid
+                    },
+                    success: function success(d) {
+                        console.log("第一次加载，编辑分期时，获取分期占用土地数据");
+                        console.log(d.rows);
+                        allListArr = d.rows;
+                        allListArr.forEach(function (obj, index) {
+                            selIDs.push(obj.ID);
+                        });
+                        th.setState({
+                            winopenSelId: selIDs.join(","),
+                            winAllBuiltData: allListArr,
+                            winopenDATA: []
+                        });
+                        th.evGetLandFieldSum(allListArr);
+                        th.props.callback(allListArr);
+                    },
+                    error: function error(d) {
+                        console.log(JSON.stringify(d));
+                    }
+                });
+            }
+        }
+
+        /*分期占用土地=获取相关分期*/
+
+    }, {
+        key: 'evIGetLandStageShow',
+        value: function evIGetLandStageShow() {
+            var th = this;
+            var id = th.state.treeId;
+            iss.ajax({
+                url: "/Stage/IGetLandStageShow",
+                type: "get",
+                data: {
+                    projectid: id
+                },
+                success: function success(d) {
+                    th.setState({
+                        landStageArr: d.rows
+                    });
+                },
+                error: function error(d) {
+                    console.log(JSON.stringify(d));
+                }
+            });
+        }
+        /*编辑：初次汇总分期规划条件指标*/
+
+    }, {
+        key: 'evGetLandFieldSum',
+        value: function evGetLandFieldSum(listArrs) {
+            var th = this;
+            th.ev_saveBuiltInfor("del", listArrs);
+        }
+
+        /*编辑地块事件*/
+
+    }, {
         key: 'evBuiltEditTr',
         value: function evBuiltEditTr(selObj, event) {
             var th = this;
@@ -1737,7 +2067,29 @@ var Indicators = function (_React$Component) {
             th.BIND_WINOPEN(selArr);
             th.EVENT_SELECTMISSIF('edit', selArr);
         }
-        /*分期占用土地*/
+        /*删除地块*/
+
+    }, {
+        key: 'evBuiltDelTr',
+        value: function evBuiltDelTr(selObj, event) {
+            var th = this;
+            var id = selObj.ID;
+            var selAllArrs = th.state.winAllBuiltData;
+            iss.Alert({
+                title: "提示",
+                width: 300,
+                content: '<div class="Alert">\u662F\u5426\u5220\u9664\u5730\u5757</div>',
+                ok: function ok() {
+
+                    var newSelAllArrs = selAllArrs.filter(function (obj, index) {
+                        return obj.ID != id;
+                    });
+                    th.ev_saveBuiltInfor("del", newSelAllArrs);
+                },
+                cancel: function cancel() {}
+            });
+        }
+        /*分期占用土地=渲染table*/
 
     }, {
         key: 'BIND_CreateTable',
@@ -1750,7 +2102,7 @@ var Indicators = function (_React$Component) {
                 return list.map(function (obj, index) {
                     return _react2.default.createElement(
                         'tr',
-                        { id: obj.ID, key: obj.ID, onClick: th.evBuiltEditTr.bind(th, obj) },
+                        { id: obj.ID, key: obj.ID },
                         _react2.default.createElement(
                             'td',
                             null,
@@ -1785,6 +2137,20 @@ var Indicators = function (_React$Component) {
                             'td',
                             null,
                             landStageArr[obj.ID]
+                        ),
+                        _react2.default.createElement(
+                            'td',
+                            null,
+                            _react2.default.createElement(
+                                'button',
+                                { type: 'button', className: 'funCla funCla_edit', onClick: th.evBuiltEditTr.bind(th, obj) },
+                                '\u7F16\u8F91'
+                            ),
+                            _react2.default.createElement(
+                                'button',
+                                { type: 'button', className: 'funCla funCla_del', onClick: th.evBuiltDelTr.bind(th, obj) },
+                                '\u5220\u9664'
+                            )
                         )
                     );
                 });
@@ -1801,40 +2167,6 @@ var Indicators = function (_React$Component) {
             }
         }
     }, {
-        key: 'BIIND_FIST_LAND',
-        value: function BIIND_FIST_LAND() {
-            var th = this;
-
-            iss.ajax({
-                url: "/Stage/GetDynaticFieldNullTemp", //初次请求创建空地块使用
-                data: { projectId: th.state.treeId },
-                sucess: function sucess(d) {
-
-                    if (d["rows"]) {
-                        th.state.states = true;
-                        th.setState({
-                            newDynamicData: d["rows"]
-                        });
-                    }
-                },
-                error: function error(e) {}
-            });
-        }
-    }, {
-        key: 'BIND_GETACOUNT',
-        value: function BIND_GETACOUNT() {
-            var th = this;
-
-            iss.ajax({ //汇总模板
-                url: "/Stage/GetDynaticFieldNullTempSum?pid",
-                data: { projectId: this.state.treeId },
-                sucess: function sucess(d) {
-                    th.setState({ "AcountData": d.rows });
-                },
-                error: function error() {}
-            });
-        }
-    }, {
         key: 'BIND_CALLBACK',
         value: function BIND_CALLBACK() {}
         /*alert==实时获取地块的信息*/
@@ -1845,27 +2177,28 @@ var Indicators = function (_React$Component) {
             this.setState({
                 winopenDATA: da
             });
-            console.log("=======弹框中的地块信息或编辑选中的地块信息");
-            console.log(da);
         }
-        /*alert-选择地块保存
-        @param editOrSel判断是编辑地块或选择地块
+        /*根据地块变化=汇总数据
+        @param operaStatus判断是编辑地块,选择地块,删除地块
         */
 
     }, {
         key: 'ev_saveBuiltInfor',
-        value: function ev_saveBuiltInfor(editOrSel) {
+        value: function ev_saveBuiltInfor(operaStatus, newArr) {
             var th = this;
             var listArr = th.state.winopenDATA;
             var filterListArr = []; /*如果是选择地块：过滤选择过的地块；*/
             var allListArr = th.state.winAllBuiltData;
-            if (editOrSel == "edit") {
+
+            if (operaStatus == "edit") {
                 allListArr.forEach(function (obj, index) {
                     if (obj.ID == listArr[0]["ID"]) {
                         obj = listArr[0];
                     }
                 });
-            } else {
+            } else if (operaStatus == "del") {
+                allListArr = newArr;
+            } else if (operaStatus == "select") {
                 listArr.forEach(function (obj, index) {
                     if (obj.IsAllDevel != 0) {
                         filterListArr.push(obj);
@@ -1874,8 +2207,7 @@ var Indicators = function (_React$Component) {
             }
 
             allListArr = allListArr.concat(filterListArr);
-            console.log("===========汇总对象===========");
-            console.log(allListArr);
+
             var selIDs = []; /*保存选择过的地块id*/
             iss.ajax({
                 url: "/Stage/IRetLandDynaticFieldSum",
@@ -1883,9 +2215,7 @@ var Indicators = function (_React$Component) {
                 data: {
                     data: JSON.stringify(allListArr)
                 },
-                sucess: function sucess(d) {
-                    console.log("返回的是分期经济指标（投决会版）");
-                    console.log(d.rows);
+                success: function success(d) {
                     /*存储选择过的地块*/
                     allListArr.forEach(function (obj, index) {
                         selIDs.push(obj.ID);
@@ -1893,61 +2223,65 @@ var Indicators = function (_React$Component) {
                     th.setState({
                         winopenSelId: selIDs.join(","),
                         winAllBuiltData: allListArr,
-                        winopenDATA: []
+                        winopenDATA: [],
+                        AcountData: d.rows
                     });
+                    th.props.callback(allListArr);
+
+                    console.log("分期规划条件指标/汇总数据=========");
+                    console.log(d.rows);
                 },
                 error: function error(d) {
-                    console.log("汇总分期经济指标失败");
+                    console.log(JSON.stringif(d));
                 }
             });
         }
-        /*选择地块事件*/
+        /*选择地块事件
+        @editOrSel 判断是编辑(edit)/选择(select) 地块
+        */
 
     }, {
         key: 'EVENT_SELECTMISSIF',
         value: function EVENT_SELECTMISSIF(editOrSel, selArr) {
             var th = this;
-            var id = th.state.treeId;
+            var status = th.props.local.location.query.status;
+            var id = "";
+            var title = "";
+            if (status == "add") {
+                id = th.state.treeId;
+            } else {
+                id = iss.id.parentid;
+            }
+            if (editOrSel == "select") {
+                title = "选择分期占用土地";
+            } else if (editOrSel == "edit") {
+                title = "编辑分期占用土地";
+            }
             iss.Alert({
-                title: "选择分期占用土地",
+                title: title,
                 width: 1000,
                 height: 400,
                 content: '<div id="alertBuiltBlock"></div>',
                 ok: function ok() {
-                    th.ev_saveBuiltInfor(editOrSel);
+                    var isValid = $("#form_aBuiltLand").form("validate");
+                    console.log("验证结果：" + isValid);
+                    if (isValid) {
+                        th.ev_saveBuiltInfor(editOrSel);
+                    } else {
+                        return false;
+                    }
                 }
             });
 
             _reactDom2.default.render(_react2.default.createElement(_componentIndicatorsWinopen2.default, { guid: id, selId: th.state.winopenSelId, selArr: selArr, status: editOrSel, callback: this.BIND_WINOPEN.bind(this) }), document.querySelector("#alertBuiltBlock"));
         }
-        /*分期占用土地=获取相关分期*/
-
-    }, {
-        key: 'evIGetLandStageShow',
-        value: function evIGetLandStageShow() {
-            var th = this;
-            var id = th.state.treeId;
-            iss.ajax({
-                url: "/Stage/IGetLandStageShow",
-                type: "get",
-                data: {
-                    projectid: id
-                },
-                sucess: function sucess(d) {
-                    th.setState({
-                        landStageArr: d.rows
-                    });
-                },
-                error: function error(d) {
-                    console.log("获取相关分期失败");
-                }
-            });
-        }
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.BIIND_FIST_LAND(); //初次获取数据
-            this.BIND_GETACOUNT(); //初次获取统计数据
+            if (iss.id == "") {
+                return;
+            }
+            this.evGetLandData(); /*编辑分期时，初次获取分期占用土地数据*/
             this.evIGetLandStageShow(); /*分期占用土地=获取相关分期*/
         }
     }, {
@@ -1996,11 +2330,6 @@ var Indicators = function (_React$Component) {
                                 'a',
                                 { className: 'refresh-icon addIcon ClickThePopUp1', onClick: this.EVENT_SELECTMISSIF.bind(this, 'select', selArr), href: 'javascript:;' },
                                 '\u9009\u62E9\u5730\u5757'
-                            ),
-                            _react2.default.createElement(
-                                'a',
-                                { className: 'refresh-icon deleteIcon', href: '#' },
-                                '\u5220\u9664\u5730\u5757'
                             )
                         )
                     ),
@@ -2050,6 +2379,11 @@ var Indicators = function (_React$Component) {
                                         'td',
                                         null,
                                         '\u76F8\u5173\u5206\u671F'
+                                    ),
+                                    _react2.default.createElement(
+                                        'td',
+                                        null,
+                                        '\u64CD\u4F5C'
                                     )
                                 )
                             ),
@@ -2072,13 +2406,109 @@ exports.default = Indicators;
 
 /***/ }),
 
-/***/ 632:
+/***/ 638:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// export default {
+//     isNonEmpty: function(value, errorMsg) {
+//         //不能为空
+//         if (!value.length) {
+//             return errorMsg;
+//         }
+//     },
+//     minLength: function(value, length, errorMsg) {
+//         //大于
+//         if (value.length < length) {
+//             return errorMsg;
+//         }
+//     },
+//     maxLength: function(value, length, errorMsg) {
+//         //小于
+//         if (value.length < length) {
+//             return errorMsg;
+//         }
+//     },
+//     isMobile: function(value, errorMsg) {
+//         //是否为手机号码
+//         if (!/(^1[3|5|8][0-9]{9}$)/.test(value)) {
+//             return errorMsg;
+//         }
+//     },
+//     isEmail: function(value, errorMsg) {
+//         //是否为邮箱
+//         if (!/(^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$)/.test(value)) {
+//             return errorMsg;
+//         }
+//     },
+//     between: function(value, range, errorMsg) {
+//         //大于小于
+//         var min = parseInt(range.split('-')[0]);
+//         var max = parseInt(range.split('-')[1]);
+//         if (value.length < min || value.length > max) {
+//             return errorMsg;
+//         }
+//     },
+//     onlyEn: function(value, errorMsg) {
+//         //纯英文
+//         if (!/^[A-Za-z]+$/.test(value)) {
+
+//         }
+//     },
+//     onlyZh: function(value, errorMsg) {
+//         //纯中文
+//         if (!/^[\u4e00-\u9fa5]+$/.test(value)) {
+//             return errorMsg;
+//         }
+//     },
+//     onlyNum: function(value, errorMsg) {
+//         //数字包含小数
+//         if (!/^[0-9]+([.][0-9]+){0,1}$/.test(value)) {
+//             return errorMsg;
+//         }
+//     },
+//     onlyInt: function(value, errorMsg) {
+//         //整数
+//         if (!/^[0-9]*$/.test(value)) {
+//             return errorMsg;
+//         }
+//     },
+//     isChecked: function(value, errorMsg, el) {
+//         var i = 0;
+//         var $collection = $(el).find('input:checked');
+//         if(!$collection.length){
+//             return errorMsg;
+//         }
+//     }
+// };
+$.extend($.fn.validatebox.defaults.rules, {
+		max: {
+				validator: function validator(value, param) {
+						var maxVal = param[0];
+						return value <= maxVal;
+				},
+				message: '输入的值不能大于{0}'
+		},
+		number: {
+				validator: function validator(value, param) {
+						return (/^(0|[1-9][0-9]*)(.[0-9]{1,2})?$/.test(value)
+						);
+				},
+				message: '只能输入数字'
+		}
+});
+
+/***/ }),
+
+/***/ 639:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(633);
+var content = __webpack_require__(640);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2104,7 +2534,7 @@ if(false) {
 
 /***/ }),
 
-/***/ 633:
+/***/ 640:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(606)(undefined);
@@ -2112,14 +2542,14 @@ exports = module.exports = __webpack_require__(606)(undefined);
 
 
 // module
-exports.push([module.i, ".builtTable {\n  margin-top: 10px;\n  font-size: 12px;\n}\n.builtTable tr {\n  background: #fff;\n}\n.builtTable td {\n  border: #ddd 1px solid;\n  vertical-align: middle;\n  text-align: center;\n}\n.builtTable thead tr {\n  border-top: 1px solid #ddd;\n  background: #f5f5f5;\n}\n.builtTable tbody tr:hover {\n  background: #ffe48d;\n}\n", ""]);
+exports.push([module.i, ".builtTable {\n  margin-top: 10px;\n  font-size: 12px;\n  /*功能按钮*/\n  /*编辑*/\n  /*删除*/\n}\n.builtTable thead tr {\n  border-top: 1px solid #ddd;\n  background: #f5f5f5;\n}\n.builtTable thead tr,\n.builtTable tbody tr {\n  background: #fff;\n}\n.builtTable thead tr td,\n.builtTable tbody tr td {\n  border: #ddd 1px solid;\n  vertical-align: middle;\n  text-align: center;\n}\n.builtTable .funCla {\n  margin: 0 4px;\n}\n.builtTable .funCla_edit {\n  padding: 1px 2px;\n}\n.builtTable .funCla_edit {\n  padding: 1px 2px;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 634:
+/***/ 641:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2139,7 +2569,7 @@ __webpack_require__(65);
 
 __webpack_require__(79);
 
-__webpack_require__(635);
+__webpack_require__(642);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2169,13 +2599,28 @@ var Winopen = function (_React$Component) {
 
         return _this;
     }
-    // componentDidUpdate(){
-
-    // }
-    /*绑定html*/
-
 
     _createClass(Winopen, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var th = this;
+            var listArr = th.state.listArr;
+            setTimeout(function () {
+                $(".comp-validatebox").each(function (index, ele) {
+                    var eleDom = $(ele);
+                    var regInforObj = JSON.parse(eleDom.attr("data-regExp"));
+                    console.log(regInforObj);
+                    eleDom.validatebox({
+                        required: true,
+                        missingMessage: "不能为空",
+                        validType: ['number', 'max[' + regInforObj['max'] + ']']
+                    });
+                });
+            }, 500);
+        }
+        /*绑定html*/
+
+    }, {
         key: "BIND_BLOCK",
         value: function BIND_BLOCK() {
             var th = this;
@@ -2207,20 +2652,162 @@ var Winopen = function (_React$Component) {
                         )
                     ),
                     _react2.default.createElement(
-                        "ul",
-                        { className: obj.IsAllDevel == 0 ? "aBuilt_Con hide" : "aBuilt_Con" },
-                        obj.FieldList.map(function (fieldO, fIndex) {
-                            return _react2.default.createElement(
-                                "li",
-                                { key: fieldO.id },
+                        "table",
+                        { className: obj.IsAllDevel == 0 ? "table builtAlertTable hide" : "table builtAlertTable" },
+                        _react2.default.createElement(
+                            "tbody",
+                            null,
+                            _react2.default.createElement(
+                                "tr",
+                                null,
                                 _react2.default.createElement(
-                                    "label",
+                                    "td",
                                     null,
-                                    fieldO.label
+                                    _react2.default.createElement(
+                                        "label",
+                                        null,
+                                        "\u5730\u5757\u540D\u79F0"
+                                    )
                                 ),
-                                _react2.default.createElement("input", { type: "text", readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && fieldO.edit == "+r", value: fieldO.val, onChange: th.evInputChange.bind(th, obj.ID, fieldO.id) })
-                            );
-                        })
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { type: "text", id: obj.FieldList[0].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[0].edit == "+r", value: obj.FieldList[0].val || '', onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[0].id) })
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        null,
+                                        "\u5730\u5757\u7F16\u7801"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { type: "text", id: obj.FieldList[1].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[1].edit == "+r", value: obj.FieldList[1].val || '', onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[1].id) })
+                                ),
+                                _react2.default.createElement("td", { colSpan: "2" })
+                            ),
+                            _react2.default.createElement(
+                                "tr",
+                                null,
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        null,
+                                        "\u603B\u7528\u5730\u9762\u79EF\uFF08\u33A1\uFF09"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { type: "text", id: obj.FieldList[2].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[2].edit == "+r", value: obj.FieldList[2].val || '', onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[2].id) })
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        null,
+                                        _react2.default.createElement(
+                                            "span",
+                                            { className: "red" },
+                                            "*"
+                                        ),
+                                        "\u5EFA\u8BBE\u7528\u5730\u9762\u79EF\uFF08\u33A1\uFF09"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { type: "text", className: "comp-validatebox", "data-regExp": obj.FieldList[3].regExp, id: obj.FieldList[3].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[3].edit == "+r", value: obj.FieldList[3].val || '', onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[3].id) })
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        null,
+                                        _react2.default.createElement(
+                                            "span",
+                                            { className: "red" },
+                                            "*"
+                                        ),
+                                        "\u4EE3\u5F81\u7528\u5730\u9762\u79EF\uFF08\u33A1\uFF09"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { type: "text", className: "comp-validatebox", "data-regExp": obj.FieldList[4].regExp, id: obj.FieldList[4].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[4].edit == "+r", value: obj.FieldList[4].val || '', onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[4].id) })
+                                )
+                            ),
+                            _react2.default.createElement(
+                                "tr",
+                                null,
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        null,
+                                        _react2.default.createElement(
+                                            "span",
+                                            { className: "red" },
+                                            "*"
+                                        ),
+                                        "\u8BA1\u5BB9\u5EFA\u7B51\u9762\u79EF\uFF08\u33A1\uFF09"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { type: "text", className: "comp-validatebox", "data-regExp": obj.FieldList[5].regExp, id: obj.FieldList[5].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[5].edit == "+r", value: obj.FieldList[5].val || '', onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[5].id) })
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        null,
+                                        _react2.default.createElement(
+                                            "span",
+                                            { className: "red" },
+                                            "*"
+                                        ),
+                                        "\u571F\u5730\u83B7\u53D6\u4EF7\u6B3E\uFF08\u4E07\u5143\uFF09"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { type: "text", className: "comp-validatebox", "data-regExp": obj.FieldList[6].regExp, id: obj.FieldList[6].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[6].edit == "+r", value: obj.FieldList[6].val || '', onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[6].id) })
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        null,
+                                        _react2.default.createElement(
+                                            "span",
+                                            { className: "red" },
+                                            "*"
+                                        ),
+                                        "\u697C\u9762\u5747\u4EF7\uFF08\u5143/\u33A1\uFF09"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { type: "text", id: obj.FieldList[7].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[7].edit == "+r", value: obj.FieldList[7].val || '', onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[7].id) })
+                                )
+                            )
+                        )
                     )
                 );
             });
@@ -2275,8 +2862,6 @@ var Winopen = function (_React$Component) {
             var th = this;
             /*如果是编辑，则不请求数据*/
             var status = th.state.status;
-            console.log("进入弹框==查看编辑数据" + status);
-            console.log(this.state.listArr);
             if (status == "edit") {
                 return false;
             }
@@ -2284,20 +2869,17 @@ var Winopen = function (_React$Component) {
                 url: "/Stage/IGetLandQuotaByProId",
                 type: "get",
                 data: { projectId: id },
-                sucess: function sucess(d) {
+                success: function success(d) {
                     var filterList = [];
                     filterList = d.rows.filter(function (obj, index) {
                         return !new RegExp(obj.ID, "ig").test(th.state.selectId);
                     });
-                    console.log("过滤后的list");
-                    console.log(filterList);
 
                     th.setState({
                         "listArr": filterList
                     });
                 },
                 error: function error(d) {
-                    console.log("错误内容");
                     console.log(JSON.stringify(d));
                 }
             });
@@ -2310,7 +2892,11 @@ var Winopen = function (_React$Component) {
             return _react2.default.createElement(
                 "div",
                 { className: "aBuiltMain" },
-                this.BIND_BLOCK()
+                _react2.default.createElement(
+                    "form",
+                    { id: "form_aBuiltLand", method: "submit" },
+                    this.BIND_BLOCK()
+                )
             );
         }
     }]);
@@ -2337,13 +2923,13 @@ exports.default = Winopen;
 
 /***/ }),
 
-/***/ 635:
+/***/ 642:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(636);
+var content = __webpack_require__(643);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2369,7 +2955,7 @@ if(false) {
 
 /***/ }),
 
-/***/ 636:
+/***/ 643:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(606)(undefined);
@@ -2377,7 +2963,7 @@ exports = module.exports = __webpack_require__(606)(undefined);
 
 
 // module
-exports.push([module.i, ".aBuiltMain {\n  padding: 0 20px;\n  font-size: 12px;\n  overflow: auto;\n  -webkit-overflow-scrolling: touch;\n  height: 400px;\n}\n.aBuiltMain .aBuilt_Title {\n  font-size: 14px;\n  margin: 12px 0 2px;\n  line-height: 36px;\n  background: #ddd;\n}\n.aBuiltMain .aBuilt_Title span {\n  display: inline-block;\n}\n.aBuiltMain .aBuilt_Title span:first-child {\n  padding-right: 20px;\n  padding-left: 6px;\n  width: 110px;\n}\n.aBuiltMain .aBuilt_Title span:nth-child(2) {\n  padding-right: 10px;\n}\n.aBuiltMain .aBuilt_Title span.radioSpan input[type=radio] {\n  margin: 0;\n  vertical-align: middle;\n}\n.aBuiltMain .aBuilt_Con {\n  height: auto;\n  overflow-x: auto;\n  overflow-y: hidden;\n}\n.aBuiltMain .aBuilt_Con li {\n  float: left;\n  width: 33.33%;\n  min-height: 30px;\n  line-height: 30px;\n  margin-top: 10px;\n}\n.aBuiltMain .aBuilt_Con li label {\n  font-weight: normal;\n  margin-bottom: 0px;\n  padding-right: 6px;\n  text-align: right;\n  width: 110px;\n}\n.aBuiltMain .aBuilt_Con li input {\n  border: #ddd solid 1px;\n  height: 28px;\n}\n.aBuiltMain .aBuilt_Con li input[readonly] {\n  background: #ddd;\n}\n.aBuiltMain .aBuilt_Con li:nth-child(2) {\n  width: 66.67%;\n}\n.aBuiltMain .aBuilt_Con.hide {\n  display: none;\n}\n", ""]);
+exports.push([module.i, ".aBuiltMain {\n  padding: 0 20px 20px;\n  font-size: 12px;\n  overflow: auto;\n  -webkit-overflow-scrolling: touch;\n  height: 400px;\n}\n.aBuiltMain .aBuilt_Title {\n  font-size: 14px;\n  margin: 12px 0 2px;\n  line-height: 36px;\n  background: #ddd;\n}\n.aBuiltMain .aBuilt_Title span {\n  display: inline-block;\n}\n.aBuiltMain .aBuilt_Title span:first-child {\n  padding-right: 20px;\n  padding-left: 6px;\n  width: 110px;\n}\n.aBuiltMain .aBuilt_Title span:nth-child(2) {\n  padding-right: 10px;\n}\n.aBuiltMain .aBuilt_Title span.radioSpan input[type=radio] {\n  margin: 0;\n  vertical-align: middle;\n}\n.aBuiltMain .builtAlertTable {\n  margin-top: 10px;\n  margin-bottom: 0;\n  font-size: 12px;\n}\n.aBuiltMain .builtAlertTable tr {\n  background: #fff;\n}\n.aBuiltMain .builtAlertTable td {\n  border: #ccc solid 1px;\n  vertical-align: middle;\n  text-align: left;\n  padding: 0;\n}\n.aBuiltMain .builtAlertTable thead tr {\n  border-top: 1px solid #ccc;\n  background: #f5f5f5;\n}\n.aBuiltMain .builtAlertTable tbody label {\n  font-weight: normal;\n  margin-bottom: 0px;\n  padding-right: 6px;\n  text-align: right;\n  width: 100%;\n}\n.aBuiltMain .builtAlertTable tbody input {\n  border: none;\n  height: 28px;\n  width: auto;\n  width: -moz-calc(90%);\n  width: -webkit-calc(90%);\n  width: calc(90%);\n  margin: 5px;\n  border: 1px solid #ddd;\n}\n.aBuiltMain .builtAlertTable tbody input[readonly] {\n  background: #eee;\n}\n.aBuiltMain .builtAlertTable.hide {\n  display: none;\n}\n", ""]);
 
 // exports
 

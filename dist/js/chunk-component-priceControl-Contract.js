@@ -1,4 +1,4 @@
-webpackJsonp([12,14],{
+webpackJsonp([11,14],{
 
 /***/ 585:
 /***/ (function(module, exports, __webpack_require__) {
@@ -24,9 +24,13 @@ __webpack_require__(65);
 
 __webpack_require__(79);
 
-var _toolsProcessBar = __webpack_require__(609);
+var _toolsProcessBar = __webpack_require__(610);
 
 var _toolsProcessBar2 = _interopRequireDefault(_toolsProcessBar);
+
+var _toolsExchangeButton = __webpack_require__(612);
+
+var _toolsExchangeButton2 = _interopRequireDefault(_toolsExchangeButton);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -36,8 +40,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 /**
- * 首页导航条
- * index  identity  supply  所需
+ * 价格
  */
 //兼容ie
 
@@ -51,7 +54,23 @@ var PriceControl = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (PriceControl.__proto__ || Object.getPrototypeOf(PriceControl)).call(this, arg));
 
         _this.bindTab();
-        _this.state = {};
+        _this.state = {
+            actionUrl: {
+                "GetDataGridTitle": "/Common/GetDataGridTitle", //由组获取指标
+                "GetPriceList": "/Price/GetPriceList", //获取价格表格数据
+                "GetVersions": "/Common/GetVersionListByBusinessId", //获取版本列表
+                "CreatePriceVersion": "/Price/CreatePriceVersion" //创建价格管理版本
+            },
+            title: { //表格标题
+                frozenColumns: [], //固定列
+                columns: [] //滚动列
+            },
+            gridData: [], //表格数据
+            version: [], //版本
+            step: -2, //阶段
+            stepName: "", //阶段名称
+            curVersion: "" //当前版本
+        };
         return _this;
     }
 
@@ -59,32 +78,217 @@ var PriceControl = function (_React$Component) {
         key: 'componentWillMount',
         value: function componentWillMount() {
             // render之前
-            sessionStorage['pricestep'] = "1";
+            // sessionStorage['pricestep'] = "1";
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            // render之后
+            var th = this;
+            this.initDataParamers("GetVersions");
+            th.icon = $(".icon-bar");
+            window.onresize = function (arg) {
+                th.icon.trigger("EVENT_TOGGLEBAR");
+            };
+        }
+    }, {
+        key: 'setVersionStatus',
+        value: function setVersionStatus(status) {
+            var _text = status == 0 ? "编制中" : status == 1 ? "审批中" : "已审批";
+            $("#statusText").html(_text);
+        }
+    }, {
+        key: 'initDataParamers',
+        value: function initDataParamers(type) {
+            var _url = "";
+            var _data;
+            var _afterfn;
+            var _th = this;
+            switch (type) {
+                case "GetDataGridTitle":
+                    {
+                        _url = _th.state.actionUrl.GetDataGridTitle;
+                        _th.loadData(_url, {
+                            "columns": "PriceTitleColumns",
+                            "frozenColumns": "PriceTitleFrozenColumns"
+                        }, function (result) {
+                            _th.state.title.frozenColumns = result.frozenColumns;
+                            _th.state.title.columns = result.columns;
+                            _th.initDataParamers("GetPriceList");
+                        });
+                    };break;
+                case "GetPriceList":
+                    {
+                        _url = _th.state.actionUrl.GetPriceList;
+                        _th.loadData(_url, {
+                            "stageversionid": _th.state.curVersion,
+                            "step": _th.state.step
+                        }, function (result) {
+                            _th.state.gridData = result;
+                            setTimeout(function (arg) {
+                                //绑定datagruid1
+                                _th.bind_table();
+                            }, 500);
+                        });
+                    };break;
+                case "GetVersions":
+                    {
+                        _url = _th.state.actionUrl.GetVersions;
+                        _th.loadData(_url, {
+                            "stageversionid": "111F08DBE35B4B90A9288CFC7FBEB924",
+                            // "versionId": iss.id.id,
+                            "projectlevel": 2,
+                            "step": _th.state.step,
+                            "dataType": 3 //1分期
+                        }, function (result) {
+                            var _vd = [];
+                            var _tdta = result;
+                            var _inx = 0;
+                            if (_tdta != null && _tdta.length > 0) {
+                                $('.haveversion,.price-editsave').show();
+                                $('.noversion').hide();
+                                _inx = _tdta.length;
+                                for (var i = 0; i < _inx; i++) {
+                                    var _t = {
+                                        "guid": i,
+                                        "value": _tdta[i].ID,
+                                        "text": "V" + (_tdta[i].STATUS == 99 ? _tdta[i].VERSIONCODE + " " + new Date(_tdta[i].APPROVETIME).Format("yyyy-MM-dd") : _tdta[i].VERSIONCODE),
+                                        "status": _tdta[i].STATUS
+                                    };
+                                    _vd.push(_t);
+                                }
+                                _th.state.curVersion = _tdta[0].ID;
+                                if (_tdta[0].STATUS != 99) {
+                                    $(".price-createpriceversion").hide();
+                                } else {
+                                    $(".price-createpriceversion").show();
+                                }
+                                _th.setVersionStatus(_tdta[0].STATUS);
+                                _th.initDataParamers("GetDataGridTitle");
+                            } else {
+                                // _vd = [{
+                                //     "guid": -1,
+                                //     "value": -1,
+                                //     "text": '无版本',
+                                //     "status": -1
+                                // }];
+                                _vd = [];
+                                $('.haveversion,.price-editsave').hide();
+                                $('.noversion').show();
+                                _th.initDataParamers("GetDataGridTitle");
+                            }
+                            _th.setState({
+                                version: _vd
+                            });
+                        });
+                    };break;
+                default:
+            }
+        }
+    }, {
+        key: 'loadData',
+        value: function loadData(url, data, afterfn) {
+            $.ajax({
+                url: url,
+                type: "POST",
+                dataType: "JSON",
+                data: data,
+                success: function success(result) {
+                    if (result.errorcode != 200) {
+                        iss.Alert({
+                            "title": "提示",
+                            "content": result.message,
+                            "width": 300
+                        });
+                    } else {
+                        if (typeof afterfn == "function") {
+                            afterfn(result.rows);
+                        }
+                    }
+                },
+                error: function error(ex) {
+                    console.log(ex);
+                }
+            });
+        }
+    }, {
+        key: 'bind_table',
+        value: function bind_table() {
+            var table = this.table_ys = $("#table-ys");
+            table.datagrid({
+                width: "auto",
+                nowrap: true,
+                fitColumns: true,
+                // rownumbers: true,
+                singleSelect: true,
+                frozenColumns: this.state.title.frozenColumns,
+                columns: this.state.title.columns,
+                data: this.state.gridData
+            });
+        }
+    }, {
+        key: 'createNewPriceVersion',
+        value: function createNewPriceVersion() {
+            var th = this;
+            $.ajax({
+                url: this.state.actionUrl.CreatePriceVersion,
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    "stageversionid": "111F08DBE35B4B90A9288CFC7FBEB924",
+                    // "versionId": iss.id.id,
+                    "projectlevel": 2,
+                    "step": this.state.step
+                },
+                success: function success(result) {
+                    if (result.errorcode != 200) {
+                        iss.Alert({
+                            "title": "提示",
+                            "content": result.message,
+                            "width": 300
+                        });
+                    } else {
+                        th.initDataParamers("GetVersions");
+                    }
+                },
+                error: function error(ex) {
+                    console.log(ex);
+                }
+            });
+        }
+    }, {
+        key: 'changeVersion',
+        value: function changeVersion(ts, e) {
+            this.state.curVersion = ts.target.value;
+            $("#statusText").html(this.setVersionStatus($('#version option:selected').attr("data-status")));
+            this.initDataParamers("GetPriceList");
         }
     }, {
         key: 'bindTab',
         value: function bindTab(prop) {
             $(".JH-Content").removeClass("CLASS_AGENTY");
         }
+    }, {
+        key: 'BIND_CALLBACK2',
+        value: function BIND_CALLBACK2(data) {
+            debugger;
+        }
         /* 事件 */
 
     }, {
         key: 'BIND_CALLBACK',
-        value: function BIND_CALLBACK(da) {
-            sessionStorage['pricestep'] = da.guid;
-            var th = this;debugger;
-            switch (da.tap) {
-                case "priceInvestment":
-                case "priceProductlocat":
-                case "priceProjectlocat":
-                case "priceStartup":
-                case "priceCertificate":
-                case "priceDecision":
-                case "pricePresell":
-                case "priceContract":
-                case "priceDeliver":
-                    th.BIND_URL1(da);break;
-            }
+        value: function BIND_CALLBACK(data, ev) {
+            this.state.step = data.guid;
+            this.state.stepName = data.text;
+            $('.priceTapTitle').html(data.text + "价格");
+            this.initDataParamers("GetVersions");
+            // iss.hashHistory.push("priceInvestment", { "state": "001" });
+            // iss.hashHistory.push({
+            //     pathname: "priceInvestment", state: { "state": data.guid }
+            // });
+            // let el = $(ev.target);
+            // el.parent().find("li").removeClass("active");
+            // setTimeout(() => { el.addClass("active") });
             // switch (data.tap) {
             //     case "priceInvestment": iss.hashHistory.push("component-priceControl-Investment", { "state": "001" }); break;
             //     case "priceProductlocat": iss.hashHistory.push("component-priceControl-Productlocat", { "state": "002" }); break;
@@ -98,40 +302,115 @@ var PriceControl = function (_React$Component) {
             // }
         }
     }, {
-        key: 'BIND_URL1',
-        value: function BIND_URL1(da) {
-            __webpack_require__.e/* require.ensure */(0).then((function (require) {
-                var PriceManagementTabel = __webpack_require__(586).default;
-                _reactDom2.default.render(_react2.default.createElement(PriceManagementTabel, { data: da }), document.querySelector("#priceManagement"));
-            }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
-        }
-    }, {
         key: 'render',
         value: function render() {
             var th = this;
+            var versionlist = this.state.version.map(function (da, ind) {
+                return _react2.default.createElement(
+                    'option',
+                    { key: ind, value: da.value, 'data-status': da.status },
+                    da.text
+                );
+            });
             return _react2.default.createElement(
                 'article',
-                { className: 'price' },
+                null,
                 _react2.default.createElement(
                     'section',
                     null,
-                    _react2.default.createElement(_toolsProcessBar2.default, { edit: 'true', callback: this.BIND_CALLBACK.bind(this) }),
                     _react2.default.createElement(
-                        'div',
-                        { className: 'price-right' },
-                        _react2.default.createElement('i', { className: 'addIcon' }),
+                        'header',
+                        { className: 'price' },
+                        _react2.default.createElement(_toolsProcessBar2.default, { edit: 'true', callback: this.BIND_CALLBACK.bind(this) }),
                         _react2.default.createElement(
-                            'a',
-                            { className: 'btn-refish', href: 'javascript:;' },
-                            '\u751F\u6210\u65B0\u7248\u672C'
-                        )
-                    ),
-                    _react2.default.createElement('i', { className: 'clearboth' })
+                            'div',
+                            { className: 'price-right' },
+                            _react2.default.createElement('i', { className: 'addIcon' })
+                        ),
+                        _react2.default.createElement('i', { className: 'clearboth' })
+                    )
                 ),
                 _react2.default.createElement(
                     'section',
                     null,
-                    _react2.default.createElement('section', { className: 'mgT10', id: 'priceManagement' })
+                    _react2.default.createElement('React-tools-tab', { className: 'React-tools-tab', id: 'React-tools-tab' }),
+                    _react2.default.createElement(
+                        'article',
+                        { className: 'index-supply mgT20 clearboth' },
+                        _react2.default.createElement(
+                            'section',
+                            { className: 'supply-ys' },
+                            _react2.default.createElement(
+                                'header',
+                                { className: 'HeaderBar' },
+                                _react2.default.createElement(
+                                    'h5',
+                                    null,
+                                    _react2.default.createElement(
+                                        'span',
+                                        { className: 'price-left priceTapTitle' },
+                                        '\u6295\u51B3\u4F1A\u4EF7\u683C'
+                                    ),
+                                    _react2.default.createElement(
+                                        'ul',
+                                        { className: 'price-right opers' },
+                                        _react2.default.createElement(
+                                            'li',
+                                            { className: 'jh-icons ahover price-createpriceversion' },
+                                            _react2.default.createElement(
+                                                'a',
+                                                { className: 'btn-refish', href: 'javascript:;', onClick: this.createNewPriceVersion.bind(this) },
+                                                '\u751F\u6210\u65B0\u7248\u672C'
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            'li',
+                                            { className: 'jh-icons jh-vtop price-editsave' },
+                                            _react2.default.createElement(_toolsExchangeButton2.default, { 'data-unique': 'price', edit: 'true', callback: this.BIND_CALLBACK2.bind(this) })
+                                        ),
+                                        _react2.default.createElement(
+                                            'li',
+                                            { className: 'haveversion' },
+                                            _react2.default.createElement(
+                                                'span',
+                                                null,
+                                                '\u5F53\u524D\u7248\u672C\uFF1A'
+                                            ),
+                                            _react2.default.createElement(
+                                                'select',
+                                                { id: 'version', onChange: this.changeVersion.bind(this) },
+                                                versionlist
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            'li',
+                                            { className: 'haveversion uncursor' },
+                                            _react2.default.createElement(
+                                                'span',
+                                                null,
+                                                '\u72B6\u6001\uFF1A'
+                                            ),
+                                            _react2.default.createElement(
+                                                'span',
+                                                { id: 'statusText' },
+                                                '\u7F16\u5236\u4E2D'
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            'li',
+                                            { className: 'noversion uncursor' },
+                                            _react2.default.createElement(
+                                                'span',
+                                                null,
+                                                '\u6682\u65E0\u7248\u672C'
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement('table', { className: 'formTable', id: 'table-ys', width: '100%' })
+                        )
+                    )
                 )
             );
         }
@@ -142,9 +421,149 @@ var PriceControl = function (_React$Component) {
 
 exports.default = PriceControl;
 
+// import React from 'react';
+// /**
+//  * 首页导航条
+//  * index  identity  supply  所需
+//  */
+// import ReactDOM from 'react-dom';
+// import "../js/iss.js";
+// import "babel-polyfill";  //兼容ie
+// import ProcessBar from "./tools-processBar.js";
+
+// class PriceControl extends React.Component {
+//     constructor(arg) {
+//         super(arg);
+//         this.bindTab();
+//         this.state = {};
+//     }
+//     componentWillMount() {
+//         // render之前
+//         sessionStorage['pricestep'] = "1";
+//     }
+//     bindTab(prop) {
+//         $(".JH-Content").removeClass("CLASS_AGENTY");
+//     }
+//     /* 事件 */
+//     BIND_CALLBACK(data, ev) {
+//         sessionStorage['pricestep'] = data.guid;
+//         // iss.hashHistory.push("priceInvestment", { "state": "001" });
+//         // iss.hashHistory.push({
+//         //     pathname: "priceInvestment", state: { "state": data.guid }
+//         // });
+//         // let el = $(ev.target);
+//         // el.parent().find("li").removeClass("active");
+//         // setTimeout(() => { el.addClass("active") });
+//         switch (data.tap) {
+//             case "priceInvestment": iss.hashHistory.push("component-priceControl-Investment", { "state": "001" }); break;
+//             case "priceProductlocat": iss.hashHistory.push("component-priceControl-Productlocat", { "state": "002" }); break;
+//             case "priceProjectlocat": iss.hashHistory.push("component-priceControl-Projectlocat", { "state": "003" }); break;
+//             case "priceStartup": iss.hashHistory.push("component-priceControl-Startup", { "state": "004" }); break;
+//             case "priceCertificate": iss.hashHistory.push("component-priceControl-Certificate", { "state": "005" }); break;
+//             case "priceDecision": iss.hashHistory.push("component-priceControl-Decision", { "state": "006" }); break;
+//             case "pricePresell": iss.hashHistory.push("component-priceControl-Presell", { "state": "007" }); break;
+//             case "priceContract": iss.hashHistory.push("component-priceControl-Contract", { "state": "008" }); break;
+//             case "priceDeliver": iss.hashHistory.push("component-priceControl-Deliver", { "state": "009" }); break;
+//         }
+//     }
+//     render() {
+//         var th = this;
+//         return <header className="price" >
+//             <ProcessBar edit="true" callback={this.BIND_CALLBACK.bind(this)} />
+//             <div className="price-right">
+//                 <i className="addIcon"></i>
+//                 <a className="btn-refish" href="javascript:;">生成新版本</a>
+//             </div>
+//             <i className="clearboth"></i>
+//         </header>
+
+//     }
+// }
+
+// export default PriceControl;
+
+
+// import React from 'react';
+// /**
+//  * 首页导航条
+//  * index  identity  supply  所需
+//  */
+// import ReactDOM from 'react-dom';
+// import "../js/iss.js";
+// import "babel-polyfill";  //兼容ie
+// import ProcessBar from "./tools-processBar.js";
+
+// class PriceControl extends React.Component {
+//     constructor(arg) {
+//         super(arg);
+//         this.bindTab();
+//         this.state = {};
+//     }
+//     componentWillMount() {
+//         // render之前
+//         sessionStorage['pricestep'] = "1";
+//     }
+//     bindTab(prop) {
+//         $(".JH-Content").removeClass("CLASS_AGENTY");
+//     }
+//     /* 事件 */
+//     BIND_CALLBACK(da) {
+//         sessionStorage['pricestep'] = da.guid;
+//         var th = this;
+//         switch (da.tap) {
+//             case "priceInvestment":
+//             case "priceProductlocat": 
+//             case "priceProjectlocat":
+//             case "priceStartup": 
+//             case "priceCertificate":
+//             case "priceDecision": 
+//             case "pricePresell": 
+//             case "priceContract": 
+//             case "priceDeliver": th.BIND_URL1(da); break;
+//         }
+//         // switch (data.tap) {
+//         //     case "priceInvestment": iss.hashHistory.push("component-priceControl-Investment", { "state": "001" }); break;
+//         //     case "priceProductlocat": iss.hashHistory.push("component-priceControl-Productlocat", { "state": "002" }); break;
+//         //     case "priceProjectlocat": iss.hashHistory.push("component-priceControl-Projectlocat", { "state": "003" }); break;
+//         //     case "priceStartup": iss.hashHistory.push("component-priceControl-Startup", { "state": "004" }); break;
+//         //     case "priceCertificate": iss.hashHistory.push("component-priceControl-Certificate", { "state": "005" }); break;
+//         //     case "priceDecision": iss.hashHistory.push("component-priceControl-Decision", { "state": "006" }); break;
+//         //     case "pricePresell": iss.hashHistory.push("component-priceControl-Presell", { "state": "007" }); break;
+//         //     case "priceContract": iss.hashHistory.push("component-priceControl-Contract", { "state": "008" }); break;
+//         //     case "priceDeliver": iss.hashHistory.push("component-priceControl-Deliver", { "state": "009" }); break;
+//         // }
+//     }
+//     BIND_URL1(da) {
+//         require.ensure([], function (require) {
+//             let PriceManagementTabel = require('../components/component-priceControl-Management.js').default;
+//             ReactDOM.render(<PriceManagementTabel data={da} />, document.querySelector("#priceManagement"));
+//         }, "component-priceControl-Management");
+//     }
+//     render() {
+//         var th = this;
+//         return <article className="price" >
+//             <section>
+//                 <ProcessBar edit="true" callback={this.BIND_CALLBACK.bind(this)} />
+//                 <div className="price-right">
+//                     <i className="addIcon"></i>
+//                     <a className="btn-refish" href="javascript:;">生成新版本</a>
+//                 </div>
+//                 <i className="clearboth"></i>
+//             </section>
+//             <section>
+//                 <section className="mgT10" id="priceManagement">
+
+//                 </section>
+//             </section>
+//         </article>
+//     }
+// }
+
+// export default PriceControl;
+
 /***/ }),
 
-/***/ 602:
+/***/ 601:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -586,7 +1005,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(608);
+var	fixUrls = __webpack_require__(609);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -901,6 +1320,38 @@ function updateLink (link, options, obj) {
 /***/ }),
 
 /***/ 608:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(611);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(607)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./tools-processBar.less", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./tools-processBar.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 609:
 /***/ (function(module, exports) {
 
 
@@ -996,7 +1447,7 @@ module.exports = function (css) {
 
 /***/ }),
 
-/***/ 609:
+/***/ 610:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1025,7 +1476,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 //兼容ie
-__webpack_require__(610);
+__webpack_require__(608);
 
 var ProcessBar = function (_React$Component) {
     _inherits(ProcessBar, _React$Component);
@@ -1105,38 +1556,6 @@ exports.default = ProcessBar;
 
 /***/ }),
 
-/***/ 610:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(611);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(607)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./tools-processBar.less", function() {
-			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./tools-processBar.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
 /***/ 611:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1149,6 +1568,100 @@ exports.push([module.i, ".processBar .processBar-header li {\n  display: inline-
 
 // exports
 
+
+/***/ }),
+
+/***/ 612:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(19);
+
+var _react2 = _interopRequireDefault(_react);
+
+__webpack_require__(65);
+
+__webpack_require__(79);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+//兼容ie
+__webpack_require__(608);
+
+var ExchangeButton = function (_React$Component) {
+    _inherits(ExchangeButton, _React$Component);
+
+    function ExchangeButton(arg) {
+        _classCallCheck(this, ExchangeButton);
+
+        var _this = _possibleConstructorReturn(this, (ExchangeButton.__proto__ || Object.getPrototypeOf(ExchangeButton)).call(this, arg));
+
+        _this.state = {
+            btns: [
+            // data={"[{'text':'保存'，'class':''},{}]"}
+            { "guid": "0", "text": "编辑", "class": "jh-icon jh-icons-edit", "operType": "edit" }, { "guid": "1", "text": "保存", "class": "jh-icon jh-icons-save", "operType": "save" }],
+            id: _this.props["data-unique"] + "changebtn"
+        };
+        return _this;
+    }
+
+    _createClass(ExchangeButton, [{
+        key: "EVENT_CLICK_LIST",
+        value: function EVENT_CLICK_LIST(da, ind) {
+            $('#' + this.state.id).children("li").hide();
+            var si = da.guid == "0" ? "1" : "0";
+            $('#' + this.state.id).children("li").eq(parseInt(si)).show();
+            this.props["callback"] && this.props["callback"](da);
+        }
+    }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            $('#' + this.state.id).children("li").hide();
+            $('#' + this.state.id).children("li").eq(0).show();
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var _this2 = this;
+
+            var btneles = this.state.btns.map(function (da, ind) {
+                return _react2.default.createElement(
+                    "li",
+                    { key: da.guid, onClick: _this2.EVENT_CLICK_LIST.bind(_this2, da), "data-oper": da.operType },
+                    _react2.default.createElement("i", { className: da.class }),
+                    _react2.default.createElement(
+                        "span",
+                        null,
+                        da.text
+                    )
+                );
+            });
+            return _react2.default.createElement(
+                "ul",
+                { className: "opers btn-change jh-icons", id: this.state.id },
+                btneles
+            );
+        }
+    }]);
+
+    return ExchangeButton;
+}(_react2.default.Component);
+
+exports.default = ExchangeButton;
 
 /***/ })
 

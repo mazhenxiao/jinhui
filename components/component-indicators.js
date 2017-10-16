@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
+import "./tools-validate.js";
 require("../../Content/css/intallment.less");
 import DynamicTable from "./tools-dynamicTable.js";
 import "../../Content/css/tools-dynamicTable.less";//专用css
@@ -19,158 +20,51 @@ class Indicators extends React.Component {
             pid: "",
             treeId: iss.id.id,//左侧树id
             states: false,
-            AcountData: [],//汇总数据
+            AcountData: [],/*分期规划条件指标-汇总数据*/
             winAllBuiltData:[],/*分期占用土地table*/
             winopenDATA:[],/*alert中选择地块信息(这个里面不包括已经选择过的地块)或者编辑选中的地块*/
             winopenSelId:"",/*alert中保存选择过的地块Id,逗号分隔*/
             landStageArr:[],/*分期占用土地=相关分期*/
         }
     }
-    /*编辑分块事件*/
-    evBuiltEditTr(selObj,event){
-        var th=this;
-        let selArr=[];
-        selArr.push(selObj);
-        th.BIND_WINOPEN(selArr);
-        th.EVENT_SELECTMISSIF('edit',selArr);
-        
-    }
-    /*分期占用土地*/
-    BIND_CreateTable() {
+
+    /*编辑分期，初次获取分期占用土地数据，并汇总数据*/
+    evGetLandData(){
         let th=this;
-        let list = th.state.winAllBuiltData;
-        let landStageArr=th.state.landStageArr;
-        if (list.length) {
-            
-            return list.map((obj, index) => {
-                return <tr id={obj.ID} key={obj.ID} onClick={th.evBuiltEditTr.bind(th,obj)}>
-                    <td>{index + 1}</td>
-                    <td>{obj.Name}</td>
-                    <td>{obj.FieldList[1].val}</td>
-                    <td>{obj.IsAllDevel==1?"是":"否"}</td>
-                    <td>{obj.FieldList[2].val}</td>
-                    <td>{obj.FieldList[5].val}</td>
-                    <td>{landStageArr[obj.ID]}</td>
-                </tr>
-            })
-
-        } else {
-                return <tr><td>无地块</td></tr>
-        }
-    }
-    BIIND_FIST_LAND() {
-        let th = this;
-
-        iss.ajax({
-            url: "/Stage/GetDynaticFieldNullTemp",  //初次请求创建空地块使用
-            data: { projectId: th.state.treeId },
-            sucess(d) {
-
-                if (d["rows"]) {
-                    th.state.states = true;
-                    th.setState({
-                        newDynamicData: d["rows"]
+        let status=th.props.local.location.query.status;
+        let allListArr=[];
+        let selIDs=[];
+        /*新建分期则不用请求*/
+        if(status!="add"){
+            iss.ajax({
+                url: "/Stage/IGetLandQuotaByVersionId",
+                type: "get",
+                data:{
+                    versionId:iss.id.id,
+                    projectid:iss.id.parentid
+                },
+                success(d) {
+                    console.log("第一次加载，编辑分期时，获取分期占用土地数据");
+                    console.log(d.rows);
+                    allListArr=d.rows;
+                    allListArr.forEach((obj,index)=>{
+                        selIDs.push(obj.ID);
                     });
-                }
-
-            },
-            error(e) {
-
-            }
-        })
-
-       
-    }
-    BIND_GETACOUNT() {
-        let th = this;
-
-        iss.ajax({ //汇总模板
-            url: "/Stage/GetDynaticFieldNullTempSum?pid",
-            data: { projectId: this.state.treeId },
-            sucess(d) {
-                th.setState({ "AcountData": d.rows })
-            },
-            error() {}
-        })
-    }
-    BIND_CALLBACK() {
-
-    }
-    /*alert==实时获取地块的信息*/
-    BIND_WINOPEN(da){
-      this.setState({
-        winopenDATA:da
-      });
-      console.log("=======弹框中的地块信息或编辑选中的地块信息");
-      console.log(da);
-    }
-    /*alert-选择地块保存
-    @param editOrSel判断是编辑地块或选择地块
-    */
-    ev_saveBuiltInfor(editOrSel){
-        var th = this;
-        let listArr=th.state.winopenDATA;
-        let filterListArr=[];/*如果是选择地块：过滤选择过的地块；*/
-        let allListArr=th.state.winAllBuiltData;
-        if(editOrSel=="edit"){
-            allListArr.forEach((obj,index)=>{
-                if(obj.ID==listArr[0]["ID"]){
-                    obj=listArr[0];
-                }
-            });
-        }else{
-            listArr.forEach((obj,index)=>{
-                if(obj.IsAllDevel!=0){
-                    filterListArr.push(obj);
+                    th.setState({
+                        winopenSelId:selIDs.join(","),
+                        winAllBuiltData:allListArr,
+                        winopenDATA:[]
+                    });
+                    th.evGetLandFieldSum(allListArr);
+                    th.props.callback(allListArr);
+                },
+                error(d) {
+                    console.log(JSON.stringify(d));
                 }
             });
         }
-        
-        allListArr=allListArr.concat(filterListArr);
-        console.log("===========汇总对象===========");
-        console.log(allListArr);
-        let selIDs=[];/*保存选择过的地块id*/
-        iss.ajax({
-            url: "/Stage/IRetLandDynaticFieldSum",
-            type: "post",
-            data:{
-                data:JSON.stringify(allListArr)
-            },
-            sucess(d) {
-                console.log("返回的是分期经济指标（投决会版）");
-                console.log(d.rows);
-                /*存储选择过的地块*/
-                allListArr.forEach((obj,index)=>{
-                    selIDs.push(obj.ID);
-                });
-                th.setState({
-                    winopenSelId:selIDs.join(","),
-                    winAllBuiltData:allListArr,
-                    winopenDATA:[]
-                });
-                
-            },
-            error(d) {
-                console.log("汇总分期经济指标失败");
-            }
-        })
     }
-    /*选择地块事件*/
-    EVENT_SELECTMISSIF(editOrSel,selArr){
-        var th=this;
-        var id=th.state.treeId;
-        iss.Alert({
-            title:"选择分期占用土地",
-            width:1000,
-            height:400,
-            content:`<div id="alertBuiltBlock"></div>`,
-            ok(){
-                th.ev_saveBuiltInfor(editOrSel);
-            }
-        });
-        
-        ReactDOM.render(<Winopen guid={id} selId={th.state.winopenSelId} selArr={selArr} status={editOrSel} callback={this.BIND_WINOPEN.bind(this)} />,document.querySelector("#alertBuiltBlock"));
-    }
+
     /*分期占用土地=获取相关分期*/
     evIGetLandStageShow(){
         var th=this;
@@ -181,19 +75,190 @@ class Indicators extends React.Component {
             data:{
                 projectid:id
             },
-            sucess(d) {
+            success(d) {
                 th.setState({
                     landStageArr:d.rows
                 });
             },
             error(d) {
-                console.log("获取相关分期失败");
+                console.log(JSON.stringify(d));
             }
         })
     }
+    /*编辑：初次汇总分期规划条件指标*/
+    evGetLandFieldSum(listArrs) {
+        let th = this;
+        th.ev_saveBuiltInfor("del",listArrs);
+    }
+
+    /*编辑地块事件*/
+    evBuiltEditTr(selObj,event){
+        var th=this;
+        let selArr=[];
+        selArr.push(selObj);
+        th.BIND_WINOPEN(selArr);
+        th.EVENT_SELECTMISSIF('edit',selArr);
+        
+    }
+    /*删除地块*/
+    evBuiltDelTr(selObj,event){
+        let th=this;
+        let id=selObj.ID;
+        let selAllArrs=th.state.winAllBuiltData;
+        iss.Alert({
+            title:"提示",
+            width:300,
+            content:`<div class="Alert">是否删除地块</div>`,
+            ok(){
+                
+                let newSelAllArrs=selAllArrs.filter((obj,index)=>{
+                    return obj.ID!=id;
+                });
+                th.ev_saveBuiltInfor("del",newSelAllArrs);
+                
+            },
+            cancel(){
+                
+            }
+        })
+        
+    }
+    /*分期占用土地=渲染table*/
+    BIND_CreateTable() {
+        let th=this;
+        let list = th.state.winAllBuiltData;
+        let landStageArr=th.state.landStageArr;
+        if (list.length) {
+            
+            return list.map((obj, index) => {
+                return <tr id={obj.ID} key={obj.ID}>
+                    <td>{index + 1}</td>
+                    <td>{obj.Name}</td>
+                    <td>{obj.FieldList[1].val}</td>
+                    <td>{obj.IsAllDevel==1?"是":"否"}</td>
+                    <td>{obj.FieldList[2].val}</td>
+                    <td>{obj.FieldList[5].val}</td>
+                    <td>{landStageArr[obj.ID]}</td>
+                    <td>
+                        <button type="button" className="funCla funCla_edit" onClick={th.evBuiltEditTr.bind(th,obj)}>编辑</button>
+                        <button type="button" className="funCla funCla_del"  onClick={th.evBuiltDelTr.bind(th,obj)}>删除</button>
+                    </td>
+                </tr>
+            })
+
+        } else {
+                return <tr><td>无地块</td></tr>
+        }
+    }
+    
+    
+    BIND_CALLBACK() {
+
+    }
+    /*alert==实时获取地块的信息*/
+    BIND_WINOPEN(da){
+      this.setState({
+        winopenDATA:da
+      });
+    }
+    /*根据地块变化=汇总数据
+    @param operaStatus判断是编辑地块,选择地块,删除地块
+    */
+    ev_saveBuiltInfor(operaStatus,newArr){
+        var th = this;
+        let listArr=th.state.winopenDATA;
+        let filterListArr=[];/*如果是选择地块：过滤选择过的地块；*/
+        let allListArr=th.state.winAllBuiltData;
+        
+        if(operaStatus=="edit"){
+            allListArr.forEach((obj,index)=>{
+                if(obj.ID==listArr[0]["ID"]){
+                    obj=listArr[0];
+                }
+            });
+        }else if(operaStatus=="del"){
+            allListArr=newArr;
+        }else if(operaStatus=="select"){
+            listArr.forEach((obj,index)=>{
+                if(obj.IsAllDevel!=0){
+                    filterListArr.push(obj);
+                }
+            });
+        }
+        
+        allListArr=allListArr.concat(filterListArr);
+        
+        let selIDs=[];/*保存选择过的地块id*/
+        iss.ajax({
+            url: "/Stage/IRetLandDynaticFieldSum",
+            type: "post",
+            data:{
+                data:JSON.stringify(allListArr)
+            },
+            success(d) {
+                /*存储选择过的地块*/
+                allListArr.forEach((obj,index)=>{
+                    selIDs.push(obj.ID);
+                });
+                th.setState({
+                    winopenSelId:selIDs.join(","),
+                    winAllBuiltData:allListArr,
+                    winopenDATA:[],
+                    AcountData:d.rows
+                });
+                th.props.callback(allListArr);
+
+                console.log("分期规划条件指标/汇总数据=========");
+                console.log(d.rows);
+            },
+            error(d) {
+                console.log(JSON.stringif(d));
+            }
+        })
+    }
+    /*选择地块事件
+    @editOrSel 判断是编辑(edit)/选择(select) 地块
+    */
+    EVENT_SELECTMISSIF(editOrSel,selArr){
+        var th=this;
+        let status=th.props.local.location.query.status;
+        let id="";
+        let title="";
+        if(status=="add"){
+            id=th.state.treeId;
+        }else{
+            id=iss.id.parentid;
+        }
+        if(editOrSel=="select"){
+            title="选择分期占用土地";
+        }else if(editOrSel=="edit"){
+            title="编辑分期占用土地";
+        }
+        iss.Alert({
+            title:title,
+            width:1000,
+            height:400,
+            content:`<div id="alertBuiltBlock"></div>`,
+            ok(){
+                var isValid=$("#form_aBuiltLand").form("validate");
+                console.log("验证结果："+isValid)
+                if(isValid){
+                    th.ev_saveBuiltInfor(editOrSel);
+                }else{
+                    return false;
+                }
+                
+            }
+        });
+        
+        ReactDOM.render(<Winopen guid={id} selId={th.state.winopenSelId} selArr={selArr} status={editOrSel} callback={this.BIND_WINOPEN.bind(this)} />,document.querySelector("#alertBuiltBlock"));
+    }
+    
+    
+
     componentDidMount() {
-        this.BIIND_FIST_LAND();//初次获取数据
-        this.BIND_GETACOUNT();//初次获取统计数据
+        if(iss.id==""){ return}
+        this.evGetLandData();/*编辑分期时，初次获取分期占用土地数据*/
         this.evIGetLandStageShow();/*分期占用土地=获取相关分期*/
     }
     componentWillMount() {
@@ -215,7 +280,6 @@ class Indicators extends React.Component {
                 <h3 className="boxGroupTit"><p><span>分期占用土地</span><i></i></p>
                     <span className="functionButton">
                         <a className="refresh-icon addIcon ClickThePopUp1" onClick={this.EVENT_SELECTMISSIF.bind(this,'select',selArr)} href="javascript:;">选择地块</a>
-                        <a className="refresh-icon deleteIcon" href="#">删除地块</a>
                     </span>
                 </h3>
                 <div>
@@ -229,6 +293,7 @@ class Indicators extends React.Component {
                                 <td>总用地面积（㎡）</td>
                                 <td>计容建筑面积（㎡）</td>
                                 <td>相关分期</td>
+                                <td>操作</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -243,7 +308,5 @@ class Indicators extends React.Component {
     }
 
 }
-
-
 
 export default Indicators;

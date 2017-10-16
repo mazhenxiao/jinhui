@@ -9,14 +9,25 @@ import toolsTree from "../components/tools-leftTree.js";//左侧树形
 class main{
   constructor(){
     var th = this;
- 
+    this.getUser();
     this.TransHeight();
     this.bindScroll();   
     this.bingBar();
     //document.addEventListener("fullscreenchange",th.TransHeight,false);
    // document.addEventListener("mozfullscreenchange",th.TransHeight,false);
    // document.addEventListener("msfullscreenchange",th.TransHeight,false);
-     window.onresize = this.TransHeight;    
+     window.onresize = this.TransHeight; 
+     
+    
+  }
+  getUser(){  //获取登陆信息
+
+     iss.ajax({
+       url:"/Account/IGetUserInfo",
+       success(da){
+          iss.userInfo = da; //获取数据
+       }
+     })
   }
   TransHeight(){
     let JH_Nav = document.querySelector(".JH-Nav"),JH_Content = document.querySelector(".JH-Content"),h=640;
@@ -35,11 +46,7 @@ class main{
         }else{
           JHNav.removeClass("fixed");
         }
-        /* if(left>20){
-          bs.addClass("hide")
-        }else{
-          bs.removeClass("hide")
-        } */
+
     }
   }
   bingBar(){

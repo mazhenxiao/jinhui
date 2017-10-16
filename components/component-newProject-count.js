@@ -18,6 +18,8 @@ class NewProjectCount extends React.Component {
             "EQUITYRATIO":"",
             "PROJECTCODE":"",
             "PRINCIPAL":"",
+            "ID":"",
+            "mapUrl":"http://192.168.11.164:82"
             // "cityCompany":iss.id.text,
         }
         iss.hashHistory.listen((local, next) => {
@@ -28,17 +30,18 @@ class NewProjectCount extends React.Component {
     }
 
     getAjax(){
+        if(iss.id==""){ return};
         var th = this;
        // console.log(th);
     //   let projectId = this.props.location.state.id;
-       let statu=this.props.local.query.statu;
+       let status=this.props.local.query.status;
        let json={};
        var urlProject;
-       //console.log(statu)
-       if(statu=="edit"){
+       //console.log(status)
+       if(status=="edit"){
             urlProject="/Project/IProjectInfo";
             json.projectId=iss.id.id;
-       }else{
+       }else if(status=="add"){
             urlProject="/Project/INewProject";
             json.cityId=iss.id.id;
        }
@@ -47,7 +50,7 @@ class NewProjectCount extends React.Component {
             //url:"/Project/IProjectInfo",  
             url:urlProject,  
             data:json,
-            sucess(res){
+            success(res){
                //console.log(res.rows);
               // console.log(res.rows.SelectOptions.TRADERMODE)
                 th.setState({
@@ -130,27 +133,7 @@ class NewProjectCount extends React.Component {
             panelWidth:"452px",
             panelHeight:"auto",
         });
-        // $('#linkage').appendTo(belongCity.combo('panel'));
-        // $('#linkage select').click(function(){
-        //     var v = $('#linkage select option:selected').text();
-        //     belongCity.combo('setText', v)
-        //     $('#linkage #town').click(function(){
-        //         belongCity.combo('hidePanel');
-        //     })
-        // });
-
-        /*let developmentWay = $("#PROJECTTYPE")//项目开发方式
-        developmentWay.combobox({
-            valueField: "val",
-            textField: "label",
-            editable: true,
-            readonly: false, 
-            panelHeight:"auto",
-            onChange:th.handleSelectTextChange.bind(th,"PROJECTTYPE"),
-            data:arg.rows.SelectOptions.PROJECTTYPE, 
-        });
-        developmentWay.combobox("select",arg.rows.BaseFormInfo.Project.PROJECTTYPE);
-        */
+   
         let tradersWay = $("#TRADERMODE");//操盘方式
         tradersWay.combobox({
             valueField: "val",
@@ -164,6 +147,51 @@ class NewProjectCount extends React.Component {
         });
         tradersWay.combobox("select",arg.rows.BaseFormInfo.Project.TRADERMODE);
     }
+    BIND_CHECKPROJECTNAME(ev){   //检查姓名名称是否冲突
+        let th=this;
+        let projectid=iss.id.id;
+        let name=ev.target.value;
+        this.setState({
+            PROJECTNAME:name
+        })
+        clearTimeout(this.time);
+        this.time = setTimeout(arg=>{
+            iss.ajax({
+                type:"POST",
+                url:"Project/IProjectNameExists",
+                data:{
+                    name:name,
+                },
+                success:function (data) {
+                    if(data["rows"]==true){
+                        th.BIND_CHANGE_DATA(th.state);
+                    }else{
+                        alert("错误")
+                    }
+                },
+                error:function (er) {
+                    console.log('错误');
+                }
+            });
+        },500);
+       
+    }
+    xmViewError(event){
+        // this.attr("src","../img/xmViewError.png")
+        $(event.target).attr("src","../../Content/img/xmViewError.png");
+    }//加载暂无
+    BIND_EditMapMark(event){
+        window.open(this.state.mapUrl+"/Admin/EditMapMark?project_id="+this.state.ID+"&cityname="+this.state.CompanyCityName);    
+    }//点击标记地理位置
+    BIND_EditProject(event){
+        window.open(this.state.mapUrl+"/Admin/EditProject?project_id="+this.state.ID+"&project_map_id=project"+this.state.ID);    
+    } //点击编辑项目总图
+    BIND_maps(){
+        window.open(this.state.mapUrl+"/Map/Project?project_id="+this.state.ID+"&project_map_id=project"+this.state.ID);    
+    } //点击预览项目总图
+    BIND_mapmark(){
+        window.open(this.state.mapUrl+"/map/mapmark?project_id="+this.state.ID+"&cityname="+this.state.CompanyCityName)
+    }//点击预览地理位置
     render() {
         return <section>
             <article className="staging-box">
@@ -205,7 +233,7 @@ class NewProjectCount extends React.Component {
                                     <label className="formTableLabel boxSizing redFont">项目名称</label>
                                 </th>
                                 <td>
-                                    <input onChange={this.handleInputTextChange.bind(this)} id="PROJECTNAME" value={this.state.PROJECTNAME||""} className="inputTextBox boxSizing" type="text" />
+                                    <input onChange={this.BIND_CHECKPROJECTNAME.bind(this)} id="PROJECTNAME" value={this.state.PROJECTNAME||""} className="inputTextBox boxSizing" type="text" />
                                 </td>
                                 <th>
                                     <label className="formTableLabel boxSizing redFont">项目案名</label>
@@ -238,27 +266,27 @@ class NewProjectCount extends React.Component {
                                 </td>
                                 
                                 <th>
-                                    <label className="formTableLabel boxSizing redFont">项目负责人</label>
-                                </th>
-                                <td>
-                                    <input readOnly="readonly" onClick={this.handChooseTo.bind(this)} onChange={this.handleInputTextChange.bind(this)} id="PRINCIPAL" value={this.state.PRINCIPAL||""} className="inputTextBox boxSizing" type="text" />
-                                    <img className="symbol headIcon" src="../../Content/img/head-icon.png" />
-                                </td>
-                            </tr>
-                            <tr>
-                                
-                                <th>
                                     <label className="formTableLabel boxSizing redFont">地理位置</label>
                                 </th>
                                 <td>
-                                    <button className="btn btnStyle uploadIconBtn" id="LOCATION">标记地理位置</button>
+                                <button className="btn btnStyle uploadIconBtn" onClick={this.BIND_EditMapMark.bind(this)} id="LOCATION">标记地理位置</button>
                                 </td>
+                                
+                            </tr>
+                            <tr>
+                            <th>
+                                    <label className="formTableLabel boxSizing redFont">项目负责人</label>
+                                </th>
+                                <td>
+                                    <input readOnly="readonly" onClick={this.handChooseTo.bind(this)} id="PRINCIPAL" value={this.state.PRINCIPAL||""} className="inputTextBox boxSizing" type="text" />
+                                    <img className="symbol headIcon" src="../../Content/img/head-icon.png" />
+                                </td>
+                                
                                 <th>
                                     <label className="formTableLabel boxSizing redFont">项目总图</label>
                                 </th>
                                 <td>
-                                    <button className="btn btnStyle uploadIconBtn">上传</button>
-                                    <button className="btn btnStyle userApplyIconBtn">编辑</button>
+                                <button className="btn btnStyle uploadIconBtn" onClick={this.BIND_EditProject.bind(this)}>标记分期</button>
                                 </td>	
                                 
                             </tr>
@@ -282,10 +310,10 @@ class NewProjectCount extends React.Component {
                     <div id="myCarousel" className="carousel slide carouselStyle">
                         <div className="carousel-inner">
                             <div className="item active">
-                                <iframe src="" width="100%" height="295px"></iframe>
+                                <img src={this.state.mapUrl+"/Content/maps/source/project"+this.state.ID+"_s.jpg"} onError={this.xmViewError.bind(this)} onClick={this.BIND_maps.bind(this)}  width="100%" height="295px" />
                             </div>
-                            <div className="item">
-                                <iframe src="" width="100%" height="295px"></iframe>
+                            <div className="item" onClick={this.BIND_mapmark.bind(this)}>
+                                <iframe src={this.state.mapUrl+"/map/mapmark?project_id="+this.state.ID} onerror={this.xmViewError.bind(this)}  width="100%" height="295px"></iframe>
                             </div>
                         </div>
                         {/* 轮播（Carousel）导航 */}

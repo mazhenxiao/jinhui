@@ -91,7 +91,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "chunk-" + ({"0":"component-priceControl-Management","1":"component-intallment","2":"component-newProject","3":"component-newProjectApproval","4":"component-areaManagement","5":"component-priceControl-Startup","6":"component-priceControl-Projectlocat","7":"component-priceControl-Productlocat","8":"component-priceControl-Presell","9":"component-priceControl-Investment","10":"component-priceControl-Deliver","11":"component-priceControl-Decision","12":"component-priceControl-Contract","13":"component-priceControl-Certificate","14":"component-priceControl","15":"component-identity","16":"component-index","17":"component-supply","18":"component-agenty","19":"component-todo","20":"component-projectList","21":"jinhui-Index","22":"jinhui-OpenIndex","23":"component-areaManagement-1"}[chunkId]||chunkId) + ".js";
+/******/ 		script.src = __webpack_require__.p + "chunk-" + ({"0":"component-intallment","1":"component-newProject","2":"component-newProjectApproval","3":"component-priceControl-Startup","4":"component-priceControl-Projectlocat","5":"component-priceControl-Productlocat","6":"component-priceControl-Presell","7":"component-priceControl-Management","8":"component-priceControl-Investment","9":"component-priceControl-Deliver","10":"component-priceControl-Decision","11":"component-priceControl-Contract","12":"component-priceControl-Certificate","13":"component-areaManagement","14":"component-priceControl","15":"component-identity","16":"component-index","17":"component-supply","18":"component-agenty","19":"component-todo","20":"component-projectList","21":"jinhui-Index","22":"jinhui-OpenIndex","23":"component-areaManagement-1"}[chunkId]||chunkId) + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -4244,6 +4244,7 @@ var $iss = function () {
         _classCallCheck(this, $iss);
 
         this.pagination();
+        this.id = this.getQuert("FileId") || "";
     }
 
     _createClass($iss, [{
@@ -4279,7 +4280,7 @@ var $iss = function () {
         value: function ajax(opt) {
             var th = this;
             var $o = JSON.parse(JSON.stringify(opt));
-            $o["sucess"] && delete $o["sucess"];
+            $o["success"] && delete $o["success"];
             $o["error"] && delete $o["error"];
             var arg = {
                 type: "POST",
@@ -4287,7 +4288,7 @@ var $iss = function () {
             };
             $.extend(arg, $o);
             $.ajax(arg).done(function (da) {
-                opt["sucess"] && opt.sucess(da);
+                opt["success"] && opt.success(da);
             }).fail(function (e) {
                 opt["error"] && opt.error(e);
             });
@@ -4326,10 +4327,11 @@ var $iss = function () {
                 width: "600px",
                 height: "400px",
                 ok: $.noop,
+                okVal: "确定",
                 cancel: false
             };
             $.extend(opt, arg);
-            var str = "<div class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" >\n        <div class=\"modal-dialog\" role=\"document\">\n          <div class=\"modal-content\">\n            <div class=\"modal-header\">\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n              <h4 class=\"modal-title\">" + opt.title + "</h4>\n            </div>\n            <div class=\"modal-body\" style=\"height:" + opt.height + "px;\">\n              <div>" + opt.content + "</div>\n            </div>\n            <div class=\"modal-footer\">\n              <button type=\"button\" class=\"btn btn-primary J_ok\" >\u786E\u5B9A</button>\n              <button type=\"button\" class=\"btn btn-primary J_cancel " + (opt.cancel ? 'btn-show' : 'btn-hide') + "\" >\u53D6\u6D88</button>\n            </div>\n          </div>\n        </div>\n      </div>";
+            var str = "<div class=\"modal fade\" tabindex=\"-1\" role=\"dialog\" >\n        <div class=\"modal-dialog\" role=\"document\">\n          <div class=\"modal-content\">\n            <div class=\"modal-header\">\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>\n              <h4 class=\"modal-title\">" + opt.title + "</h4>\n            </div>\n            <div class=\"modal-body\" style=\"height:" + opt.height + "px;\">\n              <div>" + opt.content + "</div>\n            </div>\n            <div class=\"modal-footer\">\n              <button type=\"button\" class=\"btn btn-primary J_ok\" >" + opt.okVal + "</button>\n              <button type=\"button\" class=\"btn btn-primary J_cancel " + (opt.cancel ? 'btn-show' : 'btn-hide') + "\" >\u53D6\u6D88</button>\n            </div>\n          </div>\n        </div>\n      </div>";
 
             var $ele = $(str),
                 s = $ele.width(),
@@ -4543,6 +4545,38 @@ var $iss = function () {
             };
             setTimeout(function () {
                 bindData(); //绑定数据
+            });
+        }
+    }, {
+        key: "calendar",
+        value: function calendar(date, callback) {
+            $.extend($.fn.calendar.defaults, { //esayui国际化
+                weeks: ['日', '一', '二', '三', '四', '五', '六'],
+                months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+            });
+
+            var opt = {
+                date: date || new Date(),
+                callback: callback || $.noop
+            };
+            iss.Alert({
+                title: "日期",
+                content: "<div id=\"esayuiDate\"></div>",
+                width: 300,
+                height: 200,
+                okVal: "关闭",
+                ok: function ok() {}
+            });
+
+            $("#esayuiDate").calendar({
+                width: 298,
+                height: 200,
+                onSelect: function onSelect(da) {
+
+                    if (opt.callback(new Date(da).Format("yyyy/MM/dd")) != "false") {
+                        $(".modal").modal("hide");
+                    }
+                }
             });
         }
     }]);
@@ -17103,7 +17137,7 @@ var rootRout = {
     path: "/index",
     getComponent: function getComponent(next, callback) {
       __webpack_require__.e/* require.ensure */(16).then((function (require) {
-        var app = __webpack_require__(587); //============================生日祝福
+        var app = __webpack_require__(586); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
@@ -17111,7 +17145,7 @@ var rootRout = {
     path: "/identity",
     getComponent: function getComponent(next, callback) {
       __webpack_require__.e/* require.ensure */(15).then((function (require) {
-        var app = __webpack_require__(588); //============================生日祝福
+        var app = __webpack_require__(587); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
@@ -17119,7 +17153,7 @@ var rootRout = {
     path: "/supply",
     getComponent: function getComponent(next, callback) {
       __webpack_require__.e/* require.ensure */(17).then((function (require) {
-        var app = __webpack_require__(589); //============================生日祝福
+        var app = __webpack_require__(588); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
@@ -17127,7 +17161,7 @@ var rootRout = {
     path: "/projectList",
     getComponent: function getComponent(next, callback) {
       __webpack_require__.e/* require.ensure */(20).then((function (require) {
-        var app = __webpack_require__(590); //============================生日祝福
+        var app = __webpack_require__(589); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
@@ -17136,7 +17170,7 @@ var rootRout = {
     path: "/agenty",
     getComponent: function getComponent(next, callback) {
       __webpack_require__.e/* require.ensure */(18).then((function (require) {
-        var app = __webpack_require__(591); //============================生日祝福
+        var app = __webpack_require__(590); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
@@ -17145,23 +17179,23 @@ var rootRout = {
     path: "/todo",
     getComponent: function getComponent(next, callback) {
       __webpack_require__.e/* require.ensure */(19).then((function (require) {
-        var app = __webpack_require__(592); //============================生日祝福
+        var app = __webpack_require__(591); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
   }, { //分期
     path: "/intallment",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(1).then((function (require) {
-        var app = __webpack_require__(593); //============================分期
+      __webpack_require__.e/* require.ensure */(0).then((function (require) {
+        var app = __webpack_require__(592); //============================分期
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
   }, { //项目
     path: "/newProject",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(2).then((function (require) {
-        var app = __webpack_require__(594); //============================分期
+      __webpack_require__.e/* require.ensure */(1).then((function (require) {
+        var app = __webpack_require__(593); //============================分期
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
@@ -17176,87 +17210,87 @@ var rootRout = {
   }, { //价格管理-投决会
     path: "/component-priceControl-Investment",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(9).then((function (require) {
-        var app = __webpack_require__(595); //============================价格管理-投决会
+      __webpack_require__.e/* require.ensure */(8).then((function (require) {
+        var app = __webpack_require__(594); //============================价格管理-投决会
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
   }, { //价格管理-产品定位会
     path: "/component-priceControl-Productlocat",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(7).then((function (require) {
-        var app = __webpack_require__(596); //============================价格管理-产品定位会
+      __webpack_require__.e/* require.ensure */(5).then((function (require) {
+        var app = __webpack_require__(595); //============================价格管理-产品定位会
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
   }, { //价格管理-项目定位会
     path: "/component-priceControl-Projectlocat",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(6).then((function (require) {
-        var app = __webpack_require__(597); //============================价格管理-项目定位会
+      __webpack_require__.e/* require.ensure */(4).then((function (require) {
+        var app = __webpack_require__(596); //============================价格管理-项目定位会
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
   }, { //价格管理-启动会
     path: "/component-priceControl-Startup",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(5).then((function (require) {
-        var app = __webpack_require__(598); //============================价格管理-项目定位会
+      __webpack_require__.e/* require.ensure */(3).then((function (require) {
+        var app = __webpack_require__(597); //============================价格管理-项目定位会
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
   }, { //价格管理-工规证
     path: "/component-priceControl-Certificate",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(13).then((function (require) {
-        var app = __webpack_require__(599); //============================价格管理-工规证
+      __webpack_require__.e/* require.ensure */(12).then((function (require) {
+        var app = __webpack_require__(598); //============================价格管理-工规证
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
   }, { //价格管理-决策书
     path: "/component-priceControl-Decision",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(11).then((function (require) {
-        var app = __webpack_require__(600); //============================价格管理-决策书
+      __webpack_require__.e/* require.ensure */(10).then((function (require) {
+        var app = __webpack_require__(599); //============================价格管理-决策书
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
   }, { //价格管理-预售证
     path: "/component-priceControl-Presell",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(8).then((function (require) {
-        var app = __webpack_require__(601); //============================价格管理-预售证
+      __webpack_require__.e/* require.ensure */(6).then((function (require) {
+        var app = __webpack_require__(600); //============================价格管理-预售证
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
   }, { //价格管理-签约
     path: "/component-priceControl-Contract",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(12).then((function (require) {
-        var app = __webpack_require__(602); //============================价格管理-签约
+      __webpack_require__.e/* require.ensure */(11).then((function (require) {
+        var app = __webpack_require__(601); //============================价格管理-签约
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
   }, { //价格管理-交付
     path: "/component-priceControl-Deliver",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(10).then((function (require) {
-        var app = __webpack_require__(603); //============================价格管理-交付
+      __webpack_require__.e/* require.ensure */(9).then((function (require) {
+        var app = __webpack_require__(602); //============================价格管理-交付
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
   }, { //价格管理-表格页
     path: "/component-priceControl-Management",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(0).then((function (require) {
-        var app = __webpack_require__(586); //============================价格管理-表格页
+      __webpack_require__.e/* require.ensure */(7).then((function (require) {
+        var app = __webpack_require__(603); //============================价格管理-表格页
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
   }, { //面积
     path: "/areaManagement",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(4).then((function (require) {
+      __webpack_require__.e/* require.ensure */(13).then((function (require) {
         var app = __webpack_require__(604); //============================价格管理-交付
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -17265,7 +17299,7 @@ var rootRout = {
   }, { //发起审批
     path: "/newProjectApproval",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(3).then((function (require) {
+      __webpack_require__.e/* require.ensure */(2).then((function (require) {
         var app = __webpack_require__(605); //============================价格管理-交付
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -17273,6 +17307,7 @@ var rootRout = {
 
   }]
 };
+
 _reactDom2.default.render(_react2.default.createElement(_reactRouter.Router, { history: _reactRouter.hashHistory, routes: rootRout }), document.querySelector("#JH-Router"));
 exports.default = rootRout;
 

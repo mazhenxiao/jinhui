@@ -49,7 +49,7 @@ var main = function () {
     _classCallCheck(this, main);
 
     var th = this;
-
+    this.getUser();
     this.TransHeight();
     this.bindScroll();
     this.bingBar();
@@ -60,6 +60,18 @@ var main = function () {
   }
 
   _createClass(main, [{
+    key: 'getUser',
+    value: function getUser() {
+      //获取登陆信息
+
+      _iss2.default.ajax({
+        url: "/Account/IGetUserInfo",
+        success: function success(da) {
+          _iss2.default.userInfo = da; //获取数据
+        }
+      });
+    }
+  }, {
     key: 'TransHeight',
     value: function TransHeight() {
       var JH_Nav = document.querySelector(".JH-Nav"),
@@ -90,11 +102,6 @@ var main = function () {
         } else {
           JHNav.removeClass("fixed");
         }
-        /* if(left>20){
-          bs.addClass("hide")
-        }else{
-          bs.removeClass("hide")
-        } */
       };
     }
   }, {
@@ -438,6 +445,7 @@ var ToolsTree = function (_React$Component) {
             changeCurrent: "",
             changeState: _iss2.default.getQuert("intallment") ? "intallment" : _iss2.default.getQuert("newProject") ? "newProject" : ""
         };
+
         return _this;
     }
 
@@ -445,6 +453,7 @@ var ToolsTree = function (_React$Component) {
         key: 'componentDidMount',
         value: function componentDidMount() {
             var self = this;
+            this.notIndexChange(); //判断是否刷新了也没
             _toolsTree2.default.bindTree("#tree", function (arg) {
                 _iss2.default.id = arg;
                 var id = void 0,
@@ -456,17 +465,28 @@ var ToolsTree = function (_React$Component) {
                     case "3":
                         _iss2.default.hashHistory.replace({ pathname: "index", state: arg });id = "newProject";break; //项目
                     case "4":
-                        _iss2.default.hashHistory.replace({ pathname: "index", state: arg, query: { statu: "show" } });id = "intallment";current = "newProject";break; //分公司
+                        _iss2.default.hashHistory.replace({ pathname: "index", state: arg, query: { status: "show" } });id = "intallment";current = "newProject";break; //分公司
                     case "5":
-                        "";_iss2.default.hashHistory.replace({ pathname: "index", state: arg, query: { statu: "show" } });current = "intallment";break; //分区;
+                        "";_iss2.default.hashHistory.replace({ pathname: "index", state: arg, query: { status: "show" } });current = "intallment";id = "intallmentDetail";break; //分区;
                 }
-                console.log(current);
+                //console.log(arg["status"])
+                // console.log(current)
                 self.setState({
                     changeState: id,
                     changeCurrent: current,
-                    data: arg
+                    data: arg,
+                    status: arg["status"]
                 });
             });
+        }
+    }, {
+        key: 'notIndexChange',
+        value: function notIndexChange() {
+            //非首页跳转
+            // console.log()
+            if (_iss2.default.id == "") {
+                _iss2.default.hashHistory.replace("/index");
+            }
         }
     }, {
         key: 'addTodo',
@@ -475,7 +495,11 @@ var ToolsTree = function (_React$Component) {
             if (th.state.changeState == "newProject" || th.state.changeState == "intallment") {
                 _iss2.default.hashHistory.replace({
                     pathname: '/' + th.state.changeState,
-                    state: this.state.data
+                    state: this.state.data,
+                    query: {
+                        status: "add"
+                    }
+
                 });
             }
         }
@@ -483,14 +507,23 @@ var ToolsTree = function (_React$Component) {
         key: 'editTodo',
         value: function editTodo(arg) {
             var th = this;
-            console.log(th.state.changeCurrent);
+            console.log(th.state.status);
             if (th.state.changeCurrent == "newProject" || th.state.changeCurrent == "intallment") {
-                _iss2.default.hashHistory.replace({
-                    pathname: '/' + th.state.changeCurrent,
-                    query: {
-                        statu: "edit"
-                    }
-                });
+                if (th.state.status == 0 || th.state.status == 2) {
+                    _iss2.default.hashHistory.replace({
+                        pathname: '/' + th.state.changeCurrent,
+                        query: {
+                            status: "edit"
+                        }
+                    });
+                } else if (th.state.status == 99) {
+                    _iss2.default.hashHistory.replace({
+                        pathname: '/' + th.state.changeCurrent,
+                        query: {
+                            status: "upgrade"
+                        }
+                    });
+                }
             }
         }
     }, {
@@ -501,12 +534,26 @@ var ToolsTree = function (_React$Component) {
             var th = this;
             var setBar = function setBar(arg) {
                 console.log(th.state.changeState);
-                if (th.state.changeState == "") {
+                if (th.state.changeState == "" || th.state.changeState == undefined) {
                     return _react2.default.createElement(
                         'div',
                         null,
                         _react2.default.createElement('input', { type: 'search', className: 'stateSearch', value: '' }),
-                        _react2.default.createElement('img', { src: 'img/state-icon-btn.png' })
+                        _react2.default.createElement('img', { src: '../img/state-icon-btn.png' })
+                    );
+                } else if (th.state.changeState == "newProject") {
+                    return _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement('a', { href: 'javascript:;', className: 'iconBoxJin projectDelete' }),
+                        _react2.default.createElement('a', { href: 'javascript:;', onClick: _this2.addTodo.bind(_this2), className: 'iconBoxJin projectAdd' })
+                    );
+                } else if (th.state.changeState == "intallmentDetail") {
+                    return _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement('a', { href: 'javascript:;', className: 'iconBoxJin projectDelete' }),
+                        _react2.default.createElement('a', { href: 'javascript:;', onClick: _this2.editTodo.bind(_this2), className: 'iconBoxJin projectBian' })
                     );
                 } else {
                     return _react2.default.createElement(
@@ -615,68 +662,6 @@ var $tree = function () {
             treeDate: []
         };
         this.getAjax();
-        /*  this.data = [{
-              "id": 1,
-              "type":0,
-              "text": "My Documents",
-              "children": [{
-                  "id": 11,
-                  "type":1,
-                  "text": "Photos",
-                  "state": "closed",
-                  "children": [{
-                      "id": 111,
-                      "type":2,
-                      "text": "Friend"
-                  }, {
-                      "id": 112,
-                      "type":2,
-                      "text": "Wife"
-                  }, {
-                      "id": 113,
-                      "type":2,
-                      "text": "Company"
-                  }]
-              }, {
-                  "id": 12,
-                  "type":2,
-                  "text": "Program Files",
-                  "children": [{
-                      "id": 121,
-                      "type":3,
-                      "text": "Intel"
-                  }, {
-                      "id": 122,
-                      "type":3,
-                      "text": "Java",
-                      "attributes": {
-                          "p1": "Custom Attribute1",
-                          "p2": "Custom Attribute2"
-                      }
-                  }, {
-                      "id": 123,
-                      "type":3,
-                      "text": "Microsoft Office"
-                  }, {
-                      "id": 124,
-                      "type":3,
-                      "text": "Games",
-                      "checked": true
-                  }]
-              }, {
-                  "id": 13,
-                  "type":2,
-                  "text": "index.html"
-              }, {
-                  "id": 14,
-                  "type":2,
-                  "text": "about.html"
-              }, {
-                  "id": 15,
-                  "type":2,
-                  "text": "welcome.html"
-              }]
-          }]  */
     }
 
     _createClass($tree, [{
@@ -687,7 +672,7 @@ var $tree = function () {
             _iss2.default.ajax({
                 type: "post",
                 url: th.state.url,
-                sucess: function sucess(da) {
+                success: function success(da) {
                     th.ele.tree("loadData", da);
                     _iss2.default.id = da[0];
                 },

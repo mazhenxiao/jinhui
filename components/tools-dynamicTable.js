@@ -65,6 +65,14 @@ class DynamicTable extends React.Component {
             error(e) { }
         })
     }
+    setEventDate(el,ev){
+        let th = this;
+        let de = new Date().Format("yyyy-MM-dd");           
+        iss.calendar(de,arg=>{  
+           el.val=arg;
+            th.props.CallBack.call(th,el)
+        })
+    }
     setList(da) {
        // console.log(da)
         let typeBox=el=>{
@@ -74,8 +82,11 @@ class DynamicTable extends React.Component {
                   return <option key={_i} value={_d.val}>{_d.label}</option>
                 })
                 return <select name={el.id} onChange={this.props.CallBack.bind(this,el)}  value={el.val||""}>{list}</select>
+            }else if(el.type=="date"){
+                return <input   name={el.id} className="esayuiDate" id={el.id} data-pid={el.pid} value={el.val||""}  placeholder={el.edit.indexOf("+m")>=0? "":""} type="text"  onClick={this.setEventDate.bind(this,el)}  readOnly="true"  />
             }else{ 
-              return <input   name={el.id} id={el.id} data-pid={el.pid} value={el.val||""}  placeholder={el.edit.indexOf("+m")>=0? "此处为必填项":""} type="text"  onChange={this.props.CallBack.bind(this,el)}  readOnly={el.edit.indexOf("+r")>=0}  />
+                
+              return <input   name={el.id} id={el.id} data-pid={el.pid} value={el.val||""}  placeholder={el.edit.indexOf("+m")>=0? "":""} type="text"  onChange={this.props.CallBack.bind(this,el)}  readOnly={el.edit.indexOf("+r")>=0}  />
             }
         }
 
@@ -105,9 +116,12 @@ class DynamicTable extends React.Component {
                   //  console.log(da);
                 }
              }
-            return <li key={ind} className="col-sm-4 col-md-4 col-lg-4">
+             let classNames = el["colspan"]? `col-sm-${el["colspan"]} col-md-${el["colspan"]} col-lg-${el["colspan"]}`:"col-sm-4 col-md-4 col-lg-4"
+            return <li key={ind} className={classNames}>
                 <label className={el.edit.indexOf("+m") >= 0 ? "require" : ""}>{el.label}</label>
-                <i>{el.unit}</i>
+                {
+                    el.type=="date"? <i className="date"></i>:<i>{el.unit}</i>
+                }
                 <div>{typeBox(el)}</div>
             </li>
         })

@@ -7,7 +7,7 @@ textarea:hover{
  outline: none;
 }
  .boxGroupDetail {
-    padding: 0 20px;
+    padding: 0 0px;
     font-size:1rem;
   }
    .boxGroupDetail .textareaText {
@@ -122,5 +122,11 @@ textarea:hover{
   }
   
   .ApplyFlow{
-     li{ display: inline-block;margin:0 10px;cursor:pointer}
+     li{ display: inline-block;margin:0 3px;cursor:pointer;
+      &::after{
+        display: inline-block;content:"->";margin-left:3px;
+      }
+      &:last-child::after{ display:none;}
+      label{ font-weight:normal}
+    }
   }

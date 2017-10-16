@@ -7,39 +7,7 @@ class ThreeTree extends React.Component {
     constructor(arg) {
         super(arg);
         this.state={
-            threeData:[{
-                "id":1,
-                "text":"Foods",
-                "children":[{
-                    "id":2,
-                    "text":"Fruits",
-                    "state":"closed",
-                    "children":[{
-                        "text":"apple",
-                        "checked":true
-                    },{
-                        "text":"orange"
-                    }]
-                },{
-                    "id":3,
-                    "text":"Vegetables",
-                    "state":"open",
-                    "children":[{
-                        "text":"tomato",
-                        "checked":true
-                    },{
-                        "text":"carrot",
-                        "checked":true
-                    },{
-                        "text":"cabbage"
-                    },{
-                        "text":"potato",
-                        "checked":true
-                    },{
-                        "text":"lettuce"
-                    }]
-                }]
-            }]
+            threeData:[]
 
         }
     }
@@ -48,7 +16,7 @@ class ThreeTree extends React.Component {
     }
     bindTree(da){
         var th = this;
-        console.log(th.props.id);
+      //  console.log(th.props.id);
         $(`#${th.props.id}`).tree({
             data:da,
             checkbox:true

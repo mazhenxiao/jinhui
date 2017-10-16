@@ -4,7 +4,7 @@ import "babel-polyfill";  //兼容ie
 import NewProjectCount from "./component-newProject-count.js";
 import DynamicTable from "./tools-dynamicTable.js";
 import "../../Content/css/tools-dynamicTable.less";//专用css
-import validate from "./tools-validate.js";//验证字典表
+import ApprovalControlNode from "./component-newProjectApproval-node.js";  //审批信息
 /*
     pdi id   DynamicData  结构数据 CallBack 数据修改回调
   <DynamicTable pid={this.state.pid} DynamicData={this.state.propsDATA} CallBack={this.BIND_CALLBACK.bind(this)} /> 
@@ -21,8 +21,9 @@ class NewProject extends React.Component {
             states:false,
             countText:"统计数据过期",
             NewProjectCountDATA:[],
-            statu:"show"
+            status:"show"
         }
+        this.guid = iss.guid();
         iss.hashHistory.listen((local, next) => {
             //console.log(arguments)
         })
@@ -32,32 +33,30 @@ class NewProject extends React.Component {
     }
     componentWillMount(){
         let local = this.props.location
-        if(local.query["statu"]){
-            this.setState({statu:this.props.location.query.statu})
+        if(local.query["status"]){
+            this.setState({status:this.props.location.query.status})
         }
-        
     }
     componentDidMount(){   
     }
     BIND_NewProjectCountDATA(data){
-        console.log(data)
+      //  console.log(data)
         this.setState({
             NewProjectCountDATA:data
         })
-
     }
     BIIND_FIST_LAND(){
+        if(iss.id==""){ return}
         let THIS = this;
-        if(!this.props.location||!this.props.location.state){ iss.Alert({content:"请选择区域或项目！"})};
        let id =iss.id;//"A91BB3051A0848319B45D3D527AC4103" //this.props.location.state.id;
        iss.ajax({
            url:"/Project/INewLand",  //初次请求创建空地块使用
            data:{projectId:id},
-           sucess(d){
+           success(d){
                if(d["rows"]){
                    THIS.state.states = true;
                    THIS.setState({
-                       newDynamicData:d["rows"] 
+                       newDynamicData:JSON.stringify(d["rows"]) 
                       });
                }
            },
@@ -68,7 +67,7 @@ class NewProject extends React.Component {
        iss.ajax({  //获取已有地块
            url:"/Project/IProjectLandsInfo",
            data:{projectId:id},
-           sucess(d){
+           success(d){
                if(d.rows){
                    var da = {};
                    d.rows.forEach((el,ind)=>{
@@ -94,7 +93,7 @@ class NewProject extends React.Component {
         //Project/ILandsStatistics  土地动态统计
        iss.ajax({
            url:"/Project/ILandsStatistics",
-           sucess(a){
+           success(a){
               
                if(a["rows"]){
                   THIS.setState({
@@ -111,14 +110,14 @@ class NewProject extends React.Component {
     }
 
     EVENT_CLICK_NEWLAND(){ //新增地块
-        let th = this,nd = JSON.parse(JSON.stringify(this.state.newDynamicData));
+        let th = this,nd = JSON.parse(this.state.newDynamicData);
         if(this.state.states){  
            // this.DynamicData["pid"]=iss.guid();
               let guid = iss.guid();
               
              this.state.DynamicData[guid]={LandId:guid,FieldList:nd}; //向数据树添加一条数据
              this.setState({
-                propsDATA:this.state.newDynamicData,  //新增地块
+                propsDATA:nd,  //新增地块
                 pid:guid 
             });
             
@@ -165,10 +164,10 @@ class NewProject extends React.Component {
     BIND_CALLBACK(da,e){ //子页面返回callback
        // if(this.time){ clearTimeout(this.time) }
         var th = this;
-        var el = e.target.value,list = this.state.DynamicData[this.state.pid];
+        var el = e? e.target.value:da.val,list = this.state.DynamicData[this.state.pid];
          list.FieldList.forEach((d,i)=>{
             if(da.id==d.id){
-                d["val"]=e.target.value; 
+                d["val"]=el//e.target.value; 
                     if(d["parent"]){
                         th.SET_PARENTCOUNT(list.FieldList,d)
                     }
@@ -269,12 +268,20 @@ class NewProject extends React.Component {
         console.log(t2)
     }
 
-    EVENT_CLICK_POSTAPP(){
-        var th = this;
+    EVENT_CLICK_POSTAPP(){  //发起审批基础部分
+        var th = this; 
         let landInfoListJson = [];
+        
         for(let vv in this.state.DynamicData){
+            
+           this.state.DynamicData[vv]["FieldList"].map((e,i)=>{
+                delete e["child"];
+                delete e["parent"];
+                return e;
+            })
             landInfoListJson.push(this.state.DynamicData[vv])
         }
+        
         iss.ajax({
             type:"POST",
             url:"/Project/ISave",
@@ -294,7 +301,11 @@ class NewProject extends React.Component {
                 console.log('错误');
             }
         });
-        iss.hashHistory.push({pathname:"/newProjectApproval",state:iss.id});
+        
+       
+    }
+    BIND_SUBMITPRIMISE(){
+        BIND_ROUTERCHANGE(); //路由跳转
     }   
     EVENT_CLICK_SAVE(){
         var th = this;
@@ -321,6 +332,18 @@ class NewProject extends React.Component {
                 console.log('错误');
             }
         });
+      
+    }
+    BIND_ApprovalControlNode(self){  //流程绑定回调
+       this.BIND_ApprovalControlNode_EVENT=self.EVENT_CLICK_SUBMIT.bind(self);//绑定子集数据
+    }
+    BIND_ApprovalControlNode_EVENT(){ //流程提交,重定向到审批流程
+        
+    }
+    BIND_ROUTERCHANGE(){  //发起审批
+        this.EVENT_CLICK_POSTAPP();//基础信息提交
+        this.BIND_ApprovalControlNode_EVENT();//流程提交
+       // iss.hashHistory.push({pathname:"/newProjectApproval",state:iss.id});
     }
     render() {
       // console.log(JSON.stringify(this.state.DynamicData))
@@ -333,20 +356,19 @@ class NewProject extends React.Component {
                     </p>
                     <span className="functionButton">
                         <a className="saveIcon " onClick={this.EVENT_CLICK_SAVE.bind(this)} href="#">暂存</a>
-                        <a className="approvalIcon" onClick={this.EVENT_CLICK_POSTAPP.bind(this)} href="javascript:;">发起审批</a>
+                        <a className="approvalIcon" onClick={this.BIND_ROUTERCHANGE.bind(this)} href="javascript:;">发起审批</a>
                     </span>
-                </h3>
+                </h3> 
                 <NewProjectCount local={this.props.location} NewProjectCountDATA={this.BIND_NewProjectCountDATA.bind(this)} />
             </section>
-               
+
             <section>
                 <h3 className="boxGroupTit">
                     <p>
-                        <span>项目信息</span>
+                        <span>地块信息</span>
                         <i>（<i className="redFont"></i>为必填项）</i>
                     </p>
                     <span className="functionButton">
-                        
                         <a className="approvalIcon" href="javascript:;" onClick={this.EVENT_CLICK_NEWLAND.bind(this)}>新增地块</a>
                     </span>
                 </h3>
@@ -357,6 +379,9 @@ class NewProject extends React.Component {
                     {this.BIND_LAND_BTN()}
                 </ul>
                  <DynamicTable pid={this.state.pid} DynamicData={this.state.propsDATA} CallBack={this.BIND_CALLBACK.bind(this)} /> 
+            </section>
+            <section>
+                <ApprovalControlNode guid={this.guid} type="edit" callback={this.BIND_ApprovalControlNode.bind(this)} />
             </section>
            
         </article>

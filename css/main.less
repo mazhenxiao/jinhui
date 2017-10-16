@@ -2,7 +2,19 @@
 @import "header.less";
 
 /* 图标 */
-
+#esayuiDate{
+    overflow: hidden;
+    .calendar-header{ background:#fff;}
+    &.calendar, .calendar-menu-year{
+        border:none !important;
+    }
+    .calendar-saturday{
+        color:#5ccaec
+    }
+    .calendar-sunday{color:#b93a3a}
+    .calendar-selected{ border:none;}
+    .calendar-body th{background:#cfddff}
+}
 .iconBoxJin {
     display: inline-block;
     height: 20px;
@@ -84,13 +96,13 @@
 }
 
 .userApplyIconBtn {
-    background-image: url(../img/userApply-icon.png);
+    background-image: url(../img/edit-icon.png);
     background-repeat: no-repeat;
     background-position: 10px center;
     &:hover,
     &:active,
     &:focus {
-        background-image: url(../img/userApply-icon.png);
+        background-image: url(../img/edit-icon.png);
     }
 }
 
@@ -101,7 +113,7 @@
     table-layout: fixed;
     th,
     td {
-        padding: 0 0 5px 0;
+        padding: 0 0 10px 0;
         margin: 0;
     }
     th {
@@ -109,9 +121,10 @@
         label {
             text-align: right;
             padding-right: 5px;
-            font-weight: 100;
+            font-weight: 400;
             font-size: 12px;
             margin-bottom: 0;
+            color: #666;
         }
     }
     td {
@@ -325,7 +338,7 @@
                 text-align: center;
                 font-size: @f16;
                 padding-bottom: 10px;
-                border-bottom: #fff solid 1px;
+                border-bottom: rgba(255,255,255,.4) solid 1px;
             }
             .tree-node {
                 .tree-hit {
@@ -573,21 +586,32 @@ header.HeaderBar {
         padding: 0px !important;
         margin: 0px !important;
         margin-left: 15px !important;
+        list-style-type: none;
     }
-    span {
+    span,a {
         float: initial !important;
         border: none !important;
-        height: 25px;
+        // height: 25px;
+        // line-height: 25px;
         font-size: 12px;
         color: #999999;
-        line-height: 25px;
         vertical-align: middle;
         padding: 0 !important;
         margin: 0 !important;
         top: 0 !important;
     }
+    &.btn-change{
+display: inline-block;
+list-style-type: none;
+li{
+    display: inline-block;
+    cursor: pointer;
 }
-
+    }
+}
+.jh-vtop{
+    vertical-align: top;
+}
 .jh-icons {
     .jh-icon {
         clear: both;
@@ -602,12 +626,18 @@ header.HeaderBar {
     .jh-icons-edit {
         background-image: url(../img/editor-icon.png);
     }
+    .jh-icons-save {
+        background-image: url(../img/save-icon.png);
+    }
     .jh-icons-export {
         background-image: url(../img/importEXcel-icon.png);
     }
     &:hover {
         .jh-icons-edit {
             background-image: url(../img/editor-icon-hover.png);
+        }
+        .jh-icons-save {
+            background-image: url(../img/save-icon-hover.png);
         }
         .jh-icons-export {
             background-image: url(../img/importEXcel-icon-hover.png);
@@ -621,4 +651,100 @@ header.HeaderBar {
 /* list */
 .iss-headTitle{
     
+}
+
+/* 新增样式 */
+.BIND_LAND_BTN {
+    padding-left: 0px !important;
+}
+.BIND_LAND_BTN li {
+	margin:6px 6px 6px 0 !important;
+}
+.aBuiltMain .builtAlertTable tbody input{
+	padding-left:5px;
+}
+header.HeaderBar h5{
+    font-weight: 500;
+}
+.tools-dynamicTable{
+   // border: 1px solid #e5e5e5;
+    padding-top: 10px;
+    margin-top: 0px !important;
+}
+.JH-Header ul li .subMenu{
+    height: auto;
+}
+.JH-Header ul li .subMenu li{
+    height: auto;
+}
+.uploadIconBtn#LOCATION {
+    background-image: url(../img/location-icon.png);
+    &:hover,
+    &:active,
+    &:focus {
+        background-image: url(../img/location-icon.png);
+    }
+}
+.boxGroupTit ~ div >.tools-dynamicTable{
+    border: 1px solid #e5e5e5;
+    background: #f7f7f7;
+    padding-top: 10px;
+    margin-top:10px !important;
+}
+/*.datagrid-header-inner{
+    width: 1048px !important;
+}
+.datagrid-header .datagrid-htable{
+    width: 100%;
+}*/
+.mgT20{
+    margin-top:20px !important;
+}
+.boxGroupTit{
+    font-weight: 500;
+}
+.boxGroupTit p i{
+    font-size: 12px;
+    color: #999;
+}
+.BIND_LAND_BTN li .icon-delete{
+    z-index: 2;
+}
+.red{
+    font-size: 12px;
+}
+.index-left header.HeaderBar h5 ul li{
+    vertical-align:middle;
+    color: #999;
+    position: relative;
+    margin-left: 25px;
+}
+.index-left header.HeaderBar h5 ul li::before{
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: -15px;
+    width: 12px;
+    height: 12px;
+    background:url(../img/big-icon.png);
+}
+header.HeaderBar h5 ul li{
+    vertical-align:middle;
+}
+.formTable td input[type="text"]{
+    border-color: #ddd;
+}
+/*.JH-Header .userLogin .userTancen li i{
+    background: #F1A118;
+    color: #fff;
+    padding: 0px 5px;
+    border-radius: 25px;
+    margin-left: 5px;
+    font-size: 12px;
+}
+.redFont:before{
+    color: #fff;
+}*/
+#mCSB_1_container.mCSB_container{
+    margin-right: 0px;
 }

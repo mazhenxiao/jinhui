@@ -12,8 +12,7 @@ class StagingInformation extends React.Component {
                         "STAGENAME":"",
                         "STAGECODE":"",
                         "PROJECTCOMPANYNAME":"",
-                        "companyHead":"",
-
+                        "STAGEID":"",
                         "STATUS":"",
                         "ISELFPRODUCTTYPE":"",
                         "TRADERMODE":"",
@@ -22,27 +21,44 @@ class StagingInformation extends React.Component {
                         "TAXINGWAY":"",
                         "PLANSTAGE":"",
                         "PROJECTNAME":"",
+                        "PRINCIPAL":"",
+                        "ID":"",
+                        "GROUPNUMBER":"",
+                        "mapUrl":"http://192.168.11.164:82"
         }  
 
-      
+        this.tiem="";
     }
 
     getAjax(){
         var th = this;
+        let status=this.props.location.query.status;
+        var reqtype;
+        let json={};
+        if(status=="edit"){
+            json.Id=iss.id.id;
+            json.reqtype="Edit";
+        }else if(status=="add"){
+            json.projectId=iss.id.id;
+            json.reqtype="Add";
+        }else if(status=="upgrade"){
+            json.versionId=iss.id.id;
+            json.reqtype="Upgrade";
+            $("#GROUPNUMBER").attr("readonly","readonly");
+            $("#GROUPNUMBER").addClass("inputGray");
+        }
         iss.ajax({
             type:"post",
             url:"/Stage/IGetInitInfo",   
-            data:{
-                reqtype:"Add",
-                projectId:iss.id.id,
-            },
-            sucess(res){
-               console.log(res.rows.BaseFormInfo.CASENAME);   
+            data:json,
+            success(res){
+               console.log(res.rows);   
                 th.setState({ 
                     "CASENAME":res.rows.BaseFormInfo.CASENAME,
                     "STAGENAME":res.rows.BaseFormInfo.STAGENAME,
                     "PROJECTCOMPANYNAME":res.rows.BaseFormInfo.PROJECTCOMPANYNAME,
-                    "STAGEID":res.rows.BaseFormInfo.STAGECODE,
+                    "STAGEID":res.rows.BaseFormInfo.STAGEID,
+                    "STAGECODE":res.rows.BaseFormInfo.STAGECODE,
                     "STAGECREATEDATE":res.rows.BaseFormInfo.STAGECREATEDATE.split('T')[0],
                     "STAGEUPDATEDATE":res.rows.BaseFormInfo.STAGEUPDATEDATE.split('T')[0],
                     "STARTDATE":res.rows.BaseFormInfo.STARTDATE.split('T')[0],
@@ -56,7 +72,9 @@ class StagingInformation extends React.Component {
                     "PLANSTAGE":res.rows.BaseFormInfo.PLANSTAGE,
                     "PROJECTNAME":res.rows.BaseFormInfo.PROJECTNAME,
                     "ID":res.rows.BaseFormInfo.ID,
-                   
+                    "PRINCIPAL":res.rows.BaseFormInfo.PRINCIPAL,
+                    "GROUPNUMBER":res.rows.BaseFormInfo.GROUPNUMBER,
+
                 },arg=>{
                     //console.log(th.state)
                     th.bind_combobox(res);
@@ -94,13 +112,21 @@ class StagingInformation extends React.Component {
             fileSingleSizeLimit: 1 * 1024 * 1024    // 50 M
         })
     }
-    handChooseTo(ev,da){  
+
+    BIND_CHANGE_DATA(data){
+        this.props.StagingInformationDATA(data)
+    }
+    handChooseTo(ev,da){
+        let th=this;
         iss.chooseTo({
             url:"/Home/GetTreeInfo",
             title:"选择人员",
             pepole:{},  //已选人员名单
             callback(da){
-                //console.log(da);
+                console.log(da);
+                th.setState({ 
+                     "PRINCIPAL":da,
+                })
             }
         })
     }   
@@ -112,7 +138,7 @@ class StagingInformation extends React.Component {
            [target]: e.target.value // 将表单元素的值的变化映射到state中
          },()=>{
             //console.log(th.state[target]) 
-            console.log(th.state);  
+            th.BIND_CHANGE_DATA(this.state)
          }) 
       
        // console.log(e.target.id);
@@ -121,10 +147,14 @@ class StagingInformation extends React.Component {
       
     }  
     handleSelectTextChange(e,b,c){
+        var th = this;
         this.setState({
               [e]:b
-          }) 
-        console.log(this.state);
+          },()=>{
+            //console.log(th.state[target]) 
+            th.BIND_CHANGE_DATA(this.state)
+         }) 
+       // console.log(this.state);
     }
     
     bind_combobox(arg) {
@@ -141,8 +171,8 @@ class StagingInformation extends React.Component {
             data:arg.rows.SelectOptions.STATUS,
         });
         
-        if(arg.rows.BaseFormInfo.STATUS==0){
-            installmentState.combobox("select","");
+        if(arg.rows.BaseFormInfo.STATUS==0||arg.rows.BaseFormInfo.STATUS==null){
+            installmentState.combobox("select",0);
         }else{
             installmentState.combobox("select",arg.rows.BaseFormInfo.STATUS);
         }
@@ -157,13 +187,11 @@ class StagingInformation extends React.Component {
             onChange:th.handleSelectTextChange.bind(th,"ISELFPRODUCTTYPE"),
             data:arg.rows.SelectOptions.ISELFPRODUCTTYPE,
         });
-        if(arg.rows.BaseFormInfo.ISELFPRODUCTTYPE==0){
-            selfSustaining.combobox("select","");
+        if(arg.rows.BaseFormInfo.ISELFPRODUCTTYPE==0||arg.rows.BaseFormInfo.ISELFPRODUCTTYPE==null){
+            selfSustaining.combobox("select",0);
         }else{
             selfSustaining.combobox("select",arg.rows.BaseFormInfo.ISELFPRODUCTTYPE);
         }
-        
-
         let tradersWay = $("#TRADERMODE");//操盘方式
         tradersWay.combobox({
             valueField: "val",
@@ -174,7 +202,7 @@ class StagingInformation extends React.Component {
             onChange:th.handleSelectTextChange.bind(th,"TRADERMODE"),
             data:arg.rows.SelectOptions.TRADERMODE,
         });
-        if(arg.rows.BaseFormInfo.TRADERMODE==0){
+        if(arg.rows.BaseFormInfo.TRADERMODE==0||arg.rows.BaseFormInfo.TRADERMODE==null){
             tradersWay.combobox("select","");
         }else{
             tradersWay.combobox("select",arg.rows.BaseFormInfo.TRADERMODE);
@@ -191,7 +219,7 @@ class StagingInformation extends React.Component {
             onChange:th.handleSelectTextChange.bind(th,"MERGEWAY"),
             data:arg.rows.SelectOptions.MERGEWAY,
         });
-        if(arg.rows.BaseFormInfo.MERGEWAY==0){
+        if(arg.rows.BaseFormInfo.MERGEWAY==0||arg.rows.BaseFormInfo.MERGEWAY==null){
             tableManner.combobox("select","");
         }else{
             tableManner.combobox("select",arg.rows.BaseFormInfo.MERGEWAY);
@@ -208,7 +236,7 @@ class StagingInformation extends React.Component {
             onChange:th.handleSelectTextChange.bind(th,"PROJECTTYPE"),
             data:arg.rows.SelectOptions.PROJECTTYPE,
         });
-        if(arg.rows.BaseFormInfo.PROJECTTYPE==0){
+        if(arg.rows.BaseFormInfo.PROJECTTYPE==0||arg.rows.BaseFormInfo.PROJECTTYPE==null){
             projectType.combobox("select","");
         }else{
             projectType.combobox("select",arg.rows.BaseFormInfo.PROJECTTYPE);
@@ -225,7 +253,7 @@ class StagingInformation extends React.Component {
             onChange:th.handleSelectTextChange.bind(th,"TAXINGWAY"),
             data:arg.rows.SelectOptions.TAXINGWAY,
         });
-        if(arg.rows.BaseFormInfo.TAXINGWAY==0){
+        if(arg.rows.BaseFormInfo.TAXINGWAY==0||arg.rows.BaseFormInfo.TAXINGWAY==null){
             taxManner.combobox("select","");
         }else{
             taxManner.combobox("select",arg.rows.BaseFormInfo.TAXINGWAY);
@@ -242,12 +270,58 @@ class StagingInformation extends React.Component {
             onChange:th.handleSelectTextChange.bind(th,"PLANSTAGE"),
             data:arg.rows.SelectOptions.PLANSTAGE,
         });
-        if(arg.rows.BaseFormInfo.PLANSTAGE){
+        if(arg.rows.BaseFormInfo.PLANSTAGE==0||arg.rows.BaseFormInfo.PLANSTAGE==null){
             controlStage.combobox("select","");
         }else{
             controlStage.combobox("select",arg.rows.BaseFormInfo.PLANSTAGE);
         } 
     }
+    BIND_CHECKPROJECTNAME(ev){   //检查姓名名称是否冲突
+        let th=this;
+        let projectid=iss.id.id;
+        let name=ev.target.value;
+        this.setState({
+            STAGENAME:name
+        })
+        clearTimeout(this.time);
+        this.time = setTimeout(arg=>{
+            iss.ajax({
+                type:"POST",
+                url:"/Stage/ICheckStageName",
+                data:{
+                    projectid:projectid,
+                    name:name,
+                },
+                success:function (data) {
+                    if(data["rows"]==true){
+                        th.BIND_CHANGE_DATA(th.state)
+                    }else{
+                        alert("错误")
+                    }
+                },
+                error:function (er) {
+                    console.log('错误');
+                }
+            });
+        },500);
+       
+    }
+    xmViewError(event){
+        // this.attr("src","../img/xmViewError.png")
+        $(event.target).attr("src","../../Content/img/xmViewError.png");
+    }
+    BIND_EditStage(){
+        window.open(this.state.mapUrl+"/Admin/EditStage?stage_id="+this.state.STAGEID+"&stage_map_id=stage"+this.state.STAGEID);
+    }
+    BIND_EditPushPlate(){
+        window.open(this.state.mapUrl+"/Admin/EditPushPlate?stage_id="+this.state.STAGEID+"&stage_map_id=stage"+this.state.STAGEID);
+    }
+    BIND_mapsStage(){
+        window.open(this.state.mapUrl+"/Map/Stage?stage_id="+this.state.STAGEID+"&stage_map_id=stage"+this.state.STAGEID);
+    }//点击分期总图预览
+    BIND_mapsTp(){
+        window.open(this.state.mapUrl+"/Map/PUSHPLATE?stage_id="+this.state.STAGEID+"&stage_map_id=stage"+this.state.STAGEID);
+    }//点击推盘图预览
     render() {
         return <article className="staging-box">
                 <section className="staging-left boxSizing projectinFormation">
@@ -268,7 +342,7 @@ class StagingInformation extends React.Component {
                                         <label className="formTableLabel boxSizing redFont">分期名称</label>
                                     </th>
                                     <td>
-                                        <input  onChange={this.handleInputTextChange.bind(this)} id="STAGENAME" value={this.state.STAGENAME||""} className="inputTextBox boxSizing" type="text" />
+                                        <input  onChange={this.BIND_CHECKPROJECTNAME.bind(this)} id="STAGENAME" value={this.state.STAGENAME||""} className="inputTextBox boxSizing" type="text" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -318,7 +392,7 @@ class StagingInformation extends React.Component {
                                         <label className="formTableLabel boxSizing redFont">项目负责人</label>
                                     </th>
 								    <td>
-                                        <input readOnly="readonly" onClick={this.handChooseTo.bind(this)} id="companyHead" className="inputTextBox boxSizing" type="text" />
+                                        <input readOnly="readonly" onClick={this.handChooseTo.bind(this)} id="PRINCIPAL" value={this.state.PRINCIPAL||""} className="inputTextBox boxSizing" type="text" />
                                         <img className="symbol headIcon" src="../../Content/img/head-icon.png" />
                                     </td>
 								    <th>
@@ -385,11 +459,24 @@ class StagingInformation extends React.Component {
                                             <label className="formTableLabel boxSizing redFont">分期总图</label>
                                         </th>
 								    	<td>
-                                            <button onClick={this.onUpload.bind(this)} className="btn btnStyle uploadIconBtn">上传</button>
-                                            <button className="btn btnStyle userApplyIconBtn">编辑</button>
+                                        <button onClick={this.BIND_EditStage.bind(this)} className="btn btnStyle uploadIconBtn">上传/编辑分期总图</button>
                                         </td>	
 								    </tr>
-                                
+                                    <tr>
+                                        <th>
+                                            <label className="formTableLabel boxSizing redFont">组团</label>
+                                        </th>
+                                        <td>
+                                            <input onChange={this.handleInputTextChange.bind(this)} id="GROUPNUMBER" value={this.state.GROUPNUMBER||""} className="inputTextBox boxSizing" type="text" />
+                                        </td>
+                                        <th>
+                                            <label className="formTableLabel boxSizing redFont">推盘图</label>
+                                        </th>
+								    	<td>
+                                        <button onClick={this.BIND_EditPushPlate.bind(this)} className="btn btnStyle uploadIconBtn">上传/编辑推盘图</button>
+                                        </td>
+                                    </tr>
+                                 
                             </tbody>
                     </table>                
                 </section>
@@ -398,10 +485,10 @@ class StagingInformation extends React.Component {
                     <div id="myCarousel" className="carousel slide carouselStyle">
                         <div className="carousel-inner">
                             <div className="item active">
-                                <iframe src="" width="100%" height="295px"></iframe>
+                                <img src={this.state.mapUrl+"/Content/maps/source/stage"+this.state.STAGEID+"_s.jpg"} onError={this.xmViewError.bind(this)} onClick={this.BIND_mapsStage.bind(this)} width="100%" height="295px" />
                             </div>
                             <div className="item">
-                                <iframe src="" width="100%" height="295px"></iframe>
+                                <img src={this.state.mapUrl+"/Map/Stage?stage_id="+this.state.STAGEID+"&stage_map_id=stage"+this.state.STAGEID} onError={this.xmViewError.bind(this)} onClick={this.BIND_mapsTp.bind(this)} width="100%" height="295px" />
                             </div>
                         </div>
                         {/* 轮播（Carousel）导航 */}

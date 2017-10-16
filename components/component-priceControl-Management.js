@@ -5,12 +5,12 @@ import IndexTab from "../components/component-priceControl";//标签
 
 class PriceManagement extends React.Component {
     constructor(arg) {
-        super(arg);debugger
+        super(arg); debugger
         // this.props.location.state;
-     /*    iss.hashHistory.listen((local) => {
-            console.log(arguments)
-            // next();
-        }) */
+        /*    iss.hashHistory.listen((local) => {
+               console.log(arguments)
+               // next();
+           }) */
         this.state = {
             actionUrl: {
                 "GetDataGridTitle": "/Common/GetDataGridTitle",//由组获取指标
@@ -23,6 +23,7 @@ class PriceManagement extends React.Component {
             },
             gridData: [],//表格数据
             version: [],//版本
+            step: 1,//阶段
             curVersion: ""//当前版本
         };
     }
@@ -38,7 +39,6 @@ class PriceManagement extends React.Component {
         window.onresize = arg => {
             th.icon.trigger("EVENT_TOGGLEBAR");
         }
-
     }
     Event_Change_Version(data, ev) {
         // let el = $(ev.target);
@@ -57,6 +57,7 @@ class PriceManagement extends React.Component {
         var _data;
         var _afterfn;
         var _th = this;
+        return;
         switch (type) {
             case "GetDataGridTitle": {
                 _url = _th.state.actionUrl.GetDataGridTitle;
@@ -87,7 +88,8 @@ class PriceManagement extends React.Component {
                 _th.loadData(_url, {
                     "versionId": "111F08DBE35B4B90A9288CFC7FBEB924",
                     // "versionId": iss.id.id,
-                    "dataType": sessionStorage['pricestep']
+                    "step": _th.state.step,
+                    "dataType": 1//1分期
                 }, function (result) {
                     var _vd = [];
                     var _tdta = result;
@@ -139,10 +141,22 @@ class PriceManagement extends React.Component {
             }
         });
     }
-    componentDidUpdate(){
+    // componentDidMount() {debugger
+    //     // console.log(this.props)
+    //     this.state.step=this.props.data.guid;
+    //     this.initDataParamers("GetVersions");
+    // }
+    componentDidUpdate() {
         // console.log(this.props)
+        //this.state.step=this.props.data.guid;
         this.initDataParamers("GetVersions");
     }
+    // componentWillReceiveProps() {
+    //     // debugger
+    //     // console.log(this.props)
+    //     this.state.step=this.props.data.guid;
+    //     // this.initDataParamers("GetVersions");
+    // }
     bind_table() {
         let table = this.table_ys = $("#table-ys");
         table.datagrid({
@@ -162,14 +176,12 @@ class PriceManagement extends React.Component {
         this.initDataParamers("GetPriceList");
     }
     render() {
-       // console.log(this.props)
+        // console.log(this.props)
         let versionlist = this.state.version.map((da, ind) => {
             return <option key={ind} value={da.value} data-status={da.status}>{da.text}</option>
         })
         return <div>
             <React-tools-tab className="React-tools-tab" id="React-tools-tab"></React-tools-tab>
-        
-
             <article className="index-supply mgT20 clearboth">
                 <section className="supply-ys">
                     <header className="HeaderBar">

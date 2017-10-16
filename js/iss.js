@@ -1,7 +1,9 @@
 class $iss {
     constructor() {
         this.pagination();
+        this.id=this.getQuert("FileId")||"";
     }
+    
     pagination() {
         $.extend($.fn.pagination.defaults, {
             layout: ["first", "prev", "manual", "next", "last"],
@@ -28,7 +30,7 @@ class $iss {
     ajax(opt) {
         let th = this;
         let $o = JSON.parse(JSON.stringify(opt));
-        $o["sucess"] && delete $o["sucess"];
+        $o["success"] && delete $o["success"];
         $o["error"] && delete $o["error"];
         let arg = {
             type: "POST",
@@ -37,7 +39,7 @@ class $iss {
         $.extend(arg, $o);
         $.ajax(arg)
             .done((da) => {
-                opt["sucess"] && opt.sucess(da);
+                opt["success"] && opt.success(da);
             })
             .fail(e => {
                 opt["error"] && opt.error(e);
@@ -70,6 +72,7 @@ class $iss {
             width: "600px",
             height: "400px",
             ok: $.noop,
+            okVal:"确定",
             cancel:false
         }
         $.extend(opt, arg);
@@ -84,7 +87,7 @@ class $iss {
               <div>${opt.content}</div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary J_ok" >确定</button>
+              <button type="button" class="btn btn-primary J_ok" >${opt.okVal}</button>
               <button type="button" class="btn btn-primary J_cancel ${opt.cancel? 'btn-show':'btn-hide'}" >取消</button>
             </div>
           </div>
@@ -266,7 +269,7 @@ class $iss {
                     console.log(param);
                 },
                 onDblClick(node){
-                   
+                    
                     opt.pepole[node.id] = node;
                     render();
                 }
@@ -324,6 +327,41 @@ class $iss {
 
         
     }
+    calendar(date,callback){
+            $.extend($.fn.calendar.defaults,{  //esayui国际化
+                weeks:['日','一','二','三','四','五','六'],  
+                months:['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+            });
+            
+             let opt = {
+                 date: date||new Date(),
+                 callback:callback||$.noop
+             }
+            iss.Alert({
+                title:"日期",
+                content:`<div id="esayuiDate"></div>`,
+                width:300,
+                height:200,
+                okVal:"关闭",
+                ok(){
+                    
+                }
+            });
+
+            $("#esayuiDate").calendar({
+                width:298,
+                height:200,
+                onSelect(da){
+                    
+                    if(opt.callback(new Date(da).Format("yyyy/MM/dd"))!="false"){
+                        $(".modal").modal("hide");
+                    }
+                  
+                }
+            }); 
+
+    }
+  
 
 
 

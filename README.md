@@ -44,6 +44,7 @@ url:Project/ILandInfo
     type:"input，select,selects，date",  //类型
     unit:"单位￥，km",
     exec:"{控件id}+{id}*{id}",
+    colspan:"4",//合并单元格默认为4，显示为3列，8显示为两列  按总块数为12，
     edit:"可写+w 只读+r 必填+m",
     regExp:{ 
         type:"string,number,date字典表里找",
