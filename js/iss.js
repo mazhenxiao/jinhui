@@ -247,11 +247,12 @@ class $iss {
         }
         $.extend(opt,arg);
         let _s="";
-        for(var v in opt.pepole){
+       /*  for(var v in opt.pepole){
             _s+=`<li class="chooseTolist"><li>`;
-        }
+        } */
         opt.content= opt.content.replace(/<%choosePepole%>/ig,_s)
         iss.Alert(opt);
+        
         var ele;
         let bindData =to=>{
             ele = $("#chooseToTreeUl");
@@ -269,9 +270,15 @@ class $iss {
                     console.log(param);
                 },
                 onDblClick(node){
-                    
+                    // if(node.type==0){
+                    //     opt.pepole={};
+                    //     opt.pepole[node.id] = node;
+                    //     render();
+                    // }
+                    opt.pepole={};
                     opt.pepole[node.id] = node;
                     render();
+                    
                 }
 
 
@@ -287,7 +294,7 @@ class $iss {
            
             $el.html(rp);
         }
-        
+        render();
         let time;
         $(".J_chooseToSearch").on("keyup",arg=>{
             var th = arg.target,val = th.value;
@@ -359,6 +366,43 @@ class $iss {
                   
                 }
             }); 
+
+    }
+    popover(opt){
+        var red="rgba(218, 79, 61, 0.9)",green="rgba(0,230,255,0.9)";
+        var obj = {
+            type:opt["type"]? opt["type"]==2? green:red :red,
+            content:`<div id="isspopover">${opt["content"]||""}</div>`,
+            ok(){
+                if(opt["ok"]){
+                        opt["ok"]() 
+                }
+            }
+        } 
+        $("#isspopover").remove();
+        let css = {
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            padding: "10px",
+            minHeight: "60px",
+            Zindex: "1000",
+            background:obj.type,
+            color:"#fff",
+            textAlign:"center",
+            fontSize:"18px"
+        }
+        let isspopover=$(obj.content);
+        isspopover.css(css);
+        $("body").append(isspopover)
+        isspopover.on("click.isspopver",arg=>{
+            isspopover.remove();
+            obj.ok();
+        })
+        setTimeout(arg=>{
+            isspopover.remove(); 
+        },5000)
 
     }
   

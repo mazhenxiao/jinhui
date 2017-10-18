@@ -1,19 +1,28 @@
+/*table.less文件*/
 .builtTable{
     margin-top:10px;
     font-size:12px;
+    
+    thead,tbody{
+        tr{
+            td{
+                border: #ddd 1px solid;
+                vertical-align: middle;
+                text-align: center;
+            }
+        }
+    }
     thead{
         tr{
             border-top: 1px solid #ddd;
             background: #f5f5f5;
         }
     }
-    thead,tbody{
+    tbody{
         tr{
             background: #fff;
             td{
-                border: #ddd 1px solid;
-                vertical-align: middle;
-                text-align: center;
+                padding:4px;
             }
         }
     }

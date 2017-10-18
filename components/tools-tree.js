@@ -48,6 +48,10 @@ class $tree {
         setTimeout(arg=>{
             th.bindScroll();
         })
+
+        $(window).on("treeLoad",arg=>{
+            th.getAjax();
+        })
     }
     bindScroll() {
         var th = this;

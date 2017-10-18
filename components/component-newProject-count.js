@@ -1,306 +1,450 @@
 import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-
-// import Province from "./tools-LevelLinkage.js";
+require("./tools-validate");
+require("./tools-city.js");
 require("../../Content/css/intallment.less");
 class NewProjectCount extends React.Component {
     constructor(arg) {
         super(arg);
-        this.state ={
-            "CompanyAreaName":"",
-            "CompanyCityName":"",
-            "PROJECTNAME":"",
-            "CASENAME":"",
-            "PROJECTADDRESS":"",
-            "TRADERMODE":"",
-            "PROJECTTYPE":"",
-            "EQUITYRATIO":"",
-            "PROJECTCODE":"",
-            "PRINCIPAL":"",
-            "ID":"",
-            "mapUrl":"http://192.168.11.164:82"
+        this.state = {
+            "CompanyAreaName": "",
+            "CompanyCityName": "",  //选城市
+            "PROJECTNAME": "",//项目名称
+            "CASENAME": "",
+            "PROJECTADDRESS": "",
+            "TRADERMODE": "",
+            "PROJECTTYPE": "",
+            "EQUITYRATIO": "",
+            "PROJECTCODE": "", //案号
+            "PRINCIPALNAME": "",
+            "PRINCIPAL": "",
+            "ID": "",
+            "CITY": "",
+            "mapUrl": "http://192.168.11.164:82",
+            "checkName": false   //项目名称冲突
             // "cityCompany":iss.id.text,
         }
         iss.hashHistory.listen((local, next) => {
             //console.log(arguments)
         })
-        
-        
+        this.time = "";
+        this.props.point(this);//父页面重定
     }
 
-    getAjax(){
-        if(iss.id==""){ return};
+    getAjax() {
+        if (iss.id == "") { return };
         var th = this;
-       // console.log(th);
-    //   let projectId = this.props.location.state.id;
-       let status=this.props.local.query.status;
-       let json={};
-       var urlProject;
-       //console.log(status)
-       if(status=="edit"){
-            urlProject="/Project/IProjectInfo";
-            json.projectId=iss.id.id;
-       }else if(status=="add"){
-            urlProject="/Project/INewProject";
-            json.cityId=iss.id.id;
-       }
+        // console.log(th);
+        //   let projectId = this.props.location.state.id;
+        let status = this.props.local.query.status;
+        let json = {};
+        var urlProject;
+        //console.log(status)
+        if (status == "edit") {
+            urlProject = "/Project/IProjectInfo";
+            json.projectId = iss.id.id;
+        } else if (status == "add") {
+            urlProject = "/Project/INewProject";
+            json.cityId = iss.id.id;
+        }
         iss.ajax({  //获取数据
-            type:"post",
+            type: "post",
             //url:"/Project/IProjectInfo",  
-            url:urlProject,  
-            data:json,
-            success(res){
-               //console.log(res.rows);
-              // console.log(res.rows.SelectOptions.TRADERMODE)
+            url: urlProject,
+            data: json,
+            success(res) {
+                //console.log(res.rows);
+                // console.log(res.rows.SelectOptions.TRADERMODE)
                 th.setState({
-                    "PROJECTNAME":res.rows.BaseFormInfo.Project.PROJECTNAME,
-                    "CASENAME":res.rows.BaseFormInfo.Project.CASENAME,
-                    "EQUITYRATIO":res.rows.BaseFormInfo.Project.EQUITYRATIO,
-                    "PROJECTCODE":res.rows.BaseFormInfo.Project.PROJECTCODE,
-                    "PRINCIPAL":res.rows.BaseFormInfo.Project.PRINCIPAL,
-                    "PROJECTADDRESS":res.rows.BaseFormInfo.Project.PROJECTADDRESS,
+                    "PROJECTNAME": res.rows.BaseFormInfo.Project.PROJECTNAME,
+                    "CASENAME": res.rows.BaseFormInfo.Project.CASENAME,
+                    "EQUITYRATIO": res.rows.BaseFormInfo.Project.EQUITYRATIO,
+                    "PROJECTCODE": res.rows.BaseFormInfo.Project.PROJECTCODE,
+                    "PRINCIPALNAME": res.rows.BaseFormInfo.PRINCIPALNAME,
+                    "PRINCIPAL": res.rows.BaseFormInfo.Project.PRINCIPAL,
+                    "PROJECTADDRESS": res.rows.BaseFormInfo.Project.PROJECTADDRESS,
                     //"PROJECTTYPE":res.rows.BaseFormInfo.Project.PROJECTTYPE,
-                    "TRADERMODE":res.rows.BaseFormInfo.Project.TRADERMODE,
-                    "ObtainStatusName":res.rows.BaseFormInfo.ObtainStatusName,
-                    "CompanyAreaName":res.rows.BaseFormInfo.CompanyAreaName,
-                    "CompanyCityName":res.rows.BaseFormInfo.CompanyCityName,
-                    "ID":res.rows.BaseFormInfo.Project.ID,
-                    "PARENTID":res.rows.BaseFormInfo.Project.PARENTID,
-                },arg=>{
+                    "TRADERMODE": res.rows.BaseFormInfo.Project.TRADERMODE,
+                    "ObtainStatusName": res.rows.BaseFormInfo.ObtainStatusName,
+                    "CompanyAreaName": res.rows.BaseFormInfo.CompanyAreaName,
+                    "CompanyCityName": res.rows.BaseFormInfo.CompanyCityName,
+                    "ID": res.rows.BaseFormInfo.Project.ID,
+                    "PARENTID": res.rows.BaseFormInfo.Project.PARENTID,
+                    "CITY": res.rows.BaseFormInfo.Project.CITY,
+                }, arg => {
                     //console.log(th.state)
                     th.bind_combobox(res);
                     th.BIND_CHANGE_DATA(th.state);
                 })
             },
-            error(e){ 
+            error(e) {
 
             }
         })
     }
     componentDidMount() {
-        let id=iss.id;
-        if(id=="1E1CB1E95A864AFA961392C3E3644642"||!id){
-            iss.hashHistory.replace({pathname:"index"});
-        }else{
+        let id = iss.id;
+        if (id == "1E1CB1E95A864AFA961392C3E3644642" || !id) {
+            iss.hashHistory.replace({ pathname: "index" });
+        } else {
             this.getAjax();
         }
-       // this.bind_combobox();
+        //this.BIND_ProjectValid();//绑定验证
     }
-    BIND_CHANGE_DATA(data){
-        this.props.NewProjectCountDATA(data)
-    }
-    handChooseTo(ev,da){
+    handChooseTo(ev, da) {
+        let th = this;
+        let peopleJson = {};
+        let PrincipalId = {
+            "id": th.state.PRINCIPAL,
+            "text": th.state.PRINCIPALNAME
+        }
+        if (th.state.PRINCIPAL) {
+            peopleJson['PrincipalId'] = PrincipalId;
+        }
         iss.chooseTo({
-            url:"/Home/GetTreeInfo",
-            title:"选择人员",
-            pepole:{},  //已选人员名单
-            callback(da){
-               // console.log(da);
+            url: "/Common/IGetOrganizationalUsers",
+            title: "选择人员",
+            pepole: peopleJson,  //已选人员名单
+            callback(da) {
+                if (Object.keys(da).length == 0 || !da) {
+                    th.setState({
+                        "PRINCIPAL": "",
+                        "PRINCIPALNAME": "",
+                    })
+                } else {
+                    
+                        th.setState({
+                            "PRINCIPAL": da[key].id,
+                            "PRINCIPALNAME": da[key].text,
+                        });
+                        th.BIND_CHANGE_DATA(th.state);
+                }
             }
         })
-        
-    }
-    handleInputTextChange (e){
-        var th = this;
-        let target = e.target.id
-        
-         this.setState({
-           [target]: e.target.value // 将表单元素的值的变化映射到state中
-         },()=>{
-           th.BIND_CHANGE_DATA(this.state)
-         })
-       // console.log(e.target.id);
-        //console.log(e.target.value);
-    }
-    handleSelectTextChange(e,b,c){
-        var th = this;
-        this.setState({ 
-              [e]:b
-          },()=>{
-            th.BIND_CHANGE_DATA(this.state)
-          })
-       //console.log(this.state);  
     }
 
-    bind_combobox(arg) {   
+    handleInputTextBlur(e) {
         var th = this;
-        console.log(arg);
-        let belongCity = this.belongCity = $("#belongCity")//所属城市
-        belongCity.combo({
-            required:true,
-            editable:false,
-            panelWidth:"452px",
-            panelHeight:"auto",
-        });
-   
+        clearTimeout(th.time);
+        let target = e.target.id
+
+        th.setState({
+            [target]: e.target.value // 将表单元素的值的变化映射到state中
+        }, () => {
+            th.BIND_CHANGE_DATA(th.state)
+        })
+        th.time = setTimeout(arg => {
+            iss.ajax({
+                type: "post",
+                url: "/Project/IProjectCode",
+                data: {
+                    cityId: th.state.PARENTID,
+                    caseName: th.state.CASENAME,
+                },
+                success(res) {
+                    console.log(res);
+                    th.setState({
+                        "PROJECTCODE": res.rows,
+                    }, arg => {
+                        //console.log(th.state)
+                        th.BIND_CHANGE_DATA(th.state);
+                    })
+                },
+                error(e) {
+
+                }
+            });
+        }, 1000)
+
+
+
+        // console.log(e.target.id);
+        //console.log(e.target.value);
+    }
+    handleInputTextChange(e) {
+        var th = this;
+        let target = e.target.id
+
+        this.setState({
+            [target]: e.target.value // 将表单元素的值的变化映射到state中
+        }, () => {
+            th.BIND_CHANGE_DATA(this.state)
+        })
+        // console.log(e.target.id);
+        // console.log(e.target.value);
+    }
+    handleSelectTextChange(e, b, c) {
+        var th = this;
+        this.setState({
+            [e]: b
+        }, () => {
+            th.BIND_CHANGE_DATA(this.state)
+        })
+        //console.log(this.state);  
+    }
+
+    bind_combobox(arg) {
+        var th = this;
+        //   console.log(arg);
+
+
+        /*   let belongCity = this.belongCity = $("#CITY")//所属城市
+          belongCity.combo({
+              required: true,
+              editable: false,
+              panelWidth: "302px",
+              panelHeight: "auto",
+          });
+          $('#linkage #town').hide();
+          $('#linkage').appendTo(belongCity.combo('panel'));
+          $('#linkage #city').click(function(){
+              var v = $('#linkage #city option:selected').text();
+              belongCity.combo('setText', v)
+              $('#linkage #city').click(function(){
+                   belongCity.combo('hidePanel');
+              })
+          }); */
+
         let tradersWay = $("#TRADERMODE");//操盘方式
         tradersWay.combobox({
             valueField: "val",
             textField: "label",
             editable: true,
-            readonly: false,  
-            panelHeight:"auto",
-            onChange:th.handleSelectTextChange.bind(th,"TRADERMODE"),
-            data:arg.rows.SelectOptions.TRADERMODE,
-        
+            readonly: false,
+            panelHeight: "auto",
+            onChange: th.handleSelectTextChange.bind(th, "TRADERMODE"),
+            data: arg.rows.SelectOptions.TRADERMODE,
+
         });
-        tradersWay.combobox("select",arg.rows.BaseFormInfo.Project.TRADERMODE);
+        tradersWay.combobox("select", arg.rows.BaseFormInfo.Project.TRADERMODE);
     }
-    BIND_CHECKPROJECTNAME(ev){   //检查姓名名称是否冲突
-        let th=this;
-        let projectid=iss.id.id;
-        let name=ev.target.value;
+    BIND_CHECKPROJECTNAME(ev) {   //检查姓名名称是否冲突
+
+        let th = this;
+        let projectid = iss.id.id;
+        let name = ev.target.value;
         this.setState({
-            PROJECTNAME:name
+            projectid: iss.id,
+            PROJECTNAME: name
+        }, arg => {
+            th.BIND_CHANGE_DATA(th.state);
         })
+
         clearTimeout(this.time);
-        this.time = setTimeout(arg=>{
+        this.time = setTimeout(arg => {
+
             iss.ajax({
-                type:"POST",
-                url:"/Project/IProjectNameExists",
-                data:{
-                    name:name,
+                type: "POST",
+                url: "/Project/IProjectNameExists",
+                data: {
+                    projectid: iss.id,
+                    name: th.state.PROJECTNAME,
                 },
-                success:function (data) {
-                    if(data["rows"]==true){
-                        th.BIND_CHANGE_DATA(th.state);
-                    }else{
-                        alert("错误")
+                success: function (data) {
+                    if (data["rows"] == false) {
+                        //th.BIND_CHANGE_DATA(th.state);
+                        th.setState({ checkName: true }, arg => {
+                            th.BIND_CHANGE_DATA(th.state)
+                        })
+                    } else {
+                        th.setState({ checkName: false }, arg => {
+                            th.BIND_CHANGE_DATA(th.state)
+                        })
                     }
+
                 },
-                error:function (er) {
+                error: function (er) {
                     console.log('错误');
+                    th.setState({ checkName: false }, arg => {
+                        th.BIND_CHANGE_DATA(th.state)
+                    })
+
                 }
             });
-        },500);
-       
+        }, 1000);
     }
-    xmViewError(event){
-        // this.attr("src","../img/xmViewError.png")
-        $(event.target).attr("src","../../Content/img/xmViewError.png");
+    BIND_CHANGE_DATA(data) {
+        this.props.NewProjectCountDATA(data);
+    }
+    xmViewError(event) {
+        //this.attr("src","../img/xmViewError.png")
+        $(event.target).attr("src", "../../Content/img/xmViewError.png");
     }//加载暂无
-    BIND_EditMapMark(event){
-        window.open(this.state.mapUrl+"/Admin/EditMapMark?project_id="+this.state.ID+"&cityname="+this.state.CompanyCityName+"&callback=callback");    
+    BIND_EditMapMark(event) {
+        let status = this.props.local.query.status;
+        if (window.confirm('确认保存项目信息数据并进行落位?')) {
+            this.props.save(arg => {
+                if ($.trim(this.state.PROJECTNAME)) {
+                    if (status == "add") {
+
+                        window.open(this.state.mapUrl + "/Admin/EditMapMark?project_id=" + this.state.ID + "&cityname=" + this.state.CompanyCityName + "&callback=callback");
+
+                    } else {
+                        window.open(this.state.mapUrl + "/Admin/EditMapMark?project_id=" + this.state.ID + "&cityname=" + this.state.CompanyCityName + "&callback=callback");
+                    }
+                } else {
+                    //  alert("请输入项目名称");
+                    iss.popover({ content: "请输入项目名称" });
+                }
+            });
+            return true;
+        }
+
+
     }//点击标记地理位置
-    BIND_EditProject(event){
-        window.open(this.state.mapUrl+"/Admin/EditProject?project_id="+this.state.ID+"&project_map_id=project"+this.state.ID+"&callback=callback");    
+    CHEKC_PROJECT_VALID() {
+
+    }
+    BIND_ProjectValid() { //验证基础数据
+        //CompanyCityName，PROJECTNAME，CASENAME，TRADERMODE，LOCATION,bjfq,PRINCIPALNAME,PROJECTADDRESS
+        let th = this;
+        let valid = {
+            CITY: { //所属城市
+                required: true,
+            },
+            PROJECTNAME: { //项目名称
+                required: true,
+            },
+            CASENAME: {
+                required: true
+            },
+            TRADERMODE: {
+                required: true
+            },
+            PRINCIPALNAME: {
+                required: true
+            },
+            PROJECTADDRESS: {
+                required: true
+            }
+        }
+        "CompanyCityName,PROJECTNAME,CASENAME,TRADERMODE,LOCATION,bjfq,PRINCIPALNAME,PROJECTADDRESS".split(",").forEach((el, ind) => {
+            $(`#${el}`).validatebox(valid[el]);
+        });
+
+    }
+    BIND_VALID() { //绑定验证
+        return $("#FromProjectInfo").form("validate");
+    }
+    BIND_EditProject(event) {
+        window.open(this.state.mapUrl + "/Admin/EditProject?project_id=" + this.state.ID + "&project_map_id=project" + this.state.ID + "&callback=callback");
     } //点击编辑项目总图
-    BIND_maps(){
-        window.open(this.state.mapUrl+"/Map/Project?project_id="+this.state.ID+"&project_map_id=project"+this.state.ID+"&callback=callback");    
+    BIND_maps() {
+        window.open(this.state.mapUrl + "/Map/Project?project_id=" + this.state.ID + "&project_map_id=project" + this.state.ID + "&callback=callback");
     } //点击预览项目总图
-    BIND_mapmark(){
-        window.open(this.state.mapUrl+"/map/mapmark?project_id="+this.state.ID+"&cityname="+this.state.CompanyCityName+"&callback=callback")
+    BIND_mapmark() {
+        window.open(this.state.mapUrl + "/map/mapmark?project_id=" + this.state.ID + "&cityname=" + this.state.CompanyCityName + "&callback=callback")
     }//点击预览地理位置
     render() {
         return <section>
             <article className="staging-box">
                 <section className="staging-left boxSizing projectinFormation">
                     <from id="FromProjectInfo">
-                    <table className="formTable" width="100%">
-                        <colgroup>
-                            <col width="150" /><col width="" />
-                            <col width="150" /><col width="" />
-                        </colgroup> 
-                        <tbody>
-                            <tr> 
-                                <th>
-                                    <label className="formTableLabel boxSizing">所属区域</label>
-                                </th>
-                                <td>
-                                    <input readOnly="readonly" id="CompanyAreaName" value={this.state.CompanyAreaName||""}  className="inputTextBox inputGray boxSizing" type="text" />
-                                </td>
-                                <th>
-                                    <label className="formTableLabel boxSizing">城市公司</label>
-                                </th>
-                                <td>
-                                <input readOnly="readonly" id="CompanyCityName" value={this.state.CompanyCityName||""} className="inputTextBox inputGray boxSizing" type="text" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">所属城市</label>
-                                </th>
-                                <td>
-                                <input className="inputTextBox boxSizing" type="text" />
-                                </td>
-                                <th>
-                                    <label className="formTableLabel boxSizing">获取状态</label>
-                                </th>
-                                <td id="ObtainStatusName">{this.state.ObtainStatusName}</td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">项目名称</label>
-                                </th>
-                                <td>
-                                    <input onChange={this.BIND_CHECKPROJECTNAME.bind(this)} id="PROJECTNAME" value={this.state.PROJECTNAME||""} className="inputTextBox boxSizing" type="text" />
-                                </td>
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">项目案名</label>
-                                </th>
-                                <td>
-                                <input onChange={this.handleInputTextChange.bind(this)} id="CASENAME" value={this.state.CASENAME||""} className="inputTextBox boxSizing" type="text" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <label className="formTableLabel boxSizing">权益比例</label>
-                                </th>
-                                <td>
-                                    <input readOnly="readonly" id="EQUITYRATIO" value={this.state.EQUITYRATIO||""} className="inputTextBox inputGray boxSizing" type="text" />
-                                    <i className="symbol">%</i>
-                                </td>
-                                <th>
-                                    <label className="formTableLabel boxSizing">项目编号</label>
-                                </th>
-                                <td>
-                                    <input readOnly="readonly" id="PROJECTCODE" value={this.state.PROJECTCODE||""} className="inputTextBox inputGray boxSizing" type="text" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">操盘方式</label>
-                                </th>
-                                <td>
-                                    <input type="text" id="TRADERMODE" />
-                                </td>
-                                
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">地理位置</label>
-                                </th>
-                                <td>
-                                <button className="btn btnStyle uploadIconBtn" onClick={this.BIND_EditMapMark.bind(this)} id="LOCATION">标记地理位置</button>
-                                </td>
-                                
-                            </tr>
-                            <tr>
-                            <th>
-                                    <label className="formTableLabel boxSizing redFont">项目负责人</label>
-                                </th>
-                                <td>
-                                    <input readOnly="readonly" onClick={this.handChooseTo.bind(this)} id="PRINCIPAL" value={this.state.PRINCIPAL||""} className="inputTextBox boxSizing" type="text" />
-                                    <img className="symbol headIcon" src="../../Content/img/head-icon.png" />
-                                </td>
-                                
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">项目总图</label>
-                                </th>
-                                <td>
-                                <button className="btn btnStyle uploadIconBtn" onClick={this.BIND_EditProject.bind(this)}>标记分期</button>
-                                </td>	
-                                
-                            </tr>
-                            <tr>
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">项目地址</label>
-                                </th>
-                                <td colSpan="3">
-                                <input   onChange={this.handleInputTextChange.bind(this)} id="PROJECTADDRESS" value={this.state.PROJECTADDRESS||""} className="inputTextBox boxSizing" type="text" />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <table className="formTable" width="100%">
+                            <colgroup>
+                                <col width="150" /><col width="" />
+                                <col width="150" /><col width="" />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <th>
+                                        <label className="formTableLabel boxSizing">所属区域</label>
+                                    </th>
+                                    <td>
+                                        <input readOnly="readonly" id="CompanyAreaName" value={this.state.CompanyAreaName || ""} className="inputTextBox inputGray boxSizing" type="text" />
+                                    </td>
+                                    <th>
+                                        <label className="formTableLabel boxSizing">城市公司</label>
+                                    </th>
+                                    <td>
+                                        <input readOnly="readonly" id="CompanyCityName" value={this.state.CompanyCityName || ""} className="inputTextBox inputGray boxSizing" type="text" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label className="formTableLabel boxSizing redFont">所在城市</label>
+                                    </th>
+                                    <td>
+                                        <input type="text" onChange={this.handleInputTextChange.bind(this)} id="CITY" value={this.state.CITY || ""} className="inputTextBox boxSizing" />
+                                    </td>
+                                    <th>
+                                        <label className="formTableLabel boxSizing">获取状态</label>
+                                    </th>
+                                    <td id="ObtainStatusName">{this.state.ObtainStatusName}</td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label className="formTableLabel boxSizing redFont">项目名称</label>
+                                    </th>
+                                    <td>
+                                        <input onChange={this.BIND_CHECKPROJECTNAME.bind(this)} id="PROJECTNAME" value={this.state.PROJECTNAME || ""} className="inputTextBox boxSizing" type="text" />
+                                    </td>
+                                    <th>
+                                        <label className="formTableLabel boxSizing redFont">项目案名</label>
+                                    </th>
+                                    <td>
+                                        <input onChange={this.handleInputTextBlur.bind(this)} id="CASENAME" value={this.state.CASENAME || ""} className="inputTextBox boxSizing" type="text" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label className="formTableLabel boxSizing">权益比例</label>
+                                    </th>
+                                    <td>
+                                        <input readOnly="readonly" id="EQUITYRATIO" value={this.state.EQUITYRATIO || ""} className="inputTextBox inputGray boxSizing" type="text" />
+                                        <i className="symbol"></i>
+                                    </td>
+                                    <th>
+                                        <label className="formTableLabel boxSizing">项目编号</label>
+                                    </th>
+                                    <td>
+                                        <input readOnly="readonly" id="PROJECTCODE" value={this.state.PROJECTCODE || ""} className="inputTextBox inputGray boxSizing" type="text" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label className="formTableLabel boxSizing redFont">操盘方式</label>
+                                    </th>
+                                    <td>
+                                        <input type="text" id="TRADERMODE" />
+                                    </td>
+
+                                    <th>
+                                        <label className="formTableLabel boxSizing redFont">地理位置</label>
+                                    </th>
+                                    <td>
+                                        <button className="btn btnStyle uploadIconBtn" onClick={this.BIND_EditMapMark.bind(this)} id="LOCATION">标记地理位置</button>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label className="formTableLabel boxSizing redFont">项目负责人</label>
+                                    </th>
+                                    <td>
+                                        <input readOnly="readonly" onClick={this.handChooseTo.bind(this)} id="PRINCIPALNAME" value={this.state.PRINCIPALNAME || ""} className="inputTextBox boxSizing" type="text" />
+                                        <img className="symbol headIcon" src="../../Content/img/head-icon.png" />
+                                    </td>
+
+                                    <th>
+                                        <label className="formTableLabel boxSizing redFont">项目总图</label>
+                                    </th>
+                                    <td>
+                                        <button className="btn btnStyle uploadIconBtn" onClick={this.BIND_EditProject.bind(this)} id="bjfq">标记分期</button>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <label className="formTableLabel boxSizing redFont">项目地址</label>
+                                    </th>
+                                    <td colSpan="3">
+                                        <input onChange={this.handleInputTextChange.bind(this)} id="PROJECTADDRESS" value={this.state.PROJECTADDRESS || ""} className="inputTextBox boxSizing" type="text" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </from>
                 </section>
                 <section className="staging-right boxSizing fieldLocation fl">
@@ -308,10 +452,10 @@ class NewProjectCount extends React.Component {
                     <div id="myCarousel" className="carousel slide carouselStyle">
                         <div className="carousel-inner">
                             <div className="item active">
-                                <img src={this.state.mapUrl+"/Content/maps/source/project"+this.state.ID+"_s.jpg"} onError={this.xmViewError.bind(this)} onClick={this.BIND_maps.bind(this)}  width="100%" height="295px" />
+                                <img src={this.state.mapUrl + "/Content/maps/source/project" + this.state.ID + "_s.jpg"} onError={this.xmViewError.bind(this)} onClick={this.BIND_maps.bind(this)} width="100%" height="295px" />
                             </div>
                             <div className="item" onClick={this.BIND_mapmark.bind(this)}>
-                                <iframe src={this.state.mapUrl+"/map/mapmark?project_id="+this.state.ID} onerror={this.xmViewError.bind(this)}  width="100%" height="295px"></iframe>
+                                <iframe src={this.state.mapUrl + "/map/mapmark?project_id=" + this.state.ID} onError={this.xmViewError.bind(this)} width="100%" height="295px"></iframe>
                             </div>
                         </div>
                         {/* 轮播（Carousel）导航 */}
@@ -327,7 +471,7 @@ class NewProjectCount extends React.Component {
     }
 }
 
-window["callback"]=(str,data)=>{
-      
+window["callback"] = (str, data) => {
+
 }
 export default NewProjectCount;

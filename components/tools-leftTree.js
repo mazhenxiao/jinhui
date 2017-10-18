@@ -86,7 +86,7 @@ class ToolsTree extends React.Component {
             if (th.state.changeState == ""||th.state.changeState == undefined) {
                 return <div>
                     <input type="search" className="stateSearch" value="" />
-                    <img src="../img/state-icon-btn.png" />
+                    <img src="../../Content/img/state-icon-btn.png" />
                 </div>
             } else if(th.state.changeState == "newProject"){
                 return <div>
@@ -117,6 +117,7 @@ class ToolsTree extends React.Component {
                         <option value="">全部</option>
                         <option value="">已审批</option>
                         <option value="">待审批</option>
+                        <option value="">编制中</option>
                     </select>
                     {setBar()}
                 </div>

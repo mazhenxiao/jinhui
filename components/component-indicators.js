@@ -157,6 +157,8 @@ class Indicators extends React.Component {
     }
     /*alert==实时获取地块的信息*/
     BIND_WINOPEN(da){
+        console.log("实时地块信息");
+        console.log(da);
       this.setState({
         winopenDATA:da
       });
@@ -230,9 +232,9 @@ class Indicators extends React.Component {
             id=iss.id.parentid;
         }
         if(editOrSel=="select"){
-            title="选择分期占用土地";
+            title="选择分期占用土地<span class='red'>（*为必填项）</span>";
         }else if(editOrSel=="edit"){
-            title="编辑分期占用土地";
+            title="编辑分期占用土地<span class='red'>（*为必填项）</span>";
         }
         iss.Alert({
             title:title,
@@ -254,8 +256,6 @@ class Indicators extends React.Component {
         ReactDOM.render(<Winopen guid={id} selId={th.state.winopenSelId} selArr={selArr} status={editOrSel} callback={this.BIND_WINOPEN.bind(this)} />,document.querySelector("#alertBuiltBlock"));
     }
     
-    
-
     componentDidMount() {
         if(iss.id==""){ return}
         this.evGetLandData();/*编辑分期时，初次获取分期占用土地数据*/
@@ -308,5 +308,4 @@ class Indicators extends React.Component {
     }
 
 }
-
 export default Indicators;

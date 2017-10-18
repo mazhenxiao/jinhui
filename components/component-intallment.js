@@ -10,9 +10,15 @@ class Intallment extends React.Component {
         this.state={
             StagingInformationDATA:{}, /*分期信息*/
             landList:[],/*分期占用土地*/
+            equityRatio:"",/*权益比例*/
             status:"show",
             STAGEVERSIONID_guid:iss.guid(),
             STAGEID_guid:iss.guid(),
+            ID_guid:iss.guid(),
+            landCode:"",/*分期编码*/
+            projectCode:"",/*项目编码*/
+            maxCode:"",/*最大编码*/
+            pCodeAndLXCode:""
         }
          iss.hashHistory.listen((local,next)=>{
         })  
@@ -42,14 +48,40 @@ class Intallment extends React.Component {
     }
     /*分期占用土地==数据*/
     evLandList(landArr){
+        
+        var th=this;
+        var equityTxt="";
+        var landFirstCode="";
+        var landArrLen=landArr.length-1;
+        landArr.forEach((obj,index)=>{
+            if(landArrLen==index){
+                equityTxt=equityTxt+obj.Name+"-"+obj.EQUITYRATIO+"%";
+            }else{
+                equityTxt=equityTxt+obj.Name+"-"+obj.EQUITYRATIO+"%/";
+            }
+            
+            if(index==0){
+                landFirstCode=obj["FieldList"][1]['val'];
+            }
+        });
         console.log("最终地块信息");
         console.log(landArr);
-        var th=this;
+        console.log("权益比例");
+        console.log(equityTxt);
+        
         th.setState({
-            landList:landArr
+            landList:landArr,
+            equityRatio:equityTxt
         });
+        /*只有新增，才会生成code*/
+        if(th.state.status=="add"){
+            th.setState({
+                landCode:landFirstCode,
+                pCodeAndLXCode:th.state.projectCode+"-"+landFirstCode+"-"+th.state.maxCode
+            });
+        }
     }
-
+    /*发起审批*/
     EVENT_CLICK_POSTAPP(){
         let status=this.props.location.query.status;
         let th=this;
@@ -61,11 +93,16 @@ class Intallment extends React.Component {
             SumbitType="Edit";
         }else if(status=="add"){
             SumbitType="Add";
+            dta.STAGEVERSIONID=this.state.STAGEVERSIONID_guid;
+            dta.STAGEID=this.state.STAGEID_guid;
+            dta.ID=this.state.ID_guid;
+            dta.STAGECODE=th.state.pCodeAndLXCode;
         }else if(status=="upgrade"){
             SumbitType="Upgrade";
-            dta.STAGEVERSIONID=this.state.STAGEVERSIONID_guid;
             dta.STAGEVERSIONIDOLD=iss.id.id;
+            dta.STAGEVERSIONID=this.state.STAGEVERSIONID_guid;
             dta.STAGEID=this.state.STAGEID_guid;
+            dta.ID=this.state.ID_guid;
         }
     //    console.log(dta);
 
@@ -78,13 +115,14 @@ class Intallment extends React.Component {
                 EditType:"Submit", 
             },
             success:function (data) {
-               
+               console.log(JSON.stringify(data));
             },
             error:function (er) {
                 console.log('错误');
             }
         });
     }
+    /*暂存*/
     EVENT_CLICK_SAVE(){
         let status=this.props.location.query.status;
         let th=this;
@@ -96,11 +134,16 @@ class Intallment extends React.Component {
             SumbitType="Edit";
         }else if(status=="add"){
             SumbitType="Add";
+            dta.STAGEVERSIONID=this.state.STAGEVERSIONID_guid;
+            dta.STAGEID=this.state.STAGEID_guid;
+            dta.ID=this.state.ID_guid;
+            dta.STAGECODE=th.state.pCodeAndLXCode;
         }else if(status=="upgrade"){
             SumbitType="Upgrade";
-            dta.STAGEVERSIONID=this.state.STAGEVERSIONID_guid;
             dta.STAGEVERSIONIDOLD=iss.id.id;
+            dta.STAGEVERSIONID=this.state.STAGEVERSIONID_guid;
             dta.STAGEID=this.state.STAGEID_guid;
+            dta.ID=this.state.ID_guid;
         }
         
 
@@ -110,20 +153,53 @@ class Intallment extends React.Component {
             data:{
                 data:JSON.stringify(dta),
                 SumbitType:SumbitType,
-                EditType:"Submit",
+                EditType:"save",
             },
             success:function (data) {
-
+                console.log(JSON.stringify(data));
+                let results=data;
+                if(results.message=="成功"){
+                    iss.popover({content:"保存成功",type:2});
+                    $(window).trigger("treeLoad");
+                }else{
+                    iss.popover({content:"保存失败"});
+                }
             },
             error:function (er) {
                 console.log('错误');
             }
         });
     }
+
     getAjax(){
        
     }
-
+    /*获取项目编码和最大编码*/
+    getPjcodeAMCode(id){
+        var th=this;
+        if(th.state.status!="add"){return false;}
+        iss.ajax({
+            type:"post",
+            url:"/Stage/IGetStageCodeInfo",   
+            data:{
+                projectid:id
+            },
+            success(res){
+                let result=res.rows;
+                let projectcode=result.projectcode||"";
+                let maxCode=result.MaxCode||"";
+                th.setState({
+                    projectCode:projectcode,
+                    maxCode:maxCode,
+                    pCodeAndLXCode:projectcode+"-"+th.state.landCode+"-"+maxCode
+                });
+                
+            },
+            error(e){   
+ 
+            }
+        });
+    }
     render() {
         var th=this;
         return <article>
@@ -134,12 +210,13 @@ class Intallment extends React.Component {
                         <i>（<i className="redFont"></i>为必填项）</i>
                     </p>
 				    <span className="functionButton">
-                        <a className="saveIcon" onClick={this.EVENT_CLICK_SAVE.bind(this)} href="#">暂存</a>
+                        <a className="saveIcon" onClick={this.EVENT_CLICK_SAVE.bind(this)} href="javascript:void(0);">暂存</a>
                         <a className="approvalIcon" onClick={this.EVENT_CLICK_POSTAPP.bind(this)} href="#">发起审批</a>
                     </span>
 			</h3>
         </div> 
-        <StagingInformation location={this.props.location} StagingInformationDATA={this.BIND_StagingInformationDATA.bind(this)} />
+        
+        <StagingInformation location={this.props.location} pCodeAndLXCode={th.state.pCodeAndLXCode} equityTxt={th.state.equityRatio} codeCallBack={th.getPjcodeAMCode.bind(th)} StagingInformationDATA={this.BIND_StagingInformationDATA.bind(this)} />
         <div>
             <h3 className="boxGroupTit">
                 <p>
@@ -152,4 +229,5 @@ class Intallment extends React.Component {
     }      
 
 }
+
 export default Intallment;

@@ -18,20 +18,7 @@ class Winopen extends React.Component{
     }
     componentDidMount(){
         var th=this;
-        var listArr=th.state.listArr;
-        setTimeout(function(){
-            $(".comp-validatebox").each(function(index,ele){
-                var eleDom=$(ele);
-                var regInforObj=JSON.parse(eleDom.attr("data-regExp"));
-                console.log(regInforObj);
-                eleDom.validatebox({
-                    required: true,
-                    missingMessage:"不能为空",
-                    validType:['number','max['+regInforObj['max']+']']
-                });
-            });
-        },500);
-        
+        th.evValiteInputbox();
     }
     /*绑定html*/
     BIND_BLOCK(){
@@ -39,42 +26,55 @@ class Winopen extends React.Component{
         let list=th.state.listArr;
         
        return list.map((obj,index)=>{
-            return <div key={obj.ID} className="aBuiltSection">
-                    <div className="aBuilt_Title">
-                        <span>{obj.Name}</span>
-                        <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==1} defaultValue="1" onChange={th.evAllOrParDev.bind(th,obj.ID)} />全部开发</span>
-                        <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==2} defaultValue="2" onChange={th.evAllOrParDev.bind(th,obj.ID)} />部分开发</span>
-                    </div>
-                    <table className={obj.IsAllDevel==0? "table builtAlertTable hide":"table builtAlertTable"}>
-                        <tbody>
-                            <tr>
-                                <td><label>地块名称</label></td>
-                                <td><input type="text" id={obj.FieldList[0].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[0].edit=="+r"} value={obj.FieldList[0].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[0].id)}/></td>
-                                <td><label>地块编码</label></td>
-                                <td><input type="text" id={obj.FieldList[1].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[1].edit=="+r"} value={obj.FieldList[1].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[1].id)}/></td>
-                                <td colSpan="2"></td>
-                            </tr>
-                            <tr>
-                                <td><label>总用地面积（㎡）</label></td>
-                                <td><input type="text" id={obj.FieldList[2].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[2].edit=="+r"} value={obj.FieldList[2].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[2].id)}/></td>
-                                <td><label><span className="red">*</span>建设用地面积（㎡）</label></td>
-                                <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[3].regExp} id={obj.FieldList[3].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[3].edit=="+r"} value={obj.FieldList[3].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[3].id)}/></td>
-                                <td><label><span className="red">*</span>代征用地面积（㎡）</label></td>
-                                <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[4].regExp} id={obj.FieldList[4].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[4].edit=="+r"} value={obj.FieldList[4].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[4].id)}/></td>
-                            </tr>
-                            <tr>
-                                <td><label><span className="red">*</span>计容建筑面积（㎡）</label></td>
-                                <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[5].regExp} id={obj.FieldList[5].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[5].edit=="+r"} value={obj.FieldList[5].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[5].id)}/></td>
-                                <td><label><span className="red">*</span>土地获取价款（万元）</label></td>
-                                <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[6].regExp} id={obj.FieldList[6].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[6].edit=="+r"} value={obj.FieldList[6].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[6].id)}/></td>
-                                <td><label><span className="red">*</span>楼面均价（元/㎡）</label></td>
-                                <td><input type="text" id={obj.FieldList[7].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[7].edit=="+r"} value={obj.FieldList[7].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[7].id)}/></td>
-                            </tr>
-                        </tbody>
-                    </table>
+            return <div key={obj.ID} className="aBuiltSection" id={"section"+obj.ID}>
+                        <h3 className="aBuilt_Title">
+                                <span>{obj.Name}</span>
+                                
+                                <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==2} defaultValue="2" onChange={th.evAllOrParDev.bind(th,obj.ID)} />部分开发</span>
+                                <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==1} defaultValue="1" onChange={th.evAllOrParDev.bind(th,obj.ID)} />全部开发</span>
+                        </h3>
+                        <ul className={obj.IsAllDevel==0? "aBuilt_Con hide":"aBuilt_Con"}>
+                            {
+                                obj.FieldList.map((fieldObj,fIndex)=>{
+                                    return <li key={fieldObj.id}>
+                                                <label><span className={fieldObj.regExp.length>3&&!fieldObj.exec?"red":"hide"}>*</span>{fieldObj.label}</label>
+                                                <input type="text" className={fieldObj.regExp.length>3&&!fieldObj.exec?"comp-validatebox":""} id={fieldObj.id+'_'+obj.ID} data-regExp={fieldObj.regExp} autoComplete="off" readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&fieldObj.edit=="+r"} value={fieldObj.val==null?"":fieldObj.val} onChange={th.evInputChange.bind(th,obj.ID,fieldObj.id)}/>
+                                                <span className="unitSpan">{fieldObj.unit?fieldObj.unit:""}</span>
+                                            </li>
+                                })
+                            }
+                        </ul>
                 </div>
             });
         
+    }
+    evValiteInputbox(){
+        setTimeout(function(){
+            $(".comp-validatebox").each(function(index,ele){
+                var eleDom=$(ele);
+                var isReadAt=eleDom.attr("readonly");
+
+                var regInforObj=JSON.parse(eleDom.attr("data-regExp"));
+                console.log(regInforObj);
+                var allKeys=Object.keys(regInforObj);
+                var validTypeRule=[];
+                var valideRule={
+                    required: true,
+                    missingMessage:"不能为空"
+                };
+
+                allKeys.forEach((vType)=>{
+                    if(vType=="max"){
+                        validTypeRule.push('number','max['+regInforObj[vType]+']');
+                    }
+                });
+                if(validTypeRule.length>0){
+                    valideRule.validType=validTypeRule;
+                }
+                eleDom.validatebox(valideRule);
+                
+            });
+        },600);
     }
     /*input change*/
     evInputChange(listId,fieldId,event){
@@ -90,12 +90,32 @@ class Winopen extends React.Component{
                         feildObj.val=val;
                     }
                 });
+                /*计算*/
+                obj.FieldList.forEach((feildObj,fIndex)=>{
+                    if(feildObj.exec){
+                        let newVal=th.evCalcContent(feildObj.exec,obj.FieldList);
+                        feildObj.text=newVal;
+                        feildObj.val=newVal;
+                    }
+                });
            }
            newList.push(obj);
         });
         th.setState({
             listArr:newList
         });
+        
+    }
+    /*计算表达式*/
+    evCalcContent(execStr,obj){
+        let val="";
+        obj.forEach((item,index)=>{
+            let regStr=new RegExp("{"+item.id+"}","ig");
+            execStr=execStr.replace(regStr,Number(item.val));
+        });
+        var blockStr="try{return "+execStr+";}catch(e){console.log(e);}";
+        console.log(blockStr);
+        return new Function(blockStr)();
     }
     /*点击全部开发或部分开发*/
     evAllOrParDev(listId,event){
@@ -106,13 +126,21 @@ class Winopen extends React.Component{
         list.forEach((obj,index)=>{
             if(obj.ID==listId){
                 obj.IsAllDevel=val;
+                if(val==0||val==1){
+                    $("#section"+obj.ID+" .comp-validatebox").validatebox("disableValidation");
+                }else{
+                    $("#section"+obj.ID+" .comp-validatebox").validatebox("enableValidation");
+                }
             }
             newList.push(obj);
+            
          });
          th.setState({
              listArr:newList
          });
-         this.props.callback(newList);
+         
+         th.props.callback(newList);
+         
     }
     getAjax(id){
         var th = this;
@@ -144,7 +172,7 @@ class Winopen extends React.Component{
         let th=this;
         
         return <div className="aBuiltMain">
-            <form id="form_aBuiltLand" method="submit" >
+            <form id="form_aBuiltLand">
             {this.BIND_BLOCK()}
             </form>
         </div>
@@ -166,5 +194,39 @@ class Winopen extends React.Component{
         <li><label>地块编码</label><input type="text" defaultValue="地块一"/></li>
     </ul>
 </div> */}
-
+{
+    // <div className="aBuilt_Title">
+    //     <span>{obj.Name}</span>
+    //     <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==1} defaultValue="1" onChange={th.evAllOrParDev.bind(th,obj.ID)} />全部开发</span>
+    //     <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==2} defaultValue="2" onChange={th.evAllOrParDev.bind(th,obj.ID)} />部分开发</span>
+    // </div>
+    // <table className={obj.IsAllDevel==0? "table builtAlertTable hide":"table builtAlertTable"}>
+    //     <tbody>
+            
+    //         <tr>
+    //             <td><label>地块名称</label></td>
+    //             <td><input type="text" id={obj.FieldList[0].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[0].edit=="+r"} value={obj.FieldList[0].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[0].id)}/></td>
+    //             <td><label>地块编码</label></td>
+    //             <td><input type="text" id={obj.FieldList[1].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[1].edit=="+r"} value={obj.FieldList[1].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[1].id)}/></td>
+    //             <td colSpan="2"></td>
+    //         </tr>
+    //         <tr>
+    //             <td><label>总用地面积（㎡）</label></td>
+    //             <td><input type="text" id={obj.FieldList[2].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[2].edit=="+r"} value={obj.FieldList[2].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[2].id)}/></td>
+    //             <td><label><span className="red">*</span>建设用地面积（㎡）</label></td>
+    //             <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[3].regExp} autoComplete="off" id={obj.FieldList[3].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[3].edit=="+r"} value={obj.FieldList[3].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[3].id)}/></td>
+    //             <td><label><span className="red">*</span>代征用地面积（㎡）</label></td>
+    //             <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[4].regExp} autoComplete="off" id={obj.FieldList[4].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[4].edit=="+r"} value={obj.FieldList[4].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[4].id)}/></td>
+    //         </tr>
+    //         <tr>
+    //             <td><label><span className="red">*</span>计容建筑面积（㎡）</label></td>
+    //             <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[5].regExp} autoComplete="off" id={obj.FieldList[5].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[5].edit=="+r"} value={obj.FieldList[5].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[5].id)}/></td>
+    //             <td><label><span className="red">*</span>土地获取价款（万元）</label></td>
+    //             <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[6].regExp} autoComplete="off" id={obj.FieldList[6].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[6].edit=="+r"} value={obj.FieldList[6].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[6].id)}/></td>
+    //             <td><label>楼面均价（元/㎡）</label></td>
+    //             <td><input type="text" id={obj.FieldList[7].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[7].edit=="+r"} value={obj.FieldList[7].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[7].id)}/></td>
+    //         </tr>
+    //     </tbody>
+    // </table>
+}
 export default Winopen;

@@ -10,8 +10,8 @@ class StagingInformation extends React.Component {
         this.state ={
                         "CASENAME":"",
                         "STAGENAME":"",
-                        "STAGECODE":"",
                         "PROJECTCOMPANYNAME":"",
+                        "STAGECODE":"",
                         "STAGEID":"",
                         "STATUS":"",
                         "ISELFPRODUCTTYPE":"",
@@ -21,15 +21,19 @@ class StagingInformation extends React.Component {
                         "TAXINGWAY":"",
                         "PLANSTAGE":"",
                         "PROJECTNAME":"",
+                        "PRINCIPALNAME":"",
                         "PRINCIPAL":"",
                         "ID":"",
                         "GROUPNUMBER":"",
+                        "STAGECREATEDATE":"1900-01-01T00:00:00",
+                        "STAGEUPDATEDATE":"1900-01-01T00:00:00",
+                        "STARTDATE":"1900-01-01T00:00:00",
                         "mapUrl":"http://192.168.11.164:82"
         }  
 
-        this.tiem="";
+        this.tiem="";  
     }
-
+    /*获取分期信息*/
     getAjax(){
         var th = this;
         let status=this.props.location.query.status;
@@ -54,15 +58,14 @@ class StagingInformation extends React.Component {
             success(res){
                console.log(res.rows);   
                 th.setState({ 
-                    "CASENAME":res.rows.BaseFormInfo.CASENAME,
+                    "CASENAME":res.rows.BaseFormInfo.CASENAME||"",
                     "STAGENAME":res.rows.BaseFormInfo.STAGENAME,
                     "PROJECTCOMPANYNAME":res.rows.BaseFormInfo.PROJECTCOMPANYNAME,
                     "STAGEID":res.rows.BaseFormInfo.STAGEID,
-                    "STAGECODE":res.rows.BaseFormInfo.STAGECODE,
-                    "STAGECREATEDATE":res.rows.BaseFormInfo.STAGECREATEDATE.split('T')[0],
-                    "STAGEUPDATEDATE":res.rows.BaseFormInfo.STAGEUPDATEDATE.split('T')[0],
-                    "STARTDATE":res.rows.BaseFormInfo.STARTDATE.split('T')[0],
-
+                    "STAGECREATEDATE":res.rows.BaseFormInfo.STAGECREATEDATE,
+                    "STAGEUPDATEDATE":res.rows.BaseFormInfo.STAGEUPDATEDATE,
+                    "STARTDATE":res.rows.BaseFormInfo.STARTDATE,
+                    "STAGECODE":res.rows.BaseFormInfo.STAGECODE||"",
                     "STATUS":res.rows.BaseFormInfo.STATUS,
                     "ISELFPRODUCTTYPE":res.rows.BaseFormInfo.ISELFPRODUCTTYPE,
                     "TRADERMODE":res.rows.BaseFormInfo.TRADERMODE,
@@ -70,16 +73,21 @@ class StagingInformation extends React.Component {
                     "PROJECTTYPE":res.rows.BaseFormInfo.PROJECTTYPE,
                     "TAXINGWAY":res.rows.BaseFormInfo.TAXINGWAY,
                     "PLANSTAGE":res.rows.BaseFormInfo.PLANSTAGE,
+                    "PROJECTID":res.rows.BaseFormInfo.PROJECTID,
                     "PROJECTNAME":res.rows.BaseFormInfo.PROJECTNAME,
                     "ID":res.rows.BaseFormInfo.ID,
+                    "PRINCIPALNAME":res.rows.BaseFormInfo.PRINCIPALNAME,
                     "PRINCIPAL":res.rows.BaseFormInfo.PRINCIPAL,
                     "GROUPNUMBER":res.rows.BaseFormInfo.GROUPNUMBER,
+                    "STAGEVERSIONID":res.rows.BaseFormInfo.STAGEVERSIONID,
+                    "STAGESELFPRODUCT":res.rows.BaseFormInfo.STAGESELFPRODUCT
 
                 },arg=>{
                     //console.log(th.state)
                     th.bind_combobox(res);
-                })
-                
+                });
+
+                th.props.codeCallBack(res.rows.BaseFormInfo.PROJECTID);
             },
             error(e){   
  
@@ -99,6 +107,7 @@ class StagingInformation extends React.Component {
     addTodo(text) {  
         
     }
+    
     onUpload(){
         iss.upload({
             accept: {
@@ -118,19 +127,38 @@ class StagingInformation extends React.Component {
     }
     handChooseTo(ev,da){
         let th=this;
+        let peopleJson={};
+        let PrincipalId={
+            "id":th.state.PRINCIPAL,
+            "text":th.state.PRINCIPALNAME
+        }
+        if(th.state.PRINCIPAL){
+            peopleJson['PrincipalId']=PrincipalId;
+        }
         iss.chooseTo({
-            url:"/Home/GetTreeInfo",
+            url:"/Common/IGetOrganizationalUsers",
             title:"选择人员",
-            pepole:{},  //已选人员名单
+            pepole:peopleJson,  //已选人员名单
             callback(da){
                 console.log(da);
-                th.setState({ 
-                     "PRINCIPAL":da,
-                })
+                if(Object.keys(da).length==0||!da){
+                    th.setState({ 
+                        "PRINCIPAL":"",
+                        "PRINCIPALNAME":"",
+                    })
+                }else{
+                    for(let key in da){
+                        console.log(da[key]);
+                        th.setState({ 
+                            "PRINCIPAL":da[key].id,
+                            "PRINCIPALNAME":da[key].text,
+                        });
+                        th.BIND_CHANGE_DATA(th.state);
+                    }
+                }
             }
         })
-    }   
-     
+    }
     handleInputTextChange (e) {
         var th = this;
         let target = e.target.id
@@ -177,20 +205,20 @@ class StagingInformation extends React.Component {
             installmentState.combobox("select",arg.rows.BaseFormInfo.STATUS);
         }
 
-        let selfSustaining = $("#ISELFPRODUCTTYPE");//自持业态
+        let selfSustaining = $("#STAGESELFPRODUCT");//自持业态
         selfSustaining.combobox({
             valueField: "val",
             textField: "label",
             editable: true,
             readonly: false,
             panelHeight:"auto",
-            onChange:th.handleSelectTextChange.bind(th,"ISELFPRODUCTTYPE"),
+            onChange:th.handleSelectTextChange.bind(th,"STAGESELFPRODUCT"),
             data:arg.rows.SelectOptions.ISELFPRODUCTTYPE,
         });
-        if(arg.rows.BaseFormInfo.ISELFPRODUCTTYPE==0||arg.rows.BaseFormInfo.ISELFPRODUCTTYPE==null){
+        if(arg.rows.BaseFormInfo.STAGESELFPRODUCT==0||arg.rows.BaseFormInfo.STAGESELFPRODUCT==null){
             selfSustaining.combobox("select",0);
         }else{
-            selfSustaining.combobox("select",arg.rows.BaseFormInfo.ISELFPRODUCTTYPE);
+            selfSustaining.combobox("select",arg.rows.BaseFormInfo.STAGESELFPRODUCT);
         }
         let tradersWay = $("#TRADERMODE");//操盘方式
         tradersWay.combobox({
@@ -323,6 +351,10 @@ class StagingInformation extends React.Component {
         window.open(this.state.mapUrl+"/Map/PUSHPLATE?stage_id="+this.state.STAGEID+"&stage_map_id=stage"+this.state.STAGEID);
     }//点击推盘图预览
     render() {
+        let th=this;
+        let STAGECREATEDATE=th.state.STAGECREATEDATE=="1900-01-01T00:00:00"?"":this.state.STAGECREATEDATE.split("T")[0];
+        let STAGEUPDATEDATE=th.state.STAGEUPDATEDATE=="1900-01-01T00:00:00"?"":this.state.STAGEUPDATEDATE.split("T")[0];
+        let STARTDATE=th.state.STARTDATE=="1900-01-01T00:00:00"?"":this.state.STARTDATE.split("T")[0];
         return <article className="staging-box">
                 <section className="staging-left boxSizing projectinFormation">
                     <table className="formTable" width="100%">
@@ -353,10 +385,10 @@ class StagingInformation extends React.Component {
                                         <input onChange={this.handleInputTextChange.bind(this)} id="CASENAME" value={this.state.CASENAME||""} className="inputTextBox boxSizing" type="text" />
                                     </td>
                                     <th>
-                                        <label className="formTableLabel boxSizing redFont">分期编码</label>
+                                        <label className="formTableLabel boxSizing">分期编码</label>
                                     </th>
                                     <td>
-                                        <input onChange={this.handleInputTextChange.bind(this)} id="STAGECODE" value={this.state.STAGECODE||""} className="inputTextBox boxSizing" type="text" />
+                                        <input readOnly="readonly" id="STAGECODE" value={th.props.pCodeAndLXCode||th.state.STAGECODE} className="inputTextBox inputGray boxSizing" type="text" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -367,10 +399,10 @@ class StagingInformation extends React.Component {
                                         <input type="text" id="STATUS" />
                                     </td>
                                     <th>
-                                        <label className="formTableLabel boxSizing redFont">自持物业</label>
+                                        <label className="formTableLabel boxSizing redFont">自持业态</label>
                                     </th>
                                     <td>
-                                        <input type="text" id="ISELFPRODUCTTYPE" />
+                                        <input type="text" id="STAGESELFPRODUCT" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -392,18 +424,17 @@ class StagingInformation extends React.Component {
                                         <label className="formTableLabel boxSizing redFont">项目负责人</label>
                                     </th>
 								    <td>
-                                        <input readOnly="readonly" onClick={this.handChooseTo.bind(this)} id="PRINCIPAL" value={this.state.PRINCIPAL||""} className="inputTextBox boxSizing" type="text" />
+                                        <input readOnly="readonly" onClick={this.handChooseTo.bind(this)} id="PRINCIPALNAME" value={this.state.PRINCIPALNAME||""}  className="inputTextBox boxSizing" type="text" />
                                         <img className="symbol headIcon" src="../../Content/img/head-icon.png" />
                                     </td>
 								    <th>
                                         <label className="formTableLabel boxSizing">权益比例</label>
                                     </th>
                                     <td>
-                                        <input readOnly="readonly" className="inputTextBox inputGray boxSizing" type="text" />
-                                        <i className="symbol">%</i>
+                                        <input readOnly="readonly" id="equityTxt" value={this.props.equityTxt} className="inputTextBox inputGray boxSizing" type="text" />
                                     </td>
 								</tr>	
-								<tr> 
+								<tr>    
 									    <th>
                                             <label className="formTableLabel boxSizing redFont">并表方式</label>
                                         </th>
@@ -429,7 +460,7 @@ class StagingInformation extends React.Component {
                                             <label className="formTableLabel boxSizing">分期创建日期</label>
                                         </th>
 										<td>
-                                            <input readOnly="readonly" id="STAGECREATEDATE" value={this.state.STAGECREATEDATE||""} className="inputTextBox inputGray boxSizing" type="text" />    
+                                            <input readOnly="readonly" id="STAGECREATEDATE" value={STAGECREATEDATE} className="inputTextBox inputGray boxSizing" type="text" />    
                                         </td>	
 							    		
 								    </tr>
@@ -438,7 +469,7 @@ class StagingInformation extends React.Component {
                                             <label className="formTableLabel boxSizing">分期更新日期</label>
                                         </th>
 							    		<td>
-                                            <input readOnly="readonly" id="STAGEUPDATEDATE" value={this.state.STAGEUPDATEDATE||""} className="inputTextBox inputGray boxSizing" type="text" /> 
+                                            <input readOnly="readonly" id="STAGEUPDATEDATE" value={STAGEUPDATEDATE} className="inputTextBox inputGray boxSizing" type="text" /> 
                                         </td>	
 								    	<th>
                                             <label className="formTableLabel boxSizing">计划管控阶段</label>
@@ -453,7 +484,7 @@ class StagingInformation extends React.Component {
                                             <label className="formTableLabel boxSizing">启动开发时间</label>
                                         </th>
 							    		<td>
-                                            <input readOnly="readonly" id="STARTDATE" value={this.state.STARTDATE||""} className="inputTextBox inputGray boxSizing" type="text" />    
+                                            <input readOnly="readonly" id="STARTDATE" value={STARTDATE} className="inputTextBox inputGray boxSizing" type="text" />    
                                         </td>	
 								    	<th>
                                             <label className="formTableLabel boxSizing redFont">分期总图</label>

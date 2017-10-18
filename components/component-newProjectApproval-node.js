@@ -27,9 +27,9 @@ class ApprovalControlNode extends React.Component {
             comanyId: "73939811F9A44B2DBF66FC7C83B745F9",
             comanyName: "东南"
         }
-        this.selectedFlows = [] //选人数据
+        this.selectedFlows = [] //选人数据 
         this.submitData = {
-            DataKev:this.props.guid, //表单guid
+            DataKey:this.props.guid, //表单guid
             EntiId: "10004",//流程id
             EventUserId:"",//当前登陆人
             Files: [],//附件

@@ -1,3 +1,4 @@
+/*table.less文件*/
 .builtTable {
   margin-top: 10px;
   font-size: 12px;
@@ -5,19 +6,21 @@
   /*编辑*/
   /*删除*/
 }
-.builtTable thead tr {
-  border-top: 1px solid #ddd;
-  background: #f5f5f5;
-}
-.builtTable thead tr,
-.builtTable tbody tr {
-  background: #fff;
-}
 .builtTable thead tr td,
 .builtTable tbody tr td {
   border: #ddd 1px solid;
   vertical-align: middle;
   text-align: center;
+}
+.builtTable thead tr {
+  border-top: 1px solid #ddd;
+  background: #f5f5f5;
+}
+.builtTable tbody tr {
+  background: #fff;
+}
+.builtTable tbody tr td {
+  padding: 4px;
 }
 .builtTable .funCla {
   margin: 0 4px;

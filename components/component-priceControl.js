@@ -80,8 +80,8 @@ class PriceControl extends React.Component {
             case "GetVersions": {
                 _url = _th.state.actionUrl.GetVersions;
                 _th.loadData(_url, {
-                    "stageversionid": "111F08DBE35B4B90A9288CFC7FBEB924",
-                    // "versionId": iss.id.id,
+                    //"stageversionid": "111F08DBE35B4B90A9288CFC7FBEB924",
+                    "versionId": iss.id.id,
                     "projectlevel": 2,
                     "step": _th.state.step,
                     "dataType": 3//1分期
@@ -174,8 +174,8 @@ class PriceControl extends React.Component {
             type: "POST",
             dataType: "JSON",
             data: {
-                "stageversionid": "111F08DBE35B4B90A9288CFC7FBEB924",
-                // "versionId": iss.id.id,
+                //"stageversionid": "111F08DBE35B4B90A9288CFC7FBEB924",
+                "versionId": iss.id.id,
                 "projectlevel": 2,
                 "step": this.state.step
             },
