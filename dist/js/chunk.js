@@ -34,7 +34,7 @@
 /******/
 /******/ 	// objects to store loaded and loading chunks
 /******/ 	var installedChunks = {
-/******/ 		24: 0
+/******/ 		25: 0
 /******/ 	};
 /******/
 /******/ 	// The require function
@@ -91,7 +91,7 @@
 /******/ 		if (__webpack_require__.nc) {
 /******/ 			script.setAttribute("nonce", __webpack_require__.nc);
 /******/ 		}
-/******/ 		script.src = __webpack_require__.p + "chunk-" + ({"0":"component-newProject","1":"component-intallment","2":"component-newProjectApproval","3":"component-priceControl-Startup","4":"component-priceControl-Projectlocat","5":"component-priceControl-Productlocat","6":"component-priceControl-Presell","7":"component-priceControl-Management","8":"component-priceControl-Investment","9":"component-priceControl-Deliver","10":"component-priceControl-Decision","11":"component-priceControl-Contract","12":"component-priceControl-Certificate","13":"component-areaManagement","14":"component-priceControl","15":"component-identity","16":"component-index","17":"component-supply","18":"component-agenty","19":"component-todo","20":"component-projectList","21":"jinhui-Index","22":"jinhui-OpenIndex","23":"component-areaManagement-1"}[chunkId]||chunkId) + ".js";
+/******/ 		script.src = __webpack_require__.p + "chunk-" + ({"0":"component-newProject","1":"component-intallment","2":"component-newProjectApproval","3":"component-priceControl-Startup","4":"component-priceControl-Projectlocat","5":"component-priceControl-Productlocat","6":"component-priceControl-Presell","7":"component-priceControl-Management","8":"component-priceControl-Investment","9":"component-priceControl-Deliver","10":"component-priceControl-Decision","11":"component-priceControl-Contract","12":"component-priceControl-Certificate","13":"component-areaManagement","14":"component-priceControl","15":"component-newProjectStage","16":"component-identity","17":"component-index","18":"component-supply","19":"component-agenty","20":"component-todo","21":"component-projectList","22":"jinhui-Index","23":"jinhui-OpenIndex","24":"component-areaManagement-1"}[chunkId]||chunkId) + ".js";
 /******/ 		var timeout = setTimeout(onScriptComplete, 120000);
 /******/ 		script.onerror = script.onload = onScriptComplete;
 /******/ 		function onScriptComplete() {
@@ -17206,7 +17206,7 @@ var rootRout = {
   childRoutes: [{
     path: "/index",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(16).then((function (require) {
+      __webpack_require__.e/* require.ensure */(17).then((function (require) {
         var app = __webpack_require__(586); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -17214,7 +17214,7 @@ var rootRout = {
   }, {
     path: "/identity",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(15).then((function (require) {
+      __webpack_require__.e/* require.ensure */(16).then((function (require) {
         var app = __webpack_require__(587); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -17222,7 +17222,7 @@ var rootRout = {
   }, {
     path: "/supply",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(17).then((function (require) {
+      __webpack_require__.e/* require.ensure */(18).then((function (require) {
         var app = __webpack_require__(588); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -17230,7 +17230,7 @@ var rootRout = {
   }, {
     path: "/projectList",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(20).then((function (require) {
+      __webpack_require__.e/* require.ensure */(21).then((function (require) {
         var app = __webpack_require__(589); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -17239,7 +17239,7 @@ var rootRout = {
   {
     path: "/agenty",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(18).then((function (require) {
+      __webpack_require__.e/* require.ensure */(19).then((function (require) {
         var app = __webpack_require__(590); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -17248,7 +17248,7 @@ var rootRout = {
   {
     path: "/todo",
     getComponent: function getComponent(next, callback) {
-      __webpack_require__.e/* require.ensure */(19).then((function (require) {
+      __webpack_require__.e/* require.ensure */(20).then((function (require) {
         var app = __webpack_require__(591); //============================生日祝福
         callback(null, app.default);
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
@@ -17366,7 +17366,7 @@ var rootRout = {
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
 
-  }, { //发起审批
+  }, { //发起审批项目
     path: "/newProjectApproval",
     getComponent: function getComponent(next, callback) {
       __webpack_require__.e/* require.ensure */(2).then((function (require) {
@@ -17375,6 +17375,14 @@ var rootRout = {
       }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
     }
 
+  }, { //发起审批分期
+    path: "/newProjectStage",
+    getComponent: function getComponent(next, callback) {
+      __webpack_require__.e/* require.ensure */(15).then((function (require) {
+        var app = __webpack_require__(606); //============================价格管理-交付
+        callback(null, app.default);
+      }).bind(null, __webpack_require__)).catch(__webpack_require__.oe);
+    }
   }]
 };
 

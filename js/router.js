@@ -189,7 +189,7 @@ var rootRout = {
       }
 
     },
-    { //发起审批
+    { //发起审批项目
       path: "/newProjectApproval",
       getComponent: function (next, callback) {
         require.ensure([], function (require) {
@@ -198,7 +198,17 @@ var rootRout = {
         }, "component-newProjectApproval");
       }
 
-    } 
+    },
+    { //发起审批分期
+      path: "/newProjectStage",
+      getComponent: function (next, callback) {
+        require.ensure([], function (require) {
+          var app = require('../components/component-newProjectStage.js');//============================价格管理-交付
+          callback(null, app.default);
+        }, "component-newProjectStage");
+      }
+    }
+
   ] 
 }
 

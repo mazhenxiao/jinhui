@@ -77,8 +77,7 @@ class Winopen extends React.Component{
                 var allKeys=Object.keys(regInforObj);
                 var validTypeRule=[];
                 var valideRule={
-                    required: true,
-                    missingMessage:"不能为空"
+                    required: true
                 };
 
                 allKeys.forEach((vType)=>{
@@ -112,8 +111,13 @@ class Winopen extends React.Component{
                 obj.FieldList.forEach((feildObj,fIndex)=>{
                     if(feildObj.exec){
                         let newVal=th.evCalcContent(feildObj.exec,obj.FieldList);
-                        feildObj.text=newVal;
-                        feildObj.val=newVal;
+                        let newCalArr=newVal.toString().split(".");
+                        let decVal="";
+                        if(newCalArr.length==2){
+                            decVal='.'+newCalArr[1].slice(0,6);
+                        }                      
+                        feildObj.text=newCalArr[0]+decVal;
+                        feildObj.val=newCalArr[0]+decVal;
                     }
                 });
            }
@@ -133,8 +137,13 @@ class Winopen extends React.Component{
             obj.FieldList.forEach((feildObj,fIndex)=>{
                 if(feildObj.exec){
                     let newVal=th.evCalcContent(feildObj.exec,obj.FieldList);
-                    feildObj.text=newVal;
-                    feildObj.val=newVal;
+                    let newCalArr=newVal.toString().split(".");
+                    let decVal="";
+                    if(newCalArr.length==2){
+                        decVal='.'+newCalArr[1].slice(0,6);
+                    }                      
+                    feildObj.text=newCalArr[0]+decVal;
+                    feildObj.val=newCalArr[0]+decVal;
                 }
             });
             newArr.push(obj);
@@ -148,7 +157,10 @@ class Winopen extends React.Component{
             let regStr=new RegExp("{"+item.id+"}","ig");
             execStr=execStr.replace(regStr,Number(item.val));
         });
-        var blockStr="try{return "+execStr+";}catch(e){console.log(e);}";
+        var blockStr="try{\
+            let calVal="+execStr+";\
+            return calVal==Infinity?0:calVal;\
+        }catch(e){console.log(e);}";
         console.log(blockStr);
         return new Function(blockStr)();
     }
