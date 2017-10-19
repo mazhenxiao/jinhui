@@ -259,6 +259,7 @@ class NewProject extends React.Component {
         //   var t = new Date().getTime();
         da.forEach((el, ind) => {
             let reg = /\{.*?\}[\+\-\*\/]/, regcount = /\{.*?\}/ig, arr = regcount.exec(el.exec || ""), list = th.state.DynamicData;
+            let reg2 = /\<.*?\>[\+\-\*\/]/,regcount2 = /\<.*?\>/ig,arr2 = el.exec.match(regcount2),list2 = th.state.CountData;
             if (el.exec && !reg.exec(el.exec)) {
                 if (arr && arr[0]) {
                     let _id = arr[0].replace(/[{}]/ig, ""), _str = [];
@@ -271,9 +272,23 @@ class NewProject extends React.Component {
                         })
 
                     }
-                    el.val = eval(_str.join("+"));
+                    let n_n = eval(_str.join("+"));
+                    el.val=n_n==Infinity? 0:n_n;
                     return;
-                }
+                } else if(el.exec&&reg2.exec(el.exec)){
+                     let  str = el.exec,nums=0;
+                    arr2.forEach((ee,ii)=>{
+                        let _id_=ee.replace(/[\<\>]/ig,"");
+                        list2.forEach((eee,iii)=>{
+                            if(eee.id==_id_){
+                               str=str.replace(ee,~~eee.val);
+                            }
+                        })
+                    });
+                    let _n_n_ = eval(str);
+                    el.val=(_n_n_==Infinity||!_n_n_)? 0:_n_n_;
+                    return
+                } 
             }
         })
         th.setState({

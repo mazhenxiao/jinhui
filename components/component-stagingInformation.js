@@ -80,7 +80,7 @@ class StagingInformation extends React.Component {
                     "PRINCIPAL":res.rows.BaseFormInfo.PRINCIPAL,
                     "GROUPNUMBER":res.rows.BaseFormInfo.GROUPNUMBER,
                     "STAGEVERSIONID":res.rows.BaseFormInfo.STAGEVERSIONID,
-                    "STAGESELFPRODUCT":res.rows.BaseFormInfo.STAGESELFPRODUCT
+                    "STAGESELFPRODUCTS":res.rows.BaseFormInfo.STAGESELFPRODUCTS
 
                 },arg=>{
                     //console.log(th.state)
@@ -125,7 +125,7 @@ class StagingInformation extends React.Component {
     BIND_CHANGE_DATA(data){
         this.props.StagingInformationDATA(data)
     }
-    handChooseTo(ev,da){
+    handChooseTo(da){
         let th=this;
         let peopleJson={};
         let PrincipalId={
@@ -205,20 +205,40 @@ class StagingInformation extends React.Component {
             installmentState.combobox("select",arg.rows.BaseFormInfo.STATUS);
         }
 
-        let selfSustaining = $("#STAGESELFPRODUCT");//自持业态
+        let selfSustaining = $("#STAGESELFPRODUCTS");//自持业态
         selfSustaining.combobox({
             valueField: "val",
             textField: "label",
             editable: true,
             readonly: false,
+            multiple:true,
             panelHeight:"auto",
-            onChange:th.handleSelectTextChange.bind(th,"STAGESELFPRODUCT"),
+            onChange:th.handleSelectTextChange.bind(th,"STAGESELFPRODUCTS"),
             data:arg.rows.SelectOptions.ISELFPRODUCTTYPE,
+            onSelect: function(e){
+                //console.log(e.val);
+                let val=e.val;
+                if(val==0){
+                    setTimeout(arg=>{
+                        selfSustaining.combobox("setValues",[0]);
+                    })
+                }else if(val!=0){
+                    setTimeout(arg=>{
+                        let STAG_num=th.state.STAGESELFPRODUCTS;
+                        let new_arr=[];
+                        new_arr=STAG_num.filter((obj)=>{
+                            return obj!=0;
+                        });
+                        selfSustaining.combobox("setValues",new_arr);
+                        //selfSustaining.combobox("setValues",[0]);
+                    })
+                }
+            }
         });
-        if(arg.rows.BaseFormInfo.STAGESELFPRODUCT==0||arg.rows.BaseFormInfo.STAGESELFPRODUCT==null){
-            selfSustaining.combobox("select",0);
+        if(arg.rows.BaseFormInfo.STAGESELFPRODUCTS==0||arg.rows.BaseFormInfo.STAGESELFPRODUCTS==null){
+            selfSustaining.combobox("setValues",[0]);
         }else{
-            selfSustaining.combobox("select",arg.rows.BaseFormInfo.STAGESELFPRODUCT);
+            selfSustaining.combobox("setValues",arg.rows.BaseFormInfo.STAGESELFPRODUCTS);
         }
         let tradersWay = $("#TRADERMODE");//操盘方式
         tradersWay.combobox({
@@ -339,16 +359,16 @@ class StagingInformation extends React.Component {
         $(event.target).attr("src","../../Content/img/xmViewError.png");
     }
     BIND_EditStage(){
-        window.open(this.state.mapUrl+"/Admin/EditStage?stage_id="+this.state.STAGEID+"&stage_map_id=stage"+this.state.STAGEID);
+        window.open(this.state.mapUrl+"/Admin/EditStage?stage_id="+this.state.STAGEVERSIONID+"&stage_map_id=stage"+this.state.STAGEVERSIONID);
     }
     BIND_EditPushPlate(){
-        window.open(this.state.mapUrl+"/Admin/EditPushPlate?stage_id="+this.state.STAGEID+"&stage_map_id=stage"+this.state.STAGEID);
+        window.open(this.state.mapUrl+"/Admin/EditPushPlate?stage_id="+this.state.STAGEVERSIONID+"&stage_map_id=stage"+this.state.STAGEVERSIONID);
     }
     BIND_mapsStage(){
-        window.open(this.state.mapUrl+"/Map/Stage?stage_id="+this.state.STAGEID+"&stage_map_id=stage"+this.state.STAGEID);
+        window.open(this.state.mapUrl+"/Map/Stage?stage_id="+this.state.STAGEVERSIONID+"&stage_map_id=stage"+this.state.STAGEVERSIONID);
     }//点击分期总图预览
     BIND_mapsTp(){
-        window.open(this.state.mapUrl+"/Map/PUSHPLATE?stage_id="+this.state.STAGEID+"&stage_map_id=stage"+this.state.STAGEID);
+        window.open(this.state.mapUrl+"/Map/PUSHPLATE?stage_id="+this.state.STAGEVERSIONID+"&stage_map_id=stage"+this.state.STAGEVERSIONID);
     }//点击推盘图预览
     render() {
         let th=this;
@@ -402,7 +422,7 @@ class StagingInformation extends React.Component {
                                         <label className="formTableLabel boxSizing redFont">自持业态</label>
                                     </th>
                                     <td>
-                                        <input type="text" id="STAGESELFPRODUCT" />
+                                        <input type="text" id="STAGESELFPRODUCTS" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -495,7 +515,7 @@ class StagingInformation extends React.Component {
 								    </tr>
                                     <tr>
                                         <th>
-                                            <label className="formTableLabel boxSizing redFont">组团</label>
+                                            <label className="formTableLabel boxSizing redFont">组团数量</label>
                                         </th>
                                         <td>
                                             <input onChange={this.handleInputTextChange.bind(this)} id="GROUPNUMBER" value={this.state.GROUPNUMBER||""} className="inputTextBox boxSizing" type="text" />

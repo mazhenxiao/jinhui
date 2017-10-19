@@ -15,13 +15,13 @@ class Intallment extends React.Component {
             STAGEVERSIONID_guid:iss.guid(),
             STAGEID_guid:iss.guid(),
             ID_guid:iss.guid(),
-            landCode:"",/*分期编码*/
+            landCode:"",/*地块编码*/
             projectCode:"",/*项目编码*/
             maxCode:"",/*最大编码*/
-            pCodeAndLXCode:""
+            pCodeAndLXCode:""/*分期编码*/
         }
          iss.hashHistory.listen((local,next)=>{
-        })  
+        });
     }    
     componentWillMount(){
         
@@ -55,9 +55,9 @@ class Intallment extends React.Component {
         var landArrLen=landArr.length-1;
         landArr.forEach((obj,index)=>{
             if(landArrLen==index){
-                equityTxt=equityTxt+obj.Name+"-"+obj.EQUITYRATIO+"%";
+                equityTxt=equityTxt+obj.Name+"-"+(obj.EQUITYRATIO||0)+"%";
             }else{
-                equityTxt=equityTxt+obj.Name+"-"+obj.EQUITYRATIO+"%/";
+                equityTxt=equityTxt+obj.Name+"-"+(obj.EQUITYRATIO||0)+"%/";
             }
             
             if(index==0){
@@ -153,7 +153,7 @@ class Intallment extends React.Component {
             data:{
                 data:JSON.stringify(dta),
                 SumbitType:SumbitType,
-                EditType:"save",
+                EditType:"Save",
             },
             success:function (data) {
                 console.log(JSON.stringify(data));
@@ -190,8 +190,7 @@ class Intallment extends React.Component {
                 let maxCode=result.MaxCode||"";
                 th.setState({
                     projectCode:projectcode,
-                    maxCode:maxCode,
-                    pCodeAndLXCode:projectcode+"-"+th.state.landCode+"-"+maxCode
+                    maxCode:maxCode
                 });
                 
             },

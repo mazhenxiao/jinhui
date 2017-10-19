@@ -226,11 +226,13 @@ class Indicators extends React.Component {
         let status=th.props.local.location.query.status;
         let id="";
         let title="";
+        /*判断分期是新增还是编辑或升级*/
         if(status=="add"){
             id=th.state.treeId;
         }else{
             id=iss.id.parentid;
         }
+        /*判断是编辑地块还是选择地块*/
         if(editOrSel=="select"){
             title="选择分期占用土地<span class='red'>（*为必填项）</span>";
         }else if(editOrSel=="edit"){
@@ -254,8 +256,7 @@ class Indicators extends React.Component {
         });
         
         ReactDOM.render(<Winopen guid={id} selId={th.state.winopenSelId} selArr={selArr} status={editOrSel} callback={this.BIND_WINOPEN.bind(this)} />,document.querySelector("#alertBuiltBlock"));
-    }
-    
+    } 
     componentDidMount() {
         if(iss.id==""){ return}
         this.evGetLandData();/*编辑分期时，初次获取分期占用土地数据*/

@@ -270,14 +270,11 @@ class $iss {
                     console.log(param);
                 },
                 onDblClick(node){
-                    // if(node.type==0){
-                    //     opt.pepole={};
-                    //     opt.pepole[node.id] = node;
-                    //     render();
-                    // }
-                    opt.pepole={};
-                    opt.pepole[node.id] = node;
-                    render();
+                    if(node.type==8){
+                         opt.pepole={};
+                         opt.pepole[node.id] = node;
+                        render();
+                     }
                     
                 }
 
@@ -432,6 +429,36 @@ let iss = window["iss"] = new $iss();
                 fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
     }
+
+    $(function(){
+
+        $.fn.scrollUnique = function() {
+            return $(this).each(function() {
+                var eventType = 'mousewheel';
+                // 火狐是DOMMouseScroll事件
+                if (document.mozHidden !== undefined) {
+                    eventType = 'DOMMouseScroll';
+                }
+                $(this).on(eventType, function(event) {
+                    // 一些数据
+                    var scrollTop = this.scrollTop,
+                        scrollHeight = this.scrollHeight,
+                        height = this.clientHeight;
+        
+                    var delta = (event.originalEvent.wheelDelta) ? event.originalEvent.wheelDelta : -(event.originalEvent.detail || 0);        
+        
+                    if ((delta > 0 && scrollTop <= delta) || (delta < 0 && scrollHeight - height - scrollTop <= -1 * delta)) {
+                        // IE浏览器下滚动会跨越边界直接影响父级滚动，因此，临界时候手动边界滚动定位
+                        this.scrollTop = delta > 0? 0: scrollHeight;
+                        // 向上滚 || 向下滚
+                        event.preventDefault();
+                    }        
+                });
+            });	
+        };
+
+
+    })
 
 }();
 export default iss;

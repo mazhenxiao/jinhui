@@ -4,6 +4,7 @@ import "babel-polyfill";  //兼容ie
 require("./tools-validate");
 require("./tools-city.js");
 require("../../Content/css/intallment.less");
+import ToolsCity from "./tools-city.js"; //城市
 class NewProjectCount extends React.Component {
     constructor(arg) {
         super(arg);
@@ -85,6 +86,7 @@ class NewProjectCount extends React.Component {
     }
     componentDidMount() {
         let id = iss.id;
+
         if (id == "1E1CB1E95A864AFA961392C3E3644642" || !id) {
             iss.hashHistory.replace({ pathname: "index" });
         } else {
@@ -113,12 +115,14 @@ class NewProjectCount extends React.Component {
                         "PRINCIPALNAME": "",
                     })
                 } else {
-                    
+                    for (var key in da) {
+                        console.log(da[key]);
                         th.setState({
                             "PRINCIPAL": da[key].id,
-                            "PRINCIPALNAME": da[key].text,
+                            "PRINCIPALNAME": da[key].text
                         });
                         th.BIND_CHANGE_DATA(th.state);
+                    }
                 }
             }
         })
@@ -171,8 +175,20 @@ class NewProjectCount extends React.Component {
         }, () => {
             th.BIND_CHANGE_DATA(this.state)
         })
-        // console.log(e.target.id);
-        // console.log(e.target.value);
+    }
+    BIND_CITY_CALLBACK(da, ev) { //城市回掉
+        if (ev) {
+            let id = ev.id;
+            this.setState({
+                [id]: da
+            })
+        } else {
+            console.log("打开时传入：this.refs.ToolsCity.open(ev.target)");
+        }
+    }
+    EVENT_CLICK_CITYINPUT(str, ev) { //城市点击
+        //console.log(ToolsCity);
+        this.refs.ToolsCity.open(ev.target);
     }
     handleSelectTextChange(e, b, c) {
         var th = this;
@@ -186,25 +202,7 @@ class NewProjectCount extends React.Component {
 
     bind_combobox(arg) {
         var th = this;
-        //   console.log(arg);
 
-
-        /*   let belongCity = this.belongCity = $("#CITY")//所属城市
-          belongCity.combo({
-              required: true,
-              editable: false,
-              panelWidth: "302px",
-              panelHeight: "auto",
-          });
-          $('#linkage #town').hide();
-          $('#linkage').appendTo(belongCity.combo('panel'));
-          $('#linkage #city').click(function(){
-              var v = $('#linkage #city option:selected').text();
-              belongCity.combo('setText', v)
-              $('#linkage #city').click(function(){
-                   belongCity.combo('hidePanel');
-              })
-          }); */
 
         let tradersWay = $("#TRADERMODE");//操盘方式
         tradersWay.combobox({
@@ -267,6 +265,7 @@ class NewProjectCount extends React.Component {
     BIND_CHANGE_DATA(data) {
         this.props.NewProjectCountDATA(data);
     }
+
     xmViewError(event) {
         //this.attr("src","../img/xmViewError.png")
         $(event.target).attr("src", "../../Content/img/xmViewError.png");
@@ -365,8 +364,10 @@ class NewProjectCount extends React.Component {
                                     <th>
                                         <label className="formTableLabel boxSizing redFont">所在城市</label>
                                     </th>
-                                    <td>
-                                        <input type="text" onChange={this.handleInputTextChange.bind(this)} id="CITY" value={this.state.CITY || ""} className="inputTextBox boxSizing" />
+                                    <td><div className="postion">
+                                        <input type="text" readOnly="true" onClick={this.EVENT_CLICK_CITYINPUT.bind(this, "ToolsCity")} id="CITY" value={this.state.CITY||""} className="inputTextBox boxSizing" />
+                                        <ToolsCity ref="ToolsCity" callback={this.BIND_CITY_CALLBACK.bind(this)} />
+                                    </div>
                                     </td>
                                     <th>
                                         <label className="formTableLabel boxSizing">获取状态</label>
@@ -455,7 +456,7 @@ class NewProjectCount extends React.Component {
                                 <img src={this.state.mapUrl + "/Content/maps/source/project" + this.state.ID + "_s.jpg"} onError={this.xmViewError.bind(this)} onClick={this.BIND_maps.bind(this)} width="100%" height="295px" />
                             </div>
                             <div className="item" onClick={this.BIND_mapmark.bind(this)}>
-                                <iframe src={this.state.mapUrl + "/map/mapmark?project_id=" + this.state.ID} onError={this.xmViewError.bind(this)} width="100%" height="295px"></iframe>
+                                <iframe src={this.state.mapUrl + "/map/mapmark?project_id=" + this.state.ID} onError={this.xmViewError.bind(this)} width="350px" height="295px"></iframe>
                             </div>
                         </div>
                         {/* 轮播（Carousel）导航 */}
