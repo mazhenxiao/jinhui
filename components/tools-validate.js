@@ -1,5 +1,3 @@
-
-
 $.extend($.fn.validatebox.defaults, {
 	missingMessage: "必填项"
 })
@@ -14,9 +12,9 @@ $.extend($.fn.validatebox.defaults.rules, {
 	},
 	number: {
 		validator: function (value, param) {
-			return /^(0|[1-9][0-9]*)(.[0-9]*)?$/.test(value);
+			return /^(0|[1-9][0-9]*)(.[0-9]{1,6})?$/.test(value);
 		},
-		message: '只能输入数字'
+		message: '只能输入数字且小数不能多于6位'
 	}
 
 });
