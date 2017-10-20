@@ -7,80 +7,165 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-import ApprovalControlNode from "./component-newProjectApproval-node.js";  //审批信息
-import ThreeTree from "./tools-threeTree.js";
-import DynamicTable from "./tools-dynamicTable.js";
-import "../../Content/css/tools-dynamicTable.less";//专用css
-
+import ProcessApprovalTab from "./component-ProcessApproval-Tab.js"; //导航信息
+import DynamicTable from "./tools-dynamicTable.js"; //地块
+import NewProjectCountView from "./component-newProject-countView.js";//项目基本信息
+import "../../Content/css/tools-dynamicTable.less";//专用css  
 class ApprovalControl extends React.Component {
     constructor(arg) {
         super(arg);
-        this.state={
-            threeId:"tt",
-            threeData:[{
-                "id":1,
-                "text":"Foods",
-                "children":[{
-                    "id":2,
-                    "text":"Fruits",
-                    "state":"closed",
-                    "children":[{
-                        "text":"apple",
-                        "checked":true
-                    },{
-                        "text":"orange"
-                    }]
-                },{
-                    "id":3,
-                    "text":"Vegetables",
-                    "state":"open",
-                    "children":[{
-                        "text":"tomato",
-                        "checked":true
-                    },{
-                        "text":"carrot",
-                        "checked":true
-                    },{
-                        "text":"cabbage"
-                    },{
-                        "text":"potato",
-                        "checked":true
-                    },{
-                        "text":"lettuce"
-                    }]
-                }]
-            }],
-            CountData:[],
-
+        this.state = {
+            CountData: [],//地块统计数据
+            pid:iss.id.id,//地块id
+            propsDATA:[]//地块数据
 
         }
     }
-    BIND_COUNT_DATACALLBACK(){
-
+    componentWillMount(){
+      this.BIIND_FIST_LAND();
     }
-    /*初始化树*/
-    initTree(da){
-        console.log(da)
-        //let th=this;
-       
+    
+    BIIND_FIST_LAND() {  //获取已有地块
+        let THIS = this;
+        let id = iss.id.id;
+        iss.ajax({  //获取已有地块
+            url: "/Project/IProjectLandsInfo",
+            data: { projectId: id },
+            success(d) {
+                if (d.rows) {
+                    var da = {};
+                    d.rows.forEach((el, ind) => {
+                        if (ind == 0) { //初次加载地块
+
+                            THIS.setState({
+                                propsDATA: el["FieldList"]
+                            })
+                        }
+                        da[el.LandId] = el;
+                    })
+
+                    THIS.setState({
+                        DynamicData: da
+                    })
+                   // console.log(da)
+                }
+            },
+            error() { }
+        })
+        //Project/ILandsStatistics  土地动态统计
+        iss.ajax({
+            url: "/Project/ILandsStatistics",
+            success(a) {
+
+                if (a["rows"]) {
+                    THIS.setState({
+                        CountData: a["rows"]
+                    }, arg => {
+                        setTimeout(arg => {
+
+                            THIS.BIND_COUNT_GETMAP();
+                        }, 2000);
+                    })
+                }
+            }
+        })
+    }
+    BIND_COUNT_GETMAP() { //地块统计
+        let da = this.state.CountData, th = this;
+        //   var t = new Date().getTime();
+        da.forEach((el, ind) => {
+            let reg = /\{.*?\}[\+\-\*\/]/, regcount = /\{.*?\}/ig, arr = regcount.exec(el.exec || ""), list = th.state.DynamicData;
+            let reg2 = /\<.*?\>[\+\-\*\/]/,regcount2 = /\<.*?\>/ig,arr2 = el.exec.match(regcount2),list2 = th.state.CountData;
+            if (el.exec && !reg.exec(el.exec)) {
+                if (arr && arr[0]) {
+                    let _id = arr[0].replace(/[{}]/ig, ""), _str = [];
+                    for (let v in list) {
+                        list[v]["FieldList"].forEach((ee, ii) => {
+                            if (ee["id"] == _id) {
+                                _str.push(~~ee["val"]);
+                                return
+                            }
+                        })
+
+                    }
+                    let n_n = eval(_str.join("+"));
+                    el.val=n_n==Infinity? 0:n_n;
+                    return;
+                } else if(el.exec&&reg2.exec(el.exec)){
+                     let  str = el.exec,nums=0;
+                    arr2.forEach((ee,ii)=>{
+                        let _id_=ee.replace(/[\<\>]/ig,"");
+                        list2.forEach((eee,iii)=>{
+                            if(eee.id==_id_){
+                               str=str.replace(ee,~~eee.val);
+                            }
+                        })
+                    });
+                    let _n_n_ = eval(str);
+                    el.val=(_n_n_==Infinity||!_n_n_)? 0:_n_n_;
+                    return
+                } 
+            }
+        })
+        th.setState({
+            CountData: da
+        })
      
     }
+    BIND_COUNT_DATACALLBACK() { //地块统计完成回掉
+
+    }
+    EVENT_CLICK_LANDBTN(id, e){
+        let self = $(e.target), pa = self.parent();
+        pa.find("li").removeClass("active");
+        self.addClass("active");
+        this.setState({
+            pid: id,
+            propsDATA: this.state.DynamicData[id]["FieldList"]
+        }, arg => {
+            //  console.log(this.state.propsDATA)
+        });
+    }
+    BIND_CALLBACK(){ } //地块变更回掉
+    BIND_LAND_BTN(){
+        let map = [], li = this.state.DynamicData, name = "新增地块", g = 0;
+        // console.log(li)
+        for (var i in li) {
+            g += 1;
+            for (var f = 0; f < li[i].FieldList.length; f++) {
+                if (li[i].FieldList[f]["label"] == "地块名称") {
+                    name = li[i].FieldList[f]["val"] || `未命名地块${g}`
+                    break;
+                }
+            }
+            map.push(<li onClick={this.EVENT_CLICK_LANDBTN.bind(this, li[i].LandId)} key={g} data-id={li[i].LandId}>{name}</li>)
+        }
+        return map;
+    }
+
     render() {
-        let th=this;
+        let th = this;
         return <section>
-            <div>chengwei</div>
+
+            <ProcessApprovalTab current="newProjectApproval" />
+            <NewProjectCountView />
             <section>
-            <h3 className="boxGroupTit">
+                <h3 className="boxGroupTit">
                     <p>
-                        <span>项目信息</span>
-                    </p> 
+                        <span>地块信息</span>
+                    </p>
                 </h3>
+
                 <div>
-                 <DynamicTable pid="countdata" DynamicData={this.state.CountData} CallBack={this.BIND_COUNT_DATACALLBACK.bind(this)} /> 
+                    <DynamicTable pid="DynamicTabl1" DynamicData={this.state.CountData} CallBack={this.BIND_COUNT_DATACALLBACK.bind(this)} />
+                </div>
+                <div>
+                    <ul className="BIND_LAND_BTN">
+                        {this.BIND_LAND_BTN()}
+                    </ul>
+                    <DynamicTable readOnly="true" pid={this.state.pid} DynamicData={this.state.propsDATA} CallBack={this.BIND_CALLBACK.bind(this)} />
                 </div>
             </section>
-            <ThreeTree url="" callback={th.initTree.bind(this)} id={th.state.threeId}/>
-            <ApprovalControlNode pid={iss.id}/>
         </section>
 
     }

@@ -19,7 +19,7 @@ class ApprovalControlNode extends React.Component {
             }],
             InfoData: [] //流程信息
         }
-        this.type = this.props["type"] || "edit"; //以防外部没有设置type类型
+        this.type ="edit"  //this.props["type"] || "edit"; //以防外部没有设置type类型
         this.getInfo = {
             entiId: "10004",
             dataKey: "1",
@@ -29,9 +29,9 @@ class ApprovalControlNode extends React.Component {
         }
         this.selectedFlows = [] //选人数据 
         this.submitData = {
-            DataKey:this.props.guid, //表单guid
+            DataKey: this.props.guid, //表单guid
             EntiId: "10004",//流程id
-            EventUserId:"",//当前登陆人
+            EventUserId: "",//当前登陆人
             Files: [],//附件
             ProcessComment: "提交"//
         }
@@ -66,21 +66,16 @@ class ApprovalControlNode extends React.Component {
             }
         })
     }
-    EVENT_MOUSELEAVE_LI(da) { //鼠标滑过
-        console.log(da);
-    }
     EVENT_CHANGE_LIST(da, ev) { //修改
 
         var id = (ev.target.value);
         this.selectedFlows.forEach((el, ind) => {
             if (el.ContextGuid == da.Id) {
-               // console.log(id);
+                // console.log(id);
                 el.Participants = [id];
                 return;
             }
         });
-
-
     }
     EVENT_CHANGE_CHECKBOX(da, ev) {//input
         var ta = ev.target;
@@ -105,15 +100,16 @@ class ApprovalControlNode extends React.Component {
         });
         // console.log(this.selectedFlows)
     }
-    EVENT_CLICK_SUBMIT() {  //提交
+    //========提交、返回=========================================
+    EVENT_CLICK_SUBMIT() {  //当前填报人提交
         var th = this;
         th.BIND_CHECKED();  //检查数据
     }
     BIND_CHECKED() {   //第一次ajax提交检查数据
         var dto = {
             "runtimeUnique": {
-                EntiId:'10004',// 实体ID
-                DataKey:'111'// 业务ID
+                EntiId: '10004',// 实体ID
+                DataKey: '111'// 业务ID
             }
         };
         var turnOut = true;
@@ -125,44 +121,45 @@ class ApprovalControlNode extends React.Component {
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(dto),
             success: function (result) {
-               if(result.d["Data"]=="false"&&result.d["Success"]==true){
-                 th.BIND_CHECKEDSUCESS();//二次提交
-               }
-            }
-        });
-       
-    }
-    BIND_CHECKEDSUCESS(){  //第二次ajax提交提交流程
-        var th = this;
-        th.submitData.EventUserId = iss.userInfo.ID;//设置登陆人id
-        let submitdata = JSON.stringify({
-            submitData:th.submitData,
-            selectedFlows:this.selectedFlows
-        });
-        console.log(submitdata);
-        iss.ajax({
-            url: "/iWorkflow/Workflow/api/WFServices.asmx/SubmitWorkflow",
-            type: "POST",
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            data:submitdata,
-            success: function (result) {
-                var rt = result.d;
-               // turnOut = rt.Success;
-                if (rt.Success == true) {
-                    
-                } else {
-                    console.log(rt.Message);
+                if (result.d["Data"] == "false" && result.d["Success"] == true) {
+                    th.BIND_CHECKEDSUCESS();//二次提交
                 }
             }
         });
 
     }
-    setInfoDataList() {
+    BIND_CHECKEDSUCESS() {  //当前填报人第二次ajax提交提交流程
+        var th = this;
+        th.submitData.ProcessComment=this.props["data"]||"";
+        th.submitData.EventUserId = iss.userInfo.ID;//设置登陆人id
+        let submitdata = JSON.stringify({
+            submitData: th.submitData,
+            selectedFlows: this.selectedFlows
+        });
+        iss.ajax({
+            url: "/iWorkflow/Workflow/api/WFServices.asmx/SubmitWorkflow",
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: submitdata,
+            success: function (result) {
+                var rt = result.d;
+                // turnOut = rt.Success;
+                if (rt.Success == true) {
+                    iss.popover({content:"提交成功！"});
+                    iss.hashHistory.push({pathname:"agenty"});
+                } else {
+                    iss.popover({content:rt.Message,type:2})
+                }
+            }
+        });
+
+    }
+    setInfoDataList() {  
         var th = this;
         if (!this.state.InfoData.length) { return }
         let list = this.state.InfoData[0]["Flows"];
-        th.selectedFlows=[];
+        th.selectedFlows = [];
         return list.map((el, ind) => {
             let submit =
                 { //提交数据
@@ -205,8 +202,8 @@ class ApprovalControlNode extends React.Component {
                 </li>
             } else {
                 let str = el.Users.map((vv, jj) => {
-                    for(let i=0;i<userArra.length;i++){
-                      //  if(userArra[i]["Id"])
+                    for (let i = 0; i < userArra.length; i++) {
+                        //  if(userArra[i]["Id"])
                     }
                     userArra.push(vv.UId);
                     return vv.Name + (jj == el.Users.length - 1 ? "" : ",")
@@ -221,11 +218,28 @@ class ApprovalControlNode extends React.Component {
             }
         }, this);
     }
+    //========通过、驳回===========================================
+    EVENT_CLICK_PASS(){
+
+    }
+    BIND_CHECKEDIT() {
+        if (this.type != "edit") {
+            return <p className="btnBox">
+                <a className="btn" href="javascript:;" onClick={this.EVENT_CLICK_PASS.bind(this)}>通过</a>
+                <a className="btn" href="javascript:;">驳回</a>
+            </p>
+        } else {
+            return <p className="btnBox">
+                <a className="btn" href="javascript:;" onClick={this.EVENT_CLICK_SUBMIT.bind(this)}>提交</a>
+                <a className="btn" href="javascript:;">取消</a>
+            </p>
+        }
+    }
     render() {
 
         var re_aOpinions = this.state.aOpinions;
         return (<div className="boxGroupDetail">
-            <h3 className="boxGroupTitBig"><p><span>审批信息</span></p></h3>
+
             <table className="table tableProject">
                 <tbody><tr>
                     <td width="100">审批流程</td>
@@ -248,11 +262,9 @@ class ApprovalControlNode extends React.Component {
 
                 </tbody></table>
             {
-                this.type != "edit" &&
-                <p className="btnBox">
-                    <a className="btn" href="javascript:;" onClick={this.EVENT_CLICK_SUBMIT.bind(this)}>通过</a>
-                    <a className="btn" href="javascript:;">驳回</a>
-                </p>
+              
+              this.BIND_CHECKEDIT()
+                
             }
 
             <table className="table tableProject approvalProcess">

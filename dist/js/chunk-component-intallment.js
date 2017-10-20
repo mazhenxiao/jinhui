@@ -1,4 +1,4 @@
-webpackJsonp([1],{
+webpackJsonp([0],{
 
 /***/ 592:
 /***/ (function(module, exports, __webpack_require__) {
@@ -20,11 +20,11 @@ __webpack_require__(65);
 
 __webpack_require__(79);
 
-var _componentStagingInformation = __webpack_require__(639);
+var _componentStagingInformation = __webpack_require__(650);
 
 var _componentStagingInformation2 = _interopRequireDefault(_componentStagingInformation);
 
-var _componentIndicators = __webpack_require__(640);
+var _componentIndicators = __webpack_require__(651);
 
 var _componentIndicators2 = _interopRequireDefault(_componentIndicators);
 
@@ -101,7 +101,7 @@ var Intallment = function (_React$Component) {
                 if (landArrLen == index) {
                     equityTxt = equityTxt + obj.Name + "-" + (obj.EQUITYRATIO || 0) + "%";
                 } else {
-                    equityTxt = equityTxt + obj.Name + "-" + (obj.EQUITYRATIO || 0) + "%/";
+                    equityTxt = equityTxt + obj.Name + "-" + (obj.EQUITYRATIO || 0) + "%,";
                 }
 
                 if (index == 0) {
@@ -324,7 +324,7 @@ exports.default = Intallment;
 
 /***/ }),
 
-/***/ 607:
+/***/ 609:
 /***/ (function(module, exports) {
 
 /*
@@ -407,7 +407,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 608:
+/***/ 610:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -453,7 +453,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(610);
+var	fixUrls = __webpack_require__(611);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -767,7 +767,7 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 
-/***/ 610:
+/***/ 611:
 /***/ (function(module, exports) {
 
 
@@ -863,7 +863,7 @@ module.exports = function (css) {
 
 /***/ }),
 
-/***/ 615:
+/***/ 616:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -908,7 +908,8 @@ var DynamicTable = function (_React$Component) {
         _this.state = { //数据层
             url: "",
             data: _this.props.DynamicData || [], //数据
-            selected: {}
+            selected: {},
+            readOnly: _this.props["readOnly"]
         };
 
         return _this;
@@ -1035,25 +1036,28 @@ var DynamicTable = function (_React$Component) {
 
             // console.log(da)
             var typeBox = function typeBox(el) {
-
-                if (el.type == "select") {
-                    var list = el.data.map(function (_d, _i) {
-                        return _react2.default.createElement(
-                            "option",
-                            { key: _i, value: _d.val },
-                            _d.label
-                        );
-                    });
-                    return _react2.default.createElement(
-                        "select",
-                        { name: el.id, className: el.edit.indexOf("+m") >= 0 ? "required" : "", onChange: _this2.EVENT_CHANGE_SELECT.bind(_this2, el), value: el.val || "" },
-                        list
-                    );
-                } else if (el.type == "date") {
-                    return _react2.default.createElement("input", { name: el.id, className: el.edit.indexOf("+m") >= 0 ? "esayuiDate required" : "esayuiDate", id: el.id, "data-pid": el.pid, value: el.val || "", placeholder: el.edit.indexOf("+m") >= 0 ? "必填" : "", type: "text", onClick: _this2.setEventDate.bind(_this2, el), readOnly: "true" });
+                if (_this2.state.readOnly) {
+                    return _react2.default.createElement("input", { className: "", type: "text", readOnly: "true", value: el.val || "" });
                 } else {
+                    if (el.type == "select") {
+                        var list = el.data.map(function (_d, _i) {
+                            return _react2.default.createElement(
+                                "option",
+                                { key: _i, value: _d.val },
+                                _d.label
+                            );
+                        });
+                        return _react2.default.createElement(
+                            "select",
+                            { name: el.id, className: el.edit.indexOf("+m") >= 0 ? "required" : "", onChange: _this2.EVENT_CHANGE_SELECT.bind(_this2, el), value: el.val || "" },
+                            list
+                        );
+                    } else if (el.type == "date") {
+                        return _react2.default.createElement("input", { name: el.id, className: el.edit.indexOf("+m") >= 0 ? "esayuiDate required" : "esayuiDate", id: el.id, "data-pid": el.pid, value: el.val || "", placeholder: el.edit.indexOf("+m") >= 0 ? "必填" : "", type: "text", onClick: _this2.setEventDate.bind(_this2, el), readOnly: "true" });
+                    } else {
 
-                    return _react2.default.createElement("input", { name: el.id, id: el.id, className: el.edit.indexOf("+m") >= 0 ? "esayuiDate required" : "esayuiDate", "data-pid": el.pid, value: el.val || "", placeholder: el.edit.indexOf("+m") >= 0 ? "必填" : "", type: "text", onChange: _this2.EVENT_CHANGE_INPUT.bind(_this2, el), readOnly: el.edit.indexOf("+r") >= 0 });
+                        return _react2.default.createElement("input", { name: el.id, id: el.id, className: el.edit.indexOf("+m") >= 0 ? "esayuiDate required" : "esayuiDate", "data-pid": el.pid, value: el.val || "", placeholder: el.edit.indexOf("+m") >= 0 ? "必填" : "", type: "text", onChange: _this2.EVENT_CHANGE_INPUT.bind(_this2, el), readOnly: el.edit.indexOf("+r") >= 0 });
+                    }
                 }
             };
 
@@ -1127,13 +1131,13 @@ exports.default = DynamicTable;
 
 /***/ }),
 
-/***/ 616:
+/***/ 619:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(617);
+var content = __webpack_require__(620);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1141,7 +1145,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(608)(content, options);
+var update = __webpack_require__(610)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -1159,29 +1163,118 @@ if(false) {
 
 /***/ }),
 
-/***/ 617:
+/***/ 620:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(607)(undefined);
+exports = module.exports = __webpack_require__(609)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".tools-dynamicTable {\n  margin-top: 10px;\n}\n.tools-dynamicTable ul li {\n  height: 40px;\n  overflow: hidden;\n}\n.tools-dynamicTable ul li label {\n  font-size: 12px;\n  color: #333;\n  font-weight: normal;\n  width: 110px;\n  text-align: right;\n  padding-top: 5px;\n  float: left;\n}\n.tools-dynamicTable ul li div {\n  display: block;\n  margin: 0 65px 0 115px;\n}\n.tools-dynamicTable ul li div input {\n  width: 100%;\n  padding: 3px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li div input[readonly] {\n  background: #fbfbfb;\n}\n.tools-dynamicTable ul li div input.required {\n  background: #fff3f3;\n}\n.tools-dynamicTable ul li div select {\n  width: 100%;\n  height: 25px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li i {\n  font-style: normal;\n  width: 60px;\n  float: right;\n  padding-top: 3px;\n}\n.tools-dynamicTable ul li i.date {\n  display: inline-block;\n  height: 30px;\n  background: url(" + __webpack_require__(618) + ") no-repeat 3px 50%;\n}\n.BIND_LAND_BTN {\n  padding: 10px;\n}\n.BIND_LAND_BTN li {\n  display: inline-block;\n  padding: 5px 10px;\n  border: #ddd solid 1px;\n  cursor: pointer;\n  margin: 10px;\n  position: relative;\n  top: 0;\n  left: 0;\n}\n.BIND_LAND_BTN li.active {\n  background: #e4e4e4;\n}\n.BIND_LAND_BTN li .icon-delete {\n  position: absolute;\n  top: -10px;\n  right: -10px;\n  display: none;\n}\n.BIND_LAND_BTN li:hover .icon-delete {\n  display: block;\n}\n", ""]);
+exports.push([module.i, ".tools-dynamicTable {\n  margin-top: 10px;\n}\n.tools-dynamicTable ul li {\n  height: 40px;\n  overflow: hidden;\n}\n.tools-dynamicTable ul li label {\n  font-size: 12px;\n  color: #333;\n  font-weight: normal;\n  width: 110px;\n  text-align: right;\n  padding-top: 5px;\n  float: left;\n}\n.tools-dynamicTable ul li div {\n  display: block;\n  margin: 0 65px 0 115px;\n}\n.tools-dynamicTable ul li div input {\n  width: 100%;\n  padding: 3px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li div input[readonly] {\n  background: #fbfbfb;\n}\n.tools-dynamicTable ul li div input.required {\n  background: #fff3f3;\n}\n.tools-dynamicTable ul li div select {\n  width: 100%;\n  height: 25px;\n  border: #ddd solid 1px;\n}\n.tools-dynamicTable ul li i {\n  font-style: normal;\n  width: 60px;\n  float: right;\n  padding-top: 3px;\n}\n.tools-dynamicTable ul li i.date {\n  display: inline-block;\n  height: 30px;\n  background: url(" + __webpack_require__(621) + ") no-repeat 3px 50%;\n}\n.BIND_LAND_BTN {\n  padding: 10px;\n}\n.BIND_LAND_BTN li {\n  display: inline-block;\n  padding: 5px 10px;\n  border: #ddd solid 1px;\n  cursor: pointer;\n  margin: 10px;\n  position: relative;\n  top: 0;\n  left: 0;\n}\n.BIND_LAND_BTN li.active {\n  background: #e4e4e4;\n}\n.BIND_LAND_BTN li .icon-delete {\n  position: absolute;\n  top: -10px;\n  right: -10px;\n  display: none;\n}\n.BIND_LAND_BTN li:hover .icon-delete {\n  display: block;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 618:
+/***/ 621:
 /***/ (function(module, exports) {
 
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAKTWlDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjanVN3WJP3Fj7f92UPVkLY8LGXbIEAIiOsCMgQWaIQkgBhhBASQMWFiApWFBURnEhVxILVCkidiOKgKLhnQYqIWotVXDjuH9yntX167+3t+9f7vOec5/zOec8PgBESJpHmomoAOVKFPDrYH49PSMTJvYACFUjgBCAQ5svCZwXFAADwA3l4fnSwP/wBr28AAgBw1S4kEsfh/4O6UCZXACCRAOAiEucLAZBSAMguVMgUAMgYALBTs2QKAJQAAGx5fEIiAKoNAOz0ST4FANipk9wXANiiHKkIAI0BAJkoRyQCQLsAYFWBUiwCwMIAoKxAIi4EwK4BgFm2MkcCgL0FAHaOWJAPQGAAgJlCLMwAIDgCAEMeE80DIEwDoDDSv+CpX3CFuEgBAMDLlc2XS9IzFLiV0Bp38vDg4iHiwmyxQmEXKRBmCeQinJebIxNI5wNMzgwAABr50cH+OD+Q5+bk4eZm52zv9MWi/mvwbyI+IfHf/ryMAgQAEE7P79pf5eXWA3DHAbB1v2upWwDaVgBo3/ldM9sJoFoK0Hr5i3k4/EAenqFQyDwdHAoLC+0lYqG9MOOLPv8z4W/gi372/EAe/tt68ABxmkCZrcCjg/1xYW52rlKO58sEQjFu9+cj/seFf/2OKdHiNLFcLBWK8ViJuFAiTcd5uVKRRCHJleIS6X8y8R+W/QmTdw0ArIZPwE62B7XLbMB+7gECiw5Y0nYAQH7zLYwaC5EAEGc0Mnn3AACTv/mPQCsBAM2XpOMAALzoGFyolBdMxggAAESggSqwQQcMwRSswA6cwR28wBcCYQZEQAwkwDwQQgbkgBwKoRiWQRlUwDrYBLWwAxqgEZrhELTBMTgN5+ASXIHrcBcGYBiewhi8hgkEQcgIE2EhOogRYo7YIs4IF5mOBCJhSDSSgKQg6YgUUSLFyHKkAqlCapFdSCPyLXIUOY1cQPqQ28ggMor8irxHMZSBslED1AJ1QLmoHxqKxqBz0XQ0D12AlqJr0Rq0Hj2AtqKn0UvodXQAfYqOY4DRMQ5mjNlhXIyHRWCJWBomxxZj5Vg1Vo81Yx1YN3YVG8CeYe8IJAKLgBPsCF6EEMJsgpCQR1hMWEOoJewjtBK6CFcJg4Qxwicik6hPtCV6EvnEeGI6sZBYRqwm7iEeIZ4lXicOE1+TSCQOyZLkTgohJZAySQtJa0jbSC2kU6Q+0hBpnEwm65Btyd7kCLKArCCXkbeQD5BPkvvJw+S3FDrFiOJMCaIkUqSUEko1ZT/lBKWfMkKZoKpRzame1AiqiDqfWkltoHZQL1OHqRM0dZolzZsWQ8ukLaPV0JppZ2n3aC/pdLoJ3YMeRZfQl9Jr6Afp5+mD9HcMDYYNg8dIYigZaxl7GacYtxkvmUymBdOXmchUMNcyG5lnmA+Yb1VYKvYqfBWRyhKVOpVWlX6V56pUVXNVP9V5qgtUq1UPq15WfaZGVbNQ46kJ1Bar1akdVbupNq7OUndSj1DPUV+jvl/9gvpjDbKGhUaghkijVGO3xhmNIRbGMmXxWELWclYD6yxrmE1iW7L57Ex2Bfsbdi97TFNDc6pmrGaRZp3mcc0BDsax4PA52ZxKziHODc57LQMtPy2x1mqtZq1+rTfaetq+2mLtcu0W7eva73VwnUCdLJ31Om0693UJuja6UbqFutt1z+o+02PreekJ9cr1Dund0Uf1bfSj9Rfq79bv0R83MDQINpAZbDE4Y/DMkGPoa5hpuNHwhOGoEctoupHEaKPRSaMnuCbuh2fjNXgXPmasbxxirDTeZdxrPGFiaTLbpMSkxeS+Kc2Ua5pmutG003TMzMgs3KzYrMnsjjnVnGueYb7ZvNv8jYWlRZzFSos2i8eW2pZ8ywWWTZb3rJhWPlZ5VvVW16xJ1lzrLOtt1ldsUBtXmwybOpvLtqitm63Edptt3xTiFI8p0in1U27aMez87ArsmuwG7Tn2YfYl9m32zx3MHBId1jt0O3xydHXMdmxwvOuk4TTDqcSpw+lXZxtnoXOd8zUXpkuQyxKXdpcXU22niqdun3rLleUa7rrStdP1o5u7m9yt2W3U3cw9xX2r+00umxvJXcM970H08PdY4nHM452nm6fC85DnL152Xlle+70eT7OcJp7WMG3I28Rb4L3Le2A6Pj1l+s7pAz7GPgKfep+Hvqa+It89viN+1n6Zfgf8nvs7+sv9j/i/4XnyFvFOBWABwQHlAb2BGoGzA2sDHwSZBKUHNQWNBbsGLww+FUIMCQ1ZH3KTb8AX8hv5YzPcZyya0RXKCJ0VWhv6MMwmTB7WEY6GzwjfEH5vpvlM6cy2CIjgR2yIuB9pGZkX+X0UKSoyqi7qUbRTdHF09yzWrORZ+2e9jvGPqYy5O9tqtnJ2Z6xqbFJsY+ybuIC4qriBeIf4RfGXEnQTJAntieTE2MQ9ieNzAudsmjOc5JpUlnRjruXcorkX5unOy553PFk1WZB8OIWYEpeyP+WDIEJQLxhP5aduTR0T8oSbhU9FvqKNolGxt7hKPJLmnVaV9jjdO31D+miGT0Z1xjMJT1IreZEZkrkj801WRNberM/ZcdktOZSclJyjUg1plrQr1zC3KLdPZisrkw3keeZtyhuTh8r35CP5c/PbFWyFTNGjtFKuUA4WTC+oK3hbGFt4uEi9SFrUM99m/ur5IwuCFny9kLBQuLCz2Lh4WfHgIr9FuxYji1MXdy4xXVK6ZHhp8NJ9y2jLspb9UOJYUlXyannc8o5Sg9KlpUMrglc0lamUycturvRauWMVYZVkVe9ql9VbVn8qF5VfrHCsqK74sEa45uJXTl/VfPV5bdra3kq3yu3rSOuk626s91m/r0q9akHV0IbwDa0b8Y3lG19tSt50oXpq9Y7NtM3KzQM1YTXtW8y2rNvyoTaj9nqdf13LVv2tq7e+2Sba1r/dd3vzDoMdFTve75TsvLUreFdrvUV99W7S7oLdjxpiG7q/5n7duEd3T8Wej3ulewf2Re/ranRvbNyvv7+yCW1SNo0eSDpw5ZuAb9qb7Zp3tXBaKg7CQeXBJ9+mfHvjUOihzsPcw83fmX+39QjrSHkr0jq/dawto22gPaG97+iMo50dXh1Hvrf/fu8x42N1xzWPV56gnSg98fnkgpPjp2Snnp1OPz3Umdx590z8mWtdUV29Z0PPnj8XdO5Mt1/3yfPe549d8Lxw9CL3Ytslt0utPa49R35w/eFIr1tv62X3y+1XPK509E3rO9Hv03/6asDVc9f41y5dn3m978bsG7duJt0cuCW69fh29u0XdwruTNxdeo94r/y+2v3qB/oP6n+0/rFlwG3g+GDAYM/DWQ/vDgmHnv6U/9OH4dJHzEfVI0YjjY+dHx8bDRq98mTOk+GnsqcTz8p+Vv9563Or59/94vtLz1j82PAL+YvPv655qfNy76uprzrHI8cfvM55PfGm/K3O233vuO+638e9H5ko/ED+UPPR+mPHp9BP9z7nfP78L/eE8/sl0p8zAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAACPSURBVHja3JPdDYMwDIS/RFkirBIYgDnoMFmCbcIo/GxBH5pKFnKBUJ44ydLJztm+RDExxhbogQpY+cAIjpIzwAR0Nos95fBA74Q45M5fvoVW904cSAcT1brlT8gGdV7xTDRag6FgcNqzsIrn+sXvuwOn5MwJzkMthILBQW4w5/+QLjhYLPAClgviEejeAwCBmx7bk07M9gAAAABJRU5ErkJggg=="
 
 /***/ }),
 
+/***/ 622:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(623);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(610)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./intallment.less", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./intallment.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
 /***/ 623:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(609)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, ".clear {\n  clear: both;\n}\n.boxGroupTit {\n  height: 40px;\n  margin-bottom: 5px ;\n  position: relative;\n  margin-top: 0;\n}\n.boxGroupTit p {\n  height: 40px;\n  line-height: 40px;\n  color: #333333;\n  font-size: 14px;\n  border-bottom: 1px solid #c9c9c9;\n}\n.boxGroupTit p span {\n  display: inline-block;\n  line-height: 40px;\n  border-bottom: 2px solid #31395d;\n}\n.boxGroupTit p i {\n  font-style: normal;\n}\n.boxGroupTit span.functionButton {\n  position: absolute;\n  right: 0;\n  top: 0;\n  width: auto;\n  text-align: right;\n}\n.boxGroupTit span.functionButton a {\n  font-size: 12px;\n  height: 40px;\n  line-height: 40px;\n  display: inline-block;\n  padding-left: 20px;\n  padding-right: 20px;\n  color: #999999 !important;\n  background-repeat: no-repeat;\n  background-position: left center;\n}\n.boxGroupTit span.functionButton a:hover {\n  color: #31395d;\n}\n.boxGroupTit span.functionButton .refresh-icon {\n  background-image: url(" + __webpack_require__(624) + ");\n}\n.boxGroupTit span.functionButton .refresh-icon:hover {\n  background-image: url(" + __webpack_require__(625) + ");\n}\n.boxGroupTit span.functionButton .saveIcon {\n  background-image: url(" + __webpack_require__(626) + ");\n}\n.boxGroupTit span.functionButton .saveIcon:hover {\n  background-image: url(" + __webpack_require__(627) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon {\n  background-image: url(" + __webpack_require__(628) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon:hover {\n  background-image: url(" + __webpack_require__(629) + ");\n}\n.staging-left,\n.staging-right {\n  float: left;\n}\n.projectinFormation {\n  width: 66.6%;\n  height: auto;\n  margin-top: 10px;\n  padding-right: 20px;\n}\n.fieldLocation {\n  margin-top: 10px;\n  width: 33.3%;\n  height: 295px;\n  border: 1px solid #dddddd;\n}\n.carouselStyle .left,\n.carouselStyle .right {\n  background: none;\n}\n.carouselStyle .carousel-control {\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  top: 50%;\n  margin-top: -15px;\n  background: #F1A118;\n}\n.carouselStyle .carousel-control:hover {\n  opacity: 0.8;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 624:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABO0lEQVQ4T6VSsXHDMAwkWLBOJohG8AbRBrE3sBrxWNnZQNlAHUk1zgbWBlEmiD1Bkg3USgWQg45y7Fgn5s4sCeDx/3gQNz6Ymt/tdnd932+IaA0ASehpiagmohdjzNc4dwVQVdWCiN6I6J2ISmNMw838j4gMuEHEzBjzyv8XANbaREr5gYjPY8NfhmEBg6611vUFgPeeC43WupizxlqbSilrpVRyAgjbP5VS91mWtTFvnXMHlngOwKiF1jqNDXPdez+whKDpiYh4MAEANufI+uaAAkA6MAjaH8PAt1JqEZPhnCsBoB0A+O5d1zV8cwBI8zw/xGSwBwBQnDwIUpIY9cB4K4TYaq1/rxDbONa990smjYgrDtlklKfCg4gPQoglAKzGEF0lcYpF2LgnoiMAcHjKc4P/xWBO3s0AP2hInl/EMUEDAAAAAElFTkSuQmCC"
+
+/***/ }),
+
+/***/ 625:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA7ElEQVQ4T6WTgQ0BQRBFnw6ogBJ0QAfogArQAR3ogA7oABWgAnRwJcjb7CbncmcvMcnmkt2ZN//P7nX4MzoN9V1gCcyBQcwpgBOwBV6prg4wBM7AFdgBl5jsvkDBC+DgfhVgtxuwTgk1CgUJFXaqAjxwbTKjGUc7gzLA7k+gB+g3F3ctlgFS7ey3TQSVAvQ0iYWqcDiPKPEXKDRLCvQ9itnvCM3Z8IaKBPDehahAC/rLhTmb8gy0IsDHkosV4Pq6hVxROp8Ce2Cm6qanXIWprg9YbGF4RHUvsU6FRcfSzYTh/foX2loJeW0tNEI/qngqkZ/g9CsAAAAASUVORK5CYII="
+
+/***/ }),
+
+/***/ 626:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAHxJREFUeNpinDlzJgM5gAlKewLxMyD+TwA/g6qFa5wLxGFAzAjlM6JhmFgYVC1coyQQH8Hiov9o/CNQtXCNZPsRGTwHYhsk51kD8Qt0RSxYNKYA8WogloDynwJxMjEat8H8QapTyfbjINeIHAX4ADxqWHBEAS4AjxqAAAMASR4bIq9a4swAAAAASUVORK5CYII="
+
+/***/ }),
+
+/***/ 627:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJFJREFUeNpi/P//PwM5gAVEePnleAKpuUAsSUD9cyBO3rZpynYGkI2evtnPgNgGyv4PopExTAykBqQWxGaCmiQJNOUIuvFAl6D4A6oG7ComBjIBNo3PgTbZQG1gBLKtgcwXWAMHDaQA8WqgBgko/ykoQAhqBNqyjYjQpa4fB7lGeBTgA8hRw4IjCnABeNQABBgANs1HTp7NXyoAAAAASUVORK5CYII="
+
+/***/ }),
+
+/***/ 628:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABVklEQVQ4T6WTzXHCQAyFn/bAcAsdxCW4BHcQSogvaH0jHZAOuBlxASoIqSDuAHcQ0gE5cmCVkcdmjDFkMtnbrqRPTz9L+OehvngRmarqExHFqlqq6muWZUWf7xVARGYAosFgME3T9LBcLuMQwpqIZsy87UIuAKvVanQ8Hgvvfdx2zPM8cs4VzBzdBeR5nhDR2Hs/7TqKiDLzleKLB8tERNsbCkpmHt1VYMbFYrElok9mfrF7Lf8NwIaZ578CrGmq+gFgpKp7IopU9d17P24Bd6q6sVIvSqgn8AxgHkIom2zD4bBsJnI6nWLnXAIgsaaeASKytoBmfF2pbWUhhBRAkWXZvgJY951zNmcjX512MIBvIkomk0mlsALUjVv3Lcq94DNARPZ9S2IOZgPw2M3cyKwU3FqSOvsOwJctWCO7XWMDOAB4aBts62wH7M2adevT9v7Gv/zwH4PhtBGvNQeUAAAAAElFTkSuQmCC"
+
+/***/ }),
+
+/***/ 629:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABaklEQVQ4T6WTzU3DQBCF3+BF4oY7wCVsDpHsmzsgxyhypNBB6MB0kBIc2ULcCBXg21ri4O2A0EG4RSJk0Do/bJwlCOGbtTPfvJl5Q/jnR658GQ3HYL4GkQSzBnCnq6J0xR4BZJikAAIsxVjrbCG7A0neWcaEVKti1oYcAKQc+XSxKuuqkHagDPsBkShrVQSnAWESg9DTqhi3AzvRkGuVHyk+VGAqQcycCiB0XRX+SQXmUUZD0+erVvlt8x/2A5B4BGiqVT75HdAdSAjvmQCfGXMiBAw8aZX3voHnNcBT02qrhSQlwohBk+36NgWXQu82As+TAMdEiM1Q9wAZJtk2uFlfW6pZp6XsBvgodfUwbwDSTB+U6iqPncayksH8zp/rWL/cG4NhA2gGx5nLKHbldvIe0ImSucskJsC8AXTlSrYAbpM0Nhaemfgbr9a9nWy7zaaFTpgsQHRpPxjXNR4AYIb109E6r/EvF/4FXk6sEdl++K0AAAAASUVORK5CYII="
+
+/***/ }),
+
+/***/ 630:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1211,13 +1304,13 @@ $.extend($.fn.validatebox.defaults.rules, {
 
 /***/ }),
 
-/***/ 624:
+/***/ 631:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(625);
+var content = __webpack_require__(632);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1225,14 +1318,14 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(608)(content, options);
+var update = __webpack_require__(610)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./intallment.less", function() {
-			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./intallment.less");
+		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./table.less", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./table.less");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -1243,64 +1336,568 @@ if(false) {
 
 /***/ }),
 
-/***/ 625:
+/***/ 632:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(607)(undefined);
+exports = module.exports = __webpack_require__(609)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".clear {\n  clear: both;\n}\n.boxGroupTit {\n  height: 40px;\n  margin-bottom: 5px ;\n  position: relative;\n  margin-top: 0;\n}\n.boxGroupTit p {\n  height: 40px;\n  line-height: 40px;\n  color: #333333;\n  font-size: 14px;\n  border-bottom: 1px solid #c9c9c9;\n}\n.boxGroupTit p span {\n  display: inline-block;\n  line-height: 40px;\n  border-bottom: 2px solid #31395d;\n}\n.boxGroupTit p i {\n  font-style: normal;\n}\n.boxGroupTit span.functionButton {\n  position: absolute;\n  right: 0;\n  top: 0;\n  width: auto;\n  text-align: right;\n}\n.boxGroupTit span.functionButton a {\n  font-size: 12px;\n  height: 40px;\n  line-height: 40px;\n  display: inline-block;\n  padding-left: 20px;\n  padding-right: 20px;\n  color: #999999 !important;\n  background-repeat: no-repeat;\n  background-position: left center;\n}\n.boxGroupTit span.functionButton a:hover {\n  color: #31395d;\n}\n.boxGroupTit span.functionButton .refresh-icon {\n  background-image: url(" + __webpack_require__(626) + ");\n}\n.boxGroupTit span.functionButton .refresh-icon:hover {\n  background-image: url(" + __webpack_require__(627) + ");\n}\n.boxGroupTit span.functionButton .saveIcon {\n  background-image: url(" + __webpack_require__(628) + ");\n}\n.boxGroupTit span.functionButton .saveIcon:hover {\n  background-image: url(" + __webpack_require__(629) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon {\n  background-image: url(" + __webpack_require__(630) + ");\n}\n.boxGroupTit span.functionButton .approvalIcon:hover {\n  background-image: url(" + __webpack_require__(631) + ");\n}\n.staging-left,\n.staging-right {\n  float: left;\n}\n.projectinFormation {\n  width: 66.6%;\n  height: auto;\n  margin-top: 10px;\n  padding-right: 20px;\n}\n.fieldLocation {\n  margin-top: 10px;\n  width: 33.3%;\n  height: 295px;\n  border: 1px solid #dddddd;\n}\n.carouselStyle .left,\n.carouselStyle .right {\n  background: none;\n}\n.carouselStyle .carousel-control {\n  width: 30px;\n  height: 30px;\n  line-height: 30px;\n  top: 50%;\n  margin-top: -15px;\n  background: #F1A118;\n}\n.carouselStyle .carousel-control:hover {\n  opacity: 0.8;\n}\n", ""]);
+exports.push([module.i, "/*table.less文件*/\n.builtTable {\n  margin-top: 10px;\n  font-size: 12px;\n  /*功能按钮*/\n  /*编辑*/\n  /*删除*/\n  /*查看*/\n}\n.builtTable thead tr td,\n.builtTable tbody tr td {\n  border: #ddd 1px solid;\n  vertical-align: middle;\n  text-align: center;\n}\n.builtTable thead tr {\n  border-top: 1px solid #ddd;\n  background: #f5f5f5;\n}\n.builtTable tbody tr {\n  background: #fff;\n}\n.builtTable tbody tr td {\n  padding: 4px;\n}\n.builtTable .funCla {\n  margin: 0 4px;\n}\n.builtTable .funCla_edit {\n  padding: 1px 2px;\n}\n.builtTable .funCla_edit {\n  padding: 1px 2px;\n}\n.builtTable .funCla_view {\n  padding: 1px 2px;\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 626:
-/***/ (function(module, exports) {
+/***/ 633:
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABO0lEQVQ4T6VSsXHDMAwkWLBOJohG8AbRBrE3sBrxWNnZQNlAHUk1zgbWBlEmiD1Bkg3USgWQg45y7Fgn5s4sCeDx/3gQNz6Ymt/tdnd932+IaA0ASehpiagmohdjzNc4dwVQVdWCiN6I6J2ISmNMw838j4gMuEHEzBjzyv8XANbaREr5gYjPY8NfhmEBg6611vUFgPeeC43WupizxlqbSilrpVRyAgjbP5VS91mWtTFvnXMHlngOwKiF1jqNDXPdez+whKDpiYh4MAEANufI+uaAAkA6MAjaH8PAt1JqEZPhnCsBoB0A+O5d1zV8cwBI8zw/xGSwBwBQnDwIUpIY9cB4K4TYaq1/rxDbONa990smjYgrDtlklKfCg4gPQoglAKzGEF0lcYpF2LgnoiMAcHjKc4P/xWBO3s0AP2hInl/EMUEDAAAAAElFTkSuQmCC"
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(19);
+
+var _react2 = _interopRequireDefault(_react);
+
+__webpack_require__(65);
+
+__webpack_require__(79);
+
+__webpack_require__(634);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*选择地块-弹框*/
+//兼容ie
+
+
+var Winopen = function (_React$Component) {
+    _inherits(Winopen, _React$Component);
+
+    function Winopen(arg) {
+        _classCallCheck(this, Winopen);
+
+        var _this = _possibleConstructorReturn(this, (Winopen.__proto__ || Object.getPrototypeOf(Winopen)).call(this, arg));
+
+        _this.state = {
+            listArr: _this.props.selArr, /*地块信息*/
+            selectId: _this.props.selId, /*选择过的地块*/
+            status: _this.props.status /*选择select地块或编辑edit地块或查看view地块*/
+        };
+
+        return _this;
+    }
+
+    _createClass(Winopen, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var th = this;
+            th.getAjax(th.props.guid);
+        }
+        /*绑定html*/
+
+    }, {
+        key: "BIND_BLOCK",
+        value: function BIND_BLOCK() {
+            var th = this;
+            var list = th.state.listArr;
+            var status = th.state.status;
+            return list.map(function (obj, index) {
+                return _react2.default.createElement(
+                    "div",
+                    { key: obj.ID, className: "aBuiltSection", id: "section" + obj.ID },
+                    _react2.default.createElement(
+                        "h3",
+                        { className: "aBuilt_Title" },
+                        _react2.default.createElement(
+                            "span",
+                            null,
+                            obj.Name
+                        ),
+                        _react2.default.createElement(
+                            "span",
+                            { className: "radioSpan" },
+                            _react2.default.createElement("input", { type: "radio", name: 'radio' + obj.ID, checked: obj.IsAllDevel == 2, disabled: status == "view", defaultValue: "2", onChange: th.evAllOrParDev.bind(th, obj.ID) }),
+                            "\u90E8\u5206\u5F00\u53D1"
+                        ),
+                        _react2.default.createElement(
+                            "span",
+                            { className: "radioSpan" },
+                            _react2.default.createElement("input", { type: "radio", name: 'radio' + obj.ID, checked: obj.IsAllDevel == 1, disabled: status == "view", defaultValue: "1", onChange: th.evAllOrParDev.bind(th, obj.ID) }),
+                            "\u5168\u90E8\u5F00\u53D1"
+                        )
+                    ),
+                    _react2.default.createElement(
+                        "table",
+                        { className: obj.IsAllDevel == 0 ? "table builtAlertTable hide" : "table builtAlertTable" },
+                        _react2.default.createElement(
+                            "tbody",
+                            null,
+                            _react2.default.createElement(
+                                "tr",
+                                null,
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        null,
+                                        "\u5730\u5757\u540D\u79F0"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { type: "text", disabled: status == "view", id: obj.FieldList[0].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[0].edit == "+r", value: obj.FieldList[0].val == null ? "" : obj.FieldList[0].val, onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[0].id) })
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        null,
+                                        "\u5730\u5757\u7F16\u7801"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { type: "text", disabled: status == "view", id: obj.FieldList[1].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[1].edit == "+r", value: obj.FieldList[1].val == null ? "" : obj.FieldList[1].val, onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[1].id) })
+                                ),
+                                _react2.default.createElement("td", { colSpan: "2" })
+                            ),
+                            _react2.default.createElement(
+                                "tr",
+                                null,
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        null,
+                                        "\u603B\u7528\u5730\u9762\u79EF\uFF08\u33A1\uFF09"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { type: "text", disabled: status == "view", id: obj.FieldList[2].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[2].edit == "+r", value: obj.FieldList[2].val == null ? "" : obj.FieldList[2].val, onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[2].id) })
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        null,
+                                        _react2.default.createElement(
+                                            "span",
+                                            { className: "red" },
+                                            "*"
+                                        ),
+                                        "\u5EFA\u8BBE\u7528\u5730\u9762\u79EF\uFF08\u33A1\uFF09"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { type: "text", disabled: status == "view", className: "comp-validatebox", "data-regExp": obj.FieldList[3].regExp, autoComplete: "off", id: obj.FieldList[3].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[3].edit == "+r", value: obj.FieldList[3].val == null ? "" : obj.FieldList[3].val, onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[3].id) })
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        null,
+                                        _react2.default.createElement(
+                                            "span",
+                                            { className: "red" },
+                                            "*"
+                                        ),
+                                        "\u4EE3\u5F81\u7528\u5730\u9762\u79EF\uFF08\u33A1\uFF09"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { type: "text", disabled: status == "view", className: "comp-validatebox", "data-regExp": obj.FieldList[4].regExp, autoComplete: "off", id: obj.FieldList[4].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[4].edit == "+r", value: obj.FieldList[4].val == null ? "" : obj.FieldList[4].val, onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[4].id) })
+                                )
+                            ),
+                            _react2.default.createElement(
+                                "tr",
+                                null,
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        null,
+                                        _react2.default.createElement(
+                                            "span",
+                                            { className: "red" },
+                                            "*"
+                                        ),
+                                        "\u8BA1\u5BB9\u5EFA\u7B51\u9762\u79EF\uFF08\u33A1\uFF09"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { type: "text", disabled: status == "view", className: "comp-validatebox", "data-regExp": obj.FieldList[5].regExp, autoComplete: "off", id: obj.FieldList[5].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[5].edit == "+r", value: obj.FieldList[5].val == null ? "" : obj.FieldList[5].val, onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[5].id) })
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        null,
+                                        _react2.default.createElement(
+                                            "span",
+                                            { className: "red" },
+                                            "*"
+                                        ),
+                                        "\u571F\u5730\u83B7\u53D6\u4EF7\u6B3E\uFF08\u4E07\u5143\uFF09"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { type: "text", disabled: status == "view", className: "comp-validatebox", "data-regExp": obj.FieldList[6].regExp, autoComplete: "off", id: obj.FieldList[6].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[6].edit == "+r", value: obj.FieldList[6].val == null ? "" : obj.FieldList[6].val, onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[6].id) })
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement(
+                                        "label",
+                                        null,
+                                        "\u697C\u9762\u5747\u4EF7\uFF08\u5143/\u33A1\uFF09"
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    "td",
+                                    null,
+                                    _react2.default.createElement("input", { type: "text", disabled: status == "view", id: obj.FieldList[7].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[7].edit == "+r", value: obj.FieldList[7].val == null ? "" : obj.FieldList[7].val, onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[7].id) })
+                                )
+                            )
+                        )
+                    )
+                );
+            });
+        }
+        /*input 校验*/
+
+    }, {
+        key: "evValiteInputbox",
+        value: function evValiteInputbox() {
+            setTimeout(function () {
+                $(".comp-validatebox").each(function (index, ele) {
+                    var eleDom = $(ele);
+                    var isReadAt = eleDom.attr("readonly");
+
+                    var regInforObj = JSON.parse(eleDom.attr("data-regExp"));
+                    console.log(regInforObj);
+                    var allKeys = Object.keys(regInforObj);
+                    var validTypeRule = [];
+                    var valideRule = {
+                        required: true
+                    };
+
+                    allKeys.forEach(function (vType) {
+                        if (vType == "max") {
+                            validTypeRule.push('number', 'max[' + regInforObj[vType] + ']');
+                        }
+                    });
+                    if (validTypeRule.length > 0) {
+                        valideRule.validType = validTypeRule;
+                    }
+                    eleDom.validatebox(valideRule);
+                });
+            }, 600);
+        }
+        /*input change*/
+
+    }, {
+        key: "evInputChange",
+        value: function evInputChange(listId, fieldId, event) {
+            var th = this;
+            var list = th.state.listArr;
+            var newList = [];
+            var val = event.target.value;
+            list.forEach(function (obj, index) {
+                if (obj.ID == listId) {
+                    obj.FieldList.forEach(function (feildObj, fIndex) {
+                        if (feildObj.id == fieldId) {
+                            feildObj.text = val;
+                            feildObj.val = val;
+                        }
+                    });
+                    /*计算*/
+                    obj.FieldList.forEach(function (feildObj, fIndex) {
+                        if (feildObj.exec) {
+                            var newVal = th.evCalcContent(feildObj.exec, obj.FieldList);
+                            var newCalArr = newVal.toString().split(".");
+                            var decVal = "";
+                            if (newCalArr.length == 2) {
+                                decVal = '.' + newCalArr[1].slice(0, 6);
+                            }
+                            feildObj.text = newCalArr[0] + decVal;
+                            feildObj.val = newCalArr[0] + decVal;
+                        }
+                    });
+                }
+                newList.push(obj);
+            });
+            th.setState({
+                listArr: newList
+            });
+        }
+        /*计算值，返回计算后的数组*/
+
+    }, {
+        key: "evCalBackArr",
+        value: function evCalBackArr(filterArr) {
+            var newArr = [];
+            var th = this;
+
+            /*计算*/
+            filterArr.forEach(function (obj, index) {
+                obj.FieldList.forEach(function (feildObj, fIndex) {
+                    if (feildObj.exec) {
+                        var newVal = th.evCalcContent(feildObj.exec, obj.FieldList);
+                        var newCalArr = newVal.toString().split(".");
+                        var decVal = "";
+                        if (newCalArr.length == 2) {
+                            decVal = '.' + newCalArr[1].slice(0, 6);
+                        }
+                        feildObj.text = newCalArr[0] + decVal;
+                        feildObj.val = newCalArr[0] + decVal;
+                    }
+                });
+                newArr.push(obj);
+            });
+            return newArr;
+        }
+        /*计算表达式*/
+
+    }, {
+        key: "evCalcContent",
+        value: function evCalcContent(execStr, obj) {
+            var val = "";
+            obj.forEach(function (item, index) {
+                var regStr = new RegExp("{" + item.id + "}", "ig");
+                execStr = execStr.replace(regStr, Number(item.val));
+            });
+            var blockStr = "try{\
+            let calVal=" + execStr + ";\
+            return calVal==Infinity?0:calVal;\
+        }catch(e){console.log(e);}";
+            console.log(blockStr);
+            return new Function(blockStr)();
+        }
+        /*点击全部开发或部分开发*/
+
+    }, {
+        key: "evAllOrParDev",
+        value: function evAllOrParDev(listId, event) {
+            var th = this;
+            var list = th.state.listArr;
+            var newList = [];
+            var val = event.target.value;
+            list.forEach(function (obj, index) {
+                if (obj.ID == listId) {
+                    obj.IsAllDevel = val;
+                    if (val == 0 || val == 1) {
+                        $("#section" + obj.ID + " .comp-validatebox").validatebox("disableValidation");
+                    } else {
+                        $("#section" + obj.ID + " .comp-validatebox").validatebox("enableValidation");
+                    }
+                }
+                newList.push(obj);
+            });
+            th.setState({
+                listArr: newList
+            });
+
+            th.props.callback(newList);
+        }
+    }, {
+        key: "getAjax",
+        value: function getAjax(id) {
+            var th = this;
+            /*如果是编辑，则不请求数据*/
+            var status = th.state.status;
+            var listArr = th.state.listArr;
+            if (status == "edit" || status == "view") {
+                th.setState({
+                    "listArr": th.evCalBackArr(listArr)
+                });
+                th.evValiteInputbox();
+                return false;
+            }
+            iss.ajax({
+                url: "/Stage/IGetLandQuotaByProId",
+                type: "get",
+                data: { projectId: id },
+                success: function success(d) {
+                    var filterList = [];
+                    filterList = d.rows.filter(function (obj, index) {
+                        return !new RegExp(obj.ID, "ig").test(th.state.selectId);
+                    });
+
+                    th.setState({
+                        "listArr": th.evCalBackArr(filterList)
+                    });
+
+                    th.evValiteInputbox();
+                },
+                error: function error(d) {
+                    console.log(JSON.stringify(d));
+                }
+            });
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var th = this;
+
+            return _react2.default.createElement(
+                "div",
+                { className: "aBuiltMain" },
+                _react2.default.createElement(
+                    "form",
+                    { id: "form_aBuiltLand" },
+                    this.BIND_BLOCK()
+                )
+            );
+        }
+    }]);
+
+    return Winopen;
+}(_react2.default.Component);
+
+{/* <div className="aBuiltSection">
+       <div className="aBuilt_Title">
+           <span>世界城-A地块</span>
+           <span className="radioSpan"><input type="radio" name="lang" defaultValue="01"/>全部开发</span>
+           <span className="radioSpan"><input type="radio" name="lang" defaultValue="02"/>部分开发</span>
+       </div>
+       <ul className="aBuilt_Con">
+           <li><label htmlFor="">地块名称</label><input type="text" id="" defaultValue="地块一"/></li>
+           <li><label>地块编码</label><input type="text" defaultValue="地块一"/></li>
+           <li><label>地块名称</label><input type="text" defaultValue="地块一"/></li>
+           <li><label>地块编码</label><input type="text" defaultValue="地块一"/></li>
+           <li><label>地块编码</label><input type="text" defaultValue="地块一"/></li>
+       </ul>
+       <ul className={obj.IsAllDevel==0? "aBuilt_Con hide":"aBuilt_Con"}>
+           {
+               obj.FieldList.map((fieldObj,fIndex)=>{
+                   return <li key={fieldObj.id}>
+                               <label><span className={fieldObj.regExp.length>3&&!fieldObj.exec?"red":"hide"}>*</span>{fieldObj.label}</label>
+                               <input type="text" className={fieldObj.regExp.length>3&&!fieldObj.exec?"comp-validatebox":""} id={fieldObj.id+'_'+obj.ID} data-regExp={fieldObj.regExp} autoComplete="off" readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&fieldObj.edit=="+r"} value={fieldObj.val==null?"":fieldObj.val} onChange={th.evInputChange.bind(th,obj.ID,fieldObj.id)}/>
+                               <span className="unitSpan">{fieldObj.unit?fieldObj.unit:""}</span>
+                           </li>
+               })
+           }
+       </ul>
+    </div> */}
+{
+    // <div className="aBuilt_Title">
+    //     <span>{obj.Name}</span>
+    //     <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==1} defaultValue="1" onChange={th.evAllOrParDev.bind(th,obj.ID)} />全部开发</span>
+    //     <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==2} defaultValue="2" onChange={th.evAllOrParDev.bind(th,obj.ID)} />部分开发</span>
+    // </div>
+    // <table className={obj.IsAllDevel==0? "table builtAlertTable hide":"table builtAlertTable"}>
+    //     <tbody>
+
+    //         <tr>
+    //             <td><label>地块名称</label></td>
+    //             <td><input type="text" id={obj.FieldList[0].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[0].edit=="+r"} value={obj.FieldList[0].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[0].id)}/></td>
+    //             <td><label>地块编码</label></td>
+    //             <td><input type="text" id={obj.FieldList[1].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[1].edit=="+r"} value={obj.FieldList[1].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[1].id)}/></td>
+    //             <td colSpan="2"></td>
+    //         </tr>
+    //         <tr>
+    //             <td><label>总用地面积（㎡）</label></td>
+    //             <td><input type="text" id={obj.FieldList[2].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[2].edit=="+r"} value={obj.FieldList[2].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[2].id)}/></td>
+    //             <td><label><span className="red">*</span>建设用地面积（㎡）</label></td>
+    //             <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[3].regExp} autoComplete="off" id={obj.FieldList[3].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[3].edit=="+r"} value={obj.FieldList[3].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[3].id)}/></td>
+    //             <td><label><span className="red">*</span>代征用地面积（㎡）</label></td>
+    //             <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[4].regExp} autoComplete="off" id={obj.FieldList[4].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[4].edit=="+r"} value={obj.FieldList[4].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[4].id)}/></td>
+    //         </tr>
+    //         <tr>
+    //             <td><label><span className="red">*</span>计容建筑面积（㎡）</label></td>
+    //             <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[5].regExp} autoComplete="off" id={obj.FieldList[5].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[5].edit=="+r"} value={obj.FieldList[5].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[5].id)}/></td>
+    //             <td><label><span className="red">*</span>土地获取价款（万元）</label></td>
+    //             <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[6].regExp} autoComplete="off" id={obj.FieldList[6].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[6].edit=="+r"} value={obj.FieldList[6].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[6].id)}/></td>
+    //             <td><label>楼面均价（元/㎡）</label></td>
+    //             <td><input type="text" id={obj.FieldList[7].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[7].edit=="+r"} value={obj.FieldList[7].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[7].id)}/></td>
+    //         </tr>
+    //     </tbody>
+    // </table>
+}
+exports.default = Winopen;
 
 /***/ }),
 
-/***/ 627:
-/***/ (function(module, exports) {
+/***/ 634:
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA7ElEQVQ4T6WTgQ0BQRBFnw6ogBJ0QAfogArQAR3ogA7oABWgAnRwJcjb7CbncmcvMcnmkt2ZN//P7nX4MzoN9V1gCcyBQcwpgBOwBV6prg4wBM7AFdgBl5jsvkDBC+DgfhVgtxuwTgk1CgUJFXaqAjxwbTKjGUc7gzLA7k+gB+g3F3ctlgFS7ey3TQSVAvQ0iYWqcDiPKPEXKDRLCvQ9itnvCM3Z8IaKBPDehahAC/rLhTmb8gy0IsDHkosV4Pq6hVxROp8Ce2Cm6qanXIWprg9YbGF4RHUvsU6FRcfSzYTh/foX2loJeW0tNEI/qngqkZ/g9CsAAAAASUVORK5CYII="
+// style-loader: Adds some css to the DOM by adding a <style> tag
 
-/***/ }),
+// load the styles
+var content = __webpack_require__(635);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
 
-/***/ 628:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAHxJREFUeNpinDlzJgM5gAlKewLxMyD+TwA/g6qFa5wLxGFAzAjlM6JhmFgYVC1coyQQH8Hiov9o/CNQtXCNZPsRGTwHYhsk51kD8Qt0RSxYNKYA8WogloDynwJxMjEat8H8QapTyfbjINeIHAX4ADxqWHBEAS4AjxqAAAMASR4bIq9a4swAAAAASUVORK5CYII="
-
-/***/ }),
-
-/***/ 629:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAJFJREFUeNpi/P//PwM5gAVEePnleAKpuUAsSUD9cyBO3rZpynYGkI2evtnPgNgGyv4PopExTAykBqQWxGaCmiQJNOUIuvFAl6D4A6oG7ComBjIBNo3PgTbZQG1gBLKtgcwXWAMHDaQA8WqgBgko/ykoQAhqBNqyjYjQpa4fB7lGeBTgA8hRw4IjCnABeNQABBgANs1HTp7NXyoAAAAASUVORK5CYII="
-
-/***/ }),
-
-/***/ 630:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABVklEQVQ4T6WTzXHCQAyFn/bAcAsdxCW4BHcQSogvaH0jHZAOuBlxASoIqSDuAHcQ0gE5cmCVkcdmjDFkMtnbrqRPTz9L+OehvngRmarqExHFqlqq6muWZUWf7xVARGYAosFgME3T9LBcLuMQwpqIZsy87UIuAKvVanQ8Hgvvfdx2zPM8cs4VzBzdBeR5nhDR2Hs/7TqKiDLzleKLB8tERNsbCkpmHt1VYMbFYrElok9mfrF7Lf8NwIaZ578CrGmq+gFgpKp7IopU9d17P24Bd6q6sVIvSqgn8AxgHkIom2zD4bBsJnI6nWLnXAIgsaaeASKytoBmfF2pbWUhhBRAkWXZvgJY951zNmcjX512MIBvIkomk0mlsALUjVv3Lcq94DNARPZ9S2IOZgPw2M3cyKwU3FqSOvsOwJctWCO7XWMDOAB4aBts62wH7M2adevT9v7Gv/zwH4PhtBGvNQeUAAAAAElFTkSuQmCC"
-
-/***/ }),
-
-/***/ 631:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABaklEQVQ4T6WTzU3DQBCF3+BF4oY7wCVsDpHsmzsgxyhypNBB6MB0kBIc2ULcCBXg21ri4O2A0EG4RSJk0Do/bJwlCOGbtTPfvJl5Q/jnR658GQ3HYL4GkQSzBnCnq6J0xR4BZJikAAIsxVjrbCG7A0neWcaEVKti1oYcAKQc+XSxKuuqkHagDPsBkShrVQSnAWESg9DTqhi3AzvRkGuVHyk+VGAqQcycCiB0XRX+SQXmUUZD0+erVvlt8x/2A5B4BGiqVT75HdAdSAjvmQCfGXMiBAw8aZX3voHnNcBT02qrhSQlwohBk+36NgWXQu82As+TAMdEiM1Q9wAZJtk2uFlfW6pZp6XsBvgodfUwbwDSTB+U6iqPncayksH8zp/rWL/cG4NhA2gGx5nLKHbldvIe0ImSucskJsC8AXTlSrYAbpM0Nhaemfgbr9a9nWy7zaaFTpgsQHRpPxjXNR4AYIb109E6r/EvF/4FXk6sEdl++K0AAAAASUVORK5CYII="
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(610)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./aBuilt.less", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./aBuilt.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ }),
 
-/***/ 639:
+/***/ 635:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(609)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "/*aBuilt.less文件*/\n.modal-title {\n  font-size: 16px;\n}\n.aBuiltMain {\n  padding: 0 20px 20px;\n  font-size: 12px;\n  overflow: auto;\n  -webkit-overflow-scrolling: touch;\n  height: 400px;\n}\n.aBuiltMain .aBuilt_Title {\n  width: 100%;\n  font-size: 14px;\n  margin: 12px 0 2px;\n  line-height: 40px;\n  border-bottom: 1px solid #c9c9c9;\n}\n.aBuiltMain .aBuilt_Title span {\n  display: inline-block;\n}\n.aBuiltMain .aBuilt_Title span:first-child {\n  line-height: 38px;\n  margin-right: 16px;\n  padding-right: 10px;\n  border-bottom: 2px solid #31395d;\n}\n.aBuiltMain .aBuilt_Title span.radioSpan {\n  float: right;\n  margin-left: 16px;\n}\n.aBuiltMain .aBuilt_Title span.radioSpan input[type=radio] {\n  margin: 0;\n  vertical-align: middle;\n}\n.aBuiltMain .aBuilt_Con {\n  height: auto;\n  overflow-x: auto;\n  overflow-y: hidden;\n}\n.aBuiltMain .aBuilt_Con li {\n  position: relative;\n  float: left;\n  width: 33.33%;\n  min-height: 30px;\n  line-height: 30px;\n  margin-top: 5px;\n  padding-left: 110px;\n  padding-right: 5px;\n}\n.aBuiltMain .aBuilt_Con li label {\n  position: absolute;\n  top: 50%;\n  left: 0;\n  width: 110px;\n  -webkit-transform: translateY(-50%);\n  -moz-transform: translateY(-50%);\n  -ms-transform: translateY(-50%);\n  transform: translateY(-50%);\n  font-weight: normal;\n  margin-bottom: 0px;\n  padding-right: 6px;\n  text-align: right;\n}\n.aBuiltMain .aBuilt_Con li input {\n  border: #ddd solid 1px;\n  width: 100%;\n  max-width: 160px;\n  height: 28px;\n}\n.aBuiltMain .aBuilt_Con li input[readonly] {\n  background: #ddd;\n}\n.aBuiltMain .aBuilt_Con li .unitSpan {\n  position: relative;\n  right: 0;\n  top: 50%;\n  padding-left: 3px;\n  -webkit-transform: translateY(-50%);\n  -moz-transform: translateY(-50%);\n  -ms-transform: translateY(-50%);\n  transform: translateY(-50%);\n  text-align: left;\n}\n.aBuiltMain .aBuilt_Con li:nth-child(2) {\n  width: 66.67%;\n}\n.aBuiltMain .aBuilt_Con.hide {\n  display: none;\n}\n.aBuiltMain .builtAlertTable {\n  margin-top: 10px;\n  margin-bottom: 0;\n  font-size: 12px;\n}\n.aBuiltMain .builtAlertTable tr {\n  background: #fff;\n}\n.aBuiltMain .builtAlertTable td {\n  border: none;\n  vertical-align: middle;\n  text-align: left;\n  padding: 0;\n}\n.aBuiltMain .builtAlertTable thead tr {\n  border-top: 1px solid #ccc;\n  background: #f5f5f5;\n}\n.aBuiltMain .builtAlertTable tbody label {\n  font-weight: normal;\n  margin-bottom: 0px;\n  padding-right: 6px;\n  text-align: right;\n  width: 100%;\n}\n.aBuiltMain .builtAlertTable tbody input {\n  border: none;\n  height: 28px;\n  width: auto;\n  width: -moz-calc(96%);\n  width: -webkit-calc(96%);\n  width: calc(96%);\n  margin: 2px;\n  border: 1px solid #ddd;\n}\n.aBuiltMain .builtAlertTable tbody input[readonly] {\n  background: #eee;\n}\n.aBuiltMain .builtAlertTable.hide {\n  display: none;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 650:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1363,7 +1960,9 @@ var StagingInformation = function (_React$Component) {
             "STAGECREATEDATE": "1900-01-01T00:00:00",
             "STAGEUPDATEDATE": "1900-01-01T00:00:00",
             "STARTDATE": "1900-01-01T00:00:00",
-            "mapUrl": "http://192.168.11.164:82"
+            "mapUrl": "http://192.168.10.164:82",
+            "iframeURL1": "",
+            "iframeURL2": ""
         };
 
         _this.tiem = "";
@@ -1374,7 +1973,7 @@ var StagingInformation = function (_React$Component) {
 
     _createClass(StagingInformation, [{
         key: "getAjax",
-        value: function getAjax() {
+        value: function getAjax(callback) {
             var th = this;
             var status = this.props.location.query.status;
             var reqtype;
@@ -1425,6 +2024,9 @@ var StagingInformation = function (_React$Component) {
                     }, function (arg) {
                         //console.log(th.state)
                         th.bind_combobox(res);
+                        if (callback) {
+                            callback();
+                        }
                     });
 
                     th.props.codeCallBack(res.rows.BaseFormInfo.PROJECTID);
@@ -1435,12 +2037,18 @@ var StagingInformation = function (_React$Component) {
     }, {
         key: "componentDidMount",
         value: function componentDidMount() {
+            var _this2 = this;
 
             var id = iss.id;
             if (id == "1E1CB1E95A864AFA961392C3E3644642" || !id) {
                 iss.hashHistory.replace({ pathname: "index" });
             } else {
-                this.getAjax();
+                this.getAjax(function (arg) {
+                    _this2.BIND_ONLOAD();
+                    setTimeout(function () {
+                        document.getElementById('iframe2').src = $("#iframe2").attr("src");
+                    }, 3000);
+                });
             }
             //  toolsTab.bindTab(this.props);//绑定头部标签
         }
@@ -1466,6 +2074,33 @@ var StagingInformation = function (_React$Component) {
         key: "BIND_CHANGE_DATA",
         value: function BIND_CHANGE_DATA(data) {
             this.props.StagingInformationDATA(data);
+        }
+    }, {
+        key: "BIND_ONLOAD",
+        value: function BIND_ONLOAD(event) {
+            var th = this;
+            iss.ajax({ //获取数据 判断有无分期总图、推盘图
+                type: "post",
+                url: "/Common/IsHaveXMView",
+                data: {
+                    typeinfo: "2",
+                    strId: th.state.STAGEVERSIONID
+                },
+                success: function success(res) {
+                    if (res == false) {
+                        th.setState({
+                            iframeURL1: "../../Content/img/xmViewError.png",
+                            iframeURL2: "../../Content/img/xmViewError.png"
+                        });
+                    } else {
+                        th.setState({
+                            iframeURL1: th.state.mapUrl + "/Map/Stage?stage_id=" + th.state.STAGEVERSIONID + "&stage_map_id=stage" + th.state.STAGEVERSIONID,
+                            iframeURL2: th.state.mapUrl + "/Map/PUSHPLATE?stage_id=" + th.state.STAGEVERSIONID + "&stage_map_id=stage" + th.state.STAGEVERSIONID
+                        });
+                    }
+                },
+                error: function error(e) {}
+            });
         }
     }, {
         key: "handChooseTo",
@@ -1506,13 +2141,13 @@ var StagingInformation = function (_React$Component) {
     }, {
         key: "handleInputTextChange",
         value: function handleInputTextChange(e) {
-            var _this2 = this;
+            var _this3 = this;
 
             var th = this;
             var target = e.target.id;
             this.setState(_defineProperty({}, target, e.target.value), function () {
                 //console.log(th.state[target]) 
-                th.BIND_CHANGE_DATA(_this2.state);
+                th.BIND_CHANGE_DATA(_this3.state);
             });
 
             // console.log(e.target.id);
@@ -1522,12 +2157,12 @@ var StagingInformation = function (_React$Component) {
     }, {
         key: "handleSelectTextChange",
         value: function handleSelectTextChange(e, b, c) {
-            var _this3 = this;
+            var _this4 = this;
 
             var th = this;
             this.setState(_defineProperty({}, e, b), function () {
                 //console.log(th.state[target]) 
-                th.BIND_CHANGE_DATA(_this3.state);
+                th.BIND_CHANGE_DATA(_this4.state);
             });
             // console.log(this.state);
         }
@@ -2099,12 +2734,12 @@ var StagingInformation = function (_React$Component) {
                             _react2.default.createElement(
                                 "div",
                                 { className: "item active" },
-                                _react2.default.createElement("img", { src: this.state.mapUrl + "/Content/maps/source/stage" + this.state.STAGEID + "_s.jpg", onError: this.xmViewError.bind(this), onClick: this.BIND_mapsStage.bind(this), width: "100%", height: "295px" })
+                                _react2.default.createElement("iframe", { ref: "iframe", id: "iframe1", src: this.state.iframeURL1, onError: this.xmViewError.bind(this), frameBorder: "0", marginHeight: "0", marginWidth: "0", scrolling: "no", width: "100%", height: "291" })
                             ),
                             _react2.default.createElement(
                                 "div",
                                 { className: "item" },
-                                _react2.default.createElement("img", { src: this.state.mapUrl + "/Map/Stage?stage_id=" + this.state.STAGEID + "&stage_map_id=stage" + this.state.STAGEID, onError: this.xmViewError.bind(this), onClick: this.BIND_mapsTp.bind(this), width: "100%", height: "295px" })
+                                _react2.default.createElement("iframe", { ref: "iframe", id: "iframe2", src: this.state.iframeURL2, onError: this.xmViewError.bind(this), frameBorder: "0", marginHeight: "0", marginWidth: "0", scrolling: "no", width: "100%", height: "291" })
                             )
                         ),
                         _react2.default.createElement("a", { className: "carousel-control left glyphicon glyphicon-menu-left", href: "#myCarousel",
@@ -2125,7 +2760,7 @@ exports.default = StagingInformation;
 
 /***/ }),
 
-/***/ 640:
+/***/ 651:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2149,17 +2784,17 @@ __webpack_require__(65);
 
 __webpack_require__(79);
 
-__webpack_require__(623);
+__webpack_require__(630);
 
-var _toolsDynamicTable = __webpack_require__(615);
+var _toolsDynamicTable = __webpack_require__(616);
 
 var _toolsDynamicTable2 = _interopRequireDefault(_toolsDynamicTable);
 
-__webpack_require__(616);
+__webpack_require__(619);
 
-__webpack_require__(641);
+__webpack_require__(631);
 
-var _componentIndicatorsWinopen = __webpack_require__(643);
+var _componentIndicatorsWinopen = __webpack_require__(633);
 
 var _componentIndicatorsWinopen2 = _interopRequireDefault(_componentIndicatorsWinopen);
 
@@ -2173,7 +2808,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 //兼容ie
 
 
-__webpack_require__(624); //专用css
+__webpack_require__(622); //专用css
 /*表格*/
 
 //弹出选择地块
@@ -2196,7 +2831,7 @@ var Indicators = function (_React$Component) {
             winAllBuiltData: [], /*分期占用土地table*/
             winopenDATA: [], /*alert中选择地块信息(这个里面不包括已经选择过的地块)或者编辑选中的地块*/
             winopenSelId: "", /*alert中保存选择过的地块Id,逗号分隔*/
-            landStageArr: [] /*分期占用土地=相关分期*/
+            landStageArr: {} /*分期占用土地=相关分期*/
         };
         return _this;
     }
@@ -2248,7 +2883,8 @@ var Indicators = function (_React$Component) {
         key: 'evIGetLandStageShow',
         value: function evIGetLandStageShow() {
             var th = this;
-            var id = th.state.treeId;
+            var status = th.props.local.location.query.status;
+            var id = status == "add" ? iss.id.id : iss.id.parentid;
             iss.ajax({
                 url: "/Stage/IGetLandStageShow",
                 type: "get",
@@ -2315,74 +2951,62 @@ var Indicators = function (_React$Component) {
             var th = this;
             var list = th.state.winAllBuiltData;
             var landStageArr = th.state.landStageArr;
-            if (list.length) {
 
-                return list.map(function (obj, index) {
-                    return _react2.default.createElement(
-                        'tr',
-                        { id: obj.ID, key: obj.ID },
-                        _react2.default.createElement(
-                            'td',
-                            null,
-                            index + 1
-                        ),
-                        _react2.default.createElement(
-                            'td',
-                            null,
-                            obj.Name
-                        ),
-                        _react2.default.createElement(
-                            'td',
-                            null,
-                            obj.FieldList[1].val
-                        ),
-                        _react2.default.createElement(
-                            'td',
-                            null,
-                            obj.IsAllDevel == 1 ? "是" : "否"
-                        ),
-                        _react2.default.createElement(
-                            'td',
-                            null,
-                            obj.FieldList[2].val
-                        ),
-                        _react2.default.createElement(
-                            'td',
-                            null,
-                            obj.FieldList[5].val
-                        ),
-                        _react2.default.createElement(
-                            'td',
-                            null,
-                            landStageArr[obj.ID]
-                        ),
-                        _react2.default.createElement(
-                            'td',
-                            null,
-                            _react2.default.createElement(
-                                'button',
-                                { type: 'button', className: 'funCla funCla_edit', onClick: th.evBuiltEditTr.bind(th, obj) },
-                                '\u7F16\u8F91'
-                            ),
-                            _react2.default.createElement(
-                                'button',
-                                { type: 'button', className: 'funCla funCla_del', onClick: th.evBuiltDelTr.bind(th, obj) },
-                                '\u5220\u9664'
-                            )
-                        )
-                    );
-                });
-            } else {
+            return list.map(function (obj, index) {
                 return _react2.default.createElement(
                     'tr',
-                    null,
+                    { id: obj.ID, key: obj.ID },
                     _react2.default.createElement(
                         'td',
                         null,
-                        '\u65E0\u5730\u5757'
+                        index + 1
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        obj.Name
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        obj.FieldList[1].val
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        obj.IsAllDevel == 1 ? "是" : "否"
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        obj.FieldList[2].val
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        obj.FieldList[5].val
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        landStageArr[obj.ID]
+                    ),
+                    _react2.default.createElement(
+                        'td',
+                        null,
+                        _react2.default.createElement(
+                            'button',
+                            { type: 'button', className: 'funCla funCla_edit', onClick: th.evBuiltEditTr.bind(th, obj) },
+                            '\u7F16\u8F91'
+                        ),
+                        _react2.default.createElement(
+                            'button',
+                            { type: 'button', className: 'funCla funCla_del', onClick: th.evBuiltDelTr.bind(th, obj) },
+                            '\u5220\u9664'
+                        )
                     )
                 );
-            }
+            });
         }
     }, {
         key: 'BIND_CALLBACK',
@@ -2625,599 +3249,6 @@ var Indicators = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = Indicators;
-
-/***/ }),
-
-/***/ 641:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(642);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(608)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./table.less", function() {
-			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./table.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ 642:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(607)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "/*table.less文件*/\n.builtTable {\n  margin-top: 10px;\n  font-size: 12px;\n  /*功能按钮*/\n  /*编辑*/\n  /*删除*/\n}\n.builtTable thead tr td,\n.builtTable tbody tr td {\n  border: #ddd 1px solid;\n  vertical-align: middle;\n  text-align: center;\n}\n.builtTable thead tr {\n  border-top: 1px solid #ddd;\n  background: #f5f5f5;\n}\n.builtTable tbody tr {\n  background: #fff;\n}\n.builtTable tbody tr td {\n  padding: 4px;\n}\n.builtTable .funCla {\n  margin: 0 4px;\n}\n.builtTable .funCla_edit {\n  padding: 1px 2px;\n}\n.builtTable .funCla_edit {\n  padding: 1px 2px;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-
-/***/ 643:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(19);
-
-var _react2 = _interopRequireDefault(_react);
-
-__webpack_require__(65);
-
-__webpack_require__(79);
-
-__webpack_require__(644);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*选择地块-弹框*/
-//兼容ie
-
-
-var Winopen = function (_React$Component) {
-    _inherits(Winopen, _React$Component);
-
-    function Winopen(arg) {
-        _classCallCheck(this, Winopen);
-
-        var _this = _possibleConstructorReturn(this, (Winopen.__proto__ || Object.getPrototypeOf(Winopen)).call(this, arg));
-
-        _this.state = {
-            listArr: _this.props.selArr, /*地块信息*/
-            selectId: _this.props.selId, /*选择过的地块*/
-            status: _this.props.status /*选择地块或编辑地块*/
-        };
-
-        return _this;
-    }
-
-    _createClass(Winopen, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            var th = this;
-            th.getAjax(th.props.guid);
-        }
-        /*绑定html*/
-
-    }, {
-        key: "BIND_BLOCK",
-        value: function BIND_BLOCK() {
-            var th = this;
-            var list = th.state.listArr;
-
-            return list.map(function (obj, index) {
-                return _react2.default.createElement(
-                    "div",
-                    { key: obj.ID, className: "aBuiltSection", id: "section" + obj.ID },
-                    _react2.default.createElement(
-                        "h3",
-                        { className: "aBuilt_Title" },
-                        _react2.default.createElement(
-                            "span",
-                            null,
-                            obj.Name
-                        ),
-                        _react2.default.createElement(
-                            "span",
-                            { className: "radioSpan" },
-                            _react2.default.createElement("input", { type: "radio", name: 'radio' + obj.ID, checked: obj.IsAllDevel == 2, defaultValue: "2", onChange: th.evAllOrParDev.bind(th, obj.ID) }),
-                            "\u90E8\u5206\u5F00\u53D1"
-                        ),
-                        _react2.default.createElement(
-                            "span",
-                            { className: "radioSpan" },
-                            _react2.default.createElement("input", { type: "radio", name: 'radio' + obj.ID, checked: obj.IsAllDevel == 1, defaultValue: "1", onChange: th.evAllOrParDev.bind(th, obj.ID) }),
-                            "\u5168\u90E8\u5F00\u53D1"
-                        )
-                    ),
-                    _react2.default.createElement(
-                        "table",
-                        { className: obj.IsAllDevel == 0 ? "table builtAlertTable hide" : "table builtAlertTable" },
-                        _react2.default.createElement(
-                            "tbody",
-                            null,
-                            _react2.default.createElement(
-                                "tr",
-                                null,
-                                _react2.default.createElement(
-                                    "td",
-                                    null,
-                                    _react2.default.createElement(
-                                        "label",
-                                        null,
-                                        "\u5730\u5757\u540D\u79F0"
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "td",
-                                    null,
-                                    _react2.default.createElement("input", { type: "text", id: obj.FieldList[0].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[0].edit == "+r", value: obj.FieldList[0].val == null ? "" : obj.FieldList[0].val, onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[0].id) })
-                                ),
-                                _react2.default.createElement(
-                                    "td",
-                                    null,
-                                    _react2.default.createElement(
-                                        "label",
-                                        null,
-                                        "\u5730\u5757\u7F16\u7801"
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "td",
-                                    null,
-                                    _react2.default.createElement("input", { type: "text", id: obj.FieldList[1].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[1].edit == "+r", value: obj.FieldList[1].val == null ? "" : obj.FieldList[1].val, onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[1].id) })
-                                ),
-                                _react2.default.createElement("td", { colSpan: "2" })
-                            ),
-                            _react2.default.createElement(
-                                "tr",
-                                null,
-                                _react2.default.createElement(
-                                    "td",
-                                    null,
-                                    _react2.default.createElement(
-                                        "label",
-                                        null,
-                                        "\u603B\u7528\u5730\u9762\u79EF\uFF08\u33A1\uFF09"
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "td",
-                                    null,
-                                    _react2.default.createElement("input", { type: "text", id: obj.FieldList[2].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[2].edit == "+r", value: obj.FieldList[2].val == null ? "" : obj.FieldList[2].val, onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[2].id) })
-                                ),
-                                _react2.default.createElement(
-                                    "td",
-                                    null,
-                                    _react2.default.createElement(
-                                        "label",
-                                        null,
-                                        _react2.default.createElement(
-                                            "span",
-                                            { className: "red" },
-                                            "*"
-                                        ),
-                                        "\u5EFA\u8BBE\u7528\u5730\u9762\u79EF\uFF08\u33A1\uFF09"
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "td",
-                                    null,
-                                    _react2.default.createElement("input", { type: "text", className: "comp-validatebox", "data-regExp": obj.FieldList[3].regExp, autoComplete: "off", id: obj.FieldList[3].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[3].edit == "+r", value: obj.FieldList[3].val == null ? "" : obj.FieldList[3].val, onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[3].id) })
-                                ),
-                                _react2.default.createElement(
-                                    "td",
-                                    null,
-                                    _react2.default.createElement(
-                                        "label",
-                                        null,
-                                        _react2.default.createElement(
-                                            "span",
-                                            { className: "red" },
-                                            "*"
-                                        ),
-                                        "\u4EE3\u5F81\u7528\u5730\u9762\u79EF\uFF08\u33A1\uFF09"
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "td",
-                                    null,
-                                    _react2.default.createElement("input", { type: "text", className: "comp-validatebox", "data-regExp": obj.FieldList[4].regExp, autoComplete: "off", id: obj.FieldList[4].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[4].edit == "+r", value: obj.FieldList[4].val == null ? "" : obj.FieldList[4].val, onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[4].id) })
-                                )
-                            ),
-                            _react2.default.createElement(
-                                "tr",
-                                null,
-                                _react2.default.createElement(
-                                    "td",
-                                    null,
-                                    _react2.default.createElement(
-                                        "label",
-                                        null,
-                                        _react2.default.createElement(
-                                            "span",
-                                            { className: "red" },
-                                            "*"
-                                        ),
-                                        "\u8BA1\u5BB9\u5EFA\u7B51\u9762\u79EF\uFF08\u33A1\uFF09"
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "td",
-                                    null,
-                                    _react2.default.createElement("input", { type: "text", className: "comp-validatebox", "data-regExp": obj.FieldList[5].regExp, autoComplete: "off", id: obj.FieldList[5].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[5].edit == "+r", value: obj.FieldList[5].val == null ? "" : obj.FieldList[5].val, onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[5].id) })
-                                ),
-                                _react2.default.createElement(
-                                    "td",
-                                    null,
-                                    _react2.default.createElement(
-                                        "label",
-                                        null,
-                                        _react2.default.createElement(
-                                            "span",
-                                            { className: "red" },
-                                            "*"
-                                        ),
-                                        "\u571F\u5730\u83B7\u53D6\u4EF7\u6B3E\uFF08\u4E07\u5143\uFF09"
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "td",
-                                    null,
-                                    _react2.default.createElement("input", { type: "text", className: "comp-validatebox", "data-regExp": obj.FieldList[6].regExp, autoComplete: "off", id: obj.FieldList[6].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[6].edit == "+r", value: obj.FieldList[6].val == null ? "" : obj.FieldList[6].val, onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[6].id) })
-                                ),
-                                _react2.default.createElement(
-                                    "td",
-                                    null,
-                                    _react2.default.createElement(
-                                        "label",
-                                        null,
-                                        "\u697C\u9762\u5747\u4EF7\uFF08\u5143/\u33A1\uFF09"
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    "td",
-                                    null,
-                                    _react2.default.createElement("input", { type: "text", id: obj.FieldList[7].id + '_' + obj.ID, readOnly: obj.IsAllDevel == 0 || obj.IsAllDevel == 1 || obj.IsAllDevel == 2 && obj.FieldList[7].edit == "+r", value: obj.FieldList[7].val == null ? "" : obj.FieldList[7].val, onChange: th.evInputChange.bind(th, obj.ID, obj.FieldList[7].id) })
-                                )
-                            )
-                        )
-                    )
-                );
-            });
-        }
-        /*input 校验*/
-
-    }, {
-        key: "evValiteInputbox",
-        value: function evValiteInputbox() {
-            setTimeout(function () {
-                $(".comp-validatebox").each(function (index, ele) {
-                    var eleDom = $(ele);
-                    var isReadAt = eleDom.attr("readonly");
-
-                    var regInforObj = JSON.parse(eleDom.attr("data-regExp"));
-                    console.log(regInforObj);
-                    var allKeys = Object.keys(regInforObj);
-                    var validTypeRule = [];
-                    var valideRule = {
-                        required: true
-                    };
-
-                    allKeys.forEach(function (vType) {
-                        if (vType == "max") {
-                            validTypeRule.push('number', 'max[' + regInforObj[vType] + ']');
-                        }
-                    });
-                    if (validTypeRule.length > 0) {
-                        valideRule.validType = validTypeRule;
-                    }
-                    eleDom.validatebox(valideRule);
-                });
-            }, 600);
-        }
-        /*input change*/
-
-    }, {
-        key: "evInputChange",
-        value: function evInputChange(listId, fieldId, event) {
-            var th = this;
-            var list = th.state.listArr;
-            var newList = [];
-            var val = event.target.value;
-            list.forEach(function (obj, index) {
-                if (obj.ID == listId) {
-                    obj.FieldList.forEach(function (feildObj, fIndex) {
-                        if (feildObj.id == fieldId) {
-                            feildObj.text = val;
-                            feildObj.val = val;
-                        }
-                    });
-                    /*计算*/
-                    obj.FieldList.forEach(function (feildObj, fIndex) {
-                        if (feildObj.exec) {
-                            var newVal = th.evCalcContent(feildObj.exec, obj.FieldList);
-                            var newCalArr = newVal.toString().split(".");
-                            var decVal = "";
-                            if (newCalArr.length == 2) {
-                                decVal = '.' + newCalArr[1].slice(0, 6);
-                            }
-                            feildObj.text = newCalArr[0] + decVal;
-                            feildObj.val = newCalArr[0] + decVal;
-                        }
-                    });
-                }
-                newList.push(obj);
-            });
-            th.setState({
-                listArr: newList
-            });
-        }
-        /*计算值，返回计算后的数组*/
-
-    }, {
-        key: "evCalBackArr",
-        value: function evCalBackArr(filterArr) {
-            var newArr = [];
-            var th = this;
-
-            /*计算*/
-            filterArr.forEach(function (obj, index) {
-                obj.FieldList.forEach(function (feildObj, fIndex) {
-                    if (feildObj.exec) {
-                        var newVal = th.evCalcContent(feildObj.exec, obj.FieldList);
-                        var newCalArr = newVal.toString().split(".");
-                        var decVal = "";
-                        if (newCalArr.length == 2) {
-                            decVal = '.' + newCalArr[1].slice(0, 6);
-                        }
-                        feildObj.text = newCalArr[0] + decVal;
-                        feildObj.val = newCalArr[0] + decVal;
-                    }
-                });
-                newArr.push(obj);
-            });
-            return newArr;
-        }
-        /*计算表达式*/
-
-    }, {
-        key: "evCalcContent",
-        value: function evCalcContent(execStr, obj) {
-            var val = "";
-            obj.forEach(function (item, index) {
-                var regStr = new RegExp("{" + item.id + "}", "ig");
-                execStr = execStr.replace(regStr, Number(item.val));
-            });
-            var blockStr = "try{\
-            let calVal=" + execStr + ";\
-            return calVal==Infinity?0:calVal;\
-        }catch(e){console.log(e);}";
-            console.log(blockStr);
-            return new Function(blockStr)();
-        }
-        /*点击全部开发或部分开发*/
-
-    }, {
-        key: "evAllOrParDev",
-        value: function evAllOrParDev(listId, event) {
-            var th = this;
-            var list = th.state.listArr;
-            var newList = [];
-            var val = event.target.value;
-            list.forEach(function (obj, index) {
-                if (obj.ID == listId) {
-                    obj.IsAllDevel = val;
-                    if (val == 0 || val == 1) {
-                        $("#section" + obj.ID + " .comp-validatebox").validatebox("disableValidation");
-                    } else {
-                        $("#section" + obj.ID + " .comp-validatebox").validatebox("enableValidation");
-                    }
-                }
-                newList.push(obj);
-            });
-            th.setState({
-                listArr: newList
-            });
-
-            th.props.callback(newList);
-        }
-    }, {
-        key: "getAjax",
-        value: function getAjax(id) {
-            var th = this;
-            /*如果是编辑，则不请求数据*/
-            var status = th.state.status;
-            var listArr = th.state.listArr;
-            if (status == "edit") {
-                th.setState({
-                    "listArr": th.evCalBackArr(listArr)
-                });
-                th.evValiteInputbox();
-                return false;
-            }
-            iss.ajax({
-                url: "/Stage/IGetLandQuotaByProId",
-                type: "get",
-                data: { projectId: id },
-                success: function success(d) {
-                    var filterList = [];
-                    filterList = d.rows.filter(function (obj, index) {
-                        return !new RegExp(obj.ID, "ig").test(th.state.selectId);
-                    });
-
-                    th.setState({
-                        "listArr": th.evCalBackArr(filterList)
-                    });
-
-                    th.evValiteInputbox();
-                },
-                error: function error(d) {
-                    console.log(JSON.stringify(d));
-                }
-            });
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            var th = this;
-
-            return _react2.default.createElement(
-                "div",
-                { className: "aBuiltMain" },
-                _react2.default.createElement(
-                    "form",
-                    { id: "form_aBuiltLand" },
-                    this.BIND_BLOCK()
-                )
-            );
-        }
-    }]);
-
-    return Winopen;
-}(_react2.default.Component);
-
-{/* <div className="aBuiltSection">
-       <div className="aBuilt_Title">
-           <span>世界城-A地块</span>
-           <span className="radioSpan"><input type="radio" name="lang" defaultValue="01"/>全部开发</span>
-           <span className="radioSpan"><input type="radio" name="lang" defaultValue="02"/>部分开发</span>
-       </div>
-       <ul className="aBuilt_Con">
-           <li><label htmlFor="">地块名称</label><input type="text" id="" defaultValue="地块一"/></li>
-           <li><label>地块编码</label><input type="text" defaultValue="地块一"/></li>
-           <li><label>地块名称</label><input type="text" defaultValue="地块一"/></li>
-           <li><label>地块编码</label><input type="text" defaultValue="地块一"/></li>
-           <li><label>地块编码</label><input type="text" defaultValue="地块一"/></li>
-       </ul>
-       <ul className={obj.IsAllDevel==0? "aBuilt_Con hide":"aBuilt_Con"}>
-           {
-               obj.FieldList.map((fieldObj,fIndex)=>{
-                   return <li key={fieldObj.id}>
-                               <label><span className={fieldObj.regExp.length>3&&!fieldObj.exec?"red":"hide"}>*</span>{fieldObj.label}</label>
-                               <input type="text" className={fieldObj.regExp.length>3&&!fieldObj.exec?"comp-validatebox":""} id={fieldObj.id+'_'+obj.ID} data-regExp={fieldObj.regExp} autoComplete="off" readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&fieldObj.edit=="+r"} value={fieldObj.val==null?"":fieldObj.val} onChange={th.evInputChange.bind(th,obj.ID,fieldObj.id)}/>
-                               <span className="unitSpan">{fieldObj.unit?fieldObj.unit:""}</span>
-                           </li>
-               })
-           }
-       </ul>
-    </div> */}
-{
-    // <div className="aBuilt_Title">
-    //     <span>{obj.Name}</span>
-    //     <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==1} defaultValue="1" onChange={th.evAllOrParDev.bind(th,obj.ID)} />全部开发</span>
-    //     <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==2} defaultValue="2" onChange={th.evAllOrParDev.bind(th,obj.ID)} />部分开发</span>
-    // </div>
-    // <table className={obj.IsAllDevel==0? "table builtAlertTable hide":"table builtAlertTable"}>
-    //     <tbody>
-
-    //         <tr>
-    //             <td><label>地块名称</label></td>
-    //             <td><input type="text" id={obj.FieldList[0].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[0].edit=="+r"} value={obj.FieldList[0].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[0].id)}/></td>
-    //             <td><label>地块编码</label></td>
-    //             <td><input type="text" id={obj.FieldList[1].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[1].edit=="+r"} value={obj.FieldList[1].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[1].id)}/></td>
-    //             <td colSpan="2"></td>
-    //         </tr>
-    //         <tr>
-    //             <td><label>总用地面积（㎡）</label></td>
-    //             <td><input type="text" id={obj.FieldList[2].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[2].edit=="+r"} value={obj.FieldList[2].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[2].id)}/></td>
-    //             <td><label><span className="red">*</span>建设用地面积（㎡）</label></td>
-    //             <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[3].regExp} autoComplete="off" id={obj.FieldList[3].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[3].edit=="+r"} value={obj.FieldList[3].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[3].id)}/></td>
-    //             <td><label><span className="red">*</span>代征用地面积（㎡）</label></td>
-    //             <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[4].regExp} autoComplete="off" id={obj.FieldList[4].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[4].edit=="+r"} value={obj.FieldList[4].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[4].id)}/></td>
-    //         </tr>
-    //         <tr>
-    //             <td><label><span className="red">*</span>计容建筑面积（㎡）</label></td>
-    //             <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[5].regExp} autoComplete="off" id={obj.FieldList[5].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[5].edit=="+r"} value={obj.FieldList[5].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[5].id)}/></td>
-    //             <td><label><span className="red">*</span>土地获取价款（万元）</label></td>
-    //             <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[6].regExp} autoComplete="off" id={obj.FieldList[6].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[6].edit=="+r"} value={obj.FieldList[6].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[6].id)}/></td>
-    //             <td><label>楼面均价（元/㎡）</label></td>
-    //             <td><input type="text" id={obj.FieldList[7].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[7].edit=="+r"} value={obj.FieldList[7].val||''} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[7].id)}/></td>
-    //         </tr>
-    //     </tbody>
-    // </table>
-}
-exports.default = Winopen;
-
-/***/ }),
-
-/***/ 644:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(645);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(608)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./aBuilt.less", function() {
-			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./aBuilt.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ 645:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(607)(undefined);
-// imports
-
-
-// module
-exports.push([module.i, "/*aBuilt.less文件*/\n.modal-title {\n  font-size: 16px;\n}\n.aBuiltMain {\n  padding: 0 20px 20px;\n  font-size: 12px;\n  overflow: auto;\n  -webkit-overflow-scrolling: touch;\n  height: 400px;\n}\n.aBuiltMain .aBuilt_Title {\n  font-size: 14px;\n  margin: 12px 0 2px;\n  line-height: 40px;\n  border-bottom: 1px solid #c9c9c9;\n}\n.aBuiltMain .aBuilt_Title span {\n  display: inline-block;\n}\n.aBuiltMain .aBuilt_Title span:first-child {\n  line-height: 38px;\n  margin-right: 16px;\n  padding-right: 10px;\n  border-bottom: 2px solid #31395d;\n}\n.aBuiltMain .aBuilt_Title span.radioSpan {\n  float: right;\n  margin-left: 16px;\n}\n.aBuiltMain .aBuilt_Title span.radioSpan input[type=radio] {\n  margin: 0;\n  vertical-align: middle;\n}\n.aBuiltMain .aBuilt_Con {\n  height: auto;\n  overflow-x: auto;\n  overflow-y: hidden;\n}\n.aBuiltMain .aBuilt_Con li {\n  position: relative;\n  float: left;\n  width: 33.33%;\n  min-height: 30px;\n  line-height: 30px;\n  margin-top: 5px;\n  padding-left: 110px;\n  padding-right: 5px;\n}\n.aBuiltMain .aBuilt_Con li label {\n  position: absolute;\n  top: 50%;\n  left: 0;\n  width: 110px;\n  -webkit-transform: translateY(-50%);\n  -moz-transform: translateY(-50%);\n  -ms-transform: translateY(-50%);\n  transform: translateY(-50%);\n  font-weight: normal;\n  margin-bottom: 0px;\n  padding-right: 6px;\n  text-align: right;\n}\n.aBuiltMain .aBuilt_Con li input {\n  border: #ddd solid 1px;\n  width: 100%;\n  max-width: 160px;\n  height: 28px;\n}\n.aBuiltMain .aBuilt_Con li input[readonly] {\n  background: #ddd;\n}\n.aBuiltMain .aBuilt_Con li .unitSpan {\n  position: relative;\n  right: 0;\n  top: 50%;\n  padding-left: 3px;\n  -webkit-transform: translateY(-50%);\n  -moz-transform: translateY(-50%);\n  -ms-transform: translateY(-50%);\n  transform: translateY(-50%);\n  text-align: left;\n}\n.aBuiltMain .aBuilt_Con li:nth-child(2) {\n  width: 66.67%;\n}\n.aBuiltMain .aBuilt_Con.hide {\n  display: none;\n}\n.aBuiltMain .builtAlertTable {\n  margin-top: 10px;\n  margin-bottom: 0;\n  font-size: 12px;\n}\n.aBuiltMain .builtAlertTable tr {\n  background: #fff;\n}\n.aBuiltMain .builtAlertTable td {\n  border: none;\n  vertical-align: middle;\n  text-align: left;\n  padding: 0;\n}\n.aBuiltMain .builtAlertTable thead tr {\n  border-top: 1px solid #ccc;\n  background: #f5f5f5;\n}\n.aBuiltMain .builtAlertTable tbody label {\n  font-weight: normal;\n  margin-bottom: 0px;\n  padding-right: 6px;\n  text-align: right;\n  width: 100%;\n}\n.aBuiltMain .builtAlertTable tbody input {\n  border: none;\n  height: 28px;\n  width: auto;\n  width: -moz-calc(96%);\n  width: -webkit-calc(96%);\n  width: calc(96%);\n  margin: 2px;\n  border: 1px solid #ddd;\n}\n.aBuiltMain .builtAlertTable tbody input[readonly] {\n  background: #eee;\n}\n.aBuiltMain .builtAlertTable.hide {\n  display: none;\n}\n", ""]);
-
-// exports
-
 
 /***/ })
 

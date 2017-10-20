@@ -4,7 +4,7 @@ import "babel-polyfill";  //兼容ie
 import NewProjectCount from "./component-newProject-count.js";
 import DynamicTable from "./tools-dynamicTable.js";
 import "../../Content/css/tools-dynamicTable.less";//专用css
-import ApprovalControlNode from "./component-newProjectApproval-node.js";  //审批信息
+
 
 /*
     pdi id   DynamicData  结构数据 CallBack 数据修改回调
@@ -412,15 +412,15 @@ class NewProject extends React.Component {
         return true;
     }
     BIND_ROUTERCHANGE() {  //发起审批
-
+        iss.hashHistory.push({pathname:"/ProcessApproval",state:{guid:this.guid}}); 
+         return;
         if (this.GET_CHECKED()) {
             return;
             this.EVENT_CLICK_POSTAPP();//基础信息提交
-            this.BIND_ApprovalControlNode_EVENT();//流程提交
         }
 
 
-        // iss.hashHistory.push({pathname:"/newProjectApproval",state:iss.id});
+       // iss.hashHistory.push({pathname:"/newProjectApproval",state:iss.id});
     }
     BIND_NewProjectCount(self) { //父级重定向到子集
         this.child1 = self;
@@ -464,9 +464,7 @@ class NewProject extends React.Component {
                 </ul>
                 <DynamicTable pid={this.state.pid} DynamicData={this.state.propsDATA} CallBack={this.BIND_CALLBACK.bind(this)} />
             </section>
-            <section style={{"display":"none"}}>
-                <ApprovalControlNode guid={this.guid} type="edit" callback={this.BIND_ApprovalControlNode.bind(this)} />
-            </section>
+        
 
         </article>
     }

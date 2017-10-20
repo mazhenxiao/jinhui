@@ -57,7 +57,7 @@ class Intallment extends React.Component {
             if(landArrLen==index){
                 equityTxt=equityTxt+obj.Name+"-"+(obj.EQUITYRATIO||0)+"%";
             }else{
-                equityTxt=equityTxt+obj.Name+"-"+(obj.EQUITYRATIO||0)+"%/";
+                equityTxt=equityTxt+obj.Name+"-"+(obj.EQUITYRATIO||0)+"%,";
             }
             
             if(index==0){

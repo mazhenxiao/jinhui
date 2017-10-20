@@ -28,13 +28,15 @@ class StagingInformation extends React.Component {
                         "STAGECREATEDATE":"1900-01-01T00:00:00",
                         "STAGEUPDATEDATE":"1900-01-01T00:00:00",
                         "STARTDATE":"1900-01-01T00:00:00",
-                        "mapUrl":"http://192.168.11.164:82"
+                        "mapUrl":"http://192.168.10.164:82",
+                        "iframeURL1":"",
+                        "iframeURL2":"",
         }  
 
         this.tiem="";  
     }
     /*获取分期信息*/
-    getAjax(){
+    getAjax(callback){
         var th = this;
         let status=this.props.location.query.status;
         var reqtype;
@@ -85,6 +87,9 @@ class StagingInformation extends React.Component {
                 },arg=>{
                     //console.log(th.state)
                     th.bind_combobox(res);
+                    if(callback){
+                        callback();
+                    }
                 });
 
                 th.props.codeCallBack(res.rows.BaseFormInfo.PROJECTID);
@@ -100,7 +105,12 @@ class StagingInformation extends React.Component {
             if(id=="1E1CB1E95A864AFA961392C3E3644642"||!id){
                 iss.hashHistory.replace({pathname:"index"});
             }else{
-                this.getAjax();
+                this.getAjax(arg=>{
+                    this.BIND_ONLOAD();
+                    setTimeout(function(){
+                        document.getElementById('iframe2').src=$("#iframe2").attr("src");
+                    },3000);
+                });
             }
         //  toolsTab.bindTab(this.props);//绑定头部标签
     }
@@ -124,6 +134,33 @@ class StagingInformation extends React.Component {
 
     BIND_CHANGE_DATA(data){
         this.props.StagingInformationDATA(data)
+    }
+    BIND_ONLOAD(event){
+        let th=this;
+        iss.ajax({  //获取数据 判断有无分期总图、推盘图
+            type: "post",
+            url:"/Common/IsHaveXMView",
+            data:{
+                typeinfo:"2",
+                strId:th.state.STAGEVERSIONID,
+            },
+            success(res) {
+                if(res==false){
+                    th.setState({
+                        iframeURL1:"../../Content/img/xmViewError.png",
+                        iframeURL2:"../../Content/img/xmViewError.png",
+                    })
+                }else{
+                    th.setState({
+                        iframeURL1:th.state.mapUrl+"/Map/Stage?stage_id="+th.state.STAGEVERSIONID+"&stage_map_id=stage"+th.state.STAGEVERSIONID,
+                        iframeURL2:th.state.mapUrl+"/Map/PUSHPLATE?stage_id="+th.state.STAGEVERSIONID+"&stage_map_id=stage"+th.state.STAGEVERSIONID,
+                    }) 
+                }
+            },
+            error(e) {
+
+            }
+        });
     }
     handChooseTo(da){
         let th=this;
@@ -536,10 +573,10 @@ class StagingInformation extends React.Component {
                     <div id="myCarousel" className="carousel slide carouselStyle">
                         <div className="carousel-inner">
                             <div className="item active">
-                                <img src={this.state.mapUrl+"/Content/maps/source/stage"+this.state.STAGEID+"_s.jpg"} onError={this.xmViewError.bind(this)} onClick={this.BIND_mapsStage.bind(this)} width="100%" height="295px" />
+                            <iframe ref="iframe" id="iframe1" src={this.state.iframeURL1}    onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="291"></iframe>
                             </div>
                             <div className="item">
-                                <img src={this.state.mapUrl+"/Map/Stage?stage_id="+this.state.STAGEID+"&stage_map_id=stage"+this.state.STAGEID} onError={this.xmViewError.bind(this)} onClick={this.BIND_mapsTp.bind(this)} width="100%" height="295px" />
+                                <iframe ref="iframe" id="iframe2" src={this.state.iframeURL2}    onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="291"></iframe>
                             </div>
                         </div>
                         {/* 轮播（Carousel）导航 */}

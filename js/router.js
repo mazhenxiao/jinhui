@@ -189,6 +189,24 @@ var rootRout = {
       }
 
     },
+    { //发起审批 提交人
+      path:"/ProcessApproval",
+      getComponent: function (next, callback) {
+        require.ensure([], function (require) {
+          var app = require('../components/component-ProcessApproval.js');//============================价格管理-交付
+          callback(null, app.default);
+        }, "component-ProcessApproval");
+      }
+    },
+    { //发起审批 审批人
+      path:"/ProcessApprover",
+      getComponent: function (next, callback) {
+        require.ensure([], function (require) {
+          var app = require('../components/component-ProcessApprover.js');//============================价格管理-交付
+          callback(null, app.default);
+        }, "component-ProcessApprover");
+      }
+    },
     { //发起审批项目
       path: "/newProjectApproval",
       getComponent: function (next, callback) {
@@ -211,7 +229,6 @@ var rootRout = {
 
   ] 
 }
-
 
 ReactDOM.render(<Router history={hashHistory} routes={rootRout}></Router>, document.querySelector("#JH-Router"));
 export default rootRout;

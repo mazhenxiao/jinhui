@@ -20,7 +20,8 @@ class Agenty extends React.Component {
         let w = window.screen.availWidth,
             h =window.screen.availHeight-50;
         if(da=="type"&&tar.nodeName.toLocaleLowerCase()=="a"){
-            window.open("/Home/MYTodo/#/","",`width=${w},height=${h},left=0,top=0`)
+            //window.open("/Home/MYTodo/#/","",`width=${w},height=${h},left=0,top=0`)
+            iss.hashHistory.push({pathname:"/ProcessApproval",state:iss.id.id});
         }
     }
     agentyTabel() {

@@ -19,6 +19,7 @@ class ToolsTree extends React.Component {
         this.notIndexChange(); //判断是否刷新了也没
         Tree.bindTree("#tree", arg => {
             iss.id=arg;
+            localStorage.setItem("treeId",arg);
             let id,current;
             switch(arg["level_id"]){
                 case "1": //集团汇总
@@ -39,7 +40,9 @@ class ToolsTree extends React.Component {
     }
     notIndexChange(){ //非首页跳转
            // console.log()
+           iss.id=localStorage.getItem("treeId");
         if(iss.id==""){
+            //iss.id=localStorage.getItem("treeId");
             iss.hashHistory.replace("/index");
         }
     }
@@ -82,7 +85,7 @@ class ToolsTree extends React.Component {
     render() {
         let th = this; 
         let setBar = arg => {
-            console.log(th.state.changeState)
+           // console.log(th.state.changeState)
             if (th.state.changeState == ""||th.state.changeState == undefined) {
                 return <div>
                     <input type="search" className="stateSearch" value="" />

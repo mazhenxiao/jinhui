@@ -10,7 +10,7 @@ class Winopen extends React.Component{
         this.state={
             listArr:this.props.selArr,/*地块信息*/
             selectId:this.props.selId,/*选择过的地块*/
-            status:this.props.status,/*选择地块或编辑地块*/
+            status:this.props.status,/*选择select地块或编辑edit地块或查看view地块*/
         }
         
         
@@ -25,39 +25,38 @@ class Winopen extends React.Component{
     BIND_BLOCK(){
         var th = this;
         let list=th.state.listArr;
-        
+        let status=th.state.status;
        return list.map((obj,index)=>{
             return <div key={obj.ID} className="aBuiltSection" id={"section"+obj.ID}>
                         <h3 className="aBuilt_Title">
                                 <span>{obj.Name}</span>
-                                
-                                <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==2} defaultValue="2" onChange={th.evAllOrParDev.bind(th,obj.ID)} />部分开发</span>
-                                <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==1} defaultValue="1" onChange={th.evAllOrParDev.bind(th,obj.ID)} />全部开发</span>
+                                <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==2} disabled={status=="view"} defaultValue="2" onChange={th.evAllOrParDev.bind(th,obj.ID)} />部分开发</span>
+                                <span className="radioSpan"><input type="radio" name={'radio'+obj.ID} checked={obj.IsAllDevel==1} disabled={status=="view"} defaultValue="1" onChange={th.evAllOrParDev.bind(th,obj.ID)} />全部开发</span>
                         </h3>
                         <table className={obj.IsAllDevel==0? "table builtAlertTable hide":"table builtAlertTable"}>
                              <tbody>
                                  <tr>
                                      <td><label>地块名称</label></td>
-                                     <td><input type="text" id={obj.FieldList[0].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[0].edit=="+r"} value={obj.FieldList[0].val==null?"":obj.FieldList[0].val} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[0].id)}/></td>
+                                     <td><input type="text" disabled={status=="view"} id={obj.FieldList[0].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[0].edit=="+r"} value={obj.FieldList[0].val==null?"":obj.FieldList[0].val} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[0].id)}/></td>
                                      <td><label>地块编码</label></td>
-                                     <td><input type="text" id={obj.FieldList[1].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[1].edit=="+r"} value={obj.FieldList[1].val==null?"":obj.FieldList[1].val} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[1].id)}/></td>
+                                     <td><input type="text" disabled={status=="view"} id={obj.FieldList[1].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[1].edit=="+r"} value={obj.FieldList[1].val==null?"":obj.FieldList[1].val} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[1].id)}/></td>
                                      <td colSpan="2"></td>
                                  </tr>
                                  <tr>
                                      <td><label>总用地面积（㎡）</label></td>
-                                     <td><input type="text" id={obj.FieldList[2].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[2].edit=="+r"} value={obj.FieldList[2].val==null?"":obj.FieldList[2].val} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[2].id)}/></td>
+                                     <td><input type="text" disabled={status=="view"} id={obj.FieldList[2].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[2].edit=="+r"} value={obj.FieldList[2].val==null?"":obj.FieldList[2].val} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[2].id)}/></td>
                                      <td><label><span className="red">*</span>建设用地面积（㎡）</label></td>
-                                     <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[3].regExp} autoComplete="off" id={obj.FieldList[3].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[3].edit=="+r"} value={obj.FieldList[3].val==null?"":obj.FieldList[3].val} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[3].id)}/></td>
+                                     <td><input type="text" disabled={status=="view"} className="comp-validatebox" data-regExp={obj.FieldList[3].regExp} autoComplete="off" id={obj.FieldList[3].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[3].edit=="+r"} value={obj.FieldList[3].val==null?"":obj.FieldList[3].val} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[3].id)}/></td>
                                      <td><label><span className="red">*</span>代征用地面积（㎡）</label></td>
-                                     <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[4].regExp} autoComplete="off" id={obj.FieldList[4].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[4].edit=="+r"} value={obj.FieldList[4].val==null?"":obj.FieldList[4].val} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[4].id)}/></td>
+                                     <td><input type="text" disabled={status=="view"} className="comp-validatebox" data-regExp={obj.FieldList[4].regExp} autoComplete="off" id={obj.FieldList[4].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[4].edit=="+r"} value={obj.FieldList[4].val==null?"":obj.FieldList[4].val} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[4].id)}/></td>
                                  </tr>
                                  <tr>
                                      <td><label><span className="red">*</span>计容建筑面积（㎡）</label></td>
-                                     <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[5].regExp} autoComplete="off" id={obj.FieldList[5].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[5].edit=="+r"} value={obj.FieldList[5].val==null?"":obj.FieldList[5].val} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[5].id)}/></td>
+                                     <td><input type="text" disabled={status=="view"} className="comp-validatebox" data-regExp={obj.FieldList[5].regExp} autoComplete="off" id={obj.FieldList[5].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[5].edit=="+r"} value={obj.FieldList[5].val==null?"":obj.FieldList[5].val} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[5].id)}/></td>
                                      <td><label><span className="red">*</span>土地获取价款（万元）</label></td>
-                                     <td><input type="text" className="comp-validatebox" data-regExp={obj.FieldList[6].regExp} autoComplete="off" id={obj.FieldList[6].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[6].edit=="+r"} value={obj.FieldList[6].val==null?"":obj.FieldList[6].val} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[6].id)}/></td>
+                                     <td><input type="text" disabled={status=="view"} className="comp-validatebox" data-regExp={obj.FieldList[6].regExp} autoComplete="off" id={obj.FieldList[6].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[6].edit=="+r"} value={obj.FieldList[6].val==null?"":obj.FieldList[6].val} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[6].id)}/></td>
                                      <td><label>楼面均价（元/㎡）</label></td>
-                                     <td><input type="text" id={obj.FieldList[7].id+'_'+obj.ID} readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[7].edit=="+r"} value={obj.FieldList[7].val==null?"":obj.FieldList[7].val} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[7].id)}/></td>
+                                     <td><input type="text" disabled={status=="view"} id={obj.FieldList[7].id+'_'+obj.ID}  readOnly={obj.IsAllDevel==0||obj.IsAllDevel==1||obj.IsAllDevel==2&&obj.FieldList[7].edit=="+r"} value={obj.FieldList[7].val==null?"":obj.FieldList[7].val} onChange={th.evInputChange.bind(th,obj.ID,obj.FieldList[7].id)}/></td>
                                  </tr>
                              </tbody>
                         </table>
@@ -194,7 +193,7 @@ class Winopen extends React.Component{
         /*如果是编辑，则不请求数据*/
         let status=th.state.status;
         let listArr=th.state.listArr;
-        if(status=="edit"){
+        if(status=="edit"||status=="view"){
             th.setState({
                 "listArr": th.evCalBackArr(listArr)
             });

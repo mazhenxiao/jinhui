@@ -54,6 +54,13 @@ class main{
       icons.bind("click.bar",e=>{
          let el = $(e.currentTarget),
              pa = $(el.attr("target"));
+           /*   if(pa.hasClass("active")){
+               pa.removeClass("active");
+               cont.removeClass("active");
+             }else{
+               pa.addClass("active");
+               cont.addClass("active");
+             } */
              pa.toggleClass("active");
            cont.toggleClass("active");
            icons.trigger("EVENT_TOGGLEBAR");

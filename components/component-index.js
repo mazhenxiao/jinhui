@@ -65,9 +65,11 @@ class index extends React.Component {
                 data:_data
              });
              $(".icon-bar").on("EVENT_TOGGLEBAR",ev=>{
-                setTimeout(()=>{
-                    table.datagrid("resize");
-                },500);
+                if(iss.getQuert("index")){
+                    setTimeout(()=>{
+                        table.datagrid("resize");   
+                    },500);
+                }
                // myChart.setOption(option);
             })
     }

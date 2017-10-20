@@ -1,4 +1,4 @@
-webpackJsonp([8,14],{
+webpackJsonp([11,17],{
 
 /***/ 585:
 /***/ (function(module, exports, __webpack_require__) {
@@ -24,11 +24,11 @@ __webpack_require__(65);
 
 __webpack_require__(79);
 
-var _toolsProcessBar = __webpack_require__(611);
+var _toolsProcessBar = __webpack_require__(613);
 
 var _toolsProcessBar2 = _interopRequireDefault(_toolsProcessBar);
 
-var _toolsExchangeButton = __webpack_require__(613);
+var _toolsExchangeButton = __webpack_require__(615);
 
 var _toolsExchangeButton2 = _interopRequireDefault(_toolsExchangeButton);
 
@@ -876,7 +876,7 @@ exports.default = PriceInvestment;
 
 /***/ }),
 
-/***/ 607:
+/***/ 609:
 /***/ (function(module, exports) {
 
 /*
@@ -959,7 +959,7 @@ function toComment(sourceMap) {
 
 /***/ }),
 
-/***/ 608:
+/***/ 610:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -1005,7 +1005,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(610);
+var	fixUrls = __webpack_require__(611);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -1319,39 +1319,7 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 
-/***/ 609:
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(612);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(608)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./tools-processBar.less", function() {
-			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./tools-processBar.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-
-/***/ 610:
+/***/ 611:
 /***/ (function(module, exports) {
 
 
@@ -1447,7 +1415,39 @@ module.exports = function (css) {
 
 /***/ }),
 
-/***/ 611:
+/***/ 612:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(614);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(610)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./tools-processBar.less", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js!../node_modules/less-loader/dist/cjs.js!./tools-processBar.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 613:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1476,7 +1476,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 //兼容ie
-__webpack_require__(609);
+__webpack_require__(612);
 
 var ProcessBar = function (_React$Component) {
     _inherits(ProcessBar, _React$Component);
@@ -1556,10 +1556,10 @@ exports.default = ProcessBar;
 
 /***/ }),
 
-/***/ 612:
+/***/ 614:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(607)(undefined);
+exports = module.exports = __webpack_require__(609)(undefined);
 // imports
 
 
@@ -1571,7 +1571,7 @@ exports.push([module.i, ".processBar .processBar-header li {\n  display: inline-
 
 /***/ }),
 
-/***/ 613:
+/***/ 615:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1600,7 +1600,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 //兼容ie
-__webpack_require__(609);
+__webpack_require__(612);
 
 var ExchangeButton = function (_React$Component) {
     _inherits(ExchangeButton, _React$Component);

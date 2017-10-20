@@ -22,7 +22,9 @@ class NewProjectCount extends React.Component {
             "PRINCIPAL": "",
             "ID": "",
             "CITY": "",
-            "mapUrl": "http://192.168.11.164:82",
+            "mapUrl": "http://192.168.10.164:82",
+            "iframeURL1":"",
+            "iframeURL2":"",
             "checkName": false   //项目名称冲突
             // "cityCompany":iss.id.text,
         }
@@ -33,7 +35,7 @@ class NewProjectCount extends React.Component {
         this.props.point(this);//父页面重定
     }
 
-    getAjax() {
+    getAjax(callback) {
         if (iss.id == "") { return };
         var th = this;
         // console.log(th);
@@ -77,6 +79,9 @@ class NewProjectCount extends React.Component {
                     //console.log(th.state)
                     th.bind_combobox(res);
                     th.BIND_CHANGE_DATA(th.state);
+                    if(callback){
+                        callback();
+                    }
                 })
             },
             error(e) {
@@ -90,8 +95,14 @@ class NewProjectCount extends React.Component {
         if (id == "1E1CB1E95A864AFA961392C3E3644642" || !id) {
             iss.hashHistory.replace({ pathname: "index" });
         } else {
-            this.getAjax();
+            this.getAjax(arg=>{
+                this.BIND_ONLOAD();//getAjax()加载完成后，再加载iframe的src
+                setTimeout(function(){
+                    document.getElementById('iframe2').src=$("#iframe2").attr("src");
+                },3000);//重新加载iframe2的src
+            });
         }
+        
         //this.BIND_ProjectValid();//绑定验证
     }
     handChooseTo(ev, da) {
@@ -116,7 +127,7 @@ class NewProjectCount extends React.Component {
                     })
                 } else {
                     for (var key in da) {
-                        console.log(da[key]);
+                       // console.log(da[key]);
                         th.setState({
                             "PRINCIPAL": da[key].id,
                             "PRINCIPALNAME": da[key].text
@@ -147,7 +158,7 @@ class NewProjectCount extends React.Component {
                     caseName: th.state.CASENAME,
                 },
                 success(res) {
-                    console.log(res);
+                    //console.log(res);
                     th.setState({
                         "PROJECTCODE": res.rows,
                     }, arg => {
@@ -217,59 +228,86 @@ class NewProjectCount extends React.Component {
         });
         tradersWay.combobox("select", arg.rows.BaseFormInfo.Project.TRADERMODE);
     }
+    BIND_CHECKPROJECTNAME_Blur(ev){  //失去焦点验证是否冲突
+        var th = this;
+        iss.ajax({
+            type: "POST",
+            url: "/Project/IProjectNameExists",
+            data: {
+                projectid: iss.id.id,
+                name: th.state.PROJECTNAME,
+            },
+            success: function (data) {
+                if (data["rows"] == false) {
+                    //th.BIND_CHANGE_DATA(th.state);
+                    th.setState({ checkName: true }, arg => {
+                        th.BIND_CHANGE_DATA(th.state)
+                    })
+                } else {
+                    th.setState({ checkName: false }, arg => {
+                        th.BIND_CHANGE_DATA(th.state)
+                    })
+                }
+
+            },
+            error: function (er) {
+              //  console.log('错误');
+                th.setState({ checkName: false }, arg => {
+                    th.BIND_CHANGE_DATA(th.state)
+                })
+
+            }
+        });
+    }
     BIND_CHECKPROJECTNAME(ev) {   //检查姓名名称是否冲突
 
         let th = this;
         let projectid = iss.id.id;
         let name = ev.target.value;
         this.setState({
-            projectid: iss.id,
+            projectid: projectid,
             PROJECTNAME: name
         }, arg => {
             th.BIND_CHANGE_DATA(th.state);
         })
-
-        clearTimeout(this.time);
-        this.time = setTimeout(arg => {
-
-            iss.ajax({
-                type: "POST",
-                url: "/Project/IProjectNameExists",
-                data: {
-                    projectid: iss.id,
-                    name: th.state.PROJECTNAME,
-                },
-                success: function (data) {
-                    if (data["rows"] == false) {
-                        //th.BIND_CHANGE_DATA(th.state);
-                        th.setState({ checkName: true }, arg => {
-                            th.BIND_CHANGE_DATA(th.state)
-                        })
-                    } else {
-                        th.setState({ checkName: false }, arg => {
-                            th.BIND_CHANGE_DATA(th.state)
-                        })
-                    }
-
-                },
-                error: function (er) {
-                    console.log('错误');
-                    th.setState({ checkName: false }, arg => {
-                        th.BIND_CHANGE_DATA(th.state)
-                    })
-
-                }
-            });
-        }, 1000);
+   
+  
     }
     BIND_CHANGE_DATA(data) {
         this.props.NewProjectCountDATA(data);
     }
 
     xmViewError(event) {
-        //this.attr("src","../img/xmViewError.png")
         $(event.target).attr("src", "../../Content/img/xmViewError.png");
     }//加载暂无
+    BIND_ONLOAD(event){
+        let th=this;
+        iss.ajax({  //获取数据
+            type: "post",
+            url:"/Common/IsHaveXMView",
+            data:{
+                typeinfo:"1",
+                strId:th.state.ID,
+            },
+            success(res) {
+                if(res==false){
+                    th.setState({
+                        iframeURL1:th.state.mapUrl + "/map/mapmark?project_id=" + th.state.ID,
+                        iframeURL2:"../../Content/img/xmViewError.png",
+                    })
+                }else{
+                    th.setState({
+                        iframeURL1:th.state.mapUrl + "/map/mapmark?project_id=" + th.state.ID,
+                        iframeURL2:th.state.mapUrl + "/Map/Project?project_id=" + th.state.ID + "&project_map_id=project" + th.state.ID,
+                    }) 
+                }
+            },
+            error(e) {
+
+            }
+        })
+        
+    }
     BIND_EditMapMark(event) {
         let status = this.props.local.query.status;
         if (window.confirm('确认保存项目信息数据并进行落位?')) {
@@ -379,7 +417,7 @@ class NewProjectCount extends React.Component {
                                         <label className="formTableLabel boxSizing redFont">项目名称</label>
                                     </th>
                                     <td>
-                                        <input onChange={this.BIND_CHECKPROJECTNAME.bind(this)} id="PROJECTNAME" value={this.state.PROJECTNAME || ""} className="inputTextBox boxSizing" type="text" />
+                                        <input onBlur={this.BIND_CHECKPROJECTNAME_Blur.bind(this)} onChange={this.BIND_CHECKPROJECTNAME.bind(this)} id="PROJECTNAME" value={this.state.PROJECTNAME || ""} className="inputTextBox boxSizing" type="text" />
                                     </td>
                                     <th>
                                         <label className="formTableLabel boxSizing redFont">项目案名</label>
@@ -452,11 +490,11 @@ class NewProjectCount extends React.Component {
                     {/* bootstrap 轮播图 */}
                     <div id="myCarousel" className="carousel slide carouselStyle">
                         <div className="carousel-inner">
-                            <div className="item active">
-                                <img src={this.state.mapUrl + "/Content/maps/source/project" + this.state.ID + "_s.jpg"} onError={this.xmViewError.bind(this)} onClick={this.BIND_maps.bind(this)} width="100%" height="295px" />
+                            <div className="item" onClick={this.BIND_maps.bind(this)}>
+                                <iframe id="iframe2" ref="iframe" src={this.state.iframeURL2} onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="291"></iframe>
                             </div>
-                            <div className="item" onClick={this.BIND_mapmark.bind(this)}>
-                                <iframe src={this.state.mapUrl + "/map/mapmark?project_id=" + this.state.ID} onError={this.xmViewError.bind(this)} width="350px" height="295px"></iframe>
+                            <div className="item active" onClick={this.BIND_mapmark.bind(this)}>
+                                <iframe id="iframe1" ref="iframe" src={this.state.iframeURL1}    onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="291"></iframe>
                             </div>
                         </div>
                         {/* 轮播（Carousel）导航 */}

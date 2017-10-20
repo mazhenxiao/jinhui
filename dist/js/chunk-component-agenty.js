@@ -1,4 +1,4 @@
-webpackJsonp([19],{
+webpackJsonp([21],{
 
 /***/ 590:
 /***/ (function(module, exports, __webpack_require__) {
@@ -20,7 +20,7 @@ __webpack_require__(65);
 
 __webpack_require__(79);
 
-var _toolsAgentyTab = __webpack_require__(638);
+var _toolsAgentyTab = __webpack_require__(649);
 
 var _toolsAgentyTab2 = _interopRequireDefault(_toolsAgentyTab);
 
@@ -63,7 +63,8 @@ var Agenty = function (_React$Component) {
             var w = window.screen.availWidth,
                 h = window.screen.availHeight - 50;
             if (da == "type" && tar.nodeName.toLocaleLowerCase() == "a") {
-                window.open("/Home/MYTodo/#/", "", "width=" + w + ",height=" + h + ",left=0,top=0");
+                //window.open("/Home/MYTodo/#/","",`width=${w},height=${h},left=0,top=0`)
+                iss.hashHistory.push({ pathname: "/ProcessApproval", state: iss.id.id });
             }
         }
     }, {
@@ -116,7 +117,7 @@ exports.default = Agenty;
 
 /***/ }),
 
-/***/ 638:
+/***/ 649:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

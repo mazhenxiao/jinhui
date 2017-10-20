@@ -5,6 +5,7 @@
   /*功能按钮*/
   /*编辑*/
   /*删除*/
+  /*查看*/
 }
 .builtTable thead tr td,
 .builtTable tbody tr td {
@@ -29,5 +30,8 @@
   padding: 1px 2px;
 }
 .builtTable .funCla_edit {
+  padding: 1px 2px;
+}
+.builtTable .funCla_view {
   padding: 1px 2px;
 }

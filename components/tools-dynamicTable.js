@@ -14,9 +14,9 @@ class DynamicTable extends React.Component {
         this.state = { //数据层
             url: "",
             data: this.props.DynamicData || [], //数据
-            selected: {}
+            selected: {},
+            readOnly: this.props["readOnly"]
         }
-
 
 
     }
@@ -71,7 +71,7 @@ class DynamicTable extends React.Component {
         let event = ev.target;
         iss.calendar(de, arg => {
             el.val = arg;
-            th.props.CallBack.call(th,el)
+            th.props.CallBack.call(th, el)
             if (el.val) {
                 event.className = event.className.replace("required", "");
             } else if (el.edit.indexOf("+m") >= 0) {
@@ -82,10 +82,10 @@ class DynamicTable extends React.Component {
 
     }
     Valid() {
-    /*     var str = "";
-        this.props.DynamicData.forEach((el, ind) => {
-            //if(el.)
-        }) */
+        /*     var str = "";
+            this.props.DynamicData.forEach((el, ind) => {
+                //if(el.)
+            }) */
     }
     EVENT_CHANGE_INPUT(da, ev) { //input修改
         var th = this;
@@ -121,17 +121,20 @@ class DynamicTable extends React.Component {
     setList(da) {
         // console.log(da)
         let typeBox = el => {
-
-            if (el.type == "select") {
-                let list = el.data.map((_d, _i) => {
-                    return <option key={_i} value={_d.val}>{_d.label}</option>
-                })
-                return <select name={el.id} className={el.edit.indexOf("+m") >= 0 ? "required" : ""} onChange={this.EVENT_CHANGE_SELECT.bind(this, el)} value={el.val || ""}>{list}</select>
-            } else if (el.type == "date") {
-                return <input name={el.id} className={el.edit.indexOf("+m") >= 0 ? "esayuiDate required" : "esayuiDate"} id={el.id} data-pid={el.pid} value={el.val || ""} placeholder={el.edit.indexOf("+m") >= 0 ? "必填" : ""} type="text" onClick={this.setEventDate.bind(this, el)} readOnly="true" />
+            if (this.state.readOnly) { 
+                return <input  className=""  type="text"  readOnly="true" value={el.val || ""}  />
             } else {
+                if (el.type == "select") {
+                    let list = el.data.map((_d, _i) => {
+                        return <option key={_i} value={_d.val}>{_d.label}</option>
+                    })
+                    return <select name={el.id} className={el.edit.indexOf("+m") >= 0 ? "required" : ""} onChange={this.EVENT_CHANGE_SELECT.bind(this, el)} value={el.val || ""}>{list}</select>
+                } else if (el.type == "date") {
+                    return <input name={el.id} className={el.edit.indexOf("+m") >= 0 ? "esayuiDate required" : "esayuiDate"} id={el.id} data-pid={el.pid} value={el.val || ""} placeholder={el.edit.indexOf("+m") >= 0 ? "必填" : ""} type="text" onClick={this.setEventDate.bind(this, el)} readOnly="true" />
+                } else {
 
-                return <input name={el.id} id={el.id} className={el.edit.indexOf("+m") >= 0 ? "esayuiDate required" : "esayuiDate"} data-pid={el.pid} value={el.val || ""} placeholder={el.edit.indexOf("+m") >= 0 ? "必填" : ""} type="text" onChange={this.EVENT_CHANGE_INPUT.bind(this, el)} readOnly={el.edit.indexOf("+r") >= 0} />
+                    return <input name={el.id} id={el.id} className={el.edit.indexOf("+m") >= 0 ? "esayuiDate required" : "esayuiDate"} data-pid={el.pid} value={el.val || ""} placeholder={el.edit.indexOf("+m") >= 0 ? "必填" : ""} type="text" onChange={this.EVENT_CHANGE_INPUT.bind(this, el)} readOnly={el.edit.indexOf("+r") >= 0} />
+                }
             }
         }
 

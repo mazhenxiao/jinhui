@@ -24,7 +24,7 @@ class Indicators extends React.Component {
             winAllBuiltData:[],/*分期占用土地table*/
             winopenDATA:[],/*alert中选择地块信息(这个里面不包括已经选择过的地块)或者编辑选中的地块*/
             winopenSelId:"",/*alert中保存选择过的地块Id,逗号分隔*/
-            landStageArr:[],/*分期占用土地=相关分期*/
+            landStageArr:{},/*分期占用土地=相关分期*/
         }
     }
 
@@ -68,7 +68,8 @@ class Indicators extends React.Component {
     /*分期占用土地=获取相关分期*/
     evIGetLandStageShow(){
         var th=this;
-        var id=th.state.treeId;
+        let status=th.props.local.location.query.status;
+        var id=status=="add"?iss.id.id:iss.id.parentid;
         iss.ajax({
             url: "/Stage/IGetLandStageShow",
             type: "get",
@@ -128,27 +129,24 @@ class Indicators extends React.Component {
         let th=this;
         let list = th.state.winAllBuiltData;
         let landStageArr=th.state.landStageArr;
-        if (list.length) {
+        
             
-            return list.map((obj, index) => {
-                return <tr id={obj.ID} key={obj.ID}>
-                    <td>{index + 1}</td>
-                    <td>{obj.Name}</td>
-                    <td>{obj.FieldList[1].val}</td>
-                    <td>{obj.IsAllDevel==1?"是":"否"}</td>
-                    <td>{obj.FieldList[2].val}</td>
-                    <td>{obj.FieldList[5].val}</td>
-                    <td>{landStageArr[obj.ID]}</td>
-                    <td>
-                        <button type="button" className="funCla funCla_edit" onClick={th.evBuiltEditTr.bind(th,obj)}>编辑</button>
-                        <button type="button" className="funCla funCla_del"  onClick={th.evBuiltDelTr.bind(th,obj)}>删除</button>
-                    </td>
-                </tr>
-            })
+        return list.map((obj, index) => {
+            return <tr id={obj.ID} key={obj.ID}>
+                <td>{index + 1}</td>
+                <td>{obj.Name}</td>
+                <td>{obj.FieldList[1].val}</td>
+                <td>{obj.IsAllDevel==1?"是":"否"}</td>
+                <td>{obj.FieldList[2].val}</td>
+                <td>{obj.FieldList[5].val}</td>
+                <td>{landStageArr[obj.ID]}</td>
+                <td>
+                    <button type="button" className="funCla funCla_edit" onClick={th.evBuiltEditTr.bind(th,obj)}>编辑</button>
+                    <button type="button" className="funCla funCla_del"  onClick={th.evBuiltDelTr.bind(th,obj)}>删除</button>
+                </td>
+            </tr>
+        })
 
-        } else {
-                return <tr><td>无地块</td></tr>
-        }
     }
     
     

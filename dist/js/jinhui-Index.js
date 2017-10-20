@@ -1,4 +1,4 @@
-webpackJsonp([22],{
+webpackJsonp([24],{
 
 /***/ 249:
 /***/ (function(module, exports, __webpack_require__) {
@@ -112,6 +112,13 @@ var main = function () {
       icons.bind("click.bar", function (e) {
         var el = $(e.currentTarget),
             pa = $(el.attr("target"));
+        /*   if(pa.hasClass("active")){
+            pa.removeClass("active");
+            cont.removeClass("active");
+          }else{
+            pa.addClass("active");
+            cont.addClass("active");
+          } */
         pa.toggleClass("active");
         cont.toggleClass("active");
         icons.trigger("EVENT_TOGGLEBAR");
@@ -456,6 +463,7 @@ var ToolsTree = function (_React$Component) {
             this.notIndexChange(); //判断是否刷新了也没
             _toolsTree2.default.bindTree("#tree", function (arg) {
                 _iss2.default.id = arg;
+                localStorage.setItem("treeId", arg);
                 var id = void 0,
                     current = void 0;
                 switch (arg["level_id"]) {
@@ -484,7 +492,9 @@ var ToolsTree = function (_React$Component) {
         value: function notIndexChange() {
             //非首页跳转
             // console.log()
+            _iss2.default.id = localStorage.getItem("treeId");
             if (_iss2.default.id == "") {
+                //iss.id=localStorage.getItem("treeId");
                 _iss2.default.hashHistory.replace("/index");
             }
         }
@@ -533,7 +543,7 @@ var ToolsTree = function (_React$Component) {
 
             var th = this;
             var setBar = function setBar(arg) {
-                console.log(th.state.changeState);
+                // console.log(th.state.changeState)
                 if (th.state.changeState == "" || th.state.changeState == undefined) {
                     return _react2.default.createElement(
                         'div',
