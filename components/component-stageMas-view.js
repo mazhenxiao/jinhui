@@ -3,8 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-import "../../Content/css/table.less";/*表格*/
-import "../../Content/css/tools-dynamicTable.less";//分期规划条件指标
+import "../css/table.less";/*表格*/
+import "../css/tools-dynamicTable.less";//分期规划条件指标
 import DynamicTable from "./tools-dynamicTable.js";
 import Winopen from "./component-indicators-winopen.js"; //弹出选择地块
 

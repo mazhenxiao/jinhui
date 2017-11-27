@@ -10,7 +10,7 @@ import "babel-polyfill";  //兼容ie
 import ProcessApprovalTab from "./component-ProcessApproval-Tab.js"; //导航信息
 import DynamicTable from "./tools-dynamicTable.js"; //地块
 import NewProjectCountView from "./component-newProject-countView.js";//项目基本信息
-import "../../Content/css/tools-dynamicTable.less";//专用css  
+import "../css/tools-dynamicTable.less";//专用css  
 class ApprovalControl extends React.Component {
     constructor(arg) {
         super(arg);

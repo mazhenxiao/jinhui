@@ -2,7 +2,7 @@ var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
 var config = require('./webpack.config');
 new WebpackDevServer(webpack(config), {
-    publicPath:"./Content",
+    publicPath:"./pocs-web",
     hot: true,
     historyApiFallback: false
 }).listen(5001

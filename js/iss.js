@@ -1,7 +1,7 @@
 import {message, notification} from 'antd';
 import "babel-polyfill";  //兼容ie  
 import 'whatwg-fetch';//兼容ie fetch
-require("../../Content/css/antd.min.css");
+require("../css/antd.min.css");
 
 class $iss {
     constructor() {

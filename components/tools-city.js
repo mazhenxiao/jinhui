@@ -1,7 +1,7 @@
 import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-require("../../Content/css/city.less"); 
+require("../css/city.less"); 
 // 城市选择框显示 
 
 let db = ['北京|beijing|bj',

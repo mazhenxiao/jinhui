@@ -2,7 +2,7 @@
 import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-import "../../Content/css/component-stagingInformation-groupIframe.css";//专用css
+import "../css/component-stagingInformation-groupIframe.css";//专用css
 class PlateIframe extends React.Component{
     constructor(arg){
         super(arg);

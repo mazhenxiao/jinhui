@@ -5,9 +5,9 @@ import {Spin, Menu, Table, Dropdown,Icon, Tabs, Row, Col, Button, Select} from '
 import {AreaService} from '../services';
 require("../css/antd.min.css");
 require("../css/payment.css");
-require("../../Content/css/tools-processBar.less");
-require("../../Content/css/button.less");
-require("../../Content/area/areaCss/areaManage.less");
+require("../css/tools-processBar.less");
+require("../css/button.less");
+require("../area/areaCss/areaManage.less");
 
 class PaymentTableList extends Component {
     state = {

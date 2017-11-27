@@ -3,7 +3,7 @@ import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 require("./tools-validate");
 require("./tools-city.js");
-require("../../Content/css/intallment.less");
+require("../css/intallment.less");
 import ToolsCity from "./tools-city.js"; //城市
 class NewProjectCount extends React.Component {
     constructor(arg) {
@@ -291,7 +291,7 @@ class NewProjectCount extends React.Component {
     }
 
     xmViewError(event) {
-        $(event.target).attr("src", "../../Content/img/xmViewError.png");
+        $(event.target).attr("src", "../img/xmViewError.png");
     }//加载暂无
     BIND_ONLOAD(event){
         let th=this;
@@ -307,7 +307,7 @@ class NewProjectCount extends React.Component {
             	var src_one=iss.mapEUrl + "/map/mapmark?project_id=" + th.state.ID;
             	var src_two="";
                 if(res["rows"]==0){
-                	src_two="../../Content/img/xmViewError.png";
+                	src_two="../img/xmViewError.png";
                 }else{
                 	src_two=iss.mapEUrl + "/Map/Project?project_id=" + th.state.ID + "&project_map_id=project" + th.state.ID;
                 	iss.evCarouselActive(th,src_two);
@@ -526,7 +526,7 @@ class NewProjectCount extends React.Component {
                                     </th>
                                     <td>
                                         <input readOnly="readonly" onClick={this.handChooseTo.bind(this)} id="PRINCIPALNAME" value={this.state.PRINCIPALNAME || ""} className="inputTextBox boxSizing" type="text" />
-                                        <img className="symbol headIcon" src="../../Content/img/head-icon.png" />
+                                        <img className="symbol headIcon" src="../img/head-icon.png" />
                                     </td>
 
                                     <th>
@@ -554,11 +554,11 @@ class NewProjectCount extends React.Component {
                     <div id="myCarousel" className="carousel slide carouselStyle">
                         <div className="carousel-inner">
                             <div className="item">
-                                <img className="fullScreenIcon" src="../../Content/img/fullScreen.png" onClick={this.BIND_maps.bind(this)} title="全屏" />
+                                <img className="fullScreenIcon" src="../img/fullScreen.png" onClick={this.BIND_maps.bind(this)} title="全屏" />
                                 <iframe id="iframe2" ref="iframe2" src={this.state.iframeURL2} onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="291"></iframe>
                             </div>
                             <div className="item active">
-                                <img className="fullScreenIcon" src="../../Content/img/fullScreen.png" onClick={this.BIND_mapmark.bind(this)} title="全屏" />
+                                <img className="fullScreenIcon" src="../img/fullScreen.png" onClick={this.BIND_mapmark.bind(this)} title="全屏" />
                                 <iframe id="iframe1" ref="iframe1" src={this.state.iframeURL1}    onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="291"></iframe>
                             </div>
                         </div>
