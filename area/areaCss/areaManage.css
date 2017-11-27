@@ -1,0 +1,49 @@
+/*面积管理样式*/
+.areaManage {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.areaTopbtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 300;
+}
+.areaStatus {
+  display: inline-block;
+}
+.areaVeSel {
+  float: left;
+  padding-right: 30px;
+}
+.areaStatus {
+  float: left;
+  line-height: 28px;
+  font-size: 12px;
+  color: #999;
+}
+.areaUnit {
+  display: inline-block;
+  line-height: 28px;
+  font-size: 12px;
+  padding-right: 30px;
+}
+.areaSession {
+  clear: both;
+}
+.areaSession20 {
+  padding-top: 20px;
+}
+.areaSession16 {
+  padding-top: 16px;
+}
+.areaManage .JH-HeadTab .JH-HeadList li {
+  padding: 7px 8px;
+}
+.PosRight {
+  top: 6px;
+}
+.PosRight .jh_btn_save {
+  padding-right: 6px;
+}

@@ -1,0 +1,84 @@
+.peripheral {
+  position: relative;
+  top: 0;
+  left: 0;
+  color: #5b5b5b;
+  padding: 10px;
+}
+.peripheral .peripheralList ul {
+  height: 40px;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 11;
+}
+.peripheral .peripheralList ul li {
+  position: relative;
+  color: #fff;
+  display: inline-block;
+  height: 40px;
+  cursor: pointer;
+  line-height: 40px;
+  border-left: none;
+  padding-left: 25px;
+  background: #337ab7;
+  border-bottom-color: transparent;
+}
+.peripheral .peripheralList ul li.active {
+  height: 40px;
+  background: skyblue;
+  font-size: 14px;
+}
+.peripheral .peripheralList ul li.active:after {
+  border-color: transparent transparent transparent skyblue;
+}
+.peripheral .peripheralList ul li:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border: 20px solid #fff;
+  border-color: transparent transparent transparent #fff ;
+}
+.peripheral .peripheralList ul li:after {
+  content: '';
+  position: absolute;
+  right: -40px;
+  top: 0;
+  width: 0;
+  height: 0;
+  border: 20px solid #337ab7;
+  border-color: transparent transparent transparent #337ab7;
+  z-index: 9;
+}
+.peripheral .peripheralList .peripheralBox {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  border: #ccc solid 1px;
+  padding: 10px;
+  min-height: 300px;
+  background: #fdfdfd;
+}
+.peripheral .peripheralList .peripheralBox table tr td {
+  color: #5b5b5b;
+  padding: 5px 4.8px;
+  position: relative;
+  border: #ccc solid 1px;
+}
+.peripheral .peripheralList .peripheralBox table tr td:nth-child(1),
+.peripheral .peripheralList .peripheralBox table tr td:nth-child(2) {
+  border-right: none;
+}
+.peripheral .peripheralList .peripheralBox table tr td textarea {
+  width: 100%;
+  outline: none;
+  border: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 44px;
+}

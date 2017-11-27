@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<XMLGridTitle>
+  <!--面积列表头部-->
+  <AreaTitle>
+    <GridTitle>
+      <!--表头行数-->
+      <TitleRowCount>2</TitleRowCount>
+      <!--表头行属性，rindex为行号-->
+      <TitleRowInfo field ="PRODUCTNAME" align="center" name="业态/楼栋" width="0" edit="+r" titleUserd="AreaBuildEdit"/>
+      <TitleRowInfo field ="ISHAVEPROPERTYNAME" align="center" name="是否有产权" width="0" edit="+r" titleUserd="AreaBuildEdit"/>
+      <TitleRowInfo field ="ISDECORATIONNAME" align="center" name="是否精装" width="0" edit="+r" titleUserd="AreaBuildEdit"/>
+      <TitleRowInfo field ="STOREYHEIGHTNAME" align="center" name="层高属性" width="0" edit="+r" titleUserd="AreaBuildEdit"/>
+      <TitleRowInfo field ="STANDARDFLOORHEIGHT" align="center" name="标准层层高(m)" width="0" edit="+r" titleUserd=""/>
+      <TitleRowInfo field ="" align="center" name="总建筑面积（㎡）" width="0" titleUserd="AreaBuildEdit">
+        <TitleRowInfo field ="TOTALBUILDINGAREA" align="center" name="总面积" width="0" />
+        <TitleRowInfo field ="UPPERBUILDINGAREA" align="center" name="地上" width="0" />
+        <TitleRowInfo field ="UNDERBUILDINGAREA" align="center" name="地下" width="0" />
+      </TitleRowInfo>
+      <TitleRowInfo field ="" align="center" name="实际建筑面积（㎡）" width="0" titleUserd="AreaBuildEdit">
+        <TitleRowInfo field ="TOTALBUILDINGAREA_ACT" align="center" name="总实际面积" width="0" />
+        <TitleRowInfo field ="UPPERBUILDINGAREA_ACT" align="center" name="地上" width="0" />
+        <TitleRowInfo field ="UNDERBUILDINGAREA_ACT" align="center" name="地下" width="0"/>
+      </TitleRowInfo>
+      <TitleRowInfo field ="" align="center" name="可租售面积（㎡/个）" width="0" titleUserd="AreaBuildEdit">
+        <TitleRowInfo field ="TOTALRENTALSALEAREA" align="center" name="总可租售面积" width="0" />
+        <TitleRowInfo field ="TOTALSALEAREA" align="center" name="总可售面积" width="0" />
+        <TitleRowInfo field ="UPPERSALEAREA" align="center" name="地上—可售" width="0"/>
+        <TitleRowInfo field ="UNDERSALEAREA" align="center" name="地下—可售" width="0" />
+        <TitleRowInfo field ="TOTALRENTALAREA" align="center" name="总可租面积" width="0" />
+        <TitleRowInfo field ="UPPERRENTALAREA" align="center" name="地上—可租" width="0" />
+        <TitleRowInfo field ="UNDERRENTALAREA" align="center" name="地下—可租" width="0" />
+      </TitleRowInfo>
+      <TitleRowInfo field ="" align="center" name="非可租售面积（㎡/个）" width="0" titleUserd="AreaBuildEdit">
+        <TitleRowInfo field ="TOTALUNRENTALSALEAREA" align="center" name="总非可租售面积" width="0" />
+        <TitleRowInfo field ="UPPERUNRENTALSALEAREA" align="center" name="地上—非可租售" width="0" />
+        <TitleRowInfo field ="UNDERUNRENTALSALEAREA" align="center" name="地下—非可租售" width="0" />
+      </TitleRowInfo>
+      <TitleRowInfo field ="" align="center" name="赠送面积（㎡）" width="0"  titleUserd="AreaBuildEdit" >
+        <TitleRowInfo field ="TOTALGIFTAREA" align="center" name="总赠送面积" width="0" />
+        <TitleRowInfo field ="UPPERGIFTAREA" align="center" name="地上赠送" width="0" />
+        <TitleRowInfo field ="UNDERGIFTAREA" align="center" name="地下赠送" width="0" />
+      </TitleRowInfo>
+      <TitleRowInfo field ="" align="center" name="批量精装修" width="0" titleUserd="AreaBuildEdit">
+        <TitleRowInfo field ="FINEHOUSEAREA" align="center" name="批量精装修套内面积" width="0"/>
+        <TitleRowInfo field ="FINEBUILDAREA_ACT" align="center" name="精装修对应实际建筑面积" width="0"/>
+        <TitleRowInfo field ="FINEDECORATIONNUM" align="center" name="精装修户数" width="0"/>
+      </TitleRowInfo>
+      <TitleRowInfo field ="" align="center" name="层数" width="0" titleUserd="AreaEdit">
+        <TitleRowInfo field ="TOTALFLOOR" align="center" name="小计" width="0"/>
+        <TitleRowInfo field ="UPPERFLOOR" align="center" name="地上层数" width="0"/>
+        <TitleRowInfo field ="UNDERFLOOR" align="center" name="地下层数" width="0"/>
+      </TitleRowInfo>
+      <TitleRowInfo field ="APARTMENTNUM" align="center" name="单元数" width="0" titleUserd="AreaBuildEdit"/>
+      <TitleRowInfo field ="ELEVATORNUM" align="center" name="电梯数" width="0" titleUserd="AreaBuildEdit"/>
+      <TitleRowInfo field ="AVGHOUSEAREA" align="center" name="销售单位平均可售面积(㎡)" width="0" titleUserd="AreaBuildEdit"/>
+      <TitleRowInfo field ="HOUSENUM" align="center" name="住宅户数" width="0" titleUserd="AreaBuildEdit"/>
+      <TitleRowInfo field ="VILLACARPORTNUM" align="center" name="别墅车库门数量（个）" width="0" titleUserd="AreaBuildEdit"/>
+      <TitleRowInfo field ="BUILDINGBASEAREA" align="center" name="建筑物基底面积（㎡）" width="0" titleUserd="AreaBuildEdit"/>
+      <TitleRowInfo field ="PRODUCTTYPEAREA" align="center" name="各产品形态用地面积(㎡)" width="0" titleUserd=""/>
+    </GridTitle>
+  </AreaTitle>
+  <AreaBuildTitle>
+    <GridTitle>
+      <!--表头行数-->
+      <TitleRowCount>2</TitleRowCount>
+      <TitleRowInfo field ="productName" align="center" name="楼栋名称" width="0" edit="+r"/>
+      <!--表头行属性，rindex为行号-->
+      <TitleRowInfo field ="" align="center" name="层数" width="0" >
+        <TitleRowInfo field ="totalFloor" align="center" name="总层数" width="0"/>
+        <TitleRowInfo field ="upperFloor" align="center" name="地上层数" width="0"/>
+        <TitleRowInfo field ="underFloor" align="center" name="地下层数" width="0"/>
+      </TitleRowInfo>
+      <TitleRowInfo field ="apartmentNum" align="center" name="单元数" width="0" />
+      <TitleRowInfo field ="elevatorNum" align="center" name="电梯数" width="0" />
+      <TitleRowInfo field ="villacarportNum" align="center" name="别墅车库门数量（个）" width="0" />
+    </GridTitle>
+  </AreaBuildTitle>
+  <!--价格列表滚动头部-->
+  <PriceTitleColumns>
+    <GridTitle>
+      <!--表头行数-->
+      <TitleRowCount>1</TitleRowCount>
+      <TitleRowInfo field ="PRODUCTTYPENAME" align="center" name="楼栋/业态" width="0" />
+      <TitleRowInfo field ="ISHAVEPROPERTY" align="center" name="是否有产权" width="0" />
+      <TitleRowInfo field ="ISDECORATION" align="center" name="是否精装" width="0" />
+      <TitleRowInfo field ="STOREYHEIGHT" align="center" name="层高属性" width="0" />
+      <TitleRowInfo field ="STANDARDFLOORHEIGHT" align="center" name="标准层层高" width="0" />
+      <TitleRowInfo field ="UPPERSALEAREA" align="center" name="地上可售面积（㎡）" width="0" />
+      <TitleRowInfo field ="UNDERSALEAREA" align="center" name="地下可售面积（㎡）" width="0" />
+      <TitleRowInfo field ="TOTALSALEAREA" align="center" name="总可售面积（㎡）" width="0" />
+      <TitleRowInfo field ="AVERAGEPRICE" align="center" name="均价（元/㎡）" width="0" edit="+r"/>
+      <TitleRowInfo field ="PRICE" align="center" name="货值（万元）" width="0" />
+    </GridTitle>
+  </PriceTitleColumns>
+  <!--价格列表滚动头部-->
+</XMLGridTitle>

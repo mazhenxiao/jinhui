@@ -1,0 +1,5 @@
+.BTN_GROUP li {
+  display: inline-block;
+  margin-left: 5px;
+  cursor: pointer;
+}

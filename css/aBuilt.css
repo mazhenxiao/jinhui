@@ -1,0 +1,131 @@
+/*aBuilt.less文件*/
+.modal-title {
+  font-size: 16px;
+}
+.aBuiltMain {
+  padding: 0 20px 20px;
+  font-size: 12px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  height: 400px;
+}
+.aBuiltMain .aBuilt_Title {
+  width: 100%;
+  font-size: 14px;
+  margin: 12px 0 2px;
+  line-height: 40px;
+  border-bottom: 1px solid #c9c9c9;
+}
+.aBuiltMain .aBuilt_Title span {
+  display: inline-block;
+}
+.aBuiltMain .aBuilt_Title span:first-child {
+  line-height: 38px;
+  margin-right: 16px;
+  padding-right: 10px;
+  border-bottom: 2px solid #31395d;
+}
+.aBuiltMain .aBuilt_Title span.radioSpan {
+  float: right;
+  margin-left: 16px;
+}
+.aBuiltMain .aBuilt_Title span.radioSpan input[type=radio] {
+  margin: 0;
+  vertical-align: middle;
+}
+.aBuiltMain .aBuilt_Con {
+  height: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.aBuiltMain .aBuilt_Con li {
+  position: relative;
+  float: left;
+  width: 33.33%;
+  min-height: 30px;
+  line-height: 30px;
+  margin-top: 5px;
+  padding-left: 110px;
+  padding-right: 5px;
+}
+.aBuiltMain .aBuilt_Con li label {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 110px;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  font-weight: normal;
+  margin-bottom: 0px;
+  padding-right: 6px;
+  text-align: right;
+}
+.aBuiltMain .aBuilt_Con li input {
+  border: #ddd solid 1px;
+  width: 100%;
+  max-width: 160px;
+  height: 28px;
+}
+.aBuiltMain .aBuilt_Con li input[readonly] {
+  background: #ddd;
+}
+.aBuiltMain .aBuilt_Con li .unitSpan {
+  position: relative;
+  right: 0;
+  top: 50%;
+  padding-left: 3px;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  text-align: left;
+}
+.aBuiltMain .aBuilt_Con li:nth-child(2) {
+  width: 66.67%;
+}
+.aBuiltMain .aBuilt_Con.hide {
+  display: none;
+}
+.aBuiltMain .builtAlertTable {
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-size: 12px;
+}
+.aBuiltMain .builtAlertTable tr {
+  background: #fff;
+}
+.aBuiltMain .builtAlertTable td {
+  border: none;
+  vertical-align: middle;
+  text-align: left;
+  padding: 0;
+}
+.aBuiltMain .builtAlertTable thead tr {
+  border-top: 1px solid #ccc;
+  background: #f5f5f5;
+}
+.aBuiltMain .builtAlertTable tbody label {
+  font-weight: normal;
+  margin-bottom: 0px;
+  padding-right: 6px;
+  text-align: right;
+  width: 100%;
+}
+.aBuiltMain .builtAlertTable tbody input {
+  border: none;
+  height: 28px;
+  width: auto;
+  width: -moz-calc(96%);
+  width: -webkit-calc(96%);
+  width: calc(96%);
+  margin: 2px;
+  border: 1px solid #ddd;
+}
+.aBuiltMain .builtAlertTable tbody input[readonly] {
+  background: #eee;
+}
+.aBuiltMain .builtAlertTable.hide {
+  display: none;
+}
