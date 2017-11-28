@@ -28,10 +28,13 @@ app.use(async (ctx,next) => {
 router.get('/index', async (ctx, next) => {
    // this // ctx.render("index",{layout:false})
    await ctx.render("index",{layout:false})
-}); 
+})
+.get('/login',async (ctx,next)=>{
+    await ctx.render("login",{layout:false})
+}) 
 
-app.listen(3000,arg=>{
-    c.exec("npm run dev");
+app.listen(3000,"jinhui",arg=>{
+   // c.exec("npm run dev");
 });
 
-c.exec('start http://localhost:3000/index/#/');
+c.exec('start http://www.jinhui.com:3000/login');

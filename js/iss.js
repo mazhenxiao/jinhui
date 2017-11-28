@@ -148,7 +148,8 @@ class $iss {
             } else if (_da["errorcode"] && _da.errorcode == "302") {
                 iss.popover({content: "登录超时，请重新登录！"});
                 setTimeout(function () {
-                    top.window.location.href = "/account/Login";
+                    debugger
+                    top.window.location.href = "/Login.html";
                 }, 2000);
                 return false;
             } else if (_da["errorcode"] == "300") {
