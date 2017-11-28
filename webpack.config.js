@@ -20,7 +20,7 @@ var config = {
     output: {
         path: path.join(__dirname, '/dist/js/'),
         filename: "[name].js",
-        publicPath:path.join(__dirname,'/'),
+        publicPath:'/dist/js/',
         chunkFilename: 'chunk-[name].js'
     },
     module: {
