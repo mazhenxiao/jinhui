@@ -8,7 +8,7 @@ new WebpackDevServer(webpack(config), {
 }).listen(5001
     ,'localhost', function (err, result) {
     var c = require('child_process');
-        c.exec('start http://localhost:5001');
+        c.exec('start http://localhost:5001/index/#/');
         if (err) {
             console.log(err);
         }

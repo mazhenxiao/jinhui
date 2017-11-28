@@ -133,7 +133,8 @@ class $iss {
 
 
         $.extend(arg, $o);
-        //   arg.url=arg.url.indexOf("http://")>-1? arg.url:this.url(arg.url);
+        arg.url=arg.url.indexOf("http://")>-1? arg.url:this.url(arg.url);
+        console.log("222");
         $.ajax(arg).done((da) => {
 
             var _da = da;

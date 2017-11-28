@@ -8,6 +8,6 @@
   "plugins": [["import", {
     "libraryName": "antd",
     "css": true // or 'css'
-  }]]
+  }],"transform-async-to-generator"]
   
 }

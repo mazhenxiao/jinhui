@@ -7,11 +7,12 @@ var DedupePlugin = require("webpack/lib/optimize/DedupePlugin"); //多文件
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 // console.log(path.join(__dirname,"/source/"));
 //const extractLESS = new ExtractTextPlugin('./Content/dist/css/[name].min.css');
-var WebpackDevServer = require('webpack-dev-server');
-console.log( path.join(__dirname, '/dist/js/'))
+//var WebpackDevServer = require('webpack-dev-server');
+var c = require('child_process');
+
 var config = {
     entry: {
-        "WebpackDevServer": "webpack/hot/dev-server",
+      //  "WebpackDevServer": "webpack-dev-server/client?http://localhost:5001/",
         "jinhui-Index": path.join(__dirname, '/js/main.js'), //主入口文件
         "jinhui-areaMa": path.join(__dirname, '/js/areaMa.js'),/*面积管理*/
         "jinhui-newOpen": path.join(__dirname, '/js/newOpen.js') //无框架文件
@@ -19,7 +20,7 @@ var config = {
     output: {
         path: path.join(__dirname, '/dist/js/'),
         filename: "[name].js",
-        publicPath: path.join(__dirname,'/dist'),
+        publicPath:path.join(__dirname,'/'),
         chunkFilename: 'chunk-[name].js'
     },
     module: {
@@ -54,7 +55,7 @@ var config = {
         ]
     },
     plugins: [
-
+        
         new CommonsChunkPlugin({
             name: "chunk",
             minChunks: 2
@@ -70,9 +71,9 @@ var config = {
         new DedupePlugin({
             'process.env': { NODE_ENV: '"production"' }
         }),
-        new webapck.DefinePlugin({  //热替换
+       /*  new webapck.DefinePlugin({  //热替换
             'process.env.NODE_ENV': '"development"'
-        }),
+        }), */
         new webapck.HotModuleReplacementPlugin() //热替换
         /*  new ImageminPlugin({
              disable: process.env.NODE_ENV !== 'production', // Disable during development 
@@ -91,4 +92,5 @@ var config = {
         } */
     },
 }
+c.exec("npm run build");
 module.exports = config;
