@@ -179,13 +179,13 @@ class BuildingFormatEdit extends Component {
             let remain = [];
             if (record["levelId"] == "1") {
                 //点击的一级楼栋删除，则删除楼栋与楼栋下的业态
-                remain = dataSource.filter(item => item.id !== id || item.parentid != id);
+                remain = dataSource.filter(item => item.id != id && item.parentid != id);
             } else {
                 //点击的二级业态删除，则删除业态，如果删除之后，该楼栋没有其他的业态，则楼栋也删除
                 let parentId = record["parentid"];
                 let other = dataSource.filter(item => item.parentid == parentId && item.id != id);
                 if (other.length === 0) {
-                    remain = dataSource.filter(item => item.id !== parentId || item.parentid != parentId);
+                    remain = dataSource.filter(item => item.id != parentId && item.parentid != parentId);
                 } else {
                     remain = dataSource.filter(item => item.parentid != parentId);
                 }
@@ -243,8 +243,7 @@ class BuildingFormatEdit extends Component {
         AreaService.saveFormatData(paramsValue)
             .then(result => {
                 if (result === "success") {
-                    console.log("保存成功");
-                    //TODO message.info("保存成功");
+                    iss.info("保存成功!");
                     this.props.onHideModal && this.props.onHideModal("reload");
                 }
                 else {
@@ -376,7 +375,6 @@ class BuildingFormatEdit extends Component {
     render() {
         const {loading, land, buildingNo, standardHeight, dataSource} = this.state;
         const {conditionData} = this.props;
-
         return (
             <Modal
                 title={"业态/楼栋维护"}

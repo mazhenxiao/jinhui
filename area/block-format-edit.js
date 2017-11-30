@@ -179,8 +179,7 @@ class BlockFormatEdit extends Component {
         AreaService.saveFormatData(paramsValue)
             .then(result => {
                 if (result === "success") {
-                    console.log("保存成功");
-                    //TODO message.info("保存成功");
+                    iss.info("保存成功!");
                     this.props.onHideModal && this.props.onHideModal("reload");
                 }
                 else {
