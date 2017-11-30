@@ -1,125 +1,511 @@
-
 <!DOCTYPE html>
 <html>
 
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width"/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="pragma" content="no-cache"/>
     <title>Login</title>
     <style type="text/css">
-        body{min-width:1200px;font:12px/18px "Microsoft Yahei";font-weight:lighter;color:#333;-webkit-font-smoothing:antialiased}a{color:#333;text-decoration:none;cursor:pointer;outline:0 none}a:hover{text-decoration:none;color:#0b4082}a:focus{-moz-outline-style:none;border:0}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,p,blockquote,th,td{margin:0;padding:0}header,footer,article,aside,section,nav,menu,hgroup,details,dialog,figure,figcaption{display:block}ol,li,ul,dl,dt,dd{list-style:none}fieldset,img{border:0}button,submit,input,select{vertical-align:middle}button,submit{cursor:pointer}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:lighter}table{border-collapse:collapse;border-spacing:0}sup{vertical-align:text-top}sub{vertical-align:text-bottom}select,button{font-family:inherit;font-size:inherit;font-weight:inherit;outline-style:none;outline-width:0;padding:0;margin:0}b,em,i{display:inline-block;font-weight:normal;font-style:normal}.clearfix:after{content:".";display:block;height:0;clear:both;visibility:hidden}.clearfix{zoom:1}.container{width:1200px;position:relative;margin:0 auto}.fl{float:left}.fr{float:right}body{background:#094C8D}.boxSizing{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;-o-box-sizing:border-box;-ms-box-sizing:border-box;box-sizing:border-box}.hide{display:none}.mTop0{margin-top:0 !important}.contentBox{background:#fff;padding-top:10px}.userLogin{display:inline-block;line-height:79px;height:60px;padding-left:40px;position:relative}.userLogin .userTancen{display:none;position:absolute;bottom:-137px;right:0;height:137px;width:260px;z-index:999;background:#0b4082;padding:10px}.userLogin .userTancen li{height:40px;line-height:40px;float:left;width:50%}.userLogin .userTancen li a .redFont{color:##e53935}.userLogin:hover .userTancen{display:block}.userLogin .userName{padding-left:20px;background-image:url(../img/userName.png);background-repeat:no-repeat;background-position:left center}.userLogin b{color:#fff;cursor:pointer}.userLogin img{display:inline-block;margin-right:10px;width:30px}.header{height:60px;width:100%;border-bottom:1px solid #efd4a5;padding:0 10px;background:url(../img/index_01.png) #094c8e}.stateSelect .iconBoxJin{display:inline-block;height:20px;width:20px;float:right;margin-left:0 !important}.logo{height:auto;width:152px}.logo img{margin-top:7px}.xtName{height:60px;line-height:60px;color:#EFD4A5;font-size:18px}.headerMenu{height:60px;margin-left:50px}.headerMenu ul li{height:60px;line-height:80px;padding:0 20px;float:left;position:relative}.headerMenu ul li a{display:inline-block;color:#fff;font-size:14px;height:59px}.headerMenu ul li a.active,.headerMenu ul li a:hover{color:#EFD4A5;border-bottom:2px solid #EFD4A5}.headerMenu ul li .subMenu{display:none;position:absolute;left:18px;top:60px;z-index:10;width:450px;height:40px;background:#0b4082}.headerMenu ul li .subMenu li{padding:0 10px;display:inline-block}.headerMenu ul li .subMenu li a{float:left;line-height:40px;height:40px}.headerMenu ul li .subMenu li a:hover{border:0;background:#0b4082}.headerMenu ul li .subMenu li .active{color:#EFD4A5;border-bottom:0}.headerMenu ul li:hover .subMenu{display:block}.loginBox{width:100%;background:rgba(49, 57, 93, .5)}.loginSammlBox{position:absolute;top:150px;left:50%;height:300px;padding:20px 0;width:450px;margin-left:-225px;background:rgba(0, 0, 0, .5)}.loginSammlBox .loginLogo{height:40px;line-height:40px;width:100%;font-size:20px;color:#fff;text-align:center}.loginSammlBox form{padding:40px 50px}.loginSammlBox form .userBoxStyle{display:block;height:40px;line-height:40px;width:100%;border:1px solid #ddd;margin-bottom:20px;padding:4px 10px;border-radius:3px}.loginSammlBox form .userButton{display:inline-block;height:40px;width:100%;border:0;background:#06C;color:#fff;font-size:14px;border-radius:3px;text-align:center;line-height:40px;cursor:pointer}.loginSammlBox form .userButton_1{position:relative;display:none;//display:inline-block;height:40px;width:100%;border:0;background-color:#999;color:#fff;font-size:14px;border-radius:3px;text-align:center;line-height:40px;top:-40px;background-image:url(../img/loading.gif);background-repeat:no-repeat;background-position:116px 10px;background-size:20px}#itie9{position:fixed;top:0;left:0;width:100%;background:#ff5574;color:#fff;font-size:20px;text-align:center;padding:30px 0}.alertBox{position:absolute;width:350px;margin-left:-175px;height:20px;top:230px;left:50%;color:red;display:none;text-align:center}
+        body {
+            min-width: 1200px;
+            font: 12px/18px "Microsoft Yahei";
+            font-weight: lighter;
+            color: #333;
+            -webkit-font-smoothing: antialiased
+        }
+
+        a {
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+            outline: 0 none
+        }
+
+        a:hover {
+            text-decoration: none;
+            color: #0b4082
+        }
+
+        a:focus {
+            -moz-outline-style: none;
+            border: 0
+        }
+
+        body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, p, blockquote, th, td {
+            margin: 0;
+            padding: 0
+        }
+
+        header, footer, article, aside, section, nav, menu, hgroup, details, dialog, figure, figcaption {
+            display: block
+        }
+
+        ol, li, ul, dl, dt, dd {
+            list-style: none
+        }
+
+        fieldset, img {
+            border: 0
+        }
+
+        button, submit, input, select {
+            vertical-align: middle
+        }
+
+        button, submit {
+            cursor: pointer
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-size: inherit;
+            font-weight: lighter
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0
+        }
+
+        sup {
+            vertical-align: text-top
+        }
+
+        sub {
+            vertical-align: text-bottom
+        }
+
+        select, button {
+            font-family: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            outline-style: none;
+            outline-width: 0;
+            padding: 0;
+            margin: 0
+        }
+
+        b, em, i {
+            display: inline-block;
+            font-weight: normal;
+            font-style: normal
+        }
+
+        .clearfix:after {
+            content: ".";
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden
+        }
+
+        .clearfix {
+            zoom: 1
+        }
+
+        .container {
+            width: 1200px;
+            position: relative;
+            margin: 0 auto
+        }
+
+        .fl {
+            float: left
+        }
+
+        .fr {
+            float: right
+        }
+
+        body {
+            background: #094C8D
+        }
+
+        .boxSizing {
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -o-box-sizing: border-box;
+            -ms-box-sizing: border-box;
+            box-sizing: border-box
+        }
+
+        .hide {
+            display: none
+        }
+
+        .mTop0 {
+            margin-top: 0 !important
+        }
+
+        .contentBox {
+            background: #fff;
+            padding-top: 10px
+        }
+
+        .userLogin {
+            display: inline-block;
+            line-height: 79px;
+            height: 60px;
+            padding-left: 40px;
+            position: relative
+        }
+
+        .userLogin .userTancen {
+            display: none;
+            position: absolute;
+            bottom: -137px;
+            right: 0;
+            height: 137px;
+            width: 260px;
+            z-index: 999;
+            background: #0b4082;
+            padding: 10px
+        }
+
+        .userLogin .userTancen li {
+            height: 40px;
+            line-height: 40px;
+            float: left;
+            width: 50%
+        }
+
+        .userLogin .userTancen li a .redFont {
+            color: # #e53935
+        }
+
+        .userLogin:hover .userTancen {
+            display: block
+        }
+
+        .userLogin .userName {
+            padding-left: 20px;
+            background-image: url(../img/userName.png);
+            background-repeat: no-repeat;
+            background-position: left center
+        }
+
+        .userLogin b {
+            color: #fff;
+            cursor: pointer
+        }
+
+        .userLogin img {
+            display: inline-block;
+            margin-right: 10px;
+            width: 30px
+        }
+
+        .header {
+            height: 60px;
+            width: 100%;
+            border-bottom: 1px solid #efd4a5;
+            padding: 0 10px;
+            background: url(../img/index_01.png) #094c8e
+        }
+
+        .stateSelect .iconBoxJin {
+            display: inline-block;
+            height: 20px;
+            width: 20px;
+            float: right;
+            margin-left: 0 !important
+        }
+
+        .logo {
+            height: auto;
+            width: 152px
+        }
+
+        .logo img {
+            margin-top: 7px
+        }
+
+        .xtName {
+            height: 60px;
+            line-height: 60px;
+            color: #EFD4A5;
+            font-size: 18px
+        }
+
+        .headerMenu {
+            height: 60px;
+            margin-left: 50px
+        }
+
+        .headerMenu ul li {
+            height: 60px;
+            line-height: 80px;
+            padding: 0 20px;
+            float: left;
+            position: relative
+        }
+
+        .headerMenu ul li a {
+            display: inline-block;
+            color: #fff;
+            font-size: 14px;
+            height: 59px
+        }
+
+        .headerMenu ul li a.active, .headerMenu ul li a:hover {
+            color: #EFD4A5;
+            border-bottom: 2px solid #EFD4A5
+        }
+
+        .headerMenu ul li .subMenu {
+            display: none;
+            position: absolute;
+            left: 18px;
+            top: 60px;
+            z-index: 10;
+            width: 450px;
+            height: 40px;
+            background: #0b4082
+        }
+
+        .headerMenu ul li .subMenu li {
+            padding: 0 10px;
+            display: inline-block
+        }
+
+        .headerMenu ul li .subMenu li a {
+            float: left;
+            line-height: 40px;
+            height: 40px
+        }
+
+        .headerMenu ul li .subMenu li a:hover {
+            border: 0;
+            background: #0b4082
+        }
+
+        .headerMenu ul li .subMenu li .active {
+            color: #EFD4A5;
+            border-bottom: 0
+        }
+
+        .headerMenu ul li:hover .subMenu {
+            display: block
+        }
+
+        .loginBox {
+            width: 100%;
+            background: rgba(49, 57, 93, .5)
+        }
+
+        .loginSammlBox {
+            position: absolute;
+            top: 150px;
+            left: 50%;
+            height: 300px;
+            padding: 20px 0;
+            width: 450px;
+            margin-left: -225px;
+            background: rgba(0, 0, 0, .5)
+        }
+
+        .loginSammlBox .loginLogo {
+            height: 40px;
+            line-height: 40px;
+            width: 100%;
+            font-size: 20px;
+            color: #fff;
+            text-align: center
+        }
+
+        .loginSammlBox form {
+            padding: 40px 50px
+        }
+
+        .loginSammlBox form .userBoxStyle {
+            display: block;
+            height: 40px;
+            line-height: 40px;
+            width: 100%;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            padding: 4px 10px;
+            border-radius: 3px
+        }
+
+        .loginSammlBox form .userButton {
+            display: inline-block;
+            height: 40px;
+            width: 100%;
+            border: 0;
+            background: #06C;
+            color: #fff;
+            font-size: 14px;
+            border-radius: 3px;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer
+        }
+
+        .loginSammlBox form .userButton_1 {
+            position: relative;
+            display: none;
+        / / display: inline-block;
+            height: 40px;
+            width: 100%;
+            border: 0;
+            background-color: #999;
+            color: #fff;
+            font-size: 14px;
+            border-radius: 3px;
+            text-align: center;
+            line-height: 40px;
+            top: -40px;
+            background-image: url(../img/loading.gif);
+            background-repeat: no-repeat;
+            background-position: 116px 10px;
+            background-size: 20px
+        }
+
+        #itie9 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #ff5574;
+            color: #fff;
+            font-size: 20px;
+            text-align: center;
+            padding: 30px 0
+        }
+
+        .alertBox {
+            position: absolute;
+            width: 350px;
+            margin-left: -175px;
+            height: 20px;
+            top: 230px;
+            left: 50%;
+            color: red;
+            display: none;
+            text-align: center
+        }
     </style>
 
 </head>
 
 <body>
-    <!--header star-->
-    <div id="header" class="header boxSizing">
-        <div class="logo fl">
-            <img src="/img/logo.png" alt="logo" title="金辉集团" />
-        </div>
-        <div class="xtName fl">金辉集团运营管理平台</div>
+<!--header star-->
+<div id="header" class="header boxSizing">
+    <div class="logo fl">
+        <img src="/img/logo.png" alt="logo" title="金辉集团"/>
     </div>
-    <!--header end-->
-    <!--loginBox-->
-    <div class="loginBox">
-        <div class="loginSammlBox boxSizing">
-            <h3 class="loginLogo">登录 | Login</h3>
-            <form action="" method="post">
-                <input class="userBoxStyle userName boxSizing" type="text" name="name" value="" id="username" placeholder="账号..." />
-                <input class="userBoxStyle userPassword boxSizing" type="password" name="name" value="" id="pwd" placeholder="密码..." />
-                <input class="userButton boxSizing" type="button" name="name" value="登录" id="loginfn" />
-                <span class="userButton_1 boxSizing">正在登录...</span>
-            </form>
-        </div>
-        <div class="alertBox"></div>
+    <div class="xtName fl">金辉集团运营管理平台</div>
+</div>
+<!--header end-->
+<!--loginBox-->
+<div class="loginBox">
+    <div class="loginSammlBox boxSizing">
+        <h3 class="loginLogo">登录 | Login</h3>
+        <form action="" method="post">
+            <input class="userBoxStyle userName boxSizing" type="text" name="name" value="" id="username"
+                   placeholder="账号..."/>
+            <input class="userBoxStyle userPassword boxSizing" type="password" name="name" value="" id="pwd"
+                   placeholder="密码..."/>
+            <input class="userButton boxSizing" type="button" name="name" value="登录" id="loginfn"/>
+            <span class="userButton_1 boxSizing">正在登录...</span>
+        </form>
     </div>
+    <div class="alertBox"></div>
+</div>
 
-    <!--[if lt IE 9]>    
-    <div id="itie9">
-       IE版本过低请升级版本！
-    </div>
-      <script>
-    document.getElementById("loginfn").style.display="none"
+<!--[if lt IE 9]>
+<div id="itie9">
+    IE版本过低请升级版本！
+</div>
+<script>
+    document.getElementById("loginfn").style.display = "none"
 </script>
-   <![endif]-->
+<![endif]-->
 
-   <script src="/source/js/all0.0.1-min.js"></script><!--jquery bootstrap esayui-->
+<script src="/source/js/all0.0.1-min.js"></script><!--jquery bootstrap esayui-->
 
 
-    <script type="text/javascript">
-       // let home = "http://192.168.10.164:8000/"
-       let home = "http://192.168.14.168/"
+<script type="text/javascript">
+    // let home = "http://192.168.10.164:8000/"
+    let home = "http://192.168.14.168/"
 
-        $(function () {
-            var login = function () {
-                var _username = $('#username').val();
-                var _pwd = $('#pwd').val();
-                $.ajax({
-                    url: home+"Account/ILogin",
-                    data: { "UserName": _username, "UserPwd": _pwd },
-                    type: "POST",
-                    dataType: "JSON",
-                    success: function (result) {
-                        if (result.errorcode == 200) {
-                            // window.location.href = "/Home/Index/#/index";
-                            if(result.token){
-                                localStorage.setItem("gi",result.token);
-                                window.location.href = "/index/#/agenty?login=" + _username;
-                            }else{
-                                $(".alertBox").text("登录失败！");
-                            }
-
+    $(function () {
+        var login = function () {
+            var _username = $('#username').val();
+            var _pwd = $('#pwd').val();
+            $.ajax({
+                url: home + "Account/ILogin",
+                data: {"UserName": _username, "UserPwd": _pwd},
+                type: "POST",
+                dataType: "JSON",
+                success: function (result) {
+                    console.log("result", result);
+                    if (result.errorcode == 200) {
+                        // window.location.href = "/Home/Index/#/index";
+                        if (result.token) {
+                            localStorage.setItem("token", result.token);
+                            window.location.href = "/index/#/agenty?login=" + _username;
                         } else {
-                            $(".userButton_1").css("display", "none");
-                            //alert(result.message);
-                            $(".alertBox").text(result.message);
-                            $(".alertBox").css("display", "block");
-
+                            $(".alertBox").text("登录失败！");
                         }
-                    },
-                    error: function (e) {
+
+                    } else {
                         $(".userButton_1").css("display", "none");
-                        //alert("登录失败！")
-                        $(".alertBox").text("登录失败！");
+                        //alert(result.message);
+                        $(".alertBox").text(result.message);
                         $(".alertBox").css("display", "block");
+
                     }
-                });
-            };
-            //login();
-            $("#loginfn").bind('click', function () {
-                $(".userButton_1").css("display", "inline-block");
-                login();
+                },
+                error: function (e) {
+                    $(".userButton_1").css("display", "none");
+                    //alert("登录失败！")
+                    $(".alertBox").text("登录失败！");
+                    $(".alertBox").css("display", "block");
+                }
+            });
+        };
+        //login();
+        $("#loginfn").bind('click', function () {
+            $(".userButton_1").css("display", "inline-block");
+            login();
 
-            });
-            $(".userBoxStyle").bind('focus', function () {
-                $(".alertBox").css("display", "none");
-            });
         });
-    </script>
-    <script>
-        document.onkeydown = function (ev) {
-            if (ev.altKey && ev.key == 1) {
-                haha(1);
-            } else if (ev.altKey && ev.key == 2) {
-                haha(2);
-            }
+        $(".userBoxStyle").bind('focus', function () {
+            $(".alertBox").css("display", "none");
+        });
+    });
+</script>
+<script>
+    document.onkeydown = function (ev) {
+        if (ev.altKey && ev.key == 1) {
+            haha(1);
+        } else if (ev.altKey && ev.key == 2) {
+            haha(2);
+        }
 
+    }
+
+    function haha(arg) {
+        var v = "", p = "";
+        switch (arg) {
+            case 1:
+                v = "everyone";
+                p = "1";
+                break;
+            case 2:
+                v = "chenhao";
+                p = "pretty";
+                break;
         }
-        function haha(arg) {
-            var v = "", p = "";
-            switch (arg) {
-                case 1: v = "everyone"; p = "1"; break;
-                case 2: v = "chenhao"; p = "pretty"; break;
-            }
-            document.querySelector("#username").value = v;
-            document.querySelector("#pwd").value = p;
-            document.querySelector("#loginfn").click()
-        }
-    </script>
+        document.querySelector("#username").value = v;
+        document.querySelector("#pwd").value = p;
+        document.querySelector("#loginfn").click()
+    }
+</script>
 
 </body>
 
