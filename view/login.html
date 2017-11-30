@@ -67,7 +67,7 @@
                         if (result.errorcode == 200) {
                             // window.location.href = "/Home/Index/#/index";
                             if(result.token){
-                                localStorage.setItem("token",result.token);
+                                localStorage.setItem("gi",result.token);
                                 window.location.href = "/index/#/agenty?login=" + _username;
                             }else{
                                 $(".alertBox").text("登录失败！");
