@@ -25,13 +25,19 @@ app.use(async (ctx, next) => {
     // this.render("index",{layout:false})
     await next();
 });
-router.get('/index', async (ctx, next) => {
+router.get('/', async (ctx, next) => {
+    await ctx.render("login", {layout: false})
+})
+.get('/login', async (ctx, next) => {
+    await ctx.render("login", {layout: false})
+})
+.get('/index', async (ctx, next) => {
     // this // ctx.render("index",{layout:false})
     await ctx.render("index", {layout: false})
 })
-    .get('/login', async (ctx, next) => {
-        await ctx.render("login", {layout: false})
-    })
+.get('/AreaInfo', async (ctx, next) => {
+    await ctx.render("AreaInfo", {layout: false})
+})
 
 app.listen(3000, arg => {
     // c.exec("npm run dev");
