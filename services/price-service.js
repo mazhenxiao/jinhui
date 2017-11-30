@@ -11,9 +11,9 @@ export const GetPriceList=({stageversionid,step,projectLevel}=arg)=>{
         url,
         type:"GET",
         data:{
-            stageversionid,
-            step,
-            projectLevel
+            stageversionid,  //项目或版本id
+            step,  //当前阶段
+            projectLevel //级别项目传1，分期前两个传2，后面传3
         }
     }).
     then(arg=>{

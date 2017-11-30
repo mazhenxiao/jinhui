@@ -4,7 +4,7 @@
 import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-require("../../Content/css/IC_peripheral.less");
+require("../css/IC_peripheral.less");
 class ICPeripheral extends React.Component {
     constructor(arg) {
         super(arg)

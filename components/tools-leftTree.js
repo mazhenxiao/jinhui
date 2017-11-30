@@ -20,12 +20,12 @@ class ToolsTree extends React.Component {
     	var th=this;
     	let pathClass=location.pathname;
     	
-    	if(pathClass=="/Home/Index/"){/*项目列表*/
+    	if(pathClass=="/Index/"){/*项目列表*/
     		th.setState({
     			pageClass:"Home",
     			changeState:iss.getQuert("intallment") ? "intallment" : iss.getQuert("newProject")? "newProject":""
     		});
-    	}else if(pathClass=="/AreaInfo/Index/"){/*面积管理*/
+    	}else if(pathClass=="/AreaInfo/"){/*面积管理*/
     		th.setState({
     			pageClass:"AreaInfo",
     			changeState:""

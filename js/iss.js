@@ -1,7 +1,7 @@
 import {message, notification} from 'antd';
 import "babel-polyfill";  //兼容ie  
 import 'whatwg-fetch';//兼容ie fetch
-require("../../Content/css/antd.min.css");
+require("../css/antd.min.css");
 
 class $iss {
     constructor() {
@@ -14,7 +14,7 @@ class $iss {
     }
 
     url(arg) {
-        return "http://192.168.10.164:8000" + (arg || "")
+        return "http://192.168.14.168/" + (arg || "")
     }
 
     pagination() {
@@ -45,6 +45,8 @@ class $iss {
 
     fetch(opt) {
         const {url, ...params} = opt;
+        let token = localStorage.getItem("token");
+        if (!token) window.location.href = "/login"
         let requestInfo = {
             method: opt["type"] ? opt.type : 'POST',
             mode: 'cors',
@@ -55,32 +57,35 @@ class $iss {
                 'Content-Type': 'application/x-www-form-urlencoded',
             }
         };
-        let _URL = url;
+        let _URL = url.replace(/^\\/ig, "");
         if (params) {
             let ParamsStr = "";
             /* new URLSearchParams();
                        for(var li in params["data"]){
                            ParamsStr.append(li,params["data"][li]);
                        } */
-            if(typeof params["data"]=="string"){
-                ParamsStr+="paramsData="+ params["data"];
-            }else{
+            if (typeof params["data"] == "string") {
+                ParamsStr += "paramsData=" + params["data"];
+            } else {
                 for (var li in params["data"]) {
                     ParamsStr += `${li}=${params["data"][li]}&`;
                 }
             }
-            
+
             ParamsStr = ParamsStr.replace(/\&$/ig, "");
+
+            ParamsStr = !!ParamsStr ? `${ParamsStr}&token=${token}` : `token=${token}`;
             // let _data = JSON.stringify(params["data"] || {});
             // let str = _data.replace(/[{}]/ig, "").replace(/:/ig, "=").replace(/\,/ig, "&").replace(/\"/ig, "");
             if (requestInfo.method.toLocaleLowerCase() == "post") {
-                requestInfo.body = ParamsStr
+                requestInfo.body = ParamsStr;
             } else {
                 _URL = url.indexOf("?") >= 0 ? url + "&" + ParamsStr : url + "?" + ParamsStr;
+                // _URL = _URL.indexOf("&")>=0? `&token=${token}`:`token=${token}`;
             }
 
         }
-        //  _URL = _URL.indexOf("http://")>-1? _URL:this.url(_URL);
+        _URL = _URL.indexOf("http://") > -1 ? _URL : this.url(_URL);
         return fetch(_URL, requestInfo)
             .then(res => {
 
@@ -124,16 +129,19 @@ class $iss {
         let $o = JSON.parse(JSON.stringify(opt));
         $o["success"] && delete $o["success"];
         $o["error"] && delete $o["error"];
-
+        let token = localStorage.getItem("token");
+        if (!token) window.location.href = "/login"
         let arg = {
             type: "POST",
-            data: "",
-            cache: false
+            data: {},
+            cache: false,
         }
 
-
-        $.extend(arg, $o);
-        //   arg.url=arg.url.indexOf("http://")>-1? arg.url:this.url(arg.url);
+        arg = {...arg, ...$o};
+        //$.extend(arg, $o);
+        arg.url = arg.url.indexOf("http://") > -1 ? arg.url : this.url(arg.url.replace(/^\//ig, ""));
+        //.indexOf("&")>=0? `&token=${token}`:`token=${token}`;
+        arg.data["token"] = token;
         $.ajax(arg).done((da) => {
 
             var _da = da;
@@ -147,7 +155,8 @@ class $iss {
             } else if (_da["errorcode"] && _da.errorcode == "302") {
                 iss.popover({content: "登录超时，请重新登录！"});
                 setTimeout(function () {
-                    top.window.location.href = "/account/Login";
+                    debugger
+                    top.window.location.href = "/Login.html";
                 }, 2000);
                 return false;
             } else if (_da["errorcode"] == "300") {
@@ -167,9 +176,9 @@ class $iss {
             } else {
                 opt["error"] && opt.error(e, textStatus);
             }
-            console.log("失败");
-            console.log(e.status);
-            console.log(textStatus);
+            /* console.log("失败");
+             console.log(e.status);
+             console.log(textStatus);*/
         });
 
     }
@@ -461,7 +470,7 @@ class $iss {
             width: 800,
             height: 300,
             content: str,
-            multiple:false,            
+            multiple: false,
             pepole: {},
             data: [],
             search: "",
@@ -500,7 +509,7 @@ class $iss {
                 },
                 onDblClick(node) {
                     if (node.type == 8) {
-                        opt.pepole = opt.multiple? opt.pepole:{};
+                        opt.pepole = opt.multiple ? opt.pepole : {};
                         opt.pepole[node.id] = node;
                         render();
                     }
@@ -545,7 +554,7 @@ class $iss {
                             }
 
                         })
-                       
+
                         ul.html(v).addClass("active");
 
                     }
@@ -661,7 +670,7 @@ class $iss {
         let {content, duration, onClose, type} = opt,
             TYPE = "success",
             str = "success,error,info,warning,warn,loading";
-        type = str.indexOf(type)>=0? type:type == "2" ? "success" : "error";
+        type = str.indexOf(type) >= 0 ? type : type == "2" ? "success" : "error";
         TYPE = new RegExp(type).exec(str) || TYPE;
         message[TYPE](content, duration, onClose);
         return

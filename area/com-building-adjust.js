@@ -127,8 +127,7 @@ class ComBuildingAdjust extends Component {
         AreaService.adjustBuildingAreaData(record, buildIds, this.buildingChangeDataArray, this.formatChangeDataArray, singleFormatData)
             .then(result => {
                 if (result === "success") {
-                    console.log("保存成功");
-                    iss.info("保存成功");
+                    iss.info("保存成功!");
                     this.props.onHideModal && this.props.onHideModal("reload");
                 } else {
                     return Promise.reject("保存失败");
@@ -224,7 +223,6 @@ class ComBuildingAdjust extends Component {
                 singleProductTypeValue: e.target.value,
             }
         });
-        console.log("e.target.value", e.target.value);
     };
 
     /**

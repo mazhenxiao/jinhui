@@ -26,9 +26,9 @@ class ToolsList extends React.Component {
     		alert("缺少页面分类和路由地址，去传递去，坑爹玩意");
     	}
         if(pageClass=="Home"){/*项目列表*/
-        	pageUrl="/Home/Index/#/";
+        	pageUrl="/Index/#/";
         }else if(pageClass=="AreaInfo"){/*面积管理*/
-            pageUrl="/AreaInfo/Index/#/"; 
+            pageUrl="/AreaInfo/#/"; 
             //manage
         }
         $(window).trigger("treeLoad");
@@ -53,7 +53,8 @@ class ToolsList extends React.Component {
                 if(res.message=="成功"){
                     sessionStorage.removeItem("userInfo");//清除登陆数据
                     sessionStorage.removeItem("treeId");
-                    window.location.href="/Account/Login";
+                    localStorage.removeItem("token");
+                    window.location.href="/login";
                 }
             },
             error(e){   

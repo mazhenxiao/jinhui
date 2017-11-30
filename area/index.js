@@ -132,7 +132,6 @@ class Index extends Component {
                 this.loadData(true, step, mode, dataKey, versionId);
             })
             .catch(error => {
-                console.log("发生错误", error);
                 iss.error(error);
             })
     };
@@ -197,7 +196,6 @@ class Index extends Component {
                 this.setState({
                     loading: false,
                 });
-                console.error("发生错误", error);
                 iss.error(error);
             });
     };
@@ -253,7 +251,6 @@ class Index extends Component {
                 this.setState({
                     loading: false,
                 });
-                console.error("发生错误", error);
                 iss.error(error);
             });
     };
@@ -269,8 +266,7 @@ class Index extends Component {
         AreaService.createVersion(step, dataKey, mode)
             .then(res => {
                 if (res.rows === "success") {
-                    console.log("版本创建成功");
-                    iss.info("版本创建成功");
+                    iss.info("版本创建成功!");
                 } else {
                     return Promise.reject(res.message || "版本创建失败");
                 }
@@ -289,7 +285,6 @@ class Index extends Component {
                 this.setState({
                     loading: false,
                 });
-                console.error("error", error);
                 iss.error(error);
             })
     };
@@ -337,7 +332,7 @@ class Index extends Component {
 
             })
             .catch(err => {
-                console.log("error", err)
+                iss.error(err);
             })
     };
 
@@ -375,7 +370,6 @@ class Index extends Component {
                     this.setState({
                         loading: false,
                     });
-                    console.error("发生错误", error);
                     iss.error(error);
                 })
 

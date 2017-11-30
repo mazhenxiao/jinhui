@@ -2,7 +2,7 @@
 import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-import "../../Content/css/aBuilt.less";
+import "../css/aBuilt.less";
 import {knife} from '../utils';   //工具集
 class Winopen extends React.Component{
     constructor(arg){

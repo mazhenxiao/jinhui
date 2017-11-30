@@ -76,8 +76,7 @@ class BlockFormatAdjust extends Component {
         AreaService.adjustFormatData(this.changeDataArray)
             .then(result => {
                 if (result === "success") {
-                    console.log("保存成功");
-                    iss.info("保存成功");
+                    iss.info("保存成功!");
                     this.props.onHideModal && this.props.onHideModal("reload");
                 } else {
                     return Promise.reject("保存失败");

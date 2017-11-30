@@ -3,11 +3,11 @@ import iss from "../js/iss.js";
 import React, { Component } from 'react';
 import { Spin, Tabs, Row, Col, Button, Select,Input, Popconfirm  } from 'antd';
 import { AreaService } from '../services';
-import {WrapperSelect} from '../../Content/common';
+import {WrapperSelect} from '../common';
 import TableBlock from './table-block';
-require("../../Content/css/tools-processBar.less");
-require("../../Content/css/button.less");
-require("../../Content/area/areaCss/areaManage.less");
+require("../css/tools-processBar.less");
+require("../css/button.less");
+require("../area/areaCss/areaManage.less");
 class Index extends Component {
     state = {
         loading: false,

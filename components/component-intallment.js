@@ -4,7 +4,7 @@ import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import StagingInformation from "./component-stagingInformation.js";
 import Indicators from "./component-indicators.js";
-require("../../Content/css/intallment.less");
+require("../css/intallment.less");
 class Intallment extends React.Component {
     constructor(arg) {
         super(arg);

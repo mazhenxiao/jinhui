@@ -8,14 +8,15 @@ import ProcessBar from "../components/tools-processBar.js";
 import ExchangeButton from "../components/tools-exchangeButton.js";
 import { Spin, Tabs, Row, Col, Button, Select, Table } from 'antd';
 import { AreaConstants } from '../constants';
-import { AreaService } from '../services';
+import { price, AreaService } from '../services';
+import { debug } from 'util';
 const { AreaManageStep, Legend } = AreaConstants;
 const TabPane = Tabs.TabPane;
 const { Option } = Select;
 require("../css/tools-processBar.less");
 require("../css/button.less");
 require("../area/areaCss/areaManage.less");
- require("./price/price.less"); 
+require("./price/price.less");
 class PriceControl extends React.Component {
 
 
@@ -36,10 +37,12 @@ class PriceControl extends React.Component {
         stepData: [],//阶段
         gridData: [],//表格数据
         version: [],//版本
-        step: -2,//阶段
+        step: 0,//阶段
         stepName: "",//阶段名称
         curVersion: "",//当前版本
-        status:""//当前版本状态
+        status: "",//当前版本状态
+        versionData:"",//版本数据
+        versionId:""//版本id
     };
 
     priceColumns = [];//价格table表头
@@ -47,8 +50,7 @@ class PriceControl extends React.Component {
 
 
     componentWillMount() {
-        // render之前
-        // sessionStorage['pricestep'] = "1";
+
     }
     /**
      * 在组件接收到一个新的prop时被调用,这个方法在初始化render时不会被调用
@@ -76,8 +78,16 @@ class PriceControl extends React.Component {
 
     componentDidMount() {
         this.loadStep();
+        //this.Fetch_GetPriceList();
     }
-
+    /** 获取
+     *  stageversionid,  //项目或版本id
+     *  step,  //当前阶段
+     *  projectLevel //级别项目传1，分期前两个传2，后面传3
+     */
+    Fetch_GetPriceList = obj => {
+        console.log(this.state)
+    }
     setVersionStatus(status) {
         var _text = status == 0 ? "编制中" : status == 1 ? "审批中" : "已审批";
         $("#statusText").html(_text);
@@ -198,7 +208,7 @@ class PriceControl extends React.Component {
         if (!dataKey) {
             return;
         }
-
+         
         //临时存储当前的step
         let step = undefined;
         let versionId = undefined;
@@ -217,19 +227,19 @@ class PriceControl extends React.Component {
                     stepData,
                     step: step,
                 });
-
                 if (step) {
-                    return AreaService.getVersion(step, dataKey, mode);
+                    return AreaService.getVersion(step, dataKey, mode);  //获取版本默认第一个为当前
                 }
                 return Promise.reject("未获取到阶段数据！");
             })
             .then(versionData => {
-                versionId = this.getDefaultVersionId(versionData);
-                this.setState({
-                    versionData,
-                    versionId,
-                });
-                this.loadData(true, step, mode, dataKey, versionId);
+               // console.log("versionData", versionData)
+                  versionId = this.getDefaultVersionId(versionData);
+                 this.setState({
+                     versionData,
+                     versionId,
+                 });
+                // this.loadData(true, step, mode, dataKey, versionId); */
             })
             .catch(error => {
                 console.log("发生错误", error);
@@ -261,6 +271,9 @@ class PriceControl extends React.Component {
             data: this.state.gridData
         });
     }
+    /**
+     * 新建表格
+     */
     createNewPriceVersion() {
         var th = this;
         $.ajax({
@@ -286,16 +299,45 @@ class PriceControl extends React.Component {
             }
         });
     }
-    changeVersion(ts, e) {
-        this.state.curVersion = ts.target.value;
-        $("#statusText").html(this.setVersionStatus($('#version option:selected').attr("data-status")));
-        this.initDataParamers("GetPriceList");
+    /**
+     * 编辑表格
+     */
+    editNewPriceVersion = params => {
+
+    }
+    /**
+     * 获取版本
+     */
+    FetchVersion = params => {
+        AreaService.getVersion(newStep, dataKey, mode)
+            .then(versionData => {
+                versionId = this.getDefaultVersionId(versionData);
+                this.setState({
+                    versionData,
+                    versionId
+                });
+
+                this.loadData(false, newStep, mode, dataKey, versionId);
+            })
+            .catch(error => {
+                this.setState({
+                    loading: false,
+                });
+                console.error("发生错误", error);
+                iss.error(error);
+            })
     }
     bindTab(prop) {
         $(".JH-Content").removeClass("CLASS_AGENTY");
     }
     BIND_CALLBACK2(data) {
         debugger
+    }
+    /**
+     * 发起审批
+     */
+    handleApproval = params => {
+
     }
     /**
   * 渲染步骤的颜色状态
@@ -329,25 +371,30 @@ class PriceControl extends React.Component {
             const { step, dataKey, mode } = this.state;
             if (newStep.code === step.code) return;
             let versionId = undefined;
-            this.BIND_CALLBACK(newStep);
+            this.setState({
+                loading: true,
+                step: newStep,
+            });
+            let opt = {
+                stageversionid: dataKey, //项目或版本id
+                step: step.code,//当前阶段
+                projectLevel: mode == "Project" ? "1" : parseInt(step.guid) <= 2 ? "2" : "3" //级别项目传1，分期前两个传2，后面传3
+            }
 
 
+            price.GetPriceList(opt)
+                .then(data => {
+                    debugger
+                })
 
         };
     };
-    /* 事件 */
-    BIND_CALLBACK(data, ev) {
-        this.state.step = data.guid;
-        this.state.stepName = data.text;
-        $('.priceTapTitle').html(data.text + "价格");
-        this.initDataParamers("GetVersions");
 
-    }
     /* 绑定button */
     BIND_Button = arg => {
         return <ul className="BTN_GROUP">
             <li className="">
-            <button type="button" className="jh_btn jh_btn22 jh_btn_add" onClick={this.createNewPriceVersion.bind(this)}>生成新版本</button>
+                <button type="button" className="jh_btn jh_btn22 jh_btn_edit" onClick={this.editNewPriceVersion.bind(this)}>编辑版本</button>
             </li>
             <li className=""></li>
             <li className=""><span>当前版本：</span><Select className="ipt90">{}</Select></li>
@@ -367,6 +414,13 @@ class PriceControl extends React.Component {
                             <ul className="processBar-header">
                                 {this.renderStepLend()}
                             </ul>
+                        </Col>
+                        <Col span={12}>
+                            <div className="Right">
+                                <button type="button" onClick={this.handleApproval} className="jh_btn jh_btn22 jh_btn_apro">发起审批
+                                </button>
+                            </div>
+
                         </Col>
                     </Row>
                     <Row gutter={0}>

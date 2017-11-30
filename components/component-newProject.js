@@ -3,7 +3,7 @@ import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import NewProjectCount from "./component-newProject-count.js";
 import DynamicTable from "./tools-dynamicTable.js";
-import "../../Content/css/tools-dynamicTable.less";//专用css
+import "../css/tools-dynamicTable.less";//专用css
 /* import Peripheral from "./component-newProject-peripheral.js";//外设条件 */
 
 /*
@@ -78,7 +78,7 @@ class NewProject extends React.Component {
             title:"外设地块",
             width:800,
             height:400,
-            content:`<div class="iframeBox" style="height:400px;overflow:hidden"><iframe id="iframeBoxI" src='/Home/MYTodo/#/peripheral?dataKey=${th.state.projectId}&currentID=${this.state.pid}' width='100%' height='400' frameborder=0  /></div>`,
+            content:`<div class="iframeBox" style="height:400px;overflow:hidden"><iframe id="iframeBoxI" src='/MYTodo/#/peripheral?dataKey=${th.state.projectId}&currentID=${this.state.pid}' width='100%' height='400' frameborder=0  /></div>`,
             okVal:"确定",
             ok(arg){
                var win =  document.querySelector("#iframeBoxI").contentWindow;
