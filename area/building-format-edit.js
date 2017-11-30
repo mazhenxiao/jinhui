@@ -78,7 +78,7 @@ class BuildingFormatEdit extends Component {
             render: (text, record) => {
                 if (record["levelId"] === "1")
                     return <span className="format-tree-parent">{text}</span>;
-                return <span className="format-tree-child">123</span>;
+                return <span className="format-tree-child">{text}</span>;
             }
         },
         {
@@ -187,7 +187,7 @@ class BuildingFormatEdit extends Component {
                 if (other.length === 0) {
                     remain = dataSource.filter(item => item.id != parentId && item.parentid != parentId);
                 } else {
-                    remain = dataSource.filter(item => item.parentid != parentId);
+                    remain = dataSource.filter(item => item.id != id);
                 }
             }
             this.setState({
