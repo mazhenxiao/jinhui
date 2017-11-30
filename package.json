@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js&webpack --display-error-details -w",
-    "rm": "rmdir D:/Project-JinHui/SourceCode/POCS/POCS.Web/Content/dist/js -S -Q",
     "dev": "webpack --display-error-details -w",
     "web": "node server.js",
     "build": "node koa",

@@ -41,38 +41,38 @@ label {
 }
 /*发起审批*/
 .jh_btn_apro {
-  background-image: url("../../Content/img/approval-icon.png");
+  background-image: url("../img/approval-icon.png");
 }
 .jh_btn_apro:hover {
-  background-image: url("../../Content/img/approval-icon-hover.png");
+  background-image: url("../img/approval-icon-hover.png");
 }
 /*添加*/
 .jh_btn_edit {
-  background-image: url("../../Content/img/editor-icon.png");
+  background-image: url("../img/editor-icon.png");
 }
 .jh_btn_edit:hover {
-  background-image: url("../../Content/img/editor-icon-hover.png");
+  background-image: url("../img/editor-icon-hover.png");
 }
 /*库存*/
 .jh_btn_repertory {
-  background-image: url("../../Content/img/inventory-icon.png");
+  background-image: url("../img/inventory-icon.png");
 }
 .jh_btn_repertory:hover {
-  background-image: url("../../Content/img/inventory-icon-hover.png");
+  background-image: url("../img/inventory-icon-hover.png");
 }
 /*编辑*/
 .jh_btn_add {
-  background-image: url("../../Content/img/addDik-icon.png");
+  background-image: url("../img/addDik-icon.png");
 }
 .jh_btn_add:hover {
-  background-image: url("../../Content/img/addDik-icon-hover.png");
+  background-image: url("../img/addDik-icon-hover.png");
 }
 /*保存*/
 .jh_btn_save {
-  background-image: url("../../Content/img/save-icon.png");
+  background-image: url("../img/save-icon.png");
 }
 .jh_btn_save:hover {
-  background-image: url("../../Content/img/save-icon-hover.png");
+  background-image: url("../img/save-icon-hover.png");
 }
 .ipt120 {
   width: 120px;
