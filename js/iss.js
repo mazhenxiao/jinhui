@@ -54,7 +54,7 @@ class $iss {
             credentials: "include",
             headers: {
                 'Accept': 'application/json',
-                "Authorization":token,
+               // "Authorization":token,
                 'Content-Type': 'application/x-www-form-urlencoded',
             }
         };
@@ -74,12 +74,14 @@ class $iss {
             }
             
             ParamsStr = ParamsStr.replace(/\&$/ig, "");
+            ParamsStr = ParamsStr.indexOf("&")>=0? `&Authorization=${token}`:`Authorization=${token}`;
             // let _data = JSON.stringify(params["data"] || {});
             // let str = _data.replace(/[{}]/ig, "").replace(/:/ig, "=").replace(/\,/ig, "&").replace(/\"/ig, "");
             if (requestInfo.method.toLocaleLowerCase() == "post") {
-                requestInfo.body = ParamsStr
+                requestInfo.body = ParamsStr;
             } else {
                 _URL = url.indexOf("?") >= 0 ? url + "&" + ParamsStr : url + "?" + ParamsStr;
+                _URL = _URL.indexOf("&")>=0? `&Authorization=${token}`:`Authorization=${token}`;
             }
 
         }
@@ -131,17 +133,18 @@ class $iss {
         if(!token) window.location.href="/login"
         let arg = {
             type: "POST",
-            data: "",
+            data: {},
             cache: false,
-            headers: {
+           /* headers: {
                 'Authorization':token
-            }
+            }*/
         }
 
         arg = {...arg,...$o};
         //$.extend(arg, $o);
         arg.url=arg.url.indexOf("http://")>-1? arg.url:this.url(arg.url);
-        
+        //.indexOf("&")>=0? `&Authorization=${token}`:`Authorization=${token}`;
+        arg.data["Authorization"]=token;
         $.ajax(arg).done((da) => {
 
             var _da = da;
