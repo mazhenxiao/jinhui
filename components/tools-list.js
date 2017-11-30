@@ -53,7 +53,8 @@ class ToolsList extends React.Component {
                 if(res.message=="成功"){
                     sessionStorage.removeItem("userInfo");//清除登陆数据
                     sessionStorage.removeItem("treeId");
-                    window.location.href="/Account/Login";
+                    localStorage.removeItem("token");
+                    window.location.href="/login";
                 }
             },
             error(e){   
