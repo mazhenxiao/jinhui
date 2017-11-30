@@ -52,6 +52,7 @@ class $iss {
             credentials: "include",
             headers: {
                 'Accept': 'application/json',
+                "Authorization":"",
                 'Content-Type': 'application/x-www-form-urlencoded',
             }
         };
@@ -80,7 +81,7 @@ class $iss {
             }
 
         }
-        //  _URL = _URL.indexOf("http://")>-1? _URL:this.url(_URL);
+          _URL = _URL.indexOf("http://")>-1? _URL:this.url(_URL);
         return fetch(_URL, requestInfo)
             .then(res => {
 
@@ -128,13 +129,16 @@ class $iss {
         let arg = {
             type: "POST",
             data: "",
-            cache: false
+            cache: false,
+            headers: {
+                'Authorization':"",
+            }
         }
 
-
-        $.extend(arg, $o);
+        arg = {...arg,...$o};
+        //$.extend(arg, $o);
         arg.url=arg.url.indexOf("http://")>-1? arg.url:this.url(arg.url);
-        console.log("222");
+        
         $.ajax(arg).done((da) => {
 
             var _da = da;
