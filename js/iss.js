@@ -14,7 +14,7 @@ class $iss {
     }
 
     url(arg) {
-        return "http://192.168.14.168" + (arg || "")
+        return "http://192.168.14.168/" + (arg || "")
     }
 
     pagination() {
@@ -57,7 +57,7 @@ class $iss {
                 'Content-Type': 'application/x-www-form-urlencoded',
             }
         };
-        let _URL = url;
+        let _URL = url.replace(/^\\/ig,"");
         if (params) {
             let ParamsStr = "";
             /* new URLSearchParams();
@@ -73,14 +73,15 @@ class $iss {
             }
             
             ParamsStr = ParamsStr.replace(/\&$/ig, "");
-            ParamsStr = ParamsStr.indexOf("&")>=0? `&token=${token}`:`token=${token}`;
+
+            ParamsStr = (ParamsStr.indexOf("&")>=0&&ParamsStr.indexOf("?")>=0)? `&token=${token}`:`token=${token}`;
             // let _data = JSON.stringify(params["data"] || {});
             // let str = _data.replace(/[{}]/ig, "").replace(/:/ig, "=").replace(/\,/ig, "&").replace(/\"/ig, "");
             if (requestInfo.method.toLocaleLowerCase() == "post") {
                 requestInfo.body = ParamsStr;
             } else {
                 _URL = url.indexOf("?") >= 0 ? url + "&" + ParamsStr : url + "?" + ParamsStr;
-                _URL = _URL.indexOf("&")>=0? `&token=${token}`:`token=${token}`;
+               // _URL = _URL.indexOf("&")>=0? `&token=${token}`:`token=${token}`;
             }
 
         }
@@ -138,7 +139,7 @@ class $iss {
 
         arg = {...arg,...$o};
         //$.extend(arg, $o);
-        arg.url=arg.url.indexOf("http://")>-1? arg.url:this.url(arg.url);
+        arg.url=arg.url.indexOf("http://")>-1? arg.url:this.url(arg.url.replace(/^\//ig,""));
         //.indexOf("&")>=0? `&token=${token}`:`token=${token}`;
         arg.data["token"]=token;
         $.ajax(arg).done((da) => {
