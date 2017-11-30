@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Spin, Tabs, Row, Col, Button, Select} from 'antd';
-import iss from "../js/iss";//公共类
 import {AreaConstants} from '../constants';
 import {WrapperSelect} from '../common';
 import "babel-polyfill";  //兼容ie
