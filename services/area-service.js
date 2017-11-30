@@ -6,7 +6,7 @@ const {AreaManageStep} = AreaConstants;
 //const website = "http://192.168.10.164:8066";
 // const website = "http://192.168.10.164:8000/";
 // const website = "http://localhost:5000";
-const website = "";
+const website = "http://192.168.14.168";
 
 /**
  * 获取步骤

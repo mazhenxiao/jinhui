@@ -45,6 +45,8 @@ class $iss {
 
     fetch(opt) {
         const {url, ...params} = opt;
+        let token = localStorage.getItem("token");
+        if(!token) window.location.href="/login"
         let requestInfo = {
             method: opt["type"] ? opt.type : 'POST',
             mode: 'cors',
@@ -52,7 +54,7 @@ class $iss {
             credentials: "include",
             headers: {
                 'Accept': 'application/json',
-                "Authorization":"",
+                "Authorization":token,
                 'Content-Type': 'application/x-www-form-urlencoded',
             }
         };
@@ -125,13 +127,14 @@ class $iss {
         let $o = JSON.parse(JSON.stringify(opt));
         $o["success"] && delete $o["success"];
         $o["error"] && delete $o["error"];
-
+        let token = localStorage.getItem("token");
+        if(!token) window.location.href="/login"
         let arg = {
             type: "POST",
             data: "",
             cache: false,
             headers: {
-                'Authorization':"",
+                'Authorization':token
             }
         }
 
@@ -173,9 +176,9 @@ class $iss {
             } else {
                 opt["error"] && opt.error(e, textStatus);
             }
-            console.log("失败");
+           /* console.log("失败");
             console.log(e.status);
-            console.log(textStatus);
+            console.log(textStatus);*/
         });
 
     }
