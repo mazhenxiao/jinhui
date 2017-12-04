@@ -41,7 +41,7 @@ router.get('/', async (ctx, next) => {
 
 app.listen(3000, arg => {
     // c.exec("npm run dev");
-    console.log("启动成功，请访问 http://localhost:3000/login");
+    // console.log("启动成功，请访问 http://localhost:3000/login");
 });
 
 //c.exec('start http://localhost:3000/login');
