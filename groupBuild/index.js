@@ -169,7 +169,7 @@ export default class Index extends Component{
             }
         }
         var th = this;
-        var newProjectStatus = iss.getEVal("newProjectStatus");
+        var newProjectStatus = iss.getEVal("teamMaintain");
         var json = {
                 'baseinfo':JSON.stringify(this.state.dataHeader),
                 'data':JSON.stringify(this.state.propsDATA),
@@ -185,7 +185,7 @@ export default class Index extends Component{
             
             if(launch == "launch"){
                 $(window).trigger("treeLoad");
-                location.href=`/Home/Index/#/ProcessApproval?e=10114&dataKey=${this.props.location.query.dataKey}&current=ProcessApproval&areaId=""&areaName=""`;
+                location.href=`/Home/Index/#/ProcessApproval?e=`+newProjectStatus+`&dataKey=${this.props.location.query.dataKey}&current=ProcessApproval&areaId=""&areaName=""`;
             }
         })
         .catch(err=>{
