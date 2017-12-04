@@ -299,7 +299,7 @@ class BlockFormatEdit extends Component {
                     </Button>,
                 ]}>
                 <Spin size="large" spinning={loading}>
-                    <Row gutter={16}>
+                    <Row gutter={16} style={{marginBottom: "10px"}}>
                         <Col span={6}>
                             <WrapperSelect labelText="所属地块:" dataSource={conditionData.land}
                                            labelSpan={8}

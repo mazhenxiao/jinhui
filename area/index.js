@@ -443,9 +443,9 @@ class Index extends Component {
     renderStepList = () => { //阶段
         let {step, stepData} = this.state;
         let len = stepData.length;
-        return stepData.map((item, ind) => {
+        return stepData.map((item, index) => {
             return (
-                <li key={item.guid} style={{zIndex: len - ind}} className={item.guid == step.guid ? "active" : ""}
+                <li key={item.guid} style={{zIndex: len - index}} className={item.guid == step.guid ? "active" : ""}
                     onClick={this.handleStepClick(item)}><span className={item.className}></span>{item.name}</li>
             );
         });
@@ -625,7 +625,7 @@ class Index extends Component {
     };
 
     render() {
-        const {loading, dataKey, stepData, versionId, versionData} = this.state;
+        const {loading, dataKey, step, versionId, versionData} = this.state;
         if (!dataKey) {
             return this.renderEmpty();
         }
@@ -655,6 +655,7 @@ class Index extends Component {
                             {this.renderTabList()}
                             <div>
                                 <SaveVersion versionId={versionId} versionData={versionData}
+                                             step={step}
                                              onSaveVersionData={this.handleSaveVersionData}
                                              onVersionChange={this.handleVersionChange}/>
                             </div>
