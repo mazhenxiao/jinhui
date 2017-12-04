@@ -912,7 +912,7 @@ class $iss {
             eVal = "10103";//分期
         } else if (status == "newProjectStatus") {
             eVal = "10102";//项目
-        } else if (status == "teamMaintain"){
+        } else if (status == "teamMaintainStatus"){
             eVal = "10114";//团队维护
         }
         return eVal;

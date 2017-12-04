@@ -156,20 +156,20 @@ export default class Index extends Component{
                     msg.push(el.jobName)
                 }
             })
-            // if(msg.length>0){
-            //     iss.Alert({
-            //         title:"以下为必填项",
-            //         width:300,
-            //         height:200,
-            //         content:`<div id="msgAlert">`+msg.join("，")+`</div>`,
-            //         okVal:"确定",
-            //         ok(da){}
-            //     })
-            //     return
-            // }
+            if(msg.length>0){
+                iss.Alert({
+                    title:"以下为必填项",
+                    width:300,
+                    height:200,
+                    content:`<div id="msgAlert">`+msg.join("，")+`</div>`,
+                    okVal:"确定",
+                    ok(da){}
+                })
+                return
+            } 
         }
         var th = this;
-        var newProjectStatus = iss.getEVal("teamMaintain");
+        var teamMaintainStatus = iss.getEVal("teamMaintainStatus");
         var json = {
                 'baseinfo':JSON.stringify(this.state.dataHeader),
                 'data':JSON.stringify(this.state.propsDATA),
@@ -185,7 +185,7 @@ export default class Index extends Component{
             
             if(launch == "launch"){
                 $(window).trigger("treeLoad");
-                location.href=`/Index/#/ProcessApproval?e=`+newProjectStatus+`&dataKey=${this.props.location.query.dataKey}&current=ProcessApproval&areaId=""&areaName=""`;
+                location.href=`/Index/#/ProcessApproval?e=`+teamMaintainStatus+`&dataKey=${this.props.location.query.dataKey}&current=ProcessApproval&areaId=""&areaName=""`;
             }
         })
         .catch(err=>{   
