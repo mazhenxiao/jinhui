@@ -4,7 +4,7 @@ import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import StagingInformation from "./component-stagingInformation.js";
 import Indicators from "./component-indicators.js";
-require("../css/intallment.less");
+require("../../Content/css/intallment.less");
 class Intallment extends React.Component {
     constructor(arg) {
         super(arg);
@@ -120,12 +120,14 @@ class Intallment extends React.Component {
         if(th.state.status!="add"){
             let statedb = this.state.StagingInformationDATA;
             let arrs = statedb.STAGECODE.split("-")
-                arrs.splice(3,1,areaNumber);
-                statedb.STAGECODE=arrs.join("-");
+            let arr1 = arrs.slice(0,3).concat(areaNumber).concat(arrs.slice(-1)).join("-")
+               // arrs.splice(3,1,areaNumber);
+
+                statedb.STAGECODE=arr1;
                // debugger
             th.setState({
                 StagingInformationDATA:statedb,
-                STAGECODE:statedb.STAGECODE,
+                STAGECODE:arr1,
                 //landCode:landFirstCode,
                 //pCodeAndLXCode:th.state.projectCode+"-"+areaNumber+"-"+th.state.maxCode
             });
@@ -268,6 +270,7 @@ class Intallment extends React.Component {
                             th.setState({
                                 "status":"edit",
                             });
+                            iss.popover({ content: "保存成功", type: 2 });
                             window.location.reload();
                         }
                         iss.popover({content:"保存成功",type:2});

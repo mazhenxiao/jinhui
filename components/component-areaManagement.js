@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-require("../css/areaManagement.less");
+require("../../Content/css/areaManagement.less");
 /**
  * 
  */

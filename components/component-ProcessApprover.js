@@ -8,7 +8,7 @@ import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import ProcessApprovalTab from "./component-ProcessApproval-Tab.js"; //导航信息
 import ApprovalControlNode2 from "./component-newProjectApprover-node.js";  //审批信息
-require("../css/processApproval.less");
+require("../../Content/css/processApproval.less");
 class ProcessApproval extends React.Component {
     constructor(arg) {
         super(arg);

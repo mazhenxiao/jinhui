@@ -2,8 +2,8 @@ import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 
-require("../css/intallment.less");
-import "../css/view.less";
+require("../../Content/css/intallment.less");
+import "../../Content/css/view.less";
 
 class NewProjectCountView extends React.Component {
 
@@ -89,7 +89,7 @@ class NewProjectCountView extends React.Component {
                 var src_one=iss.mapEUrl+ "/map/mapmark?project_id=" + th.state.ID;
             	var src_two="";
                 if(res["rows"]==0){
-                	src_two="../img/xmViewError.png";
+                	src_two="../../Content/img/xmViewError.png";
                 }else{
                 	src_two=iss.mapEUrl+ "/Map/Project?project_id=" + th.state.ID + "&project_map_id=project" + th.state.ID;
                 	iss.evCarouselActive(th,src_two);
@@ -103,7 +103,7 @@ class NewProjectCountView extends React.Component {
      }
     xmViewError(event) {
         //this.attr("src","../img/xmViewError.png")
-        $(event.target).attr("src", "../img/xmViewError.png");
+        $(event.target).attr("src", "../../Content/img/xmViewError.png");
     }//加载暂无
     BIND_maps() {
         window.open(iss.mapEUrl + "/Map/Project?project_id=" + this.state.ID + "&project_map_id=project" + this.state.ID);
@@ -122,11 +122,11 @@ class NewProjectCountView extends React.Component {
                     <div id="myCarousel" className="carousel slide carouselStyle">
                             <div className="carousel-inner">
                             	<div className="item active">
-                            		<img className="fullScreenIcon" src="../img/fullScreen.png" onClick={this.BIND_mapmark.bind(this)} title="全屏" />
+                            		<img className="fullScreenIcon" src="../../Content/img/fullScreen.png" onClick={this.BIND_mapmark.bind(this)} title="全屏" />
                                     <iframe ref="iframe1" id="iframe1" src={this.state.iframeURL1}    onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="291"></iframe>
                                 </div>
                                 <div className="item">
-                                    <img className="fullScreenIcon" src="../img/fullScreen.png" onClick={this.BIND_maps.bind(this)} title="全屏" />
+                                    <img className="fullScreenIcon" src="../../Content/img/fullScreen.png" onClick={this.BIND_maps.bind(this)} title="全屏" />
                                     <iframe ref="iframe2" id="iframe2" src={this.state.iframeURL2} onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="291"></iframe>
                                 </div>
                             </div>

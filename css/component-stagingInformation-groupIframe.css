@@ -13,7 +13,7 @@
   margin-right: 10px;
 }
 .groupList {
-  height: 214px;
+  height: 265px;
 }
 .plateName ul li span {
   position: absolute;
@@ -24,7 +24,7 @@
   width: 20%;
   float: left;
   border-right: solid 1px #eee;
-  height: 214px;
+  height: 100%;
   overflow: hidden;
 }
 .groupName .mCSB_container {
@@ -78,27 +78,30 @@
   height: 2px;
 }
 .groupName .active {
-  background: skyblue;
+  background: #97a5ab;
+  color: #fff;
 }
 .groupFloor {
   width: 80%;
   height: 100%;
   float: left;
+  padding-right: 10px;
 }
 .groupFloor li {
   float: left;
-  width: 15%;
   position: relative;
   height: 30px;
-  margin-top: 8px;
-  margin-left: 15px;
   border: #eee 1px solid;
+  text-align: center;
+  line-height: 30px;
+  margin-left: 10px;
+  margin-top: 10px;
 }
 .groupFloor li .buildingName {
   z-index: 999;
-  position: absolute;
-  top: 3px;
-  left: 28%;
+  padding-left: 7px;
+  padding-right: 7px;
+  position: relative;
   font-size: 14px;
   font-weight: normal;
 }
@@ -107,6 +110,9 @@
 }
 .toggle-checkbox input[type=checkbox]:checked + .track .icon {
   display: block;
+}
+.toggle-checkbox input[type=checkbox]:checked + .track .buildingName {
+  color: #fff;
 }
 .toggle-checkbox input[type=checkbox] {
   display: none;
@@ -118,13 +124,10 @@
   width: 100%;
   height: 100%;
   display: none;
-  background: #b1f77f;
+  background: #f9ab33;
   z-index: 2;
 }
 .toggle-checkbox .track {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   cursor: pointer;

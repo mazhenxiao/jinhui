@@ -3,22 +3,22 @@ import ReactDOM from 'react-dom'; */
 import iss from "../js/iss.js";
 class $tree {
     constructor(ele) {
-
+       
         this.state={
             url:"/Home/GetTreeInfo?Time="+new Date().getTime(),
             treeDate:[]
         }
         this.getAjax();
-
+   
     }
     getAjax(){
         var th =this;
-
+      
         iss.ajax({
             type:"post",
             url:th.state.url,
             success(da){
-
+            	
                 th.ele.tree("loadData",da);
             },
             error(e){
@@ -27,8 +27,8 @@ class $tree {
         });
     }
     togo(node){ //跳转
-
-
+       
+      
     }
     bindTree(ele,callback) { //绑定数据后回调
         var th = this;
@@ -39,7 +39,7 @@ class $tree {
             textFiled:"text",
             data: th.data,
             formatter:function(node){
-
+            	
             	var txt=node.text||"error projectName";
                 var txtFormat="";
             	if(txt.length>11){
@@ -53,7 +53,7 @@ class $tree {
                 callback(node);
             },
             onLoadSuccess:function(node,data){
-
+            	
             	$(".tree-node").each(function(index,element){
             		var me=element;
             		var node=th.ele.tree("getNode",me);
@@ -80,8 +80,8 @@ class $tree {
                 scrollInertia:0,
                 mouseWheelPixels:20
             });
-
-
+         
+                
 
     }
 

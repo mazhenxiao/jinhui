@@ -1,8 +1,9 @@
 /*分期信息栏 */
+import "babel-polyfill";  //兼容ie
 import React from 'react';
 import ReactDOM from 'react-dom';
 import "../js/iss.js";
-import "babel-polyfill";  //兼容ie
+import {shallowCompare,knife} from '../utils';
 import GroupIframe from "./component-stagingInformation-groupIframe.js";
 import PlateIframe from "./component-stagingInformation-plateIframe.js";
 // import Abc from "xxx.js";
@@ -16,7 +17,7 @@ class StagingInformation extends React.Component {
 	        "STAGENAME":"",
           "PROJECTCOMPANYNAME":"",//项目公司名称id
           "PROJECTCOMPANYEMPNAME":"",//项目公司名称
-	        "STAGECODE":"",
+	        "STAGECODE":"", //编码
 	        "STAGEID":"",
 	        "STATUS":"",
 	        "ISELFPRODUCTTYPE":"",
@@ -153,6 +154,15 @@ class StagingInformation extends React.Component {
         //  toolsTab.bindTab(this.props);//绑定头部标签
         
     }
+    shouldComponentUpdate(nextProps, nextState){
+        return shallowCompare(this, nextProps.planData, nextState.planData);
+    }
+    componentWillReceiveProps(nextProp){
+        this.setState({
+            STAGECODE:nextProp.STAGECODE
+        })
+
+    }
     //推盘划分
     BIND_OPENPlateIframe(){
         var th=this,data = this.plateInfo;
@@ -163,8 +173,8 @@ class StagingInformation extends React.Component {
         }
         iss.Alert({
             title:"推盘划分",
-            width:500,
-            height:250,
+            width:600,
+            height:300,
             content:`<div id="PlateIframeBox"></div>`,
             okVal:"保存",
             cancel:"取消",
@@ -255,8 +265,8 @@ class StagingInformation extends React.Component {
         }
         iss.Alert({
             title:"组团划分",
-            width:500,
-            height:250,
+            width:600,
+            height:300,
             content:`<div id="GroupIframeBox"></div>`,
             okVal:"保存",
             cancel:"取消",
@@ -369,8 +379,8 @@ class StagingInformation extends React.Component {
             	  let src_one="";
             	  let src_two="";
                 if(res["rows"]==0){
-                		src_one="../img/xmViewError.png";
-                		src_two="../img/xmViewError.png";
+                		src_one="/Content/img/xmViewError.png";
+                		src_two="/Content/img/xmViewError.png";
                     
                 }else{
                 		src_one=iss.mapEUrl+"/MAP/SHOWSTAGE?stage_id="+th.state.STAGEVERSIONID+"&stage_map_id=stage"+th.state.STAGEVERSIONID;
@@ -684,7 +694,7 @@ class StagingInformation extends React.Component {
     }
     xmViewError(event){
         // this.attr("src","../img/xmViewError.png")
-        $(event.target).attr("src","../img/xmViewError.png");
+        $(event.target).attr("src","/Content/img/xmViewError.png");
     }
     BIND_EditStage(){
         let th = this;
@@ -848,7 +858,7 @@ class StagingInformation extends React.Component {
                                     </th>
 								    <td>
                                         <input readOnly="true" onClick={this.handChooseTo.bind(this)} id="PRINCIPALNAME" value={this.state.PRINCIPALNAME||""}  className="inputTextBox boxSizing stage-validatebox" type="text" />
-                                        <img className="symbol headIcon" src="../img/head-icon.png" />
+                                        <img className="symbol headIcon" src="/Content/img/head-icon.png" />
                                     </td>
 								    <th>
                                         <label className="formTableLabel boxSizing">权益比例</label>
@@ -951,12 +961,12 @@ class StagingInformation extends React.Component {
                     <div id="myCarousel" className="carousel slide carouselStyle">
                         <div className="carousel-inner">
                             <div className="item active">
-                                <img className="fullScreenIcon" src="../img/fullScreen.png" onClick={this.BIND_mapsStage.bind(this)} title="全屏" />
+                                <img className="fullScreenIcon" src="/Content/img/fullScreen.png" onClick={this.BIND_mapsStage.bind(this)} title="全屏" />
                                 <iframe ref="iframe1" id="iframe1" src={this.state.iframeURL1}    onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="291"></iframe>
                                 
                             </div>
                             <div className="item">
-                                <img className="fullScreenIcon" src="../img/fullScreen.png" onClick={this.BIND_mapsTp.bind(this)}  title="全屏" />
+                                <img className="fullScreenIcon" src="/Content/img/fullScreen.png" onClick={this.BIND_mapsTp.bind(this)}  title="全屏" />
                                 <iframe ref="iframe2" id="iframe2" src={this.state.iframeURL2}    onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="291"></iframe>
                             </div>
                         </div>

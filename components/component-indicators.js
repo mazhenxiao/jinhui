@@ -6,7 +6,7 @@ import "babel-polyfill";  //兼容ie
 import "./tools-validate.js";
 
 import DynamicTable from "./tools-dynamicTable.js";
-require("../css/tools-dynamicTable.less");//专用css
+require("../../Content/css/tools-dynamicTable.less");//专用css
 import Winopen from "./component-indicators-winopen.js"; //弹出选择地块
 class Indicators extends React.Component {
     constructor(arg) {

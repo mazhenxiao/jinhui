@@ -46,7 +46,16 @@ var rootRout = {
       }
       
     },
-    
+    {//*重点事项*/
+      path: "/priority",
+      getComponent: function (next, callback) {
+        require.ensure([], function (require) {
+          var app = require('../priority/index.js');
+          callback(null, app.default);
+        }, "priority-index");
+      }
+      
+    },
     {//*供货*/
       path: "/supply",
       getComponent: function (next, callback) {
@@ -57,6 +66,7 @@ var rootRout = {
       }
       
     },
+    
     { //项目团队维护 
       path: "/groupbuild",
       getComponent: function (next, callback) {

@@ -6,10 +6,10 @@ import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import ProcessBar from "../components/tools-processBar.js";
 import ExchangeButton from "../components/tools-exchangeButton.js";
-import { Spin, Tabs, Row, Col, Button, Select, Table } from 'antd';
+import { Spin, Tabs, Row, Col, Button, Select, Table,Input } from 'antd';
 import { AreaConstants } from '../constants';
 import { price, AreaService } from '../services';
-import { debug } from 'util';
+import {knife} from '../utils';
 const { AreaManageStep, Legend } = AreaConstants;
 const TabPane = Tabs.TabPane;
 const { Option } = Select;
@@ -41,14 +41,13 @@ class PriceControl extends React.Component {
         stepName: "",//阶段名称
         curVersion: "",//当前版本
         status: "",//当前版本状态
-        versionData:"",//版本数据
-        versionId:""//版本id
+        versionData: [],//版本数据
+        versionId: "",//版本id
+        priceColumns: [],//价格table表头
+        priceData: [],//价格数据
+        tableLoading:true,//表格加载中
+        edit:false//表格是否可编辑
     };
-
-    priceColumns = [];//价格table表头
-    priceData = [];//价格数据
-
-
     componentWillMount() {
 
     }
@@ -86,119 +85,79 @@ class PriceControl extends React.Component {
      *  projectLevel //级别项目传1，分期前两个传2，后面传3
      */
     Fetch_GetPriceList = obj => {
-        console.log(this.state)
+
+        price.GetPriceList(obj)
+            .then(ref => { //表头
+                this.Create_PriceColumns(ref.titles);
+                return ref.data;
+            })
+            .then(ref => {  //表数据
+                
+                this.Create_TabelData(ref);
+            })
+            .then(ref=>{  //版本
+
+            })
+            .catch(err => {
+                console.logs(err);
+            })
+
     }
-    setVersionStatus(status) {
-        var _text = status == 0 ? "编制中" : status == 1 ? "审批中" : "已审批";
-        $("#statusText").html(_text);
-    }
-    initDataParamers(type) {
-        var _url = "";
-        var _data;
-        var _afterfn;
-        var _th = this;
-        switch (type) {
-            case "GetDataGridTitle": {
-                _url = _th.state.actionUrl.GetDataGridTitle;
-                _th.loadData(_url, {
-                    "columns": "PriceTitleColumns",
-                    "frozenColumns": "PriceTitleFrozenColumns"
-                }, function (result) {
-                    _th.state.title.frozenColumns = result.frozenColumns;
-                    _th.state.title.columns = result.columns;
-                    _th.initDataParamers("GetPriceList");
-                });
-            }; break;
-            case "GetPriceList": {
-                _url = _th.state.actionUrl.GetPriceList;
-                _th.loadData(_url, {
-                    "stageversionid": _th.state.curVersion,
-                    "step": _th.state.step
-                }, function (result) {
-                    _th.state.gridData = result;
-                    setTimeout(arg => {
-                        //绑定datagruid1
-                        _th.bind_table()
-                    }, 500);
-                });
-            }; break;
-            case "GetVersions": {
-                _url = _th.state.actionUrl.GetVersions;
-                _th.loadData(_url, {
-                    //"stageversionid": "111F08DBE35B4B90A9288CFC7FBEB924",
-                    "versionId": iss.id.id,
-                    "projectlevel": 2,
-                    "step": _th.state.step,
-                    "dataType": 3//1分期
-                }, function (result) {
-                    var _vd = [];
-                    var _tdta = result;
-                    var _inx = 0;
-                    if (_tdta != null && _tdta.length > 0) {
-                        $('.haveversion,.price-editsave').show();
-                        $('.noversion').hide();
-                        _inx = _tdta.length;
-                        for (var i = 0; i < _inx; i++) {
-                            var _t = {
-                                "guid": i,
-                                "value": _tdta[i].ID,
-                                "text": "V" + (_tdta[i].STATUS == 99 ? _tdta[i].VERSIONCODE + " " + new Date(_tdta[i].APPROVETIME).Format("yyyy-MM-dd") : _tdta[i].VERSIONCODE),
-                                "status": _tdta[i].STATUS
-                            };
-                            _vd.push(_t);
-                        }
-                        _th.state.curVersion = _tdta[0].ID;
-                        if (_tdta[0].STATUS != 99) {
-                            $(".price-createpriceversion").hide();
-                        } else {
-                            $(".price-createpriceversion").show();
-                        }
-                        _th.setVersionStatus(_tdta[0].STATUS);
-                        _th.initDataParamers("GetDataGridTitle");
-                    } else {
-                        // _vd = [{
-                        //     "guid": -1,
-                        //     "value": -1,
-                        //     "text": '无版本',
-                        //     "status": -1
-                        // }];
-                        _vd = [];
-                        $('.haveversion,.price-editsave').hide();
-                        $('.noversion').show();
-                        _th.initDataParamers("GetDataGridTitle");
-                    }
-                    _th.setState({
-                        version: _vd
-                    });
-                });
-            }; break;
-            default:
-        }
-    }
-    loadData(url, data, afterfn) {
-        $.ajax({
-            url: url,
-            type: "POST",
-            dataType: "JSON",
-            data: data,
-            success: function (result) {
-                if (result.errorcode != 200) {
-                    iss.Alert({
-                        "title": "提示",
-                        "content": result.message,
-                        "width": 300
-                    });
-                } else {
-                    if (typeof afterfn == "function") {
-                        afterfn(result.rows);
+    /**
+     * 设置表头
+     */
+    Create_PriceColumns = params => {
+        
+        let th = this;
+        let priceColumns = params.map((da, ind) => {
+            let opt = {
+                key: ind,
+                dataIndex: da["field"],
+                title: da["name"],
+                width:120,
+                className:da["field"]=="SHOWNAME"? "text-left":"text-center",
+                render(text, record, index){ 
+                    //console.log("da.field",da.field)
+                    if(da.field=="SHOWNAME"){
+                        return <span className={record.LEVELS==2? "Title padL40":"Title"}>{text}</span>
+                    }else if(th.state.edit==true&&da.field=="AVERAGEPRICE"){
+                        
+                        return <Input value={text} onChange={th.EventChangeInput.bind(this,record,da["field"])}  />
                     }
                 }
             }
+            if(ind==0){ 
+                opt["fixed"]=true;
+                opt["width"]=180;
+            }
+            Array.isArray(da["children"]) && (opt["children"] = da["children"]);
+            return opt
         });
+        
+        this.setState({
+            priceColumns
+        })
+    }
+
+    Create_TabelData = priceData => {
+        
+        this.setState({
+            priceData,
+            tableLoading:false
+        })
     }
     /**
-  * 加载步骤
-  */
+     * 表格输入框事件
+     */
+    EventChangeInput = (params,row,ev)=>{
+        let val = ev.target.value;
+        params[row] = val;
+        this.forceUpdate();
+    }
+
+    /**
+     * 加载步骤
+     */
     loadStep = (dataKey, mode) => {
         if (dataKey === undefined) {
             dataKey = this.state.dataKey;
@@ -208,116 +167,52 @@ class PriceControl extends React.Component {
         if (!dataKey) {
             return;
         }
-         
+
         //临时存储当前的step
         let step = undefined;
         let versionId = undefined;
         this.setState({
             loading: true,
             versionId: "",
+            tableLoading:true
         });
 
         /**
          * 先获取阶段数据 => 然后根据阶段获取版本数据 => 最后获取 规划方案指标和面积数据
          */
-        AreaService.getStep(dataKey, mode)
+        AreaService.getStep(dataKey, mode, "Price")
             .then(stepData => {
-                step = stepData[0];
+               let step = stepData[0];
+               let versionId = this.getDefaultVersionId(this.state.versionData);
+               
+             
                 this.setState({
+                    versionId,
                     stepData,
                     step: step,
                 });
                 if (step) {
-                    return AreaService.getVersion(step, dataKey, mode);  //获取版本默认第一个为当前
+                    return  AreaService.getVersion(step, dataKey, mode,"Price")
                 }
                 return Promise.reject("未获取到阶段数据！");
             })
             .then(versionData => {
-               // console.log("versionData", versionData)
-                  versionId = this.getDefaultVersionId(versionData);
-                 this.setState({
-                     versionData,
-                     versionId,
-                 });
-                // this.loadData(true, step, mode, dataKey, versionId); */
-            })
-            .catch(error => {
-                console.log("发生错误", error);
-                iss.error(error);
-            })
-    };
-    /**
-     * 获取默认显示的版本Id
-     * @param versionData
-     * @returns {*}
-     */
-    getDefaultVersionId = (versionData) => {
-        if (!versionData || !Array.isArray(versionData) || versionData.length === 0) {
-            return "";
-        }
-
-        return versionData[0]["id"];
-    };
-    bind_table() {
-        let table = this.table_ys = $("#table-ys");
-        table.datagrid({
-            width: "auto",
-            nowrap: true,
-            fitColumns: true,
-            // rownumbers: true,
-            singleSelect: true,
-            frozenColumns: this.state.title.frozenColumns,
-            columns: this.state.title.columns,
-            data: this.state.gridData
-        });
-    }
-    /**
-     * 新建表格
-     */
-    createNewPriceVersion() {
-        var th = this;
-        $.ajax({
-            url: this.state.actionUrl.CreatePriceVersion,
-            type: "POST",
-            dataType: "JSON",
-            data: {
-                //"stageversionid": "111F08DBE35B4B90A9288CFC7FBEB924",
-                "versionId": iss.id.id,
-                "projectlevel": 2,
-                "step": this.state.step
-            },
-            success: function (result) {
-                if (result.errorcode != 200) {
-                    iss.Alert({
-                        "title": "提示",
-                        "content": result.message,
-                        "width": 300
-                    });
-                } else {
-                    th.initDataParamers("GetVersions");
-                }
-            }
-        });
-    }
-    /**
-     * 编辑表格
-     */
-    editNewPriceVersion = params => {
-
-    }
-    /**
-     * 获取版本
-     */
-    FetchVersion = params => {
-        AreaService.getVersion(newStep, dataKey, mode)
-            .then(versionData => {
-                versionId = this.getDefaultVersionId(versionData);
+                
+               let versionId = this.getDefaultVersionId(versionData);
                 this.setState({
                     versionData,
                     versionId
                 });
-
-                this.loadData(false, newStep, mode, dataKey, versionId);
+                 return versionId;
+               
+            })
+            .then(versionId=>{
+                let opt = {
+                    stageversionid:versionId,
+                    step: this.state.step.code,
+                    projectLevel:this.state.mode == "Project" ? "1" : parseInt(this.state.step.guid) <= 2 ? "2" : "3" //级别项目传1，分期前两个传2，后面传3
+                }
+                this.Fetch_GetPriceList(opt)
             })
             .catch(error => {
                 this.setState({
@@ -326,13 +221,51 @@ class PriceControl extends React.Component {
                 console.error("发生错误", error);
                 iss.error(error);
             })
+    };
+    /**
+     * 获取默认显示的版本Id
+     */
+    getDefaultVersionId = (versionData) => {
+        if (!versionData || !Array.isArray(versionData) || versionData.length === 0) {
+            return "";
+        }
+
+        return versionData[0]["id"];
+    };
+
+    /**
+     * 编辑表格
+     */
+    editNewPriceVersion = (params) => {
+        this.setState({
+            edit:true
+        });
+       
     }
-    bindTab(prop) {
-        $(".JH-Content").removeClass("CLASS_AGENTY");
+    /**
+     * 保存内容
+     */
+    saveNewPriceVersion =params=>{
+        this.setState({
+            edit:false
+        });
+        let data = this.state.priceData.map(arg=>{
+            return {
+                versionId:this.state.versionId,//版本id
+                producttypeId:arg["PRODUCTTYPEID"]||"",//业态ID
+                quotaId:"", //指标ID
+                averagePrice:arg["AVERAGEPRICE"]||"",//均价
+                totalSaleArea:arg["TOTALSALEAREA"]||""//总可售面积
+            }
+        });
+        price.SavePriceList(data)
+        .then(da=>{
+            debugger
+        })
+
     }
-    BIND_CALLBACK2(data) {
-        debugger
-    }
+
+
     /**
      * 发起审批
      */
@@ -368,75 +301,109 @@ class PriceControl extends React.Component {
     */
     handleStepClick = (newStep) => {
         return () => {
-            const { step, dataKey, mode } = this.state;
+            const { step, dataKey, mode,versionId } = this.state;
             if (newStep.code === step.code) return;
-            let versionId = undefined;
+        
             this.setState({
                 loading: true,
                 step: newStep,
             });
-            let opt = {
-                stageversionid: dataKey, //项目或版本id
-                step: step.code,//当前阶段
-                projectLevel: mode == "Project" ? "1" : parseInt(step.guid) <= 2 ? "2" : "3" //级别项目传1，分期前两个传2，后面传3
-            }
-
-
-            price.GetPriceList(opt)
-                .then(data => {
-                    debugger
-                })
-
+            AreaService.getVersion(newStep, dataKey, mode,"Price")
+            .then(versionData => {
+                
+               let versionId = this.getDefaultVersionId(versionData);
+                this.setState({
+                    versionData,
+                    versionId
+                });
+                 return versionId;
+            })
+            .then(versionId=>{
+                let opt = {
+                    stageversionid: versionId, //项目或版本id
+                    step:this.state.step.code,//当前阶段
+                    projectLevel:this.state.mode == "Project" ? "1" : parseInt(this.state.step.guid) <= 2 ? "2" : "3" //级别项目传1，分期前两个传2，后面传3
+                }
+                this.Fetch_GetPriceList(opt);
+            })
         };
     };
-
+    /**
+     * 版本下拉切换
+     *  stageversionid,  //项目或版本id
+     *  step,  //当前阶段
+     *  projectLevel //级别项目传1，分期前两个传2，后面传3
+     */
+    EventChangeSelectVersion = versionId => {
+        this.setState({
+            versionId
+        });
+        let { step, mode } = this.state;
+        let opt = {
+            stageversionid:versionId,
+            step:step.code,
+            projectLevel: mode == "Project" ? "1" : parseInt(step.guid) <= 2 ? "2" : "3" //级别项目传1，分期前两个传2，后面传3
+        }
+        this.Fetch_GetPriceList(opt)
+    }
     /* 绑定button */
     BIND_Button = arg => {
+        let list = []
+        this.state.versionData.forEach((val, ind) => {
+            list.push(<Option key={val.id} value={val.id}>{val.name}</Option>)
+        });
+        let ButtonBar = arg=>{
+            
+            if(this.state.edit){
+                return <button type="button" className="jh_btn jh_btn22 jh_btn_save" onClick={this.saveNewPriceVersion}>保存</button>
+               
+            }else{
+                return <button type="button" className="jh_btn jh_btn22 jh_btn_edit" onClick={this.editNewPriceVersion}>编辑版本</button>
+            }
+        }
+       // let defaultValue = this.state.versionData.length ? [this.state.versionData[0]["id"]] : "请选择";
         return <ul className="BTN_GROUP">
-            <li className="">
-                <button type="button" className="jh_btn jh_btn22 jh_btn_edit" onClick={this.editNewPriceVersion.bind(this)}>编辑版本</button>
-            </li>
+            <li className=""> { ButtonBar()}</li>
             <li className=""></li>
-            <li className=""><span>当前版本：</span><Select className="ipt90">{}</Select></li>
-            <li className=""><span>状态：</span><span id="statusText">编制中</span></li>
+            <li className=""><span>当前版本：</span><Select value={this.state.versionId} onChange={this.EventChangeSelectVersion} style={{width:90}}>{list}</Select></li>
+            <li className=""><span>状态：</span><span id="statusText">{this.state.version}</span></li>
         </ul>
     }
     render() {
         var th = this;
-        let versionlist = this.state.version.map((da, ind) => {
-            return <option key={ind} value={da.value} data-status={da.status}>{da.text}</option>
-        })
-        return <article><section className="processBar">
-            <header className="price" >
-                <Spin size="large" spinning={false}>
-                    <Row>
-                        <Col span={12}>
-                            <ul className="processBar-header">
-                                {this.renderStepLend()}
-                            </ul>
-                        </Col>
-                        <Col span={12}>
-                            <div className="Right">
-                                <button type="button" onClick={this.handleApproval} className="jh_btn jh_btn22 jh_btn_apro">发起审批
+        let width = knife.recursion(this.state.priceColumns,0);
+        return <article>
+            <section className={this.props.location.query["dataKey"] ? "processBar" : "processBar none"}>
+                <header className="price" >
+                    <Spin size="large" spinning={false}>
+                        <Row>
+                            <Col span={12}>
+                                <ul className="processBar-header">
+                                    {this.renderStepLend()}
+                                </ul>
+                            </Col>
+                            <Col span={12}>
+                                <div className="Right">
+                                    <button type="button" onClick={this.handleApproval} className="jh_btn jh_btn22 jh_btn_apro">发起审批
                                 </button>
-                            </div>
+                                </div>
 
-                        </Col>
-                    </Row>
-                    <Row gutter={0}>
-                        <Col>
-                            <ul className="processBar-List">
-                                {
-                                    this.renderStepList()
-                                }
-                            </ul>
-                        </Col>
+                            </Col>
+                        </Row>
+                        <Row gutter={0}>
+                            <Col>
+                                <ul className="processBar-List">
+                                    {
+                                        this.renderStepList()
+                                    }
+                                </ul>
+                            </Col>
 
-                    </Row>
-                </Spin>
-            </header>
-        </section>
-            <section>
+                        </Row>
+                    </Spin>
+                </header>
+            </section>
+            <section className={this.props.location.query["dataKey"] ? "" : "none"}>
                 <article className="index-supply mgT20 clearboth">
                     <section className="supply-ys">
                         <Tabs tabBarExtraContent={this.BIND_Button()}>
@@ -444,29 +411,18 @@ class PriceControl extends React.Component {
 
                                 <Spin spinning={false}>
                                     <div>
-                                        <Table border columns={this.priceColumns} dataSource={this.priceData}></Table>
+                                        <Table pagination={false} scroll={{x:width,y:400}} loading={this.state.tableLoading} border columns={this.state.priceColumns} dataSource={this.state.priceData}></Table>
                                     </div>
 
                                 </Spin>
 
                             </TabPane>
                         </Tabs>
-                        {/*    <header className="HeaderBar">
-                            <h5>
-                                <span className="price-left priceTapTitle">投决会价格</span>
-                                <ul className="price-right opers">
-                                    <li className="jh-icons ahover price-createpriceversion"><a className="btn-refish" href="javascript:;" onClick={this.createNewPriceVersion.bind(this)}>生成新版本</a></li>
-                                    <li className="jh-icons jh-vtop price-editsave"><ExchangeButton data-unique="price" edit="true" callback={this.BIND_CALLBACK2.bind(this)} /></li>
-                                    <li className="haveversion"><span>当前版本：</span><select id="version" onChange={this.changeVersion.bind(this)}>{versionlist}</select></li>
-                                    <li className="haveversion uncursor"><span>状态：</span><span id="statusText">编制中</span></li>
-                                    <li className="noversion uncursor"><span>暂无版本</span></li>
-                                </ul>
-                            </h5>
-                        </header>
-                        <table className="formTable" id="table-ys" width="100%">
-                        </table> */}
                     </section>
                 </article>
+            </section>
+            <section className={this.props.location.query["dataKey"] ? "none" :"noneBlock"}>
+                请选择左侧树内容
             </section>
         </article>
     }

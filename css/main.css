@@ -695,6 +695,9 @@ a:hover {
 .userApplyIconBtn:focus {
   background-image: url(../img/edit-icon.png);
 }
+.none {
+  display: none !important;
+}
 /* table */
 .formTable {
   table-layout: fixed;

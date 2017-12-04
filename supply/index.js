@@ -6,9 +6,9 @@ import { AreaService } from '../services';
 import { shallowCompare, knife } from '../utils';
 import TableBar from "./table";//表格
 //import EsayuiTable from "./EsayuiTable";//esayui表格
-
 require("../css/button.less");
 require("./css/supply.less");
+
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
 class Index extends Component {
@@ -24,9 +24,18 @@ class Index extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         return shallowCompare(this, nextProps.planData, nextState.planData);
     }
-    componentWillMount() { }
+    componentWillMount() {
+        let use = this.use();
+        debugger       
+    }
     componentDidMount() {
 
+    }
+    use(){
+        /* require.ensure([], function (require) {
+            let openEditSupply = require("./openEditSupply");
+             openEditSupply;
+          }); */
     }
     /**
      * 编辑供货
