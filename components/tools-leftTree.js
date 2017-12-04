@@ -12,7 +12,7 @@ class ToolsTree extends React.Component {
             changeCurrent:"",
             search:"",
             changeState:"",/*用来控制左侧树右上方的按钮,例如项目列表，点选项目时，会出现新建分期，编辑项目，删除项目的按钮*/
-            pageClass:"Home"/*页面分类，如项目列表，面积管理等需要重新定位入口的分类,默认是项目*/
+            pageClass:"Index"/*页面分类，如项目列表，面积管理等需要重新定位入口的分类,默认是项目*/
         }
         this.setTime="";
     }
@@ -20,19 +20,19 @@ class ToolsTree extends React.Component {
     	var th=this;
     	let pathClass=location.pathname;
     	
-    	if(pathClass=="/Home/Index/"){/*项目列表*/
+    	if(pathClass=="/Index/"){/*项目列表*/
     		th.setState({
-    			pageClass:"Home",
+    			pageClass:"Index",
     			changeState:iss.getQuert("intallment") ? "intallment" : iss.getQuert("newProject")? "newProject":""
     		});
-    	}else if(pathClass=="/AreaInfo/Index/"){/*面积管理*/
+    	}else if(pathClass=="/AreaInfo/"){/*面积管理*/
     		th.setState({
     			pageClass:"AreaInfo",
     			changeState:""
     		});
     	}
-    	console.log("地址栏地址");
-        console.log(pathClass);
+    	//console.log("地址栏地址");
+      //  console.log(pathClass);
     }
     componentDidMount() {
         var th = this;
@@ -51,7 +51,7 @@ class ToolsTree extends React.Component {
              * 这个逻辑为，在tools-list菜单里this.EVENT_CLICK.bind(this,"AreaInfo","priceControl")
              * 判断当前是“AreaInfo”等，信息填报内容都在“AreaInfo”
              */
-            if(pathClass=="Home"){  //项目管理
+            if(pathClass=="Index"){  //项目管理
             	switch(arg["level_id"]){
 	                case "1": //集团汇总
 	                case "2":iss.hashHistory.replace({pathname:"index",state:arg});break;//总部
