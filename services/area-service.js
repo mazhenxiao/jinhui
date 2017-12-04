@@ -1,12 +1,9 @@
 import iss from '../js/iss';
+import appConfig from '../app.config';
 import {AreaConstants} from '../constants';
 
 const {AreaManageStep} = AreaConstants;
-
-//const website = "http://192.168.10.164:8066";
-// const website = "http://192.168.10.164:8000/";
-// const website = "http://localhost:5000";
-const website = "http://192.168.14.168";
+const website = appConfig.domain;
 
 /**
  * 获取步骤

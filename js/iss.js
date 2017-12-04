@@ -1,6 +1,7 @@
 import {message, notification} from 'antd';
 import "babel-polyfill";  //兼容ie  
 import 'whatwg-fetch';//兼容ie fetch
+import appConfig from '../app.config';
 require("../css/antd.min.css");
 
 class $iss {
@@ -14,7 +15,7 @@ class $iss {
     }
 
     url(arg) {
-        return "http://192.168.14.168/" + (arg || "")
+        return `${appConfig.domain}/${arg || ""}`;
     }
 
     pagination() {
