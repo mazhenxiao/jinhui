@@ -121,15 +121,15 @@ class ApprovalControlNode extends React.Component {
     }
     EVENT_CLICK_SUBMIT() {  //当前填报人提交
         var th = this;
-        iss.fetch({ //老代码不再进行封装修改。
+        iss.ajax({ //老代码不再进行封装修改。
             url:"/Stage/ICreateProVersion",
             data:{
                 "id":allSearchArg['dataKey']
             }
-        })
-        .then(arg=>{
-            console.log(arg);
+        }).done(arg=>{
             debugger
+        }).fail(e=>{
+
         })
       //  th.BIND_CHECKED();  //检查数据
     }
