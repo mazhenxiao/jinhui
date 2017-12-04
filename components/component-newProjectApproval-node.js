@@ -8,7 +8,7 @@ import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 
-import "../css/newProjectApproval.less";
+import "../../Content/css/newProjectApproval.less";
 class ApprovalControlNode extends React.Component {
     constructor(arg) {
         super(arg);
@@ -282,6 +282,7 @@ class ApprovalControlNode extends React.Component {
             pathname:`/${url}`,
             search:`?status=edit&dataKey=${this.props.allSearchArg.dataKey}&e=${this.props.allSearchArg.e}`
         });
+        location.href=`${location.origin}${location.pathname.replace(/\/$/ig,"")}/#/${url}?status=edit&dataKey=${this.props.allSearchArg.dataKey}&e=${this.props.allSearchArg.e}`
     }
     BIND_CHECKEDIT() {
         if (this.type != "edit") {

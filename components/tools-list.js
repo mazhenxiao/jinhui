@@ -26,12 +26,30 @@ class ToolsList extends React.Component {
     		alert("缺少页面分类和路由地址，去传递去，坑爹玩意");
     	}
         if(pageClass=="Home"){/*项目列表*/
-        	pageUrl="/Index/#/";
+            document.title=("金辉项目")
+        	pageUrl="/Home/Index/#/";
         }else if(pageClass=="AreaInfo"){/*面积管理*/
-            pageUrl="/AreaInfo/#/"; 
+            document.title=("金辉项目")
+            pageUrl="/AreaInfo/Index/#/"; 
             //manage
         }
-        $(window).trigger("treeLoad");
+         
+        if(routerArr == "index"){
+           document.title=("金辉集团运营管理平台")
+        }else if(routerArr == "priceControl"){
+            document.title=("金辉集团运营管理平台")
+        }else if(routerArr == "supply"){
+            document.title=("金辉集团运营管理平台")
+        }else if(routerArr == "payment"){
+            document.title=("金辉集团运营管理平台")
+        }else if(routerArr == "priority"){
+            document.title=("金辉集团运营管理平台")
+        }else if(routerArr == "primarykey"){
+            document.title=("金辉集团运营管理平台")
+        }else if(routerArr == "groupbuild"){
+            document.title=("金辉集团运营管理平台")
+        }
+       // $(window).trigger("treeLoad");
         /*switch(str){
             case "index":iss.hashHistory.push("index");break;
             case "agenty":iss.hashHistory.push("agenty");break;
@@ -53,8 +71,7 @@ class ToolsList extends React.Component {
                 if(res.message=="成功"){
                     sessionStorage.removeItem("userInfo");//清除登陆数据
                     sessionStorage.removeItem("treeId");
-                    localStorage.removeItem("token");
-                    window.location.href="/login";
+                    window.location.href="/Account/Login";
                 }
             },
             error(e){   
@@ -149,22 +166,22 @@ class ToolsList extends React.Component {
                 <li>
                     <a href="javascript:void(0);" onClick={this.EVENT_CLICKSETUP.bind(this)}>基础设置</a>
                 </li>
-                <li>
+               <li>
                     <a id="areaInfo" href="javascript:void(0);" >信息填报</a>
                     <ol className="subMenu">
-                        <li><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","index")}>面积管理</a></li>
-                        <li><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","priceControl")}>价格管理</a></li>
-                        <li><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","supply")}>供货</a></li>
-                        <li><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","payment")}>签约与回款</a></li>
-                        <li><a href="javascript:void(0);" >重点事项</a></li>
-                        <li><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","primarykey")}>关键指标</a></li>
+                         <li className="hide"><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","index")}>面积管理</a></li>
+                        <li  className="hide"><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","priceControl")}>价格管理</a></li>
+                        <li  className="hide"><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","supply")}>供货</a></li>
+                        <li  className="hide"><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","payment")}>签约与回款</a></li>
+                        <li  className="hide"><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","priority")}>重点事项</a></li>
+                        <li  className="hide"><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","primarykey")}>关键指标</a></li>
                         <li><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","groupbuild")}>项目团队维护</a></li>
                     </ol>
                 </li>
-                <li className="hide"> 
+                {/*  <li className="hide"> 
                     <a href="#">报表管理</a>
-                </li>
-                
+                </li> */} 
+                 
             </ul>
           
         </article>

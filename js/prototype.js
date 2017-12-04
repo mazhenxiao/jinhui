@@ -35,7 +35,12 @@
     		return this.valueOf();
     	}
     }
-    //对伪ie9做规范
+	//对伪ie9做规范
+    if (window["console"]) {
+    	window["console"]["logs"] = function (str){
+    		console.log("%c%s", "color:#c00", str);
+    	}
+    }
     window["console"] = window["console"]||{log:function(){},error:function(){}}
 
 }();

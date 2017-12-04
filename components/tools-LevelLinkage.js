@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-require("../css/tools-LevelLinkage.less"); 
+require("../../Content/css/tools-LevelLinkage.less"); 
 class Province extends React.Component {
     constructor(arg) {
         super(arg);

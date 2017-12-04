@@ -8,14 +8,14 @@ const website = appConfig.domain;
 /**
  * 获取步骤
  */
-const getStep = (dataKey, mode) => {
+const getStep = (dataKey, mode,dataType="Area") => {
     return iss.fetch({
         url: website.concat("/Common/IGetStept"),
         type: "get",
         data: {
             ProjectStageId: dataKey,
             projectOrStage: mode,
-            dataType: "Area",
+            dataType,
         },
     })
         .then(data => data.rows)
@@ -108,7 +108,7 @@ const createVersion = (stepInfo, dataKey, mode) => {
 /**
  * 获取版本
  */
-const getVersion = (stepInfo, dataKey, mode) => {
+const getVersion = (stepInfo, dataKey, mode,dataType="Area") => {
 
     return iss.fetch({
         url: website.concat("/Common/IGetVersionListByBusinessId"),
@@ -117,7 +117,7 @@ const getVersion = (stepInfo, dataKey, mode) => {
             ProjectStageId: dataKey,
             step: stepInfo.code,
             projectLevel: mode,
-            dataType: "Area",
+            dataType,
         },
     })
         .then(res => res.rows)

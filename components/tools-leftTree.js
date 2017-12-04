@@ -20,12 +20,12 @@ class ToolsTree extends React.Component {
     	var th=this;
     	let pathClass=location.pathname;
     	
-    	if(pathClass=="/Index/"){/*项目列表*/
+    	if(pathClass=="/Home/Index/"){/*项目列表*/
     		th.setState({
     			pageClass:"Home",
     			changeState:iss.getQuert("intallment") ? "intallment" : iss.getQuert("newProject")? "newProject":""
     		});
-    	}else if(pathClass=="/AreaInfo/"){/*面积管理*/
+    	}else if(pathClass=="/AreaInfo/Index/"){/*面积管理*/
     		th.setState({
     			pageClass:"AreaInfo",
     			changeState:""
@@ -97,7 +97,7 @@ class ToolsTree extends React.Component {
         });
     }
     notIndexChange(){ //非首页跳转
-        return;
+       // return;
            if(iss.getQuert("dataKey")){
                return
               // iss.id=
@@ -107,7 +107,7 @@ class ToolsTree extends React.Component {
           
         if(iss.id==""&&!iss.getQuert("login")){
             //iss.id=localStorage.getItem("treeId");
-            iss.hashHistory.replace("/index");
+           // iss.hashHistory.replace("/index");
         }
     }
     addTodo() {

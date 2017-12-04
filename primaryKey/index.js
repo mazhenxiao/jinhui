@@ -3,11 +3,11 @@ import iss from "../js/iss.js";
 import React, { Component } from 'react';
 import { Spin, Tabs, Row, Col, Button, Select,Input, Popconfirm  } from 'antd';
 import { AreaService } from '../services';
-import {WrapperSelect} from '../common';
+import {WrapperSelect} from '../../Content/common';
 import TableBlock from './table-block';
-require("../css/tools-processBar.less");
-require("../css/button.less");
-require("../area/areaCss/areaManage.less");
+require("../../Content/css/tools-processBar.less");
+require("../../Content/css/button.less");
+require("../../Content/area/areaCss/areaManage.less");
 class Index extends Component {
     state = {
         loading: false,
@@ -15,15 +15,37 @@ class Index extends Component {
         savestatus:false,
         TableBlockDATA: {},//数据
     };//绑定数据
-    componentWillReceiveProps(){
 
-    };
+    /**
+     * 在组件接收到一个新的prop时被调用,这个方法在初始化render时不会被调用
+     * param nextProps 下一阶段的props
+     */
+    componentWillReceiveProps(nextProps) {
+        //debugger;
+        const {dataKey, mode} = this.state;
+        const {location} = nextProps;
+        const nextDataKey = location.query.dataKey || "";
+        let nextMode = location.query.isProOrStage || "";
+        nextMode = nextMode == "1" ? "Project" : "Stage";
+
+        //切换路由之后，重新获取数据
+
+        if (dataKey != nextDataKey
+            || mode != nextMode) {
+            this.setState({
+                    dataKey: nextDataKey,
+                    mode: nextMode,
+                    activeTapKey: "plan-quota",
+                }
+            );
+        }
+    }
     componentDidMount(){
 
     };
-
+    
     //获取数据
-    BIND_TableBlockDATA(data) {  //NewProjectCountDATA={this.BIND_NewProjectCountDATA.bind(this)}
+    BIND_TableBlockDATA = (data)=> {  //NewProjectCountDATA={this.BIND_NewProjectCountDATA.bind(this)}
             //console.log(data);
             console.log(JSON.parse(data.initialData));
             this.setState({
@@ -32,7 +54,7 @@ class Index extends Component {
     }
     //选择年
     yearSelectChange = (val) =>{
-          console.log(val);
+        console.log(val);
     }
     //选择季度
     quarterSelectChange = (val) =>{

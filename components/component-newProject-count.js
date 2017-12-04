@@ -33,6 +33,7 @@ class NewProjectCount extends React.Component {
         this.time = "";
         this.props.point(this);//父页面重定
         this.editProjectOldName="";//在编辑状态下获取编辑前名称
+      
     }
 
     getAjax(callback) {
@@ -229,42 +230,7 @@ class NewProjectCount extends React.Component {
         });
         tradersWay.combobox("select", arg.rows.BaseFormInfo.Project.TRADERMODE);
     }
-    BIND_CHECKPROJECTNAME_Blur(ev){  //失去焦点验证是否冲突
-        var th = this;
-        let val =ev.target.value;
-        if(/^(?!_)(?!.*?_$)[a-zA-Z0-9_\u4e00-\u9fa5]+$/g.test(val)){
-            iss.ajax({
-                type: "POST",
-                url: "/Project/IProjectNameExists",
-                data: {
-                    cityId:th.state.PARENTID,
-                    projectid: th.state.ID,
-                    name: th.state.PROJECTNAME,
-                },
-                success: function (data) {
-                    if (data["rows"] == false) {
-                        //th.BIND_CHANGE_DATA(th.state);
-                        th.setState({ checkName: true }, arg => {
-                            th.BIND_CHANGE_DATA(th.state)
-                        })
-                    } else {
-                        th.setState({ checkName: false }, arg => {
-                            th.BIND_CHANGE_DATA(th.state)
-                        })
-                    }
     
-                },
-                error: function (er) {
-                    th.setState({ checkName: false }, arg => {
-                        th.BIND_CHANGE_DATA(th.state)
-                    });
-    
-                }
-            });
-        }else{
-        };
-        
-    }
     BIND_CHECKPROJECTNAME(ev) {   //检查姓名名称是否冲突
 
         let th = this;
@@ -283,6 +249,7 @@ class NewProjectCount extends React.Component {
   
     }
     BIND_CHECK_INPUT(name){ //检查非法查询
+        // if((/^[\w\u4e00-\u9fa5][\w\u4e00-\u9fa5]+[\w\u4e00-\u9fa5]$/).test(val)){
         var reg = /[^\u4e00-\u9fa5\w\d\_\-']/ig;
         return name==""? false:reg.test(name);
         }
@@ -291,7 +258,7 @@ class NewProjectCount extends React.Component {
     }
 
     xmViewError(event) {
-        $(event.target).attr("src", "../img/xmViewError.png");
+        $(event.target).attr("src", "../../Content/img/xmViewError.png");
     }//加载暂无
     BIND_ONLOAD(event){
         let th=this;
@@ -307,7 +274,7 @@ class NewProjectCount extends React.Component {
             	var src_one=iss.mapEUrl + "/map/mapmark?project_id=" + th.state.ID;
             	var src_two="";
                 if(res["rows"]==0){
-                	src_two="../img/xmViewError.png";
+                	src_two="../../Content/img/xmViewError.png";
                 }else{
                 	src_two=iss.mapEUrl + "/Map/Project?project_id=" + th.state.ID + "&project_map_id=project" + th.state.ID;
                 	iss.evCarouselActive(th,src_two);
@@ -480,7 +447,7 @@ class NewProjectCount extends React.Component {
                                         <label className="formTableLabel boxSizing redFont">项目名称</label>
                                     </th>
                                     <td>
-                                        <input onBlur={this.BIND_CHECKPROJECTNAME_Blur.bind(this)} onChange={this.BIND_CHECKPROJECTNAME.bind(this)} id="PROJECTNAME" value={this.state.PROJECTNAME || ""} className="inputTextBox boxSizing" type="text" maxLength="20" />
+                                        <input  onChange={this.BIND_CHECKPROJECTNAME.bind(this)} id="PROJECTNAME" value={this.state.PROJECTNAME || ""} className="inputTextBox boxSizing" type="text" maxLength="20" />
                                     </td>
                                     <th>
                                         <label className="formTableLabel boxSizing redFont">项目案名</label>
@@ -526,7 +493,7 @@ class NewProjectCount extends React.Component {
                                     </th>
                                     <td>
                                         <input readOnly="readonly" onClick={this.handChooseTo.bind(this)} id="PRINCIPALNAME" value={this.state.PRINCIPALNAME || ""} className="inputTextBox boxSizing" type="text" />
-                                        <img className="symbol headIcon" src="../img/head-icon.png" />
+                                        <img className="symbol headIcon" src="../../Content/img/head-icon.png" />
                                     </td>
 
                                     <th>
@@ -554,11 +521,11 @@ class NewProjectCount extends React.Component {
                     <div id="myCarousel" className="carousel slide carouselStyle">
                         <div className="carousel-inner">
                             <div className="item">
-                                <img className="fullScreenIcon" src="../img/fullScreen.png" onClick={this.BIND_maps.bind(this)} title="全屏" />
+                                <img className="fullScreenIcon" src="/Content/img/fullScreen.png" onClick={this.BIND_maps.bind(this)} title="全屏" />
                                 <iframe id="iframe2" ref="iframe2" src={this.state.iframeURL2} onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="291"></iframe>
                             </div>
                             <div className="item active">
-                                <img className="fullScreenIcon" src="../img/fullScreen.png" onClick={this.BIND_mapmark.bind(this)} title="全屏" />
+                                <img className="fullScreenIcon" src="/Content/img/fullScreen.png" onClick={this.BIND_mapmark.bind(this)} title="全屏" />
                                 <iframe id="iframe1" ref="iframe1" src={this.state.iframeURL1}    onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="291"></iframe>
                             </div>
                         </div>

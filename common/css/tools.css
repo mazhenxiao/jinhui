@@ -1,0 +1,33 @@
+/*
+    tools.less 新增通用控件
+*/
+.iss-stepBar {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.iss-stepBar a {
+  display: inline-block;
+  position: relative;
+  top: 0;
+  left: 0;
+  min-width: 90px;
+  height: 30px;
+  line-height: 30px;
+  background: #4c72a4;
+  color: #fff;
+  padding: 0 40px 0 40px;
+}
+.iss-stepBar a::before,
+.iss-stepBar a::after {
+  content: "";
+  position: absolute;
+}
+.iss-stepBar a::before {
+  /* 三角形继承 */
+  border-left: #fff solid 15px;
+  border-top: transparent solid 15px;
+  border-bottom: transparent solid 15px;
+  left: 0;
+  top: 0;
+}

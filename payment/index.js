@@ -5,9 +5,9 @@ import {Spin, Menu, Table, Input, Dropdown,Icon, Tabs, Row, Col, Button, Select}
 import {AreaService} from '../services';
 require("../css/antd.min.css");
 require("../css/payment.css");
-require("../css/tools-processBar.less");
-require("../css/button.less");
-require("../area/areaCss/areaManage.less");
+require("../../Content/css/tools-processBar.less");
+require("../../Content/css/button.less");
+require("../../Content/area/areaCss/areaManage.less");
 class Index extends Component {
 
         constructor(props){
