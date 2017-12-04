@@ -1,0 +1,109 @@
+/*identity.less*/
+.clear {
+  clear: both;
+}
+.boxGroupTit {
+  height: 40px;
+  margin-bottom: 5px ;
+  position: relative;
+  margin-top: 0;
+}
+.boxGroupTit p {
+  height: 40px;
+  line-height: 40px;
+  color: #333333;
+  font-size: 14px;
+  border-bottom: 1px solid #c9c9c9;
+}
+.boxGroupTit p span {
+  display: inline-block;
+  line-height: 40px;
+  border-bottom: 2px solid #31395d;
+}
+.boxGroupTit p i {
+  font-style: normal;
+}
+.boxGroupTit span.functionButton {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+  text-align: right;
+}
+.boxGroupTit span.functionButton a {
+  font-size: 12px;
+  height: 40px;
+  line-height: 40px;
+  display: inline-block;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: #999999 !important;
+  background-repeat: no-repeat;
+  background-position: left center;
+}
+.boxGroupTit span.functionButton a:hover {
+  color: #31395d;
+}
+.boxGroupTit span.functionButton .refresh-icon {
+  background-image: url(../img/refresh-icon.png);
+}
+.boxGroupTit span.functionButton .refresh-icon:hover {
+  background-image: url(../img/refresh-icon-hover.png);
+}
+.boxGroupTit span.functionButton .saveIcon {
+  background-image: url(../img/save-icon.png);
+}
+.boxGroupTit span.functionButton .saveIcon:hover {
+  background-image: url(../img/save-icon-hover.png);
+}
+.boxGroupTit span.functionButton .approvalIcon {
+  background-image: url(../img/approval-icon.png);
+}
+.boxGroupTit span.functionButton .approvalIcon:hover {
+  background-image: url(../img/approval-icon-hover.png);
+}
+.staging-left,
+.staging-right {
+  float: left;
+}
+.projectinFormation {
+  width: 66.6%;
+  height: auto;
+  margin-top: 10px;
+  padding-right: 20px;
+}
+.fieldLocation {
+  margin-top: 10px;
+  width: 33.3%;
+  height: 295px;
+  border: 1px solid #dddddd;
+}
+.carouselStyle .left,
+.carouselStyle .right {
+  background: none;
+}
+.carouselStyle .carousel-control {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  top: 50%;
+  margin-top: -15px;
+  background: #F1A118;
+}
+.carouselStyle .carousel-control:hover {
+  opacity: 0.8;
+}
+/*地图位置标记*/
+.geogrMarker_body {
+  position: relative;
+  overflow: hidden;
+}
+.geogrMarker_body .geogrMarker {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 999997;
+}

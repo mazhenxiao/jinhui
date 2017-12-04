@@ -1,0 +1,137 @@
+/*aBuilt.less文件*/
+.modal-title{
+    font-size:16px;
+}
+.aBuiltMain{
+    padding: 0 20px 20px;
+    font-size:12px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    height: 400px;
+    .aBuilt_Title{
+        width:100%;
+        font-size:14px;
+        margin: 12px 0 2px;
+        line-height:40px;
+        border-bottom: 1px solid rgb(201, 201, 201);
+        span{
+            display:inline-block;
+        }
+        span:first-child{
+            line-height: 38px;
+            margin-right:16px;
+            padding-right:10px;
+            border-bottom: 2px solid #31395d;
+        }
+        span.radioSpan{
+            float:right;
+            margin-left:16px;
+            input[type=radio]{
+                margin:0;
+                vertical-align: middle;
+            }
+        }
+    }
+
+    .aBuilt_Con{
+        height: auto;
+        overflow-x:auto;
+        overflow-y:hidden;
+        li{
+            position: relative;
+            float:left;
+            width:33.33%;
+            min-height:30px;
+            line-height: 30px;
+            margin-top:5px;
+            padding-left:110px;
+            padding-right:5px;
+            label{
+                position: absolute;
+                top:50%;
+                left:0;
+                width:110px;
+                -webkit-transform:translateY(-50%);
+                -moz-transform: translateY(-50%);
+                -ms-transform:  translateY(-50%);
+                transform:translateY(-50%);
+                font-weight:normal;
+                margin-bottom: 0px;
+                padding-right:6px;
+                text-align:right;
+            }
+            input{
+                border: #ddd solid 1px;
+                width:100%;
+                max-width:160px;
+                height:28px;
+            }
+            input[readonly]{
+                background: #ddd;
+            }
+            .unitSpan{
+                position: relative;
+                right:0;
+                top: 50%;
+                padding-left:3px;
+                -webkit-transform:translateY(-50%);
+                -moz-transform: translateY(-50%);
+                -ms-transform:  translateY(-50%);
+                transform:translateY(-50%);
+                text-align:left;
+            }
+        }
+        li:nth-child(2){
+            width:66.67%;
+        }
+    }
+    .aBuilt_Con.hide{
+        display: none;
+    }
+    .builtAlertTable{
+        margin-top:10px;
+        margin-bottom:0;
+        font-size:12px;
+        tr{
+            background: #fff;
+        }
+        
+        td{
+            border:none;
+            vertical-align: middle;
+            text-align: left;
+            padding:0;
+        }
+        thead{
+            tr{
+                border-top: 1px solid #ccc;
+                background: #f5f5f5;
+            }
+        }
+        tbody{
+            label{
+                font-weight:normal;
+                margin-bottom: 0px;
+                padding-right:6px;
+                text-align:right;
+                width:100%;
+            }
+            input{
+                border:none;
+                height:28px;
+                width: auto;
+                width:-moz-calc(100% - 4px);
+                width:-webkit-calc(100% - 4px);
+                width:calc(100% - 4px);
+                margin: 2px;
+                border: 1px solid #ddd;
+            }
+            input[readonly]{
+                background: #eee;
+            }
+        }
+    }
+    .builtAlertTable.hide{
+        display: none;
+    }
+}

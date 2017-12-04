@@ -1,0 +1,31 @@
+.paymentTitle{
+    font-weight: normal;
+    font-size: 14px;
+    background: #eee;
+    width: 60px;
+    padding: 5px;
+    text-align: center;
+    border-radius: 5px 0px 0px 5px;
+    position: relative;
+}
+.paymentTitle:after{
+    content: "";
+    width:0;
+    height: 0;
+    position: absolute;
+    right: -18px;
+    top:7px;
+    border:solid 18px #eee;
+    border-color: transparent transparent transparent #eee;
+    transform: rotate(135deg)
+}
+.tableBox{
+    height: 500px;
+    table thead tr th{ 
+        text-align: center;
+    }
+    table tr{}
+    .ant-pagination{
+        -display: none;
+    }
+}
