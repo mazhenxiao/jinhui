@@ -188,7 +188,7 @@ export default class Index extends Component{
                 location.href=`/Home/Index/#/ProcessApproval?e=`+newProjectStatus+`&dataKey=${this.props.location.query.dataKey}&current=ProcessApproval&areaId=""&areaName=""`;
             }
         })
-        .catch(err=>{
+        .catch(err=>{   
 
         })
         
@@ -204,7 +204,7 @@ export default class Index extends Component{
                     <div>
                         <div className="areaTopbtn jhBtn-wrap">
                             <button type="button" onClick={this.holdData.bind(this)} className="jh_btn jh_btn22 jh_btn_add">暂存</button>
-                            <button type="button" onClick={this.holdData.bind(this,"launch")} className="jh_btn jh_btn22 jh_btn_add hide">发起审批</button>
+                            <button type="button" onClick={this.holdData.bind(this,"launch")} className="jh_btn jh_btn22 jh_btn_add">发起审批</button>
                         </div>
                     </div>
                 </h3>
