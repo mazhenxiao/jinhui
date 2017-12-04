@@ -78,7 +78,7 @@ class BuildingFormatEdit extends Component {
             render: (text, record) => {
                 if (record["levelId"] === "1")
                     return <span className="format-tree-parent">{text}</span>;
-                return <span className="format-tree-child">123</span>;
+                return <span className="format-tree-child">{text}</span>;
             }
         },
         {
@@ -440,8 +440,10 @@ class BuildingFormatEdit extends Component {
                                                 onSelectChange={this.handleModalSelectChange("parkAndSupport")}/>
                         </Col>
                     </Row>
-                    <Table dataSource={dataSource} rowKey="id" size={"middle"} pagination={false} bordered={true}
-                           columns={this.columns}/>
+                    <div className="table-wapper">
+                        <Table dataSource={dataSource} rowKey="id" size={"middle"} pagination={false} bordered={true}
+                               columns={this.columns}/>
+                    </div>
                 </Spin>
             </Modal>
         );

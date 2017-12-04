@@ -288,20 +288,22 @@ class ComBuildingAdjust extends Component {
                             单栋指标
                         </Col>
                     </Row>
-                    <WrapperGroupTable
-                        key="building-area-table"
-                        headerData={buildingHeaderData}
-                        dataSource={buildingDataSource}
-                        rowKey="KEY"
-                        editAble={true}
-                        // fixedAble={true}
-                        onDataChange={this.handleBuildingDataChange}
-                    />
+                    <div className="table-wapper">
+                        <WrapperGroupTable
+                            key="building-area-table"
+                            headerData={buildingHeaderData}
+                            dataSource={buildingDataSource}
+                            rowKey="KEY"
+                            editAble={true}
+                            // fixedAble={true}
+                            onDataChange={this.handleBuildingDataChange}
+                        />
+                    </div>
                 </div>
             );
         }
         return (
-            <div>
+            <div style={{lineHeight: "25px"}}>
                 <Row gutter={16}>
                     <Col span={6}>
                         单业态指标
@@ -370,16 +372,18 @@ class ComBuildingAdjust extends Component {
                         </Col>
                     </Row>
                 </div>
-                <WrapperGroupTable
-                    key="format-area-table"
-                    headerData={formatHeaderData}
-                    dataSource={formatDataSource}
-                    rowKey="KEY"
-                    editAble={true}
-                    // fixedAble={true}
-                    onDataChange={this.handleFormatDataChange}
-                    columnRender={this.columnRender}
-                />
+                <div className="table-wapper">
+                    <WrapperGroupTable
+                        key="format-area-table"
+                        headerData={formatHeaderData}
+                        dataSource={formatDataSource}
+                        rowKey="KEY"
+                        editAble={true}
+                        // fixedAble={true}
+                        onDataChange={this.handleFormatDataChange}
+                        columnRender={this.columnRender}
+                    />
+                </div>
             </Spin>
         );
     };

@@ -464,7 +464,7 @@ class $iss {
     </section>`;
         let opt = {
             //url:"/Home/GetTreeInfo",//
-            url: "/Commen/IGetOrganizationalUsers",
+            url: iss.url("/Commen/IGetOrganizationalUsers"),
             param: {parentid: "13ead391fd4103096735e4945339550b", condition: ""},
             searchURL: "/Common/ISearchUser",
             title: "选择人员",
@@ -482,6 +482,7 @@ class $iss {
             }
         }
         $.extend(opt, arg);
+        opt.url=opt.url.indexOf("http")>=0? opt.url:iss.url(opt.url);
         let _s = "";
         /*  for(var v in opt.pepole){
              _s+=`<li class="chooseTolist"><li>`;
@@ -911,7 +912,7 @@ class $iss {
             eVal = "10103";//分期
         } else if (status == "newProjectStatus") {
             eVal = "10102";//项目
-        } else if (status == "teamMaintain"){
+        } else if (status == "teamMaintainStatus"){
             eVal = "10114";//团队维护
         }
         return eVal;
