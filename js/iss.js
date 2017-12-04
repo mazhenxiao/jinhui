@@ -110,7 +110,7 @@ class $iss {
                         message: "登陆超时",
                         description: `登陆超时请重新登陆！`
                     })
-                    top.window.location.href = "/account/Login";
+                    top.window.location.href = "/Login";
                 } else if (res["errorcode"] && res["errorcode"] == "300") {
                     iss.tip({
                         type: "error",
