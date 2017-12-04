@@ -5,7 +5,6 @@ const render = require('koa-ejs');
 const path = require('path');
 var c = require('child_process');
 var staticServer = require('koa-static');
-
 render(app, {
     root: path.join(__dirname, "view"),
     layout: 'template',
@@ -40,8 +39,8 @@ router.get('/', async (ctx, next) => {
     });
 
 app.listen(3000, arg => {
+    c.exec('start http://localhost:3000/login');
     // c.exec("npm run dev");
     console.log("启动成功，请访问 http://localhost:3000/login");
 });
 
-//c.exec('start http://localhost:3000/login');

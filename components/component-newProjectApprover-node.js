@@ -7,7 +7,7 @@
 import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-import "../../Content/css/newProjectApproval.less";
+import "../css/newProjectApproval.less";
 class ApprovalControlNode2 extends React.Component {
     constructor(arg) {
         super(arg);

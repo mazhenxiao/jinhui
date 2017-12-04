@@ -1,7 +1,7 @@
 import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-require("../../Content/css/tools-processBar.less");
+require("../css/tools-processBar.less");
 /*
 *调用组件附上的属性值
 * data [] 存放九种步骤

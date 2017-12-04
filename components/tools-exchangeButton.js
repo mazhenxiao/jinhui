@@ -1,7 +1,7 @@
 import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-require("../../Content/css/tools-processBar.less");
+require("../css/tools-processBar.less");
 class ExchangeButton extends React.Component {
     constructor(arg) {
         super(arg);
