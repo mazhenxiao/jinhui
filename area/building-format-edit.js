@@ -353,6 +353,7 @@ class BuildingFormatEdit extends Component {
                     groupId: item.groupId,
                     producttypename: item.producttypename,
                     standardfloorheight: item.standardfloorheight,
+                    buildName: item.buildName,
                 };
             }),
         };
