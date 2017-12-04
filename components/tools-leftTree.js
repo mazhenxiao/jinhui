@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";//公共类
 import Tree from '../components/tools-tree.js'; //树控件
-class ToolsTree extends React.Component {
+export default class ToolsTree extends React.Component {
     constructor(arg) {
         super(arg);
 
@@ -15,17 +15,23 @@ class ToolsTree extends React.Component {
             pageClass:"Index"/*页面分类，如项目列表，面积管理等需要重新定位入口的分类,默认是项目*/
         }
         this.setTime="";
+        this.currentPath = "";
+        //iss.hashHistory.listen()
+    }
+    componentWillReceiveProps(nextProps){
+     /*     let path = nextProps.props.path;
+         this.currentPath = path; */
     }
     componentWillMount(){
     	var th=this;
-    	let pathClass=location.pathname;
+    	let pathClass=location.hash.split("/")[1].split("?")[0]; //this.state.pageClass;//location.hash.split("/")[1];
     	
-    	if(pathClass=="/Index/"){/*项目列表*/
+    	if(pathClass.toLocaleLowerCase()=="index"){/*项目列表*/
     		th.setState({
     			pageClass:"Index",
     			changeState:iss.getQuert("intallment") ? "intallment" : iss.getQuert("newProject")? "newProject":""
     		});
-    	}else if(pathClass=="/AreaInfo/"){/*面积管理*/
+    	}else if(pathClass=="AreaInfo"){/*面积管理*/
     		th.setState({
     			pageClass:"AreaInfo",
     			changeState:""
@@ -35,15 +41,19 @@ class ToolsTree extends React.Component {
       //  console.log(pathClass);
     }
     componentDidMount() {
+        
         var th = this;
-        var pathClass=th.state.pageClass;
+        var pathClass= location.hash.split("/")[1].split("?")[0]//th.state.pageClass;
+        
         th.notIndexChange(); //判断是否刷新了也没
         /*告诉头部，当前处于哪个页面分类，方便给menu添加active状态*/
        $(function(){
        	 $(document).triggerHandler("evPageClass",[pathClass]);
        });
         Tree.bindTree("#tree", arg => {
+         
             iss.id=arg;
+            pathClass=location.hash.split("/")[1].split("?")[0];
             sessionStorage.setItem("treeId",JSON.stringify(arg));
         
             let id,current,paths = location.hash.split("/")[1].split("?")[0];
@@ -51,7 +61,8 @@ class ToolsTree extends React.Component {
              * 这个逻辑为，在tools-list菜单里this.EVENT_CLICK.bind(this,"AreaInfo","priceControl")
              * 判断当前是“AreaInfo”等，信息填报内容都在“AreaInfo”
              */
-            if(pathClass=="Index"){  //项目管理
+            
+            if(pathClass.toLocaleLowerCase()=="index"){  //项目管理
             	switch(arg["level_id"]){
 	                case "1": //集团汇总
 	                case "2":iss.hashHistory.replace({pathname:"index",state:arg});break;//总部
@@ -360,4 +371,4 @@ class ToolsTree extends React.Component {
         </div>
     }
 }
-ReactDOM.render(<ToolsTree />, document.querySelector("#JH-Nav"))
+//ReactDOM.render(<ToolsTree />, document.querySelector("#JH-Nav"))

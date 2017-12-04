@@ -74,7 +74,7 @@ var config = {
        /*  new webapck.DefinePlugin({  //热替换
             'process.env.NODE_ENV': '"development"'
         }), */
-        new webapck.HotModuleReplacementPlugin() //热替换
+       // new webapck.HotModuleReplacementPlugin() //热替换
         /*  new ImageminPlugin({
              disable: process.env.NODE_ENV !== 'production', // Disable during development 
              pngquant: {
