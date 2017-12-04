@@ -329,8 +329,10 @@ class BlockFormatEdit extends Component {
                                                 onSelectChange={this.handleModalSelectChange("parkAndSupport")}/>
                         </Col>
                     </Row>
-                    <Table dataSource={dataSource} rowKey="id" size={"middle"} pagination={false} bordered={true}
-                           columns={this.columns}/>
+                    <div className="table-wapper">
+                        <Table dataSource={dataSource} rowKey="id" size={"middle"} pagination={false} bordered={true}
+                               columns={this.columns}/>
+                    </div>
                 </Spin>
             </Modal>
         );
