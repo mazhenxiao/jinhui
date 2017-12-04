@@ -275,11 +275,13 @@ class Index extends Component {
                 return AreaService.getVersion(step, dataKey, mode);
             })
             .then(versionData => {
+                let versionId = this.getDefaultVersionId(versionData);
                 this.setState({
-                    loading: false,
                     versionData,
-                    versionId: this.getDefaultVersionId(versionData)
+                    versionId
                 });
+
+                this.loadData(false, step, mode, dataKey, versionId);
             })
             .catch(error => {
                 this.setState({

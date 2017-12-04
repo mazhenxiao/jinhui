@@ -8,6 +8,8 @@ import {shallowCompare} from '../utils/index';
  */
 const defaultWidth = 105;
 
+const numberReg = /^\d{1,8}(?:\.\d{0,2})?$/;
+
 /**
  * 分组表格
  * @param headerData 表头数据
@@ -16,7 +18,6 @@ const defaultWidth = 105;
  * @param defaultHeight 默认表格宽度
  * @returns {XML}
  */
-
 export default class WrapperGroupTable extends Component {
 
     static propTypes = {
@@ -40,27 +41,20 @@ export default class WrapperGroupTable extends Component {
         fixedAble: false,
     };
 
-    // state = {
-    //     filterInfo: null,
-    // };
-
     shouldComponentUpdate(nextProps, nextState) {
         return shallowCompare(this, nextProps, nextState);
     }
 
-    // handleFilterChange = (pagination, filters) => {
-    //     this.setState({
-    //         filterInfo: filters,
-    //     });
-    // };
-
-    handleInputChange = (record, key) => {
+    handleInputChange = (record, key, column) => {
         return (e) => {
-            // const oldValue = record[key];
             let value = e.target.value;
+            console.log("value", value);
+            if (!numberReg.test(value)) {
+                value = 0;
+            }
             record[key] = value;
-            this.forceUpdate();
             this.props.onDataChange && this.props.onDataChange(record.KEY, key, value);
+            this.forceUpdate();
         };
     };
 
@@ -92,7 +86,7 @@ export default class WrapperGroupTable extends Component {
                         return text;
                     }
 
-                    return <Input onChange={this.handleInputChange(record, item.field)} value={text}/>;
+                    return <Input onChange={this.handleInputChange(record, item.field, item)} value={text}/>;
                 };
             }
             if (item.children && Array.isArray(item.children) && item.children.length > 0) {
