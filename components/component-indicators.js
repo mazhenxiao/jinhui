@@ -263,7 +263,7 @@ class Indicators extends React.Component {
     /*选择地块事件*/
     evSelectLandlist(editOrSel){
     	var th=this;
-    	var allData=iss.clone(th.state.loadLandData);
+    	var allData=th.state.loadLandData? [...th.state.loadLandData]:[]; //iss.clone(th.state.loadLandData);
     	var selectIds=th.state.winopenSelId;
     	var filterArr=allData.filter(function(obj,index){
             return !new RegExp(obj.ID,"ig").test(selectIds);
