@@ -5,7 +5,7 @@
 import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-import {Select} from 'antd';
+import {Select,Input} from 'antd';
 require("../css/antd.min.css");
 const Option = Select.Option;
 class DynamicTable extends React.Component {

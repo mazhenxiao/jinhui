@@ -18,8 +18,6 @@ require("../css/button.less");
 require("../area/areaCss/areaManage.less");
 require("./price/price.less");
 class PriceControl extends React.Component {
-
-
     //  this.bindTab();
     state = {
         actionUrl: {

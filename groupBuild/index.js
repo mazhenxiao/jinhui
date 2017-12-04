@@ -109,7 +109,7 @@ export default class Index extends Component{
             }
         })
         iss.chooseTo({
-            url:"/Common/IGetOrganizationalUsers",
+         
             title:"选择人员<i class='fontRed'>（双击选择人员）</i>",
             pepole:peopleJson,  //已选人员名单
             multiple:flag,
@@ -166,10 +166,10 @@ export default class Index extends Component{
                     ok(da){}
                 })
                 return
-            }
+            } 
         }
         var th = this;
-        var newProjectStatus = iss.getEVal("teamMaintain");
+        var teamMaintainStatus = iss.getEVal("teamMaintainStatus");
         var json = {
                 'baseinfo':JSON.stringify(this.state.dataHeader),
                 'data':JSON.stringify(this.state.propsDATA),
@@ -185,7 +185,7 @@ export default class Index extends Component{
             
             if(launch == "launch"){
                 $(window).trigger("treeLoad");
-                location.href=`/Home/Index/#/ProcessApproval?e=`+newProjectStatus+`&dataKey=${this.props.location.query.dataKey}&current=ProcessApproval&areaId=""&areaName=""`;
+                location.href=`/Index/#/ProcessApproval?e=`+teamMaintainStatus+`&dataKey=${this.props.location.query.dataKey}&current=ProcessApproval&areaId=""&areaName=""`;
             }
         })
         .catch(err=>{   
@@ -217,17 +217,17 @@ export default class Index extends Component{
                
                 if(el.Req == 1){
                     
-                    return <li className=''>
+                    return <li key={ind} className=''>
                                 <label className="redFont">{el.jobName}</label>
                                 <input id={el.jobId} onClick={this.handChooseTo.bind(this,el.jobId)} value={el.UserNames||''} className="" type="text" />
-                                <img className="symbol headIcon" src="../../Content/img/head-icon.png" />
+                                <img className="symbol headIcon" src="../../img/head-icon.png" />
                             </li>
                     
                 }else{
-                    return <li className=''>
+                    return <li key={ind} className=''>
                              <label className="">{el.jobName}</label>
                              <input id={el.jobId} onClick={this.handChooseTo.bind(this,el.jobId)} value={el.UserNames||''} className="" type="text" />
-                             <img className="symbol headIcon" src="../../Content/img/head-icon.png" />
+                             <img className="symbol headIcon" src="../../img/head-icon.png" />
                            </li>
                     
                 }
