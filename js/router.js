@@ -154,6 +154,15 @@ var rootRout = {
           callback(null, app.default);
         }, "component-newProjectStage");
       }
+    },
+    { //价格管理 
+      path: "/priceControl",
+      getComponent: function (next, callback) {
+        require.ensure([], function (require) {
+          var app = require('../price/component-priceControl.js');//============================价格管理
+          callback(null, app.default);
+        }, "component-priceControl");
+      }
     }
 
   ] 
