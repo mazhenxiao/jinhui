@@ -499,6 +499,7 @@ class $iss {
             ele = $("#chooseToTreeUl");
 
             //opt.data = to;
+            opt.param["token"]=localStorage.getItem("token");
             ele.tree({
                 url: `${opt.url}`,
                 queryParams: opt.param,

@@ -294,7 +294,7 @@ class PriceControl extends React.Component {
         });
     };
     /**
-    * 处理步骤切换
+    * 处理步骤切换10104
     * 根据阶段获取版本数据 => 再获取 规划方案指标和面积数据
     */
     handleStepClick = (newStep) => {
