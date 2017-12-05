@@ -23,7 +23,7 @@ class ProcessApprovalTab extends React.Component {
             {id:`${url}`,url:`/${url}`},//审批
             {id:"newProjectApproval",url:"/newProjectApproval"},//项目
             {id:"newProjectStage",url:"/newProjectStage"},//分期
-            {id:"groupbuild",url:"/groupbuild"}//项目团队维护
+            {id:"groupbuild",url:"/AreaInfo/groupbuild"}//项目团队维护
         ],
         id=th.state.allSearchArg['e'];
         switch(id){
@@ -56,10 +56,16 @@ class ProcessApprovalTab extends React.Component {
     EVENT_CLICK_LINK(url,id,ev){
     	var th=this;
     	var allSearchArg=th.state.allSearchArg;
-    	var keyArr=[];
+        var keyArr=[];
+
         for(let key in allSearchArg){
-        	keyArr.push(key+"="+allSearchArg[key]);
+        //    if(key == "dataKey"){
+        //     keyArr.push(key+"="+allSearchArg["newId"]);
+        //    }else{
+            keyArr.push(key+"="+allSearchArg[key]);
+          // }
         }
+        //console.log(keyArr)
         iss.hashHistory.push({
         	pathname:url,
         	search:"?"+keyArr.join("&")

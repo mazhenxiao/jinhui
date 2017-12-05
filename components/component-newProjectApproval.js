@@ -138,12 +138,14 @@ class ApprovalControl extends React.Component {
         }
         return map;
     }
-
+ 
     render() {
         let th = this;
         let stateData=th.state;
         return <section>
-
+            {
+                this.isProcessApproval()
+            }
             <ProcessApprovalTab current="newProjectApproval" allSearchArg={stateData.allSearchArg}/>
             <NewProjectCountView all={this.props.location} />
             <section>

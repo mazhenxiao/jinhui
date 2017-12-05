@@ -1,6 +1,7 @@
 import "babel-polyfill";  //兼容ie
 import React,{Component} from 'react';
 import DynamicTable from "../components/tools-dynamicTable.js";
+import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
 import iss from '../js/iss';
 import {knife} from '../utils';
 require("../css/tools-dynamicTable.less");
@@ -16,13 +17,20 @@ export default class Index extends Component{
             propsDATA:[],//动态数据
             level_id: "",
             id:"",
-            readOnly:""
+            readOnly:false,
+            allSearchArg:this.props.location.query,/*地址栏所有参数*/
         }
-    
+        number = "2"; //2
+        lev ="5"; //5
     componentWillMount() {
-        if(this.props.location.state != undefined && this.props.location.state.level_id >4){
-            const lev = this.props.location.state.level_id;
-            const leid = this.props.location.state.id;
+        if(this.state.allSearchArg["isProOrStage"]==this.number){
+            const lev = this.lev;
+            if(this.state.allSearchArg["newId"]){
+                var leid = this.state.allSearchArg["newId"];
+            }else{
+                var leid = this.state.allSearchArg["dataKey"];
+            }
+            
             this.setState({
                 level_id: lev,
                 id:leid 
@@ -50,23 +58,33 @@ export default class Index extends Component{
      * param nextProps 下一阶段的props
      */
     componentWillReceiveProps(nextProps) {
-            
-        //console.log(nextProps.location)
-        if(nextProps.location.state != undefined && Number(nextProps.location.state.level_id)>=4){
-            const lev = nextProps.location.state.level_id;
-            const leid = nextProps.location.state.id;
-            this.setState({
-                level_id: lev,
-                id:leid 
-            },()=>{
-                this.getAjax();
-            })
-        }
-        //this.getAjax();
-        //切换路由之后，重新获取数据
+
         this.setState({
+            allSearchArg:nextProps.location.query,
             readOnly:this.GetQueryString("readOnly")
-        })
+        },arg=>{
+            
+            if(this.state.allSearchArg["isProOrStage"]==this.number){
+                const lev = this.lev;
+                if(this.state.allSearchArg["newId"]){
+                    var leid = this.state.allSearchArg["newId"];
+                }else{
+                    var leid = this.state.allSearchArg["dataKey"];
+                }
+                this.setState({
+                    level_id: lev,
+                    id:leid 
+                },()=>{
+                    this.getAjax();
+                })
+            }
+
+            
+        });
+       
+
+   
+     
     }
     getAjax(arg) {
         // if(this.props.location.state == undefined){
@@ -159,8 +177,6 @@ export default class Index extends Component{
             iss.popover({ content: "审批中无法编辑", type: 1 });
             return
         }
-       
-        
         if(launch == "launch"){
             var msg = [],str='';
             //console.log(this.state.propsDATA)
@@ -169,18 +185,38 @@ export default class Index extends Component{
                     msg.push(el.jobName)
                 }
             })
-            // if(msg.length>0){
-            //     iss.Alert({
-            //         title:"以下为必填项",
-            //         width:300,
-            //         height:200,
-            //         content:`<div id="msgAlert">`+msg.join("，")+`</div>`,
-            //         okVal:"确定",
-            //         ok(da){}
-            //     })
-            //     return
-            // } 
+            if(msg.length>0){
+                iss.Alert({
+                    title:"以下为必填项",
+                    width:300,
+                    height:200,
+                    content:`<div id="msgAlert">`+msg.join("，")+`</div>`,
+                    okVal:"确定",
+                    ok(da){}
+                })
+                return
+            }
+        }else{
+            var msg = [],str='';
+            debugger
+            //console.log(this.state.propsDATA)
+            this.state.propsDATA.forEach((el,ind)=>{
+                // if(el.jobName == "项目负责人" && el.UserNames == ""){
+                //     iss.Alert({
+                //         title:"提示",
+                //         width:300,
+                //         height:200,
+                //         content:`<div id="msgAlert">项目负责人不能为空！！！</div>`,
+                //         okVal:"确定",
+                //         ok(da){}
+                //     })
+                    
+                // }
+                iss.popover({ content: "项目负责人不能为空！！！"});
+            })
+            return
         }
+        debugger
         var th = this;
         var teamMaintainStatus = iss.getEVal("teamMaintainStatus");
         var json = {
@@ -198,7 +234,7 @@ export default class Index extends Component{
             
             if(launch == "launch"){
                 $(window).trigger("treeLoad");
-                location.href=`/Index/#/ProcessApproval?e=`+teamMaintainStatus+`&dataKey=${this.props.location.query.dataKey}&current=ProcessApproval&areaId=""&areaName=""&readOnly="readOnly"`;
+                location.href=`/Index/#/ProcessApproval?e=`+teamMaintainStatus+`&dataKey=${this.state.dataHeader.ID}&current=ProcessApproval&areaId=&areaName=&readOnly=readOnly&isProOrStage=${this.number}&newId=${this.props.location.query.dataKey}`;
             }
         })
         .catch(err=>{   
@@ -297,12 +333,24 @@ export default class Index extends Component{
             </div>
         );
     };
-    render(){
-        if (this.props.location.state == undefined ||  Number(this.props.location.state.level_id)<4) {
+    isProcessApproval=arg=>{
+       
+        if(this.props.location.query["readOnly"]){
+        
+            let stateData=this.state;
+            return <ProcessApprovalTab current="groupbuild" allSearchArg={stateData.allSearchArg}/>
+        }
+       
+    }
+    render(){ 
+       
+        
+        if (this.state.allSearchArg["isProOrStage"]!=this.number) {
             
             return this.renderEmpty();
         }
         return <article>
+            {this.isProcessApproval()}
             <div>
                 {this.renderHeader()}
             </div>
@@ -312,21 +360,21 @@ export default class Index extends Component{
                         <tr>
                             <th><label className="">所属区域</label></th>
                             <td>
-                                <input readOnly="true" id="PROJECTNAME" value={this.state.dataHeader.AreaName || ""} className="" type="text" />
+                                <input readOnly={true} id="PROJECTNAME" value={this.state.dataHeader.AreaName || ""} className="" type="text" />
                             </td>
                             <th><label className="">所属城市</label></th>
                             <td>
-                                <input readOnly="true" id="PROJECTNAME" value={this.state.dataHeader.CityName || ""} className="" type="text" />
+                                <input readOnly={true} id="PROJECTNAME" value={this.state.dataHeader.CityName || ""} className="" type="text" />
                             </td>
                         </tr>
                         <tr>
                             <th><label className="">项目名称</label></th>
                             <td>
-                                <input readOnly="true" id="PROJECTNAME" value={this.state.dataHeader.ProjectName || ""} className="" type="text" />
+                                <input readOnly={true} id="PROJECTNAME" value={this.state.dataHeader.ProjectName || ""} className="" type="text" />
                             </td>
                             <th><label className="">分期名称</label></th>
                             <td>
-                                <input readOnly="true" id="PROJECTNAME" value={this.state.dataHeader.StageName || ""} className="" type="text" />
+                                <input readOnly={true} id="PROJECTNAME" value={this.state.dataHeader.StageName || ""} className="" type="text" />
                             </td>
                         </tr>
                     </tbody>
