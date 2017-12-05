@@ -10,6 +10,7 @@ import { Spin, Tabs, Row, Col, Button, Select, Table,Input } from 'antd';
 import { AreaConstants } from '../constants';
 import { price, AreaService } from '../services';
 import {knife} from '../utils';
+import { debug } from 'util';
 const { AreaManageStep, Legend } = AreaConstants;
 const TabPane = Tabs.TabPane;
 const { Option } = Select;
@@ -37,7 +38,7 @@ class PriceControl extends React.Component {
         version: [],//版本
         step: 0,//阶段
         stepName: "",//阶段名称
-        curVersion: "",//当前版本
+        curVersion: "空",//当前版本
         status: "",//当前版本状态
         versionData: [],//版本数据
         versionId: "",//版本id
@@ -201,11 +202,15 @@ class PriceControl extends React.Component {
                 return Promise.reject("未获取到阶段数据！");
             })
             .then(versionData => {
-                
-               let versionId = this.getDefaultVersionId(versionData);
+               let versionId = this.getDefaultVersionId(versionData),
+               curVersion = versionData.filter(arg=>{
+                return arg["id"]== versionId;
+            })[0]
+            
                 this.setState({
                     versionData,
-                    versionId
+                    versionId,
+                    curVersion:curVersion? curVersion.statusName:""
                 });
                  return versionId;
                
@@ -315,10 +320,14 @@ class PriceControl extends React.Component {
             AreaService.getVersion(newStep, dataKey, mode,"Price")
             .then(versionData => {
                 
-               let versionId = this.getDefaultVersionId(versionData);
+               let versionId = this.getDefaultVersionId(versionData),
+               curVersion = versionData.filter(arg=>{
+                   return arg["id"]== versionId;
+               })[0]
                 this.setState({
                     versionData,
-                    versionId
+                    versionId,
+                    curVersion:curVersion? curVersion.statusName:""
                 });
                  return versionId;
             })
@@ -365,12 +374,13 @@ class PriceControl extends React.Component {
                 return <button type="button" className="jh_btn jh_btn22 jh_btn_edit" onClick={this.editNewPriceVersion}>编辑版本</button>
             }
         }
+         
        // let defaultValue = this.state.versionData.length ? [this.state.versionData[0]["id"]] : "请选择";
         return <ul className="BTN_GROUP">
             <li className=""> { ButtonBar()}</li>
             <li className=""></li>
             <li className=""><span>当前版本：</span><Select value={this.state.versionId} onChange={this.EventChangeSelectVersion} style={{width:90}}>{list}</Select></li>
-            <li className=""><span>状态：</span><span id="statusText">{this.state.version}</span></li>
+            <li className=""><span>状态：</span><span id="statusText">{this.state.curVersion}</span></li>
         </ul>
     }
     render() {
