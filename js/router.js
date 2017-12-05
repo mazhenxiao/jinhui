@@ -12,9 +12,9 @@ var rootRout = {
       path: "/index",
       getComponent: function (next, callback) {
         require.ensure([], function (require) {
-          var app = require('../components/component-index.js');//============================首页
+          var app = require('../overviewIndex/index.js');//============================首页
           callback(null, app.default);
-        }, "component-index");
+        }, "index");
       }
     },
     {
