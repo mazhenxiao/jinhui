@@ -3,6 +3,7 @@ import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import NewProjectCount from "./component-newProject-count.js";
 import DynamicTable from "./tools-dynamicTable.js";
+import NewProjectTime from "./component-newProject-time.js"
 import "../css/tools-dynamicTable.less";//专用css
 /* import Peripheral from "./component-newProject-peripheral.js";//外设条件 */
 
@@ -46,7 +47,6 @@ class NewProject extends React.Component {
         let status = local.query["status"];
         let dataKey = local.query["dataKey"]; //local.query["dataKey"];
         let projectId = "";
-
         if (local.query["status"]) {
             if (dataKey) {
                 projectId = dataKey;
@@ -58,7 +58,7 @@ class NewProject extends React.Component {
 
             th.setState({
                 status: status,
-                projectId: projectId
+                projectId: projectId,
             });
             // console.log("项目ID");
             // console.log(projectId);
@@ -456,6 +456,18 @@ class NewProject extends React.Component {
     //===================================================发起审批=========================
     /*发起审批*/
     EVENT_CLICK_POSTAPP() {
+        let approvalTime= approvalTime==undefined || "" || null ? "" : this.state.NewProjectCountDATA.APPROVETIME;
+        let currentTime =(new Date().getTime())/1000;//此时此刻时间戳
+        if(approvalTime!=""){
+            approvalTime = new Date(Date.parse(approvalTime.replace(/-/g, "/")));
+            approvalTime = approvalTime.getTime()/1000;//最迟解决时间时间戳
+            let diffTime = currentTime-approvalTime;//时间差
+            let mins5 = 5 * 60;//5分钟
+            if(diffTime<mins5){
+                return false;
+            }
+        }
+        
         var th = this;
         let landInfoListJson = th.GET_DynamicData();
         var areaId = th.state.NewProjectCountDATA.CompanyAreaId;/*区域id*/
@@ -549,7 +561,17 @@ class NewProject extends React.Component {
     }
     /*暂存*/
     EVENT_CLICK_SAVE(callback) {
-
+        let approvalTime= approvalTime==undefined || "" || null ? "" : this.state.NewProjectCountDATA.APPROVETIME;
+        let currentTime =(new Date().getTime())/1000;//此时此刻时间戳
+        if(approvalTime!=""){
+            approvalTime = new Date(Date.parse(approvalTime.replace(/-/g, "/")));
+            approvalTime = approvalTime.getTime()/1000;//最迟解决时间时间戳
+            let diffTime = currentTime-approvalTime;//时间差
+            let mins5 = 5 * 60;//5分钟
+            if(diffTime<mins5){
+                return false;
+            }
+        }
         var th = this;
         let landInfoListJson = th.GET_DynamicData();
         let status = th.state.status;
@@ -602,13 +624,17 @@ class NewProject extends React.Component {
                                     urlPath = urlPath + "&dataKey=" + projectId;
                                 }
                                 
-                                
-                                iss.popover({ content: "保存成功", type: 2 });
-                                window.location.href = urlPath;
                                 th.setState({
                                     "status": "edit",
                                 });
-                                window.location.reload();
+                                window.location.href = urlPath;
+                                iss.popover({ content: "保存成功", type: 2 });
+                                setTimeout(()=>{
+                                    window.location.reload();
+                                },2000);
+                                
+
+                                
                             }
                             iss.popover({ content: "保存成功", type: 2 });
                             $(window).trigger("treeLoad");
@@ -697,6 +723,15 @@ class NewProject extends React.Component {
     BIND_SELF_NewProjectCount() { //重定向到NewProjectCount模块内
 
     }
+
+    handleEndTiming=()=>{
+        this.setState({
+            endTimingStatus:true,
+        });
+    };
+
+    
+    
     render() {
         var th = this;
         return <article>
@@ -707,9 +742,9 @@ class NewProject extends React.Component {
                         <i>（<i className="redFont"></i>为必填项）</i>
                     </p>
                     <span className="functionButton">
-                        <a className="saveIcon " onClick={this.EVENT_CLICK_SAVE.bind(this, "zc")} href="javascript:void(0);">暂存</a>
-                        <a className="approvalIcon" onClick={this.BIND_ROUTERCHANGE.bind(this)} href="javascript:;">发起审批</a>
-                    </span>
+                        <a className="saveIcon " onClick={this.EVENT_CLICK_SAVE.bind(this, "zc")} href="javascript:void(0);">暂存 <NewProjectTime endTiming={this.handleEndTiming.bind(this)} approvalTime={this.state.NewProjectCountDATA.APPROVETIME || ""} /></a>
+                        <a className="approvalIcon" onClick={this.BIND_ROUTERCHANGE.bind(this)} href="javascript:;">发起审批 <NewProjectTime endTiming={this.handleEndTiming.bind(this)} approvalTime={this.state.NewProjectCountDATA.APPROVETIME || ""} /></a>
+                    </span> 
                 </h3>
                 <NewProjectCount ref="NewProjectCount" checkName={this.checkName} local={th.props.location} NewProjectCountDATA={th.BIND_NewProjectCountDATA.bind(th)} save={th.EVENT_CLICK_SAVE.bind(this)} status={th.state.status} projectId={th.state.projectId} point={th.BIND_NewProjectCount.bind(this)} />
             </section>

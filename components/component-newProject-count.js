@@ -80,6 +80,7 @@ class NewProjectCount extends React.Component {
                     "PARENTID": res.rows.BaseFormInfo.Project.PARENTID,
                     "CITY": res.rows.BaseFormInfo.Project.CITY,
                     "CREATETIME":res.rows.BaseFormInfo.Project.CREATETIME,//项目创建时间
+                    "APPROVETIME":res.rows.BaseFormInfo.APPROVETIME,//审批通过时间
                     //"ID":res.rows.BaseFormInfo.Project.ID,
                 }, arg => {
                     th.bind_combobox(res);
