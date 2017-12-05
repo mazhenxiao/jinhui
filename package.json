@@ -8,7 +8,7 @@
     "dev": "webpack --display-error-details -w",
     "web": "node server.js",
     "koa": "node koa",
-    "test": "webpack --display-error-details"
+    "build": "webpack --display-error-details"
   },
   "author": "",
   "license": "ISC",

@@ -9,7 +9,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 //const extractLESS = new ExtractTextPlugin('./Content/dist/css/[name].min.css');
 //var WebpackDevServer = require('webpack-dev-server');
 var c = require('child_process');
-
+var process = require("process")
 var config = {
     entry: {
       //  "WebpackDevServer": "webpack-dev-server/client?http://localhost:5001/",
@@ -92,5 +92,8 @@ var config = {
         } */
     },
 }
-//c.exec("npm run koa");
+if(process.argv.pop().indexOf("-w")>=0){
+    c.exec("npm run koa");
+}
+
 module.exports = config;
