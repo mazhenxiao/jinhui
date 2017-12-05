@@ -143,7 +143,7 @@ export default class Index extends Component{
          
             title:"选择人员<i class='fontRed'>（双击选择人员）</i>",
             pepole:peopleJson,  //已选人员名单
-            multiple:flag,
+           // multiple:flag,
             callback(da){
                 //console.log(da)
                 var text = [],userId =[];

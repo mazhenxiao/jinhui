@@ -469,7 +469,7 @@ class $iss {
     </section>`;
         let opt = {
             //url:"/Home/GetTreeInfo",//
-            url: iss.url("/Commen/IGetOrganizationalUsers"),
+            url: iss.url("/Common/IGetOrganizationalUsers"),
             param: {parentid: "13ead391fd4103096735e4945339550b", condition: ""},
             searchURL: "/Common/ISearchUser",
             title: "选择人员",
