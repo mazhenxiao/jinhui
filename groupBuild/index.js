@@ -177,8 +177,6 @@ export default class Index extends Component{
             iss.popover({ content: "审批中无法编辑", type: 1 });
             return
         }
-       
-        
         if(launch == "launch"){
             var msg = [],str='';
             //console.log(this.state.propsDATA)
@@ -187,8 +185,38 @@ export default class Index extends Component{
                     msg.push(el.jobName)
                 }
             })
-   
+            if(msg.length>0){
+                iss.Alert({
+                    title:"以下为必填项",
+                    width:300,
+                    height:200,
+                    content:`<div id="msgAlert">`+msg.join("，")+`</div>`,
+                    okVal:"确定",
+                    ok(da){}
+                })
+                return
+            }
+        }else{
+            var msg = [],str='';
+            debugger
+            //console.log(this.state.propsDATA)
+            this.state.propsDATA.forEach((el,ind)=>{
+                // if(el.jobName == "项目负责人" && el.UserNames == ""){
+                //     iss.Alert({
+                //         title:"提示",
+                //         width:300,
+                //         height:200,
+                //         content:`<div id="msgAlert">项目负责人不能为空！！！</div>`,
+                //         okVal:"确定",
+                //         ok(da){}
+                //     })
+                    
+                // }
+                iss.popover({ content: "项目负责人不能为空！！！"});
+            })
+            return
         }
+        debugger
         var th = this;
         var teamMaintainStatus = iss.getEVal("teamMaintainStatus");
         var json = {
