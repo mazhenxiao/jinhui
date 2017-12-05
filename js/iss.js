@@ -45,7 +45,7 @@ class $iss {
         return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
     }
 
-    fetch(opt) {
+    fetch(opt) { 
         const {url, ...params} = opt;
         let token = this.token;
         if (!token) window.location.href = "/login"
@@ -53,7 +53,6 @@ class $iss {
             method: opt["type"] ? opt.type : 'POST',
             mode: 'cors',
             cache: 'no-cache',
-            credentials: "include",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded',
