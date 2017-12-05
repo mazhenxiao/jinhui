@@ -116,14 +116,19 @@ class PriceControl extends React.Component {
                 width:80,
                 className:da["field"]=="SHOWNAME"? "text-left":"text-center",
                 render(text, record, index){ 
+                    
                     //console.log("da.field",da.field)
                     if(da.field=="SHOWNAME"){
                         return <span className={record.LEVELS=="2"? "Title padL20":"Title"}>{text}</span>
-                    }else if(th.state.edit==true&&da.field=="AVERAGEPRICE"){
+                    }else if(th.state.edit==true&&da.field=="AVERAGEPRICE"&&record.LEVELS!="1"){
                         
                         return <Input value={text} className="text-right" onChange={th.EventChangeInput.bind(this,record,da["field"])}  />
                     }else {
-                        return <span>{text}</span>;
+                        let localText =text;
+                        if(da.field=="ISHAVEPROPERTY"||da.field=="ISDECORATION"){
+                            localText = text==1? "是":"否";
+                        }
+                        return <span>{localText}</span>;
                     }
                 }
             }
@@ -269,7 +274,7 @@ class PriceControl extends React.Component {
         });
         price.SavePriceList(data)
         .then(da=>{
-            debugger
+           // debugger
         })
 
     }
