@@ -112,15 +112,17 @@ class PriceControl extends React.Component {
                 key: ind,
                 dataIndex: da["field"],
                 title: da["name"],
-                width:120,
+                width:80,
                 className:da["field"]=="SHOWNAME"? "text-left":"text-center",
                 render(text, record, index){ 
                     //console.log("da.field",da.field)
                     if(da.field=="SHOWNAME"){
-                        return <span className={record.LEVELS==2? "Title padL40":"Title"}>{text}</span>
+                        return <span className={record.LEVELS=="2"? "Title padL20":"Title"}>{text}</span>
                     }else if(th.state.edit==true&&da.field=="AVERAGEPRICE"){
                         
-                        return <Input value={text} onChange={th.EventChangeInput.bind(this,record,da["field"])}  />
+                        return <Input value={text} className="text-right" onChange={th.EventChangeInput.bind(this,record,da["field"])}  />
+                    }else {
+                        return <span>{text}</span>;
                     }
                 }
             }
@@ -128,17 +130,21 @@ class PriceControl extends React.Component {
                 opt["fixed"]=true;
                 opt["width"]=180;
             }
+            /* f(da["field"]=="AVERAGEPRICE"){
+                opt["fixed"]=true;
+                opt["width"]=180;
+            } */
             Array.isArray(da["children"]) && (opt["children"] = da["children"]);
             return opt
         });
-        
+        //console.log("title",priceColumns);
         this.setState({
             priceColumns
         })
     }
 
     Create_TabelData = priceData => {
-        
+       // console.log("data",priceData)
         this.setState({
             priceData,
             tableLoading:false
@@ -174,7 +180,7 @@ class PriceControl extends React.Component {
             versionId: "",
             tableLoading:true
         });
-
+        
         /**
          * 先获取阶段数据 => 然后根据阶段获取版本数据 => 最后获取 规划方案指标和面积数据
          */

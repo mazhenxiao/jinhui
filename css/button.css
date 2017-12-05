@@ -149,6 +149,15 @@ label {
 .mgB40 {
   margin-bottom: 40px;
 }
+.padL10 {
+  padding-left: 10px;
+}
+.padL20 {
+  padding-left: 20px;
+}
+.padL40 {
+  padding-left: 40px;
+}
 .ipt40 {
   width: 40px;
 }
@@ -166,4 +175,8 @@ label {
 }
 .ipt200 {
   width: 200px;
+}
+.ant-table-tbody > tr > td,
+.ant-table-thead > tr > th {
+  padding: 10px 8px;
 }
