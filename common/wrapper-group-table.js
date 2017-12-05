@@ -41,14 +41,9 @@ export default class WrapperGroupTable extends Component {
         fixedAble: false,
     };
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return shallowCompare(this, nextProps, nextState);
-    }
-
     handleInputChange = (record, key, column) => {
         return (e) => {
             let value = e.target.value;
-            console.log("value", value);
             if (!numberReg.test(value)) {
                 value = 0;
             }
@@ -99,11 +94,6 @@ export default class WrapperGroupTable extends Component {
                     column.width = defaultWidth;
                 }
                 columns.scrollX += column.width;
-
-                // //fixed
-                // if (item.fixed) {
-                //     column.fixed = item.fixed;
-                // }
             }
             columns.push(column);
         });
@@ -138,33 +128,11 @@ export default class WrapperGroupTable extends Component {
     };
 
     render() {
-        // let {filterInfo} = this.state;
-        // filterInfo = filterInfo || {};
-
         const {headerData, dataSource, rowKey, defaultHeight} = this.props;
         let tableColumns = [];
         if (dataSource && dataSource.length > 0) {
             tableColumns = this.getColumns(headerData);
         }
-
-        // const filters = [
-        //     {text: '1#', value: '1#'},
-        //     {text: '2#', value: '2#'},
-        // ];
-        // //可筛选的列信息
-        // const mainColumn = tableColumns[0];
-        // if (mainColumn) {
-        //     console.log("filterInfo.name", filterInfo.name);
-        //     mainColumn.filters = filters;
-        //     mainColumn.filteredValue = filterInfo.name || [DEFAULT_FILTER_LEVEL];
-        //     mainColumn.onFilter = (value, record) => {
-        //
-        //         if (value === DEFAULT_FILTER_LEVEL) {
-        //             return record.level === 1;
-        //         }
-        //         return record.level === 1 || record.path.includes(value)
-        //     };
-        // }
 
         return (
             <Table
