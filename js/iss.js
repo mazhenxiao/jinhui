@@ -53,7 +53,6 @@ class $iss {
             method: opt["type"] ? opt.type : 'POST',
             mode: 'cors',
             cache: 'no-cache',
-            credentials: "include",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded',
