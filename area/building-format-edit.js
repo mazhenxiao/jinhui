@@ -236,6 +236,7 @@ class BuildingFormatEdit extends Component {
                     groupId: item.groupId,
                     producttypename: item.producttypename,
                     standardfloorheight: item.standardfloorheight,
+                    buildName: item.buildName,
                 };
             })
         };
@@ -395,7 +396,7 @@ class BuildingFormatEdit extends Component {
                     <Row gutter={16} className="building-format-warn">
                         <span>(说明：楼栋可输入连续号【~】连接号【、，】分段楼号。如：1#~10#[指1#至10#]；1#、10#[指1#和10#]）</span>
                     </Row>
-                    <Row gutter={16}>
+                    <Row gutter={16} className="padding-bottom-6">
                         <Col span={6}>
                             <WrapperSelect labelText="所属地块:" dataSource={conditionData.land}
                                            showRequired={!land}

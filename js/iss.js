@@ -500,6 +500,7 @@ class $iss {
             ele = $("#chooseToTreeUl");
 
             //opt.data = to;
+            opt.param["token"]=localStorage.getItem("token");
             ele.tree({
                 url: `${opt.url}`,
                 queryParams: opt.param,
@@ -913,12 +914,11 @@ class $iss {
     */
     getEVal(status) {
         let eVal = "";
-        if (status == "intallmentStatus") {
-            eVal = "10103";//分期
-        } else if (status == "newProjectStatus") {
-            eVal = "10102";//项目
-        } else if (status == "teamMaintainStatus"){
-            eVal = "10114";//团队维护
+        switch(status){
+            case "intallmentStatus": eVal = "10103";break;//分期
+            case "newProjectStatus": eVal = "10102";break;//项目
+            case "teamMaintainStatus":eVal = "10114";break;//团队维护
+            case "priceControl":eVal = "10104";break;//价格
         }
         return eVal;
     }

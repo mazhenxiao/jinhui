@@ -10,6 +10,6 @@ var rootRout = {
   path: "/",
   childRoutes: [...projectRouter,...areaRouter] 
 }
-
+ 
 //ReactDOM.render(<Router history={hashHistory} routes={rootRout}></Router>, document.querySelector("#JH-Router"));
 export default rootRout;

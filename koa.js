@@ -5,6 +5,8 @@ const render = require('koa-ejs');
 const path = require('path');
 var c = require('child_process');
 var staticServer = require('koa-static');
+var process = require("process")
+ console.log("process:",process.argv.pop())
 render(app, {
     root: path.join(__dirname, "view"),
     layout: 'template',
@@ -14,16 +16,24 @@ render(app, {
 });
 app.use(staticServer(
     path.join(__dirname, "./")
-))
-/*   app.use( async ( ctx ) => {
-       
-  }) */
+));
+
+
 app.use(router.routes());
-app.use(async (ctx, next) => {
-    // console.log(app);
-    // this.render("index",{layout:false})
-    await next();
-});
+
+const errorHandle = async (ctx, next) => {
+    try {
+        await next();
+    } catch (err) {
+        ctx.response.status = err.statusCode || err.status || 500;
+        ctx.response.body = {
+            message: err.message
+        };
+    }
+};
+
+app.use(errorHandle);
+
 router.get('/', async (ctx, next) => {
     await ctx.render("login", {layout: false})
 })
@@ -39,8 +49,7 @@ router.get('/', async (ctx, next) => {
     });
 
 app.listen(8090, arg => {
-    c.exec('start http://localhost:8090/login');
-    // c.exec("npm run dev");
-    // console.log("启动成功，请访问 http://localhost:3000/login");
+     c.exec('start http://localhost:8090/login');
+    console.log("启动成功，请访问 http://localhost:8090/login");
 });
 

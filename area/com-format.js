@@ -151,7 +151,7 @@ class ComFormat extends Component {
 
         return (
             <div>
-                <Row>
+                <Row className="padding-bottom-6">
                     <Col span={5}>
                         <WrapperInput labelText="按业态：" labelSpan={8} inputSpan={16} value={formatKey}
                                       onChange={this.handleInputChange("formatKey")}/>

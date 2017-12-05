@@ -96,6 +96,7 @@ class ComBuildingAdjust extends Component {
                 this.setState({
                     loading: false,
                     enableBuildingData: buildingData.enableList,
+                    selectBuilding: buildingData.enableList.filter(opt => opt.disabled).map(opt => opt.value),
                     disableBuildingData: buildingData.disableList,
                     buildingHeaderData: buildingAreaData.titleInfo,
                     buildingDataSource: buildingAreaData.areadataInfo,
@@ -119,11 +120,7 @@ class ComBuildingAdjust extends Component {
         this.setState({
             loading: true,
         });
-        const currentBuild = enableBuildingData.filter(item => !!item["isCurrentBuild"])[0];
         const buildIds = [...selectBuilding];
-        if (currentBuild) {
-            buildIds.push(currentBuild.value);
-        }
         AreaService.adjustBuildingAreaData(record, buildIds, this.buildingChangeDataArray, this.formatChangeDataArray, singleFormatData)
             .then(result => {
                 if (result === "success") {
@@ -207,11 +204,11 @@ class ComBuildingAdjust extends Component {
         const {enableBuildingData} = this.state;
         if (e.target.checked) {
             this.setState({
-                selectBuilding: enableBuildingData.filter(opt => !opt.disabled).map(opt => opt.value),
+                selectBuilding: enableBuildingData.map(opt => opt.value),
             });
         } else {
             this.setState({
-                selectBuilding: [],
+                selectBuilding: enableBuildingData.filter(opt => opt.disabled).map(opt => opt.value),
             });
         }
     };
@@ -236,7 +233,7 @@ class ComBuildingAdjust extends Component {
         }
 
         let allChecked = false;
-        if (enableBuildingData.length > 0 && enableBuildingData.filter(item => item.disabled).length === selectBuilding.length) {
+        if (enableBuildingData.length > 0 && enableBuildingData.length === selectBuilding.length) {
             allChecked = true;
         }
 
@@ -252,22 +249,21 @@ class ComBuildingAdjust extends Component {
                         关闭
                     </Button>
                 ]}>
-                <div>
-                    <Row gutter={16}>
-                        <Col span={4}>
-                            楼栋列表
-                        </Col>
-                        <Col span={6}>
-                            <Checkbox onChange={this.handleAllSelectChange} checked={allChecked}>全部选择</Checkbox>
-                        </Col>
-                    </Row>
-                    <Row gutter={16}>
-                        <CheckboxGroup options={enableBuildingData} value={selectBuilding}
+                <div className="building-batch-select">
+                    <div className="select-all-row">
+                        <span className="select-all-title">楼栋列表</span>
+                        <Checkbox onChange={this.handleAllSelectChange} checked={allChecked}>全部选择</Checkbox>
+                    </div>
+                    <div className="enable-select">
+                        <span className="select-all-title">可选择楼栋</span>
+                        <CheckboxGroup options={enableBuildingData}
+                                       value={selectBuilding}
                                        onChange={this.handleSelectChange}/>
-                    </Row>
-                    <Row gutter={16}>
+                    </div>
+                    <div className="disable-select">
+                        <span className="select-all-title">不可选择楼栋</span>
                         <CheckboxGroup options={disableBuildingData} disabled={true}/>
-                    </Row>
+                    </div>
                 </div>
             </Modal>
         );
@@ -283,11 +279,9 @@ class ComBuildingAdjust extends Component {
         if (this.isFromBuilding) {
             return (
                 <div>
-                    <Row gutter={16}>
-                        <Col span={6}>
-                            单栋指标
-                        </Col>
-                    </Row>
+                    <div className="building-title">
+                        单栋指标
+                    </div>
                     <div className="table-wapper">
                         <WrapperGroupTable
                             key="building-area-table"
@@ -303,28 +297,19 @@ class ComBuildingAdjust extends Component {
             );
         }
         return (
-            <div style={{lineHeight: "25px"}}>
-                <Row gutter={16}>
-                    <Col span={6}>
-                        单业态指标
-                    </Col>
-                </Row>
-                <Row gutter={16}>
-                    <Col span={4}>
-                        业态名称
-                    </Col>
-                    <Col span={6}>
-                        各产品形态用地面积
-                    </Col>
-                </Row>
-                <Row gutter={16}>
-                    <Col span={4}>
-                        联排别墅
-                    </Col>
-                    <Col span={6}>
-                        <Input onChange={this.handleInputChange} value={singleFormatData.singleProductTypeValue}/>
-                    </Col>
-                </Row>
+            <div className="single-format-warpper">
+                <div className="building-title">
+                    单业态指标
+                </div>
+                <div className="single-format-name">
+                    <span className="title">业态名称:</span>
+                    各产品形态用地面积
+                </div>
+                <div className="single-format-house">
+                    <span className="title">联排别墅:</span>
+                    <span><Input onChange={this.handleInputChange} style={{width: "120px"}}
+                                 value={singleFormatData.singleProductTypeValue}/></span>
+                </div>
             </div>
         );
     };
@@ -342,35 +327,31 @@ class ComBuildingAdjust extends Component {
      * @returns {XML}
      */
     renderContent = () => {
-        const {loading, buildingHeaderData, buildingDataSource, formatHeaderData, formatDataSource, enableBuildingData, selectBuilding} = this.state;
+        const {loading, formatHeaderData, formatDataSource, enableBuildingData, selectBuilding} = this.state;
         const displayBuilding = enableBuildingData.filter(item => selectBuilding.some(selectValue => selectValue == item.value)).map(item => item.label).join();
 
         return (
             <Spin size="large" spinning={loading}>
                 <div className="building-adjust">
-                    <Row gutter={16}>
-                        <Col span={6}>
-                            基本信息
-                        </Col>
-                    </Row>
-                    <Row gutter={16}>
-                        <Col span={8}>
+                    <div className="building-title">
+                        基本信息
+                    </div>
+                    <div className="building-base">
+                        <div className="show-input">
                             <WrapperInput labelText="楼栋名称："
                                           disabled={true}
                                           labelSpan={9}
                                           inputSpan={15}
                                           value={displayBuilding}></WrapperInput>
-                        </Col>
-                        <Col>
+                        </div>
+                        <div className="select-button">
                             <Button onClick={this.handleSelectClick}>批量选择楼栋</Button>
-                        </Col>
-                    </Row>
+                        </div>
+                    </div>
                     {this.renderBuildingOrFormat()}
-                    <Row gutter={16}>
-                        <Col span={6}>
-                            单栋业态指标
-                        </Col>
-                    </Row>
+                    <div className="building-title">
+                        单栋业态指标
+                    </div>
                 </div>
                 <div className="table-wapper">
                     <WrapperGroupTable

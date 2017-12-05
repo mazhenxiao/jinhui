@@ -1,13 +1,13 @@
 export const projectRouter=[
-     {
-        path: "/index",
-        getComponent: function (next, callback) {
-          require.ensure([], function (require) {
-            var app = require('../components/component-index.js');//============================首页
-            callback(null, app.default);
-          }, "component-index");
-        }
-      },
+  {
+    path: "/index",
+    getComponent: function (next, callback) {
+      require.ensure([], function (require) {
+        var app = require('../overviewIndex/index.js');//============================首页
+        callback(null, app.default);
+      }, "index");
+    }
+  },
       {
         path: "/draft",
         getComponent: function (next, callback) {
@@ -128,7 +128,7 @@ export const projectRouter=[
         }
       },
       { //发起审批项目
-        path: "/newProjectApproval",
+        path: "/newProjectApproval", 
         getComponent: function (next, callback) {
           require.ensure([], function (require) {
             var app = require('../components/component-newProjectApproval.js');//============================价格管理-交付
