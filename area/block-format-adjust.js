@@ -136,7 +136,7 @@ class BlockFormatAdjust extends Component {
                         headerData={headerData}
                         dataSource={dataSource}
                         rowKey="KEY"
-                        editAble={true}
+                        editState={true}
                         // fixedAble={true}
                         onDataChange={this.handleDataChange}
                     />

@@ -198,7 +198,7 @@ class WrapperTreeTable extends Component {
         defaultHeight: React.PropTypes.number,//表格自定义高度
         columnRender: React.PropTypes.object,//自定义render
         onDataChange: React.PropTypes.func,//文本框数据修改
-        editAble: React.PropTypes.bool,//单元格是否可编辑
+        editState: React.PropTypes.bool,//单元格是否可编辑
         fixedAble: React.PropTypes.bool,//固定列是否可用
     };
 
@@ -208,7 +208,7 @@ class WrapperTreeTable extends Component {
         rowKey: "key",
         defaultHeight: 400,
         columnRender: null,
-        editAble: false,
+        editState: false,
         fixedAble: true,
     };
 
@@ -225,7 +225,7 @@ class WrapperTreeTable extends Component {
     };
 
     getColumns = (headerData) => {
-        const {columnRender, editAble, fixedAble} = this.props;
+        const {columnRender, editState, fixedAble} = this.props;
         let columnArray = [];
         columnArray.scrollX = 0;
 
@@ -244,7 +244,7 @@ class WrapperTreeTable extends Component {
                 column.render = columnRender[headerItem.field];
             }
 
-            if (editAble) {
+            if (editState && !column.render) {
                 column.render = (text, record) => {
                     if (headerItem.edit !== "+w") {
                         return text;
