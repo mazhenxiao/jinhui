@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-class ToolsList extends React.Component {
+export default class ToolsList extends React.Component {
     constructor(arg) {
         super(arg);
         this.state={
@@ -21,46 +21,23 @@ class ToolsList extends React.Component {
     EVENT_CLICK(pageClass,routerArr) {
         
     	let th=this;
-    	let pageUrl="";
+    	let pageUrl="/Index/#/";
     	if(!pageClass&&!routerArr){
     		alert("缺少页面分类和路由地址，去传递去，坑爹玩意");
-    	}
-        if(pageClass=="Home"){/*项目列表*/
-            document.title=("金辉项目")
-        	pageUrl="/Index/#/";
-        }else if(pageClass=="AreaInfo"){/*面积管理*/
-            document.title=("金辉项目")
-            pageUrl="/AreaInfo/#/"; 
-            //manage
         }
+        $(window).trigger("treeLoad");
+       
+        if(pageClass=="Index"){
+            th.props.callback(pageUrl+routerArr);
+          //  window.location.href=  //路由修改和后来不同此处为补丁
+        }else{
+            th.props.callback(pageUrl+pageClass+"/"+routerArr);
+           // window.location.href=pageUrl+pageClass+"/"+routerArr;
+        }
+        
+      
          
-        if(routerArr == "index"){
-           document.title=("金辉集团运营管理平台")
-        }else if(routerArr == "priceControl"){
-            document.title=("金辉集团运营管理平台")
-        }else if(routerArr == "supply"){
-            document.title=("金辉集团运营管理平台")
-        }else if(routerArr == "payment"){
-            document.title=("金辉集团运营管理平台")
-        }else if(routerArr == "priority"){
-            document.title=("金辉集团运营管理平台")
-        }else if(routerArr == "primarykey"){
-            document.title=("金辉集团运营管理平台")
-        }else if(routerArr == "groupbuild"){
-            document.title=("金辉集团运营管理平台")
-        }
-       // $(window).trigger("treeLoad");
-        /*switch(str){
-            case "index":iss.hashHistory.push("index");break;
-            case "agenty":iss.hashHistory.push("agenty");break;
-            case "apply":iss.hashHistory.push("apply");break;
-            case "draft":iss.hashHistory.push("draft");break;
-            case "approalHistory":iss.hashHistory.push("approalHistory");break;
-            case "priceControl":iss.hashHistory.push({
-                pathname:"priceControl"
-            });break;
-        }*/
-        window.location.href=pageUrl+routerArr;
+      
     }
     /*退出*/
     EVENT_ILogout(){
@@ -151,17 +128,17 @@ class ToolsList extends React.Component {
             <div className="userLogin">
 				<b className={th.state.myTodoCount>0?"userName doing":"userName"}>{th.state.userInfo.empName}</b>
 				<ul className="userTancen boxSizing">
-					<li><a className="userPending" href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"Home","agenty")}>我的待审</a><i>({th.state.myTodoCount})</i></li>
-					<li><a className="userApply" href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"Home","apply")}>我的申请</a><i>({th.state.mySubmitionCount})</i></li>
-					<li><a className="userDraft" href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"Home","draft")}>我的草稿</a><i>({th.state.myMytaskDraftCount})</i></li>
-					<li><a className="userHistory" href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"Home","approalHistory")}>审批历史</a><i>({th.state.myApprovalHistCount})</i></li>
+					<li><a className="userPending" href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"Index","agenty")}>我的待审</a><i>({th.state.myTodoCount})</i></li>
+					<li><a className="userApply" href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"Index","apply")}>我的申请</a><i>({th.state.mySubmitionCount})</i></li>
+					<li><a className="userDraft" href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"Index","draft")}>我的草稿</a><i>({th.state.myMytaskDraftCount})</i></li>
+					<li><a className="userHistory" href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"Index","approalHistory")}>审批历史</a><i>({th.state.myApprovalHistCount})</i></li>
 					<li><a className="userExit" href="javascript:void(0);" onClick={this.EVENT_ILogout.bind(this)}>退出</a></li>
 				</ul>
 			</div>
             <h1 className="xtName">金辉集团运营管理平台</h1>
             <ul>
                 <li>
-                    <a id="projectList" href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"Home","index")}>项目列表</a>
+                    <a id="projectList" href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"Index","index")}>项目列表</a>
                 </li>
                 <li>
                     <a href="javascript:void(0);" onClick={this.EVENT_CLICKSETUP.bind(this)}>基础设置</a>
@@ -169,7 +146,7 @@ class ToolsList extends React.Component {
                <li>
                     <a id="areaInfo" href="javascript:void(0);" >信息填报</a>
                     <ol className="subMenu">
-                         <li className=""><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","index")}>面积管理</a></li>
+                         <li className=""><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","areaManage")}>面积管理</a></li>
                         <li  className=""><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","priceControl")}>价格管理</a></li>
                         <li  className="hide"><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","supply")}>供货</a></li>
                         <li  className="hide"><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","payment")}>签约与回款</a></li>
@@ -188,4 +165,4 @@ class ToolsList extends React.Component {
     }
 }
 
-ReactDOM.render(<ToolsList />, document.querySelector("#JH-Header"));
+//ReactDOM.render(<ToolsList />, document.querySelector("#JH-Header"));
