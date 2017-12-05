@@ -7,7 +7,7 @@
     "start": "node server.js&webpack --display-error-details -w",
     "dev": "webpack --display-error-details -w",
     "web": "node server.js",
-    "build": "node koa",
+    "koa": "node koa",
     "test": "webpack --display-error-details"
   },
   "author": "",

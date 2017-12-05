@@ -92,5 +92,5 @@ var config = {
         } */
     },
 }
-c.exec("npm run build");
+//c.exec("npm run koa");
 module.exports = config;
