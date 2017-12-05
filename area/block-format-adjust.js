@@ -125,11 +125,11 @@ class BlockFormatAdjust extends Component {
                         基本信息
                     </Col>
                 </Row>
-                <Row gutter={16}>
-                    <Col span={10}>
-                        <WrapperInput labelText="住宅业态：" disabled={true}
-                                      value={record["PRODUCTNAME"] ? record["PRODUCTNAME"] : "无"}></WrapperInput>
-                    </Col>
+                <Row gutter={16} style={{paddingBottom: "10px",width:"400px"}}>
+                    <WrapperInput labelText="住宅业态：" disabled={true}
+                                  labelSpan={8}
+                                  inputSpan={16}
+                                  value={record["PRODUCTNAME"] ? record["PRODUCTNAME"] : "无"}></WrapperInput>
                 </Row>
                 <div className="table-wapper">
                     <WrapperGroupTable

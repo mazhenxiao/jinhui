@@ -26,7 +26,7 @@ class Index extends Component {
     }
     componentWillMount() {
         let use = this.use();
-        debugger       
+               
     }
     componentDidMount() {
 

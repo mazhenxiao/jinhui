@@ -154,7 +154,7 @@ class ComBuilding extends Component {
 
         return (
             <div>
-                <Row>
+                <Row className="padding-bottom-6">
                     <Col span={5}>
                         <WrapperInput labelText="按楼栋：" labelSpan={8} inputSpan={16} value={buildingKey}
                                       onChange={this.handleInputChange("buildingKey")}/>

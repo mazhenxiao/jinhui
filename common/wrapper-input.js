@@ -5,7 +5,6 @@ import {shallowCompare} from '../utils';
 const rowStyle = {
     height: 28,
     lineHeight: "28px",
-    marginBottom: "10px",
 };
 
 const labelStyle = {

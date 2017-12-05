@@ -279,7 +279,6 @@ const getBuildingData = (versionId, record) => {
                 return {
                     label: item["buildName"],
                     value: item["key"],
-                    //disabled: item["buildName"] == "1#" ? true : false,//TODO
                     disabled: item["isCurrentBuild"] ? true : false,
                     isCurrentBuild: item.isCurrentBuild
                 };
