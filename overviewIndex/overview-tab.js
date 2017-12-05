@@ -16,10 +16,12 @@ class OverviewTab extends React.Component {
                 { "guid":"1","text":"项目概览","tap":"index"},
                 { "guid":"2","text":"项目身份证","tap":"identity"},
                 { "guid":"3","text":"供货","tap":"supply"},
-                { "guid":"4","text":"签约与回款","tap":"signPayment"},
-                { "guid":"5","text":"计划","tap":"plan"},
-                { "guid":"6","text":"重点事项","tap":"matter"},
-                { "guid":"7","text":"关键指标","tap":"keyPoint"}
+                { "guid":"4","text":"签约","tap":"sign"},
+                { "guid":"5","text":"回款","tap":"payment"},
+                { "guid":"6","text":"计划","tap":"plan"},
+                { "guid":"7","text":"重点事项","tap":"matter"},
+                { "guid":"8","text":"关键指标","tap":"keyPoint"},
+                { "guid":"9","text":"项目团队维护","tap":"groupBuild"}
             ]
         }
     }
