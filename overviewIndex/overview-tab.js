@@ -32,11 +32,11 @@ class OverviewTab extends React.Component {
       let el = $(ev.target);
           el.parent().find("li").removeClass("active");
           setTimeout(()=>{el.addClass("active")});
-          /* switch(data){
-             case "index":iss.hashHistory.push("index",{"state":"001"});break;
-             case "identity":iss.hashHistory.push("identity",{"state":"002"});break;
-             case "supply":iss.hashHistory.push("supply",{"state":"003"});break;
-          } */
+          switch(data){
+             //case "index":iss.hashHistory.push("index",{"state":"001"});break;
+             //case "identity":iss.hashHistory.push("identity",{"state":"002"});break;
+             //case "supply":iss.hashHistory.push("supply",{"state":"003"});break;
+          } 
     }
     render() {
         var th = this,current = this.props.parent.location.pathname;
