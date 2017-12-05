@@ -28,8 +28,7 @@ export default class ToolsTree extends React.Component {
 
     }
     componentWillMount() {
-    this.getCurrentPath();
-      
+        this.getCurrentPath();
     }
     getCurrentPath(){
         
@@ -69,16 +68,7 @@ export default class ToolsTree extends React.Component {
              * 这个逻辑为，在tools-list菜单里this.EVENT_CLICK.bind(this,"AreaInfo","priceControl")
              * 判断当前是“AreaInfo”等，信息填报内容都在“AreaInfo”
              */
-
-            if (pathClass.toLocaleLowerCase() == "index") {  //项目管理
-                switch (arg["level_id"]) {
-                    case "1": //集团汇总
-                    case "2": iss.hashHistory.replace({ pathname: "index", state: arg }); break;//总部
-                    case "3": iss.hashHistory.replace({ pathname: "index", state: arg }); id = "newProject"; break;//项目
-                    case "4": iss.hashHistory.replace({ pathname: "index", state: arg, query: { status: "show" } }); id = "intallment"; current = "newProject"; break;//分公司
-                    case "5": ""; iss.hashHistory.replace({ pathname: "index", state: arg, query: { status: "show" } }); current = "intallment"; id = "intallmentDetail"; break;//分区;
-                }
-            } else if (pathClass == "AreaInfo") { //  面积管理
+            if (pathClass == "AreaInfo") { //  面积管理
 
                 switch (arg["level_id"]) {
                     case "1":
@@ -103,6 +93,14 @@ export default class ToolsTree extends React.Component {
                             search: "?isProOrStage=" + 2 + "&dataKey=" + iss.id.id
                         });
                         break;
+                }
+            }else{ //默认为项目管理
+                switch (arg["level_id"]) {
+                    case "1": //集团汇总
+                    case "2": iss.hashHistory.replace({ pathname: "index", state: arg }); break;//总部
+                    case "3": iss.hashHistory.replace({ pathname: "index", state: arg }); id = "newProject"; break;//项目
+                    case "4": iss.hashHistory.replace({ pathname: "index", state: arg, query: { status: "show" } }); id = "intallment"; current = "newProject"; break;//分公司
+                    case "5": ""; iss.hashHistory.replace({ pathname: "index", state: arg, query: { status: "show" } }); current = "intallment"; id = "intallmentDetail"; break;//分区;
                 }
             }
 
