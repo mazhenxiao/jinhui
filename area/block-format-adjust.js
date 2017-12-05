@@ -131,14 +131,16 @@ class BlockFormatAdjust extends Component {
                                       value={record["PRODUCTNAME"] ? record["PRODUCTNAME"] : "无"}></WrapperInput>
                     </Col>
                 </Row>
-                <WrapperGroupTable
-                    headerData={headerData}
-                    dataSource={dataSource}
-                    rowKey="KEY"
-                    editAble={true}
-                    // fixedAble={true}
-                    onDataChange={this.handleDataChange}
-                />
+                <div className="table-wapper">
+                    <WrapperGroupTable
+                        headerData={headerData}
+                        dataSource={dataSource}
+                        rowKey="KEY"
+                        editAble={true}
+                        // fixedAble={true}
+                        onDataChange={this.handleDataChange}
+                    />
+                </div>
             </Spin>
         );
     };

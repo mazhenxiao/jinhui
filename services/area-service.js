@@ -338,7 +338,7 @@ const getSingleFormatData = (versionId, record) => {
         type: "get",
         data: {
             versionId,
-            ProductTypeId: record["PRODUCTTYPEID"] || "",
+            ProductTypeId: record["KEY"] || "",
             buildId: record["BUILDID"],
         },
     }).then(res => res.rows);

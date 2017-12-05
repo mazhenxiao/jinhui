@@ -209,17 +209,17 @@ class WrapperModalSelect extends Component {
                 maskClosable={false}
                 width="360px"
             >
-                <Row>
+                <Row style={{height:"35px"}}>
                     <WrapperSelect labelText="产权属性：" dataSource={AreaConstants.RightsProperty}
                                    showRequired={this.checkPropertyValue("ishaveproperty")}
                                    onChange={this.handlePropertyChange("ishaveproperty")}/>
                 </Row>
-                <Row>
+                <Row style={{height:"35px"}}>
                     <WrapperSelect labelText="精装属性：" dataSource={AreaConstants.HardcoverProperty}
                                    showRequired={this.checkPropertyValue("isdecoration")}
                                    onChange={this.handlePropertyChange("isdecoration")}/>
                 </Row>
-                <Row>
+                <Row style={{height:"35px"}}>
                     <WrapperSelect labelText="层高属性：" dataSource={AreaConstants.LayerProperty}
                                    showRequired={this.checkPropertyValue("storeyheight")}
                                    onChange={this.handlePropertyChange("storeyheight")}/>

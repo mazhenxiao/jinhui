@@ -11,6 +11,7 @@ class $iss {
         let userInfo = sessionStorage.getItem("userInfo");
         this.userInfo = userInfo ? eval(`(${userInfo})`) : "";//用户信息，在main.js中ajax获取
         this.mapEUrl = "";
+        this.token=localStorage.getItem("token");
         /*标记总图地址*/
     }
 
@@ -46,7 +47,7 @@ class $iss {
 
     fetch(opt) {
         const {url, ...params} = opt;
-        let token = localStorage.getItem("token");
+        let token = this.token;
         if (!token) window.location.href = "/login"
         let requestInfo = {
             method: opt["type"] ? opt.type : 'POST',
@@ -110,7 +111,7 @@ class $iss {
                         message: "登陆超时",
                         description: `登陆超时请重新登陆！`
                     })
-                    top.window.location.href = "/account/Login";
+                    top.window.location.href = "/Login";
                 } else if (res["errorcode"] && res["errorcode"] == "300") {
                     iss.tip({
                         type: "error",
@@ -130,7 +131,7 @@ class $iss {
         let $o = JSON.parse(JSON.stringify(opt));
         $o["success"] && delete $o["success"];
         $o["error"] && delete $o["error"];
-        let token = localStorage.getItem("token");
+        let token = this.token;
         if (!token) window.location.href = "/login"
         let arg = {
             type: "POST",
@@ -142,7 +143,11 @@ class $iss {
         //$.extend(arg, $o);
         arg.url = arg.url.indexOf("http://") > -1 ? arg.url : this.url(arg.url.replace(/^\//ig, ""));
         //.indexOf("&")>=0? `&token=${token}`:`token=${token}`;
-        arg.data["token"] = token;
+        if(typeof arg.data =="string"){ //部分值是字符串
+            arg.url = arg.url.indexOf("?")>=0? `${arg.url}&token=${this.token}`:`${arg.url}?token=${this.token}`;
+        }else{
+            arg.data["token"] = token;
+        }
         $.ajax(arg).done((da) => {
 
             var _da = da;
@@ -164,7 +169,7 @@ class $iss {
                 iss.popover({content: "操作失败，请联系后台工作人员！"});
                 return false;
             } else if (_da) {
-                opt["success"] && opt.success(_da);
+               return (opt["success"] && opt.success(_da));
             }
 
         }).fail((e, textStatus) => {
@@ -428,13 +433,13 @@ class $iss {
                 iss.popover({
                     content: "登陆已过期！"
                 });
-                top.location.href = "/Account/Login"
+                top.location.href = "/Login"
             },
             error(e) {
                 iss.popover({
                     content: "登陆已过期！"
                 });
-                top.location.href = "/Account/Login"
+                top.location.href = "/Login"
             }
         })
     }
@@ -464,7 +469,7 @@ class $iss {
     </section>`;
         let opt = {
             //url:"/Home/GetTreeInfo",//
-            url: "/Commen/IGetOrganizationalUsers",
+            url: iss.url("/Commen/IGetOrganizationalUsers"),
             param: {parentid: "13ead391fd4103096735e4945339550b", condition: ""},
             searchURL: "/Common/ISearchUser",
             title: "选择人员",
@@ -482,6 +487,7 @@ class $iss {
             }
         }
         $.extend(opt, arg);
+        opt.url=opt.url.indexOf("http")>=0? opt.url:iss.url(opt.url);
         let _s = "";
         /*  for(var v in opt.pepole){
              _s+=`<li class="chooseTolist"><li>`;
@@ -520,7 +526,7 @@ class $iss {
                     if (e.status == 0 || e.status == 401 || e.status == 403) {
                         iss.popover({content: "登录超时，请重新登录！"});
                         setTimeout(function () {
-                            window.location.href = "/account/Login";
+                            window.location.href = "/Login";
                         }, 2000);
                     }
                 }
@@ -911,6 +917,8 @@ class $iss {
             eVal = "10103";//分期
         } else if (status == "newProjectStatus") {
             eVal = "10102";//项目
+        } else if (status == "teamMaintainStatus"){
+            eVal = "10114";//团队维护
         }
         return eVal;
     }

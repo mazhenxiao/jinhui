@@ -299,7 +299,7 @@ class BlockFormatEdit extends Component {
                     </Button>,
                 ]}>
                 <Spin size="large" spinning={loading}>
-                    <Row gutter={16}>
+                    <Row gutter={16} style={{marginBottom: "10px"}}>
                         <Col span={6}>
                             <WrapperSelect labelText="所属地块:" dataSource={conditionData.land}
                                            labelSpan={8}
@@ -329,8 +329,10 @@ class BlockFormatEdit extends Component {
                                                 onSelectChange={this.handleModalSelectChange("parkAndSupport")}/>
                         </Col>
                     </Row>
-                    <Table dataSource={dataSource} rowKey="id" size={"middle"} pagination={false} bordered={true}
-                           columns={this.columns}/>
+                    <div className="table-wapper">
+                        <Table dataSource={dataSource} rowKey="id" size={"middle"} pagination={false} bordered={true}
+                               columns={this.columns}/>
+                    </div>
                 </Spin>
             </Modal>
         );

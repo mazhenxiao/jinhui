@@ -15,11 +15,11 @@ export default class Index extends Component{
             dataList:[],
             propsDATA:[],//动态数据
             level_id: "",
-            id:""
+            id:"",
+            readOnly:""
         }
     
     componentWillMount() {
-         
         if(this.props.location.state != undefined && this.props.location.state.level_id >4){
             const lev = this.props.location.state.level_id;
             const leid = this.props.location.state.id;
@@ -30,9 +30,20 @@ export default class Index extends Component{
                 this.getAjax();
             })
         }
+
+        this.setState({
+            readOnly:this.GetQueryString("readOnly")
+        })
     }
     componentDidMount(){
           
+    }
+    
+    GetQueryString(name)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.hash.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
     }
         /**
      * 在组件接收到一个新的prop时被调用,这个方法在初始化render时不会被调用
@@ -41,7 +52,7 @@ export default class Index extends Component{
     componentWillReceiveProps(nextProps) {
             
         //console.log(nextProps.location)
-        if(nextProps.location.state != undefined && Number(nextProps.location.state.level_id)>4){
+        if(nextProps.location.state != undefined && Number(nextProps.location.state.level_id)>=4){
             const lev = nextProps.location.state.level_id;
             const leid = nextProps.location.state.id;
             this.setState({
@@ -53,7 +64,9 @@ export default class Index extends Component{
         }
         //this.getAjax();
         //切换路由之后，重新获取数据
-
+        this.setState({
+            readOnly:this.GetQueryString("readOnly")
+        })
     }
     getAjax(arg) {
         // if(this.props.location.state == undefined){
@@ -109,7 +122,7 @@ export default class Index extends Component{
             }
         })
         iss.chooseTo({
-            url:"/Common/IGetOrganizationalUsers",
+         
             title:"选择人员<i class='fontRed'>（双击选择人员）</i>",
             pepole:peopleJson,  //已选人员名单
             multiple:flag,
@@ -156,20 +169,20 @@ export default class Index extends Component{
                     msg.push(el.jobName)
                 }
             })
-            if(msg.length>0){
-                iss.Alert({
-                    title:"以下为必填项",
-                    width:300,
-                    height:200,
-                    content:`<div id="msgAlert">`+msg.join("，")+`</div>`,
-                    okVal:"确定",
-                    ok(da){}
-                })
-                return
-            }
+            // if(msg.length>0){
+            //     iss.Alert({
+            //         title:"以下为必填项",
+            //         width:300,
+            //         height:200,
+            //         content:`<div id="msgAlert">`+msg.join("，")+`</div>`,
+            //         okVal:"确定",
+            //         ok(da){}
+            //     })
+            //     return
+            // } 
         }
         var th = this;
-        var newProjectStatus = iss.getEVal("teamMaintain");
+        var teamMaintainStatus = iss.getEVal("teamMaintainStatus");
         var json = {
                 'baseinfo':JSON.stringify(this.state.dataHeader),
                 'data':JSON.stringify(this.state.propsDATA),
@@ -185,53 +198,91 @@ export default class Index extends Component{
             
             if(launch == "launch"){
                 $(window).trigger("treeLoad");
-                location.href=`/Home/Index/#/ProcessApproval?e=`+newProjectStatus+`&dataKey=${this.props.location.query.dataKey}&current=ProcessApproval&areaId=""&areaName=""`;
+                location.href=`/Index/#/ProcessApproval?e=`+teamMaintainStatus+`&dataKey=${this.props.location.query.dataKey}&current=ProcessApproval&areaId=""&areaName=""&readOnly="readOnly"`;
             }
         })
-        .catch(err=>{
+        .catch(err=>{   
 
         })
         
         return
     }
     renderHeader = () => {
-        return (
-            <div>
-                <h3 className="boxGroupTit">
-                    <p> <span className='title'>项目团队维护</span>
-                        <span className='notes'>（<i className='redFont'></i>为必填项）</span>
-                    </p>
-                    <div>
-                        <div className="areaTopbtn jhBtn-wrap">
-                            <button type="button" onClick={this.holdData.bind(this)} className="jh_btn jh_btn22 jh_btn_add">暂存</button>
-                            <button type="button" onClick={this.holdData.bind(this,"launch")} className="jh_btn jh_btn22 jh_btn_add hide">发起审批</button>
+        if(this.state.readOnly == "readOnly"){
+            return (
+                <div>
+                    <h3 className="boxGroupTit">
+                        <p> <span className='title'>项目团队维护</span>
+                            <span className='notes'>（<i className='redFont'></i>为必填项）</span>
+                        </p>
+                        <div>
+                            
                         </div>
-                    </div>
-                </h3>
-            </div> 
-        );  
+                    </h3>
+                </div> 
+            ); 
+        }else{
+            return (
+                <div>
+                    <h3 className="boxGroupTit">
+                        <p> <span className='title'>项目团队维护</span>
+                            <span className='notes'>（<i className='redFont'></i>为必填项）</span>
+                        </p>
+                        <div>
+                            <div className="areaTopbtn jhBtn-wrap">
+                                <button type="button" onClick={this.holdData.bind(this)} className="jh_btn jh_btn22 jh_btn_add">暂存</button>
+                                <button type="button" onClick={this.holdData.bind(this,"launch")} className="jh_btn jh_btn22 jh_btn_add">发起审批</button>
+                            </div>
+                        </div>
+                    </h3>
+                </div> 
+            ); 
+        }
+         
     };
 
     formTableRender = () => {
+        if(this.state.readOnly == "readOnly"){
             return this.state.propsDATA.map((el,ind) => {
-               
-                if(el.Req == 1){
-                    
-                    return <li className=''>
-                                <label className="redFont">{el.jobName}</label>
-                                <input id={el.jobId} onClick={this.handChooseTo.bind(this,el.jobId)} value={el.UserNames||''} className="" type="text" />
-                                <img className="symbol headIcon" src="../../Content/img/head-icon.png" />
+                 if(el.Req == 1){
+                     
+                     return <li key={ind} className=''>
+                                 <label className="redFont">{el.jobName}</label>
+                                 <input id={el.jobId} value={el.UserNames||''} className="" type="text" />
+                                 <img className="symbol headIcon" src="../../img/head-icon.png" />
+                             </li>
+                     
+                 }else{
+                     return <li key={ind} className=''>
+                              <label className="">{el.jobName}</label>
+                              <input id={el.jobId} value={el.UserNames||''} className="" type="text" />
+                              <img className="symbol headIcon" src="../../img/head-icon.png" />
                             </li>
-                    
-                }else{
-                    return <li className=''>
-                             <label className="">{el.jobName}</label>
-                             <input id={el.jobId} onClick={this.handChooseTo.bind(this,el.jobId)} value={el.UserNames||''} className="" type="text" />
-                             <img className="symbol headIcon" src="../../Content/img/head-icon.png" />
-                           </li>
-                    
-                }
-            }) 
+                     
+                 }
+             }) 
+        }else{
+            return this.state.propsDATA.map((el,ind) => {
+                
+                 if(el.Req == 1){
+                     
+                     return <li key={ind} className=''>
+                                 <label className="redFont">{el.jobName}</label>
+                                 <input id={el.jobId} onClick={this.handChooseTo.bind(this,el.jobId)} value={el.UserNames||''} className="" type="text" />
+                                 <img className="symbol headIcon" src="../../img/head-icon.png" />
+                             </li>
+                     
+                 }else{
+                     return <li key={ind} className=''>
+                              <label className="">{el.jobName}</label>
+                              <input id={el.jobId} onClick={this.handChooseTo.bind(this,el.jobId)} value={el.UserNames||''} className="" type="text" />
+                              <img className="symbol headIcon" src="../../img/head-icon.png" />
+                            </li>
+                     
+                 }
+             }) 
+        }
+            
     }
     BIND_CALLBACK=arg=>{
 
@@ -247,11 +298,10 @@ export default class Index extends Component{
         );
     };
     render(){
-        if (this.props.location.state == undefined ||  Number(this.props.location.state.level_id)<=4) {
+        if (this.props.location.state == undefined ||  Number(this.props.location.state.level_id)<4) {
             
             return this.renderEmpty();
         }
-        //
         return <article>
             <div>
                 {this.renderHeader()}

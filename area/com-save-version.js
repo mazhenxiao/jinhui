@@ -42,19 +42,27 @@ class SaveVersion extends Component {
     };
 
     render() {
-        const {versionData, versionId} = this.props;
+        const {versionData, versionId, step} = this.props;
         const currentVersion = versionData.filter(item => item.id === versionId)[0];
 
         return <div className="PosRight">
             <span className="areaUnit Left">（面积单位：㎡，车位单位：个，限高单位：米）</span>
-            <button type="button" className="jh_btn jh_btn28 jh_btn_save Left" onClick={this.handleSave}>保存</button>
+            {
+                parseInt(step.guid) <= 2 ?
+                    <button type="button" className="jh_btn jh_btn28 jh_btn_save Left" onClick={this.handleSave}>
+                        保存</button>
+                    : null
+            }
+
             <div className="areaVeSel">
-                <WrapperSelect dataSource={versionData} labelText="当前版本" showDefault={false}
+                <WrapperSelect dataSource={versionData} labelText="当前版本:" showDefault={false}
+                               labelSpan={10}
+                               inputSpan={14}
                                style={{width: "100px"}}
                                value={versionId}
                                onChange={this.handleChange}/>
             </div>
-            <span className="areaStatus">状态 {currentVersion ? currentVersion["statusName"] : ""}</span>
+            <span className="areaStatus">状态: {currentVersion ? currentVersion["statusName"] : "无"}</span>
         </div>
 
     }
