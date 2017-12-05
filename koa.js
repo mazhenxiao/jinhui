@@ -19,7 +19,7 @@ app.use(staticServer(
 
 app.use(router.routes());
 
-const catchError = async (ctx, next) => {
+const errorHandle = async (ctx, next) => {
     try {
         await next();
     } catch (err) {
@@ -30,7 +30,7 @@ const catchError = async (ctx, next) => {
     }
 };
 
-app.use(handler);
+app.use(errorHandle);
 
 router.get('/', async (ctx, next) => {
     await ctx.render("login", {layout: false})
