@@ -100,6 +100,7 @@ class BlockFormatAdjust extends Component {
      * 处理数据修改
      */
     handleDataChange = (id, key, value) => {
+        const {mode} = this.props;
         const changeData = this.changeDataArray.filter(item => item.id === id && item.quotaId === key)[0];
         if (changeData) {
             changeData.quotaValue = value;
@@ -110,6 +111,7 @@ class BlockFormatAdjust extends Component {
                 versionId: this.props.versionId,
                 quotaId: key,
                 quotaValue: value,
+                projectLevel: mode,
             });
         }
     };
@@ -125,7 +127,7 @@ class BlockFormatAdjust extends Component {
                         基本信息
                     </Col>
                 </Row>
-                <Row gutter={16} style={{paddingBottom: "10px",width:"400px"}}>
+                <Row gutter={16} style={{paddingBottom: "10px", width: "400px"}}>
                     <WrapperInput labelText="住宅业态：" disabled={true}
                                   labelSpan={8}
                                   inputSpan={16}
