@@ -148,10 +148,10 @@ export default class ToolsList extends React.Component {
                     <ol className="subMenu">
                          <li className=""><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","areaManage")}>面积管理</a></li>
                         <li  className=""><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","priceControl")}>价格管理</a></li>
-                        <li  className="hide"><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","supply")}>供货</a></li>
-                        <li  className="hide"><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","payment")}>签约与回款</a></li>
-                        <li  className="hide"><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","priority")}>重点事项</a></li>
-                        <li  className="hide"><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","primarykey")}>关键指标</a></li>
+                        <li  className=""><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","supply")}>供货</a></li>
+                        <li  className=""><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","payment")}>签约与回款</a></li>
+                        <li  className=""><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","priority")}>重点事项</a></li>
+                        <li  className=""><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","primarykey")}>关键指标</a></li>
                         <li><a href="javascript:void(0);" onClick={this.EVENT_CLICK.bind(this,"AreaInfo","groupbuild")}>项目团队维护</a></li>
                     </ol>
                 </li>

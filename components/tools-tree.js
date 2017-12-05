@@ -67,7 +67,7 @@ class $tree {
 
         $(window).on("treeLoad",arg=>{
             th.getAjax();
-            
+ 
         });
     }
     bindScroll() {
