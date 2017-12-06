@@ -43,18 +43,18 @@ export const SavePriceList=data=>{
 /**
  * 获取
  */
-const IGetProVersion=(arg)=>{
-    iss.fetch({
+export const IGetProVersion=(arg)=>{
+  return iss.fetch({
         type:"GET",
         url:"/Stage/IGetProVersion",
         data:{
            "id":arg 
         }
     })
-    .done(arg=>{
-        console.log(arg);
+    .then(arg=>{
+        return arg;
     })
     .catch(err=>{
-        console.log(err);
+        return Promise.resolve(err)
     })
 }

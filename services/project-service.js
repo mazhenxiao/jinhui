@@ -1,7 +1,7 @@
 /**
  * 项目需要
  */
-const IGetProVersion=(arg)=>{
+export const IGetProVersion=(arg)=>{
     iss.fetch({
         type:"GET",
         url:"/Stage/IGetProVersion",
