@@ -149,7 +149,7 @@ class $iss {
         } else {
             arg.data["token"] = token;
         }
-        $.ajax(arg).done((da) => {
+        return $.ajax(arg).done((da) => {
 
             var _da = da;
             if (typeof da == "string") {

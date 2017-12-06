@@ -114,8 +114,9 @@ class ApprovalControlNode extends React.Component {
     //========提交、返回=========================================
     evConfirmSubmitTo(){
         var th=this;
-       // iss.checkLogin(arg=>{
-            if(th.props.location.query["e"]=="10102"){
+        let {e,dataKey}=th.state.allSearchArg
+       // iss.checkLogin(arg=>{  //暂时注销
+            if(e=="10102"){  //只有项目提交dataKey变更为返回值
                 iss.evConfirmAlert("是否确认提交",th.EVENT_CLICK_SUBMIT.bind(th));
             }else{
                 iss.evConfirmAlert("是否确认提交",th.BIND_CHECKED.bind(th));
@@ -125,20 +126,28 @@ class ApprovalControlNode extends React.Component {
     }
     EVENT_CLICK_SUBMIT() {  //当前填报人提交
         var th = this;
-        debugger
+        let {e,dataKey}=th.state.allSearchArg
         iss.ajax({ //老代码不再进行封装修改。
             url:"/Stage/ICreateProVersion",
             data:{
-                "id":allSearchArg['dataKey']  //==================================================
-            }
-        }).done(arg=>{
-            debugger
-        }).fail(e=>{
+                "id":dataKey  //==================================================
+            },
+            success(da){
+                if(da["rows"]){
+                    th.BIND_CHECKED(da["rows"])
+                }else{
+                    iss.error("获取新版本id失败")
+                }
+               
+            },
+            error(){
 
+            }
         })
       //  th.BIND_CHECKED();  //检查数据
     }
     BIND_CHECKED(newId) {   //第一次ajax提交检查数据
+        debugger
     	var th = this;
     	var allSearchArg=th.state.allSearchArg;
     	
