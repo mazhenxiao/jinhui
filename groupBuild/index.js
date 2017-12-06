@@ -141,7 +141,6 @@ export default class Index extends Component{
                 
             }
         })
-        console.log(peopleJson)
         iss.chooseTo({
             title:"选择人员<i class='fontRed'>（双击选择人员）</i>",
             pepole:peopleJson,  //已选人员名单
@@ -223,7 +222,6 @@ export default class Index extends Component{
         }
         var th = this;
         var teamMaintainStatus = iss.getEVal("teamMaintainStatus");
-        console.log(this.state.propsDATA)
         var json = {
                 'baseinfo':JSON.stringify(this.state.dataHeader),
                 'data':JSON.stringify(this.state.propsDATA),

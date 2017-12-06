@@ -655,9 +655,6 @@ a:hover {
 .projectDelete:hover {
   background-image: url(../img/delete-iconbs-hover.png);
 }
-.CLASS_AGENTY .JH-Nav {
-  display: none;
-}
 .CLASS_AGENTY .JH-RightBox {
   margin-left: 0 !important;
 }

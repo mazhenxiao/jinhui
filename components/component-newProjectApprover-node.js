@@ -18,7 +18,8 @@ class ApprovalControlNode2 extends React.Component {
             InfoData: [], //流程信息
             mainData: "",//通过驳回权限
             history: [],//历史纪录
-            fromArg: this.props.allSearchArg.from || ""
+            fromArg: this.props.allSearchArg.from || "",
+            hide:false //默认隐藏按钮等待ajax
         }
 
         this.getInfo = {  //从页面获取
@@ -37,6 +38,18 @@ class ApprovalControlNode2 extends React.Component {
     }
     componentWillMount() {
         var th = this;
+        if(this.entiId=="10102"){
+            this.setState({
+                hide:false
+            })
+            this.getnewIdToOldId()
+                .then(oldId=>{
+                    this.getInfo.dataKey=oldId;
+                    this.setState({
+                        hide:true
+                    })
+                })
+        }
     }
     componentDidMount() {
         var th = this;
@@ -64,7 +77,31 @@ class ApprovalControlNode2 extends React.Component {
         }, 1000);
 
     }
+    getnewIdToOldId() {  //当前填报人提交
+        var th = this;
+        let { entiId, dataKey } = this.getInfo
+      return  new Promise((resolve, reject) => {
+            iss.ajax({ //老代码不再进行封装修改。
+                url: "/Stage/ICreateProVersion",
+                data: {
+                    "id": dataKey  //==================================================
+                },
+                success(da) {
+                    if (da["rows"]) {
+                        resolve(da["rows"]);
+                        //th.BIND_CHECKED(da["rows"])
+                    } else {
+                        iss.error("获取新版本id失败")
+                    }
 
+                },
+                error() {
+
+                }
+            })
+        })
+        //  th.BIND_CHECKED();  //检查数据
+    }
     changeAOinions(event) {
         var th = this;
         var aVal = event.target.value;
@@ -296,7 +333,7 @@ class ApprovalControlNode2 extends React.Component {
                 {<a className="btn" href="javascript:void(0);" onClick={th.evDeleteReaded.bind(th)}>已阅</a>}
             </p>
         } else if (th.state.type) {
-            return <p className="btnBox">
+            return <p className={this.state? "btnBox":"hide"}>
                 {th.state.mainData.indexOf("Approve") >= 0 && <a className="btn" href="javascript:;" onClick={th.evConfirmRunWork.bind(th)}>通过</a>}
                 {th.state.mainData.indexOf("Return") >= 0 && <a className="btn" href="javascript:;" onClick={th.evConfirmBackTo.bind(th)}>驳回</a>}
             </p>
