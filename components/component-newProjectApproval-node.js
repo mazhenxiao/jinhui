@@ -310,6 +310,8 @@ class ApprovalControlNode extends React.Component {
             case iss.getEVal("intallmentStatus"): url = "intallment"; break; //分期
             case iss.getEVal("newProjectStatus"): url = "newProject"; break;//项目
             case iss.getEVal("teamMaintainStatus"): url = "AreaInfo/groupbuild"; break;//项目团队维护
+            case iss.getEVal("priceControl"): url = "AreaInfo/priceControl"; break;//价格
+            case iss.getEVal("area"): url = "AreaInfo/areaManage"; break;//面积
         }
         sessionStorage.removeItem("currentApprovalText");//清楚临时历史数据存储，解决路由切换不能记录用户输入内容问题
         sessionStorage.removeItem("currentApprovalList");//清楚临时历史数据存储，解决路由切换不能记录用户选择内容问题
