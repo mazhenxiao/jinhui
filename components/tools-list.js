@@ -30,9 +30,11 @@ export default class ToolsList extends React.Component {
 
         if (pageClass == "Index") {
             th.props.callback(pageUrl + routerArr);
+            $(".icon-bar").trigger("click.bar")
             //  window.location.href=  //路由修改和后来不同此处为补丁
         } else {
             th.props.callback(pageUrl + pageClass + "/" + routerArr);
+            $(".icon-bar").trigger("click.bar")
             // window.location.href=pageUrl+pageClass+"/"+routerArr;
         }
 

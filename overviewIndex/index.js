@@ -33,10 +33,9 @@ class index extends React.Component {
         let currentPosi = local.query["currentPosi"];
         this.setState({
             currentPosi:currentPosi,
+            tabContentKey:"index",
         },()=>{
             this.renderRightContent();
-            // this.renderTabMenu();
-            // this.renderTabContent();
            
         });
         
@@ -44,8 +43,10 @@ class index extends React.Component {
     componentDidMount() {
        
      }
-    renderRightContent = () => {
-        let currentPosi = this.state.currentPosi;
+    
+     //左侧树变更切换右侧数据内容
+     renderRightContent = () => {
+        let currentPosi = this.state.currentPosi;//当前级别
         
         switch(currentPosi){
             case "group"://集团
@@ -123,8 +124,9 @@ class index extends React.Component {
     }
     //渲染tab菜单
     renderTabMenu = () =>{
+        let currentPosi = this.state.currentPosi;
         return  this.state.data.map((da,ind)=>{
-            if(ind==0){
+            if(ind == 0){
                 return <li key={ind} className="J-List active" onClick={this.Event_click.bind(this,da.tap)}>{da.text}</li>
             }else{
                 return <li key={ind} className="J-List" onClick={this.Event_click.bind(this,da.tap)}>{da.text}</li>
@@ -133,6 +135,7 @@ class index extends React.Component {
         });
     }
     
+    //点击tab菜单
     Event_click = (data,ev) =>{
         let el = $(ev.target);
         el.parent().find("li").removeClass("active");
@@ -141,7 +144,7 @@ class index extends React.Component {
             case "index"://项目概览
                 this.setState({
                     tabContentKey:"index"
-                })
+                });
             break;
             case "identity"://项目身份证
                 this.setState({
@@ -178,15 +181,11 @@ class index extends React.Component {
                     tabContentKey:"keyPoint"
                 })
             break;    
-            // case "groupBuild"://项目团队维护
-            //     this.setState({
-            //         tabContentKey:"groupBuild"
-            //     })
-            // break;   
-            //  case "supply":iss.hashHistory.push("supply",{"state":"003"});break;
+            
         } 
     }
     
+    //渲染概览
     renderTabContent = () =>{
         let tabContentKey = this.state.tabContentKey;
         switch(tabContentKey){
@@ -213,11 +212,7 @@ class index extends React.Component {
             break; 
             case "keyPoint"://关键指标
                 return <OverviewPrimaryKey />
-            break;    
-            case "groupBuild"://项目团队维护
-                return <div>项目团队维护</div>
-            break;   
-            //  case "supply":iss.hashHistory.push("supply",{"state":"003"});break;
+            break;
         } 
         
     }
