@@ -159,17 +159,17 @@ class ApprovalControlNode extends React.Component {
     BIND_CHECKED(newId) {   //第一次ajax提交检查数据
         debugger
         var th = this;
-        var allSearchArg = th.state.allSearchArg;
-        if(allSearchArg['newId']){
+        var {e,dataKey} = th.state.allSearchArg;
+        /* if(allSearchArg['newId']){
             var json = allSearchArg['newId']
         }else{
             var json = allSearchArg['dataKey']
-        }
+        } */
         
         var dto = {
             "runtimeUnique": {
-                EntiId: allSearchArg['e'],// 实体ID
-                DataKey: json // 业务ID======================================
+                EntiId: e,// 实体ID
+                DataKey:newId||dataKey // 业务ID======================================
             }
         };
         var turnOut = true;
@@ -193,15 +193,15 @@ class ApprovalControlNode extends React.Component {
     }
     BIND_CHECKEDSUCESS(newId) {  //当前填报人第二次ajax提交提交流程
         let th = this;
-        var allSearchArg = th.state.allSearchArg;
-        if(allSearchArg['newId']){
+        var {e,dataKey} = th.state.allSearchArg;
+       /*  if(allSearchArg['newId']){
             var json = allSearchArg['newId']
         }else{
             var json = allSearchArg['dataKey']
-        }
+        } */
         let basicInfor = {
-            DataKey: json,// 业务ID,================================================
-            EntiId: allSearchArg["e"],
+            DataKey:newId||dataKey,// 业务ID,================================================
+            EntiId: e,
             EventUserId: iss.userInfo.ID,//当前登陆人
             Files: [],//附件
             ProcessComment: this.props["data"] || ""
