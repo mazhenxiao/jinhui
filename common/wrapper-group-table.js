@@ -77,6 +77,7 @@ export default class WrapperGroupTable extends Component {
             }
 
             if (editState && !column.render) {
+                console.log("editState", editState);
                 column.render = (text, record) => {
                     if (item.edit !== "+w") {
                         return text;
@@ -103,6 +104,8 @@ export default class WrapperGroupTable extends Component {
 
     getChildColumns = (columns, column, item) => {
 
+        const {editState} = this.props;
+
         column.children = [];
         item.children.forEach(childItem => {
             let childColumn = {
@@ -112,13 +115,15 @@ export default class WrapperGroupTable extends Component {
                 width: defaultWidth,
             };
 
-            childColumn.render = (text, record) => {
-                if (childItem.edit !== "+w") {
-                    return text;
-                }
+            if (editState) {
+                childColumn.render = (text, record) => {
+                    if (childItem.edit !== "+w") {
+                        return text;
+                    }
 
-                return <Input onChange={this.handleInputChange(record, childItem.field)} value={text}/>;
-            };
+                    return <Input onChange={this.handleInputChange(record, childItem.field)} value={text}/>;
+                };
+            }
 
             if (childItem.width && childItem.width > 0) {
                 childColumn.width = childItem.width;

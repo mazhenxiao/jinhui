@@ -286,13 +286,15 @@ class WrapperTreeTable extends Component {
                 title: childHeaderItem.name || "空标题",
             };
 
-            childColumn.render = (text, record) => {
-                if (childHeaderItem.edit !== "+w") {
-                    return text;
-                }
+            if (editState) {
+                childColumn.render = (text, record) => {
+                    if (childHeaderItem.edit !== "+w") {
+                        return text;
+                    }
 
-                return <Input onChange={this.handleInputChange(record, childHeaderItem.field)} value={text}/>;
-            };
+                    return <Input onChange={this.handleInputChange(record, childHeaderItem.field)} value={text}/>;
+                };
+            }
 
             if (childHeaderItem.children && Array.isArray(childHeaderItem.children) && childHeaderItem.children.length > 0) {
                 childColumn.children = this.getChildColumns(columnArray, childHeaderItem);

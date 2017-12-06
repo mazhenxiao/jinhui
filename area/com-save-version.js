@@ -15,6 +15,7 @@ class SaveVersion extends Component {
         versionId: React.PropTypes.string,//当前版本
         onVersionChange: React.PropTypes.func,//版本选择项发生改变时
         onSaveVersionData: React.PropTypes.func,//保存当前版本的规划方案指标数据
+        approvalState: React.PropTypes.bool,//审核状态, 真:是审核状态, 假:非审核状态
     };
 
     static defaultProps = {
@@ -24,6 +25,7 @@ class SaveVersion extends Component {
         },
         onSaveVersionData: () => {
         },
+        approvalState: false,
     };
 
     /**
@@ -41,19 +43,24 @@ class SaveVersion extends Component {
         this.props.onVersionChange && this.props.onVersionChange(value);
     };
 
+    renderSaveButton = () => {
+        const {step, approvalState} = this.props;
+        if (parseInt(step.guid) <= 2 && !approvalState) {
+            return (
+                <button type="button" className="jh_btn jh_btn28 jh_btn_save Left" onClick={this.handleSave}>
+                    保存</button>
+            );
+        }
+        return null;
+    };
+
     render() {
-        const {versionData, versionId, step} = this.props;
+        const {versionData, versionId} = this.props;
         const currentVersion = versionData.filter(item => item.id === versionId)[0];
 
         return <div className="PosRight">
             <span className="areaUnit Left">（面积单位：㎡，车位单位：个，限高单位：米）</span>
-            {
-                parseInt(step.guid) <= 2 ?
-                    <button type="button" className="jh_btn jh_btn28 jh_btn_save Left" onClick={this.handleSave}>
-                        保存</button>
-                    : null
-            }
-
+            {this.renderSaveButton()}
             <div className="areaVeSel">
                 <WrapperSelect dataSource={versionData} labelText="当前版本:" showDefault={false}
                                labelSpan={10}

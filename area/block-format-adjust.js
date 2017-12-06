@@ -15,12 +15,14 @@ class BlockFormatAdjust extends Component {
     static propTypes = {
         record: React.PropTypes.object,//点击的面积数据
         onHideModal: React.PropTypes.func,//对外接口 操作完成时 关闭模态窗口
+        approvalState: React.PropTypes.bool,//审核状态, 真:是审核状态, 假:非审核状态
     };
 
     static defaultProps = {
         record: {},
         onHideModal: () => {
         },
+        approvalState: false,
     };
 
     state = {
@@ -118,7 +120,9 @@ class BlockFormatAdjust extends Component {
 
     renderContent = () => {
         const {loading, dataSource, headerData} = this.state;
-        const {record} = this.props;
+        const {record, approvalState} = this.props;
+
+        console.log("approvalState", approvalState);
 
         return (
             <Spin size="large" spinning={loading}>
@@ -138,13 +142,33 @@ class BlockFormatAdjust extends Component {
                         headerData={headerData}
                         dataSource={dataSource}
                         rowKey="KEY"
-                        editState={true}
+                        editState={!approvalState}
                         // fixedAble={true}
                         onDataChange={this.handleDataChange}
                     />
                 </div>
             </Spin>
         );
+    };
+
+    renderFooter = () => {
+        const {approvalState} = this.props;
+        if (approvalState) {
+            return [
+                <Button key="cancel" type="primary" size="large" onClick={this.handleCancel}>
+                    关闭
+                </Button>,
+            ];
+        }
+
+        return [
+            <Button key="save" type="primary" size="large" onClick={this.handleSave}>
+                保存
+            </Button>,
+            <Button key="cancel" type="primary" size="large" onClick={this.handleCancel}>
+                取消
+            </Button>,
+        ];
     };
 
     render() {
@@ -156,14 +180,8 @@ class BlockFormatAdjust extends Component {
                 onCancel={this.handleCancel}
                 maskClosable={false}
                 width="95%"
-                footer={[
-                    <Button key="save" type="primary" size="large" onClick={this.handleSave}>
-                        保存
-                    </Button>,
-                    <Button key="cancel" type="primary" size="large" onClick={this.handleCancel}>
-                        取消
-                    </Button>,
-                ]}>
+                footer={this.renderFooter()}
+            >
                 {this.renderContent()}
             </Modal>
         );

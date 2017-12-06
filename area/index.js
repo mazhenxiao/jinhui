@@ -17,14 +17,13 @@ import SaveVersion from "./com-save-version";  //保存按钮
 import {AreaService} from '../services';
 import iss from '../js/iss';
 import {knife} from '../utils';
-import {CollapsePanel} from "antd/lib/collapse/Collapse";
 import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
 
 require("../css/tools-processBar.less");
 require("../css/button.less");
 require("../area/areaCss/areaManage.less");
 const TabPane = Tabs.TabPane;
-const {AreaManageStep, Legend} = AreaConstants;
+const {Legend} = AreaConstants;
 
 const {Option} = Select;
 
@@ -36,6 +35,7 @@ class Index extends Component {
         loading: false,
         stepData: [],
         versionId: "",//当前版本id
+        stepId: 1,//在审批状态时, 默认显示的阶段
         step: {}, /*当前阶段*/
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : "Stage",//显示模式，项目或者分期
@@ -97,7 +97,24 @@ class Index extends Component {
     componentDidMount() {
         //判断是否是审批, 真:审批状态; 假:普通状态
         if (this.getApprovalState()) {
+            const versionId = this.props.location.query.dataKey;
+            AreaService.getBaseInfoByVersionId(versionId)
+                .then(baseInfo => {
+                    const dataKey = baseInfo["parentid"];
+                    const mode = baseInfo["projectlevel"] == "1" ? "Project" : "Stage";
+                    const stepId = baseInfo["step"];
 
+                    this.setState({
+                        dataKey,
+                        mode,
+                        stepId,
+                    });
+
+                    this.loadStep(dataKey, mode, stepId);
+                })
+                .catch(error => {
+                    iss.error(error);
+                });
         } else {
             this.loadStep();
         }
@@ -106,10 +123,11 @@ class Index extends Component {
     /**
      * 加载步骤
      */
-    loadStep = (dataKey, mode) => {
+    loadStep = (dataKey, mode, stepId) => {
         if (dataKey === undefined) {
             dataKey = this.state.dataKey;
             mode = this.state.mode;
+            stepId = this.state.stepId;
         }
 
         if (!dataKey) {
@@ -129,7 +147,12 @@ class Index extends Component {
          */
         AreaService.getStep(dataKey, mode)
             .then(stepData => {
-                step = stepData[0];
+                if (stepId) {
+                    step = stepData.filter(item => item.guid == stepId)[0];
+                } else {
+                    step = stepData[0];
+                }
+
                 this.setState({
                     stepData,
                     step: step,
@@ -147,15 +170,6 @@ class Index extends Component {
                     versionId,
                 });
                 this.loadData(true, step, mode, dataKey, versionId);
-
-                AreaService.getBaseInfoByVersionId(versionId)
-                    .then(baseInfo => {
-                        console.log("baseInfo", baseInfo);
-                        //TODO 设置 dataKey和mode
-                    })
-                    .catch(error => {
-                        iss.error(error);
-                    });
             })
             .catch(error => {
                 iss.error(error);
@@ -481,21 +495,46 @@ class Index extends Component {
     /**
      * 渲染步骤UI
      */
-    renderStepList = () => { //阶段
-        let {step, stepData} = this.state;
-        let len = stepData.length;
-        return stepData.map((item, index) => {
+    renderStepList = () => {
+
+        //审批状态时,不显示阶段按钮
+        if (this.getApprovalState()) {
+            return null;
+        }
+
+        //阶段
+        const {step, stepData} = this.state;
+        const len = stepData.length;
+
+        const stepArray = stepData.map((item, index) => {
             return (
                 <li key={item.guid} style={{zIndex: len - index}} className={item.guid == step.guid ? "active" : ""}
                     onClick={this.handleStepClick(item)}><span className={item.className}></span>{item.name}</li>
             );
         });
+
+        return (
+            <Row gutter={0}>
+                <Col>
+                    <ul className="processBar-List">
+                        {stepArray}
+                    </ul>
+                </Col>
+
+            </Row>
+        );
     };
 
     /**
      * 渲染button
      */
     renderButtonList = () => {
+
+        //审批状态时,不显示阶段按钮
+        if (this.getApprovalState()) {
+            return null;
+        }
+
         const {step} = this.state;
         return (
             <div>
@@ -533,6 +572,7 @@ class Index extends Component {
                            versionId={versionId}
                            dataKey={dataKey}
                            onPlanQuotaDataChange={this.handlePlanQuotaDataChange}
+                           approvalState={this.getApprovalState()}
                 />
             </TabPane>);
 
@@ -623,6 +663,7 @@ class Index extends Component {
                         step={step}
                         mode={mode}
                         versionId={versionId}
+                        approvalState={this.getApprovalState()}
                     />
                 );
             case "building-format-edit"://业态/楼栋维护
@@ -644,6 +685,7 @@ class Index extends Component {
                         step={step}
                         mode={mode}
                         versionId={versionId}
+                        approvalState={this.getApprovalState()}
                     />
                 );
             default:
@@ -692,19 +734,13 @@ class Index extends Component {
                             {this.renderButtonList()}
                         </Col>
                     </Row>
-                    <Row gutter={0}>
-                        <Col>
-                            <ul className="processBar-List">
-                                {this.renderStepList()}
-                            </ul>
-                        </Col>
-
-                    </Row>
+                    {this.renderStepList()}
                     <Row gutter={0}>
                         <Col span={24}>
                             {this.renderTabList()}
                             <div>
                                 <SaveVersion versionId={versionId} versionData={versionData}
+                                             approvalState={this.getApprovalState()}
                                              step={step}
                                              onSaveVersionData={this.handleSaveVersionData}
                                              onVersionChange={this.handleVersionChange}/>

@@ -406,7 +406,7 @@ const areaInfoISaveAreaPlanInfo = (versionId = "", step = "2", data = []) => {
 };
 
 /**
- * 根据版本id反向查找获取项目信息，包括 项目id/分期id，阶段，
+ * 根据版本id反向查找获取项目信息，包括 项目id/分期id，阶段，mode(项目 or 分期)
  */
 const getBaseInfoByVersionId = (versionId) => {
     return iss.fetch({
