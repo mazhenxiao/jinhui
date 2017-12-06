@@ -309,13 +309,14 @@ class PriceControl extends React.Component {
         let dataKey = this.props.location.query["dataKey"];
 
         let newProjectStatus = iss.getEVal("priceControl");
-        price.IGetProVersion(dataKey)
+        iss.hashHistory.push({
+            pathname: "/ProcessApproval",
+            search: `?e=${newProjectStatus}&dataKey=${dataKey}&current=ProcessApproval&areaId=&areaName=`
+        });
+   /*      price.IGetProVersion(dataKey)
             .then(arg => {
-                iss.hashHistory.push({
-                    pathname: "/ProcessApproval",
-                    search: `?e=${newProjectStatus}&dataKey=${dataKey}&current=ProcessApproval&areaId=&areaName=`
-                });
-            })
+           
+            }) */
 
 
 
