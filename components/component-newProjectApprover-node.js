@@ -13,12 +13,12 @@ class ApprovalControlNode2 extends React.Component {
         super(arg);
 
         this.state = {
-            aOpinions: this.props.allSearchArg.remarkTxt||"", //textarea
+            aOpinions: this.props.allSearchArg.remarkTxt || "", //textarea
             type: false, //默认无权限
             InfoData: [], //流程信息
             mainData: "",//通过驳回权限
             history: [],//历史纪录
-            fromArg:this.props.allSearchArg.from||""
+            fromArg: this.props.allSearchArg.from || ""
         }
 
         this.getInfo = {  //从页面获取
@@ -67,12 +67,12 @@ class ApprovalControlNode2 extends React.Component {
 
     changeAOinions(event) {
         var th = this;
-        var aVal=event.target.value;
-        if(aVal.length>1000){
-        	aVal=aVal.slice(0,1000);
+        var aVal = event.target.value;
+        if (aVal.length > 1000) {
+            aVal = aVal.slice(0, 1000);
         }
         th.props.callback(aVal);
-        this.setState({ aOpinions:aVal}, arg => {
+        this.setState({ aOpinions: aVal }, arg => {
             th.getInfo.comment = this.state.aOpinions;
         });
 
@@ -87,7 +87,7 @@ class ApprovalControlNode2 extends React.Component {
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(dto),
             success: function (result) {
-            	if (callback) {
+                if (callback) {
                     callback(result);
                 }
             }
@@ -152,19 +152,19 @@ class ApprovalControlNode2 extends React.Component {
 
     //========通过、驳回===========================================
     /*是否确认驳回*/
-    evConfirmBackTo(){
-        var th=this;
-        iss.checkLogin(arg=>{
-            iss.evConfirmAlert("是否确认驳回",th.EVENT_CLICK_SUBMIT.bind(th));
+    evConfirmBackTo() {
+        var th = this;
+        iss.checkLogin(arg => {
+            iss.evConfirmAlert("是否确认驳回", th.EVENT_CLICK_SUBMIT.bind(th));
         })
-    	
+
     }
     EVENT_CLICK_SUBMIT() {  //驳回
         var serverurl = "/iWorkflow/Workflow/api/WFServices.asmx/BackToFlow";
         let dto = this.getInfo;
-        let comment=this.getInfo.comment;
-        if(comment==""){
-            dto.comment="驳回"
+        let comment = this.getInfo.comment;
+        if (comment == "") {
+            dto.comment = "驳回"
         }
         iss.ajax({
             url: serverurl,
@@ -176,15 +176,15 @@ class ApprovalControlNode2 extends React.Component {
                 var rt = result.d;
 
                 if (rt.Success) {
-                     //显示消息，关闭窗口，刷新父页面的节点信息    
+                    //显示消息，关闭窗口，刷新父页面的节点信息    
                     /*window.parent.opener.location.reload();
                     alert("驳回成功！");*/
-                    iss.popover({content:"驳回成功！",type:2});
-					iss.hashHistory.push({"pathname":"/agenty"});
-					/*审批通过一条数据,触发一次我的里面的数量查询*/
-					$(document).triggerHandler("reloadMyCount");
-                }else {
-                    iss.popover({content:rt.Message});
+                    iss.popover({ content: "驳回成功！", type: 2 });
+                    iss.hashHistory.push({ "pathname": "/agenty" });
+                    /*审批通过一条数据,触发一次我的里面的数量查询*/
+                    $(document).triggerHandler("reloadMyCount");
+                } else {
+                    iss.popover({ content: rt.Message });
                 }
             },
             error: function (result) {
@@ -197,87 +197,105 @@ class ApprovalControlNode2 extends React.Component {
 
     }
     /*是否确认通过*/
-    evConfirmRunWork(){
-        var th=this;
-        iss.checkLogin(arg=>{
-            iss.evConfirmAlert("是否确认通过",th.EVENT_CLICK_PASS.bind(th));
+    evConfirmRunWork() {
+        var th = this;
+
+        iss.checkLogin(arg => {
+            iss.evConfirmAlert("是否确认通过", th.EVENT_CLICK_PASS.bind(th));
         })
-    	
+
     }
     EVENT_CLICK_PASS() {  //通过
 
         var dto = this.getInfo;
-        let comment=this.getInfo.comment;
-        if(comment==""){
-            dto.comment="通过"
+        let comment = this.getInfo.comment;
+        let {entiId,dataKey} = this.getInfo;
+        if (comment == "") {
+            dto.comment = "通过"
         }
-        iss.ajax({
-            url: "/iWorkflow/Workflow/api/WFServices.asmx/RunWorkflow2",
-            type: "POST",
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(dto),
-            
-            success: function (result) {
+        new Promise((resolve, reject) => {
+            iss.ajax({
+                url: "/iWorkflow/Workflow/api/WFServices.asmx/RunWorkflow2",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(dto),
 
-                var rt = result.d;
-                if (rt.Success) {
-                    /*window.parent.opener.location.reload();
-                    alert("审批成功！");*/
-                    iss.popover({content:"通过成功！",type:2});
-					iss.hashHistory.push({"pathname":"/agenty"});
-					/*审批通过一条数据,触发一次我的里面的数量查询*/
-                    $(document).triggerHandler("reloadMyCount");
-                   
-                }else {
-					iss.popover({content:rt.Message});
+                success: function (result) {
+
+                    var rt = result.d;
+                    if (rt.Success) {
+
+                        /*window.parent.opener.location.reload();
+                        alert("审批成功！");*/
+                        iss.popover({ content: "通过成功！", type: 2 });
+                        iss.hashHistory.push({ "pathname": "/agenty" });
+                        /*审批通过一条数据,触发一次我的里面的数量查询*/
+                        $(document).triggerHandler("reloadMyCount");
+                        resolve();
+                    } else {
+                        iss.popover({ content: rt.Message });
+                    }
+
+                },
+                error: function (result) {
+                    reject(result);
+                    var err = eval("(" + result.responseText + ")");
+                    alert(err.Message);
                 }
-            },
-            error: function (result) {
-                var err = eval("(" + result.responseText + ")");
-                alert(err.Message);
+            });
+        }).then(arg=>{
+            if(entiId=="10104"){  //只有面积提交当前数据
+                return iss.fetch({
+                    url:"/Price/CreatePriceVersion",
+                    data:{
+                        "stageversionId":dataKey
+                    }
+                })
             }
-        });
+           
+        })
+
 
     }
     /*删除已阅*/
-   evDeleteReaded(){
-   	 var th=this;
-   	 var dto = th.getInfo;
-	 var jsonArg={
-    	entiId:dto.entiId,
-    	dataKey:dto.dataKey,
-    	userId:dto.userId
-    }
-   	 iss.ajax({
-            url:"/iWorkflow/Workflow/api/WFServices.asmx/HaveRead",
+    evDeleteReaded() {
+        var th = this;
+        var dto = th.getInfo;
+        var jsonArg = {
+            entiId: dto.entiId,
+            dataKey: dto.dataKey,
+            userId: dto.userId
+        }
+        iss.ajax({
+            url: "/iWorkflow/Workflow/api/WFServices.asmx/HaveRead",
             type: "POST",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            data:JSON.stringify(jsonArg),
+            data: JSON.stringify(jsonArg),
             success: function (result) {
                 var rt = result.d;
                 if (rt.Success) {
-                    iss.popover({content:"操作成功！",type:2});
+                    iss.popover({ content: "操作成功！", type: 2 });
                     $(window).trigger("treeLoad");//刷新左侧树
-					iss.hashHistory.push({"pathname":"/agenty"});
-					
-					$(document).triggerHandler("reloadMyCount");
-                }else {
-                    iss.popover({content:rt.Message});
-                    
+                    iss.hashHistory.push({ "pathname": "/agenty" });
+
+                    $(document).triggerHandler("reloadMyCount");
+                } else {
+                    iss.popover({ content: rt.Message });
+
                 }
             }
         });
-   }
+    }
     BIND_CHECKEDIT() {
-    	var th=this;
-    	var fromArg=th.state.fromArg;
-    	if(fromArg=="inform"){
-    		return <p className="btnBox">
+        var th = this;
+        var fromArg = th.state.fromArg;
+        if (fromArg == "inform") {
+            return <p className="btnBox">
                 {<a className="btn" href="javascript:void(0);" onClick={th.evDeleteReaded.bind(th)}>已阅</a>}
             </p>
-    	}else if (th.state.type) {
+        } else if (th.state.type) {
             return <p className="btnBox">
                 {th.state.mainData.indexOf("Approve") >= 0 && <a className="btn" href="javascript:;" onClick={th.evConfirmRunWork.bind(th)}>通过</a>}
                 {th.state.mainData.indexOf("Return") >= 0 && <a className="btn" href="javascript:;" onClick={th.evConfirmBackTo.bind(th)}>驳回</a>}
@@ -285,8 +303,8 @@ class ApprovalControlNode2 extends React.Component {
         }
     }
     BIND_HISTORY() {
-       return this.state.history.map((el, ind) => {
-           return <tr key={ind}>
+        return this.state.history.map((el, ind) => {
+            return <tr key={ind}>
                 <td>{el.FLOWNAME}</td>
                 <td>{el.PROCESSCOMMENT}</td>
                 <td>{el.EVENTUSERNAME}</td>
@@ -310,7 +328,7 @@ class ApprovalControlNode2 extends React.Component {
                 </tr>
                     {
                         this.state.type && <tr>
-                            <td  width="100">备注</td>
+                            <td width="100">备注</td>
                             <td>
                                 <textarea className="textareaText" value={re_aOpinions} onChange={this.changeAOinions.bind(this)} placeholder="请输入备注内容"></textarea>
                             </td>
