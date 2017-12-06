@@ -2,6 +2,7 @@ import {message, notification} from 'antd';
 import "babel-polyfill";  //兼容ie  
 import 'whatwg-fetch';//兼容ie fetch
 import appConfig from '../app.config';
+
 require("../css/antd.min.css");
 
 class $iss {
@@ -11,13 +12,13 @@ class $iss {
         let userInfo = sessionStorage.getItem("userInfo");
         this.userInfo = userInfo ? eval(`(${userInfo})`) : "";//用户信息，在main.js中ajax获取
         this.mapEUrl = "";
-        this.token=localStorage.getItem("token");
-        this.tree=null;    
+        this.token = localStorage.getItem("token");
+        this.tree = null;
         /*标记总图地址*/
     }
-    
+
     url(arg) {
-        return `${appConfig.domain}/${arg? arg.replace(/^\//ig,""):""}`;
+        return `${appConfig.domain}/${arg ? arg.replace(/^\//ig, "") : ""}`;
     }
 
     pagination() {
@@ -46,7 +47,7 @@ class $iss {
         return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
     }
 
-    fetch(opt) { 
+    fetch(opt) {
         const {url, ...params} = opt;
         let token = this.token;
         if (!token) window.location.href = "/login"
@@ -143,9 +144,9 @@ class $iss {
         //$.extend(arg, $o);
         arg.url = arg.url.indexOf("http://") > -1 ? arg.url : this.url(arg.url.replace(/^\//ig, ""));
         //.indexOf("&")>=0? `&token=${token}`:`token=${token}`;
-        if(typeof arg.data =="string"){ //部分值是字符串
-            arg.url = arg.url.indexOf("?")>=0? `${arg.url}&token=${this.token}`:`${arg.url}?token=${this.token}`;
-        }else{
+        if (typeof arg.data == "string") { //部分值是字符串
+            arg.url = arg.url.indexOf("?") >= 0 ? `${arg.url}&token=${this.token}` : `${arg.url}?token=${this.token}`;
+        } else {
             arg.data["token"] = token;
         }
         $.ajax(arg).done((da) => {
@@ -169,7 +170,7 @@ class $iss {
                 iss.popover({content: "操作失败，请联系后台工作人员！"});
                 return false;
             } else if (_da) {
-               return (opt["success"] && opt.success(_da));
+                return (opt["success"] && opt.success(_da));
             }
 
         }).fail((e, textStatus) => {
@@ -487,7 +488,7 @@ class $iss {
             }
         }
         $.extend(opt, arg);
-        opt.url=opt.url.indexOf("http")>=0? opt.url:iss.url(opt.url);
+        opt.url = opt.url.indexOf("http") >= 0 ? opt.url : iss.url(opt.url);
         let _s = "";
         /*  for(var v in opt.pepole){
              _s+=`<li class="chooseTolist"><li>`;
@@ -500,7 +501,7 @@ class $iss {
             ele = $("#chooseToTreeUl");
 
             //opt.data = to;
-            opt.param["token"]=localStorage.getItem("token");
+            opt.param["token"] = localStorage.getItem("token");
             ele.tree({
                 url: `${opt.url}`,
                 queryParams: opt.param,
@@ -914,11 +915,22 @@ class $iss {
     */
     getEVal(status) {
         let eVal = "";
-        switch(status){
-            case "intallmentStatus": eVal = "10103";break;//分期
-            case "newProjectStatus": eVal = "10102";break;//项目
-            case "teamMaintainStatus":eVal = "10114";break;//团队维护
-            case "priceControl":eVal = "10104";break;//价格
+        switch (status) {
+            case "intallmentStatus":
+                eVal = "10103";
+                break;//分期
+            case "newProjectStatus":
+                eVal = "10102";
+                break;//项目
+            case "teamMaintainStatus":
+                eVal = "10114";
+                break;//团队维护
+            case "priceControl":
+                eVal = "10105";
+                break;//价格
+            case "area":
+                eVal = "10104";
+                break;//面积
         }
         return eVal;
     }

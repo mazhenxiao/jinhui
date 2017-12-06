@@ -8,7 +8,7 @@ const website = appConfig.domain;
 /**
  * 获取步骤
  */
-const getStep = (dataKey, mode,dataType="Area") => {
+const getStep = (dataKey, mode, dataType = "Area") => {
     return iss.fetch({
         url: website.concat("/Common/IGetStept"),
         type: "get",
@@ -108,7 +108,7 @@ const createVersion = (stepInfo, dataKey, mode) => {
 /**
  * 获取版本
  */
-const getVersion = (stepInfo, dataKey, mode,dataType="Area") => {
+const getVersion = (stepInfo, dataKey, mode, dataType = "Area") => {
 
     return iss.fetch({
         url: website.concat("/Common/IGetVersionListByBusinessId"),
@@ -383,27 +383,41 @@ const adjustFormatAreaData = (record, selectBuilding, buildingChangeDataArray, f
 };
 /**
  * 提交规划方案指标
- * /AreaInfo/ISaveAreaPlanInfo 
+ * /AreaInfo/ISaveAreaPlanInfo
  * versionId  版本id
  * step       阶段
  * data       提交数据
- * 
+ *
  */
-const areaInfoISaveAreaPlanInfo=(versionId="",step="2",data=[])=>{
-    const url= "/AreaInfo/ISaveAreaPlanInfo";
-   return iss.fetch({
-        url:url,
-        data:{
-         versionId,
-         step,
-         detaileData:JSON.stringify(data)
+const areaInfoISaveAreaPlanInfo = (versionId = "", step = "2", data = []) => {
+    const url = "/AreaInfo/ISaveAreaPlanInfo";
+    return iss.fetch({
+        url: url,
+        data: {
+            versionId,
+            step,
+            detaileData: JSON.stringify(data)
         }
-      })
-      .then(arg=>arg)
-      .catch(error=>{
-        return Promise.reject(error);
-      })
-}
+    })
+        .then(arg => arg)
+        .catch(error => {
+            return Promise.reject(error);
+        })
+};
+
+/**
+ * 根据版本id反向查找获取项目信息，包括 项目id/分期id，阶段，
+ */
+const getBaseInfoByVersionId = (versionId) => {
+    return iss.fetch({
+        url: "/Common/IGetParentVersionIDInfo",
+        type: "get",
+        data: {
+            versionId,
+        },
+    }).then(res => res.rows);
+};
+
 export {
     getStep,
     getAreaList,
@@ -429,5 +443,7 @@ export {
     adjustFormatAreaData,
 
     //提交规划方案指标
-    areaInfoISaveAreaPlanInfo
+    areaInfoISaveAreaPlanInfo,
+
+    getBaseInfoByVersionId,
 };

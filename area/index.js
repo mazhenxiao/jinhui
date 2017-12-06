@@ -18,6 +18,7 @@ import {AreaService} from '../services';
 import iss from '../js/iss';
 import {knife} from '../utils';
 import {CollapsePanel} from "antd/lib/collapse/Collapse";
+import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
 
 require("../css/tools-processBar.less");
 require("../css/button.less");
@@ -34,7 +35,7 @@ class Index extends Component {
     state = {  //绑定数据
         loading: false,
         stepData: [],
-        versionId: "",//版本id
+        versionId: "",//当前版本id
         step: {}, /*当前阶段*/
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : "Stage",//显示模式，项目或者分期
@@ -50,6 +51,8 @@ class Index extends Component {
         activeTapKey: "plan-quota",//tab页当前标签
         modalKey: "",//TODO 测试
         record: null,//面积调整时，点击的那一行数据
+
+        isApproval: this.props.location.query["current"] == "ProcessApproval" ? true : false, //是否是审批
     };
 
     /**
@@ -427,18 +430,40 @@ class Index extends Component {
     /**
      * 发起审批
      */
-    handleApproval = arg => {
-        let $$bindCheckFrom = this.bindCheckFrom();
-        console.log("发起审批校验规划方案指标通过", $$bindCheckFrom);
-    }
+    handleApproval = () => {
+        const {versionId} = this.state;
+
+        if (!versionId) {
+            iss.error("当前阶段还没有创建版本");
+            return;
+        }
+
+        //TODO 保存数据
+        AreaService.getBaseInfoByVersionId(versionId)
+            .then(data => {
+                console.log("data", data);
+            })
+            .catch(error => {
+
+            });
+
+        return;
+
+        let approvalCode = iss.getEVal("area");
+
+        iss.hashHistory.push({
+            pathname: "/ProcessApproval",
+            search: `?e=${approvalCode}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=`
+        });
+    };
+
     /**
      * 数据校验
      */
     bindCheckFrom = arg => {
         return knife.valid(this.planQuotaUpdateData);  //数据校验
+    };
 
-
-    }
     /**
      * 渲染步骤UI
      */
@@ -626,6 +651,14 @@ class Index extends Component {
         );
     };
 
+    renderApproval = () => {
+        let stateData = this.props.location.query;
+        if (this.state.isApproval) {
+            return <ProcessApprovalTab current="area" allSearchArg={stateData}/>
+        }
+
+    };
+
     render() {
         const {loading, dataKey, step, versionId, versionData} = this.state;
         if (!dataKey) {
@@ -633,6 +666,7 @@ class Index extends Component {
         }
         return (
             <div className="processBar">
+                {this.renderApproval()}
                 <Spin size="large" spinning={loading}>
                     <Row>
                         <Col span={12}>
