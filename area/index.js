@@ -51,8 +51,17 @@ class Index extends Component {
         activeTapKey: "plan-quota",//tab页当前标签
         modalKey: "",//TODO 测试
         record: null,//面积调整时，点击的那一行数据
+    };
 
-        isApproval: this.props.location.query["current"] == "ProcessApproval" ? true : false, //是否是审批
+    /**
+     * 获取是否是审批状态
+     * @returns {boolean} 真:审批状态; 假:普通状态
+     */
+    getApprovalState = () => {
+        if (this.props.location.query["current"] == "ProcessApproval") {
+            return true;
+        }
+        return false;
     };
 
     /**
@@ -86,7 +95,19 @@ class Index extends Component {
     }
 
     componentDidMount() {
-        this.loadStep();
+        //判断是否是审批, 真:审批状态; 假:普通状态
+        if (this.getApprovalState()) {
+            AreaService.getBaseInfoByVersionId(versionId)
+                .then(baseInfo => {
+                    console.log("baseInfo", baseInfo);
+                    //TODO 设置 dataKey和mode
+                })
+                .catch(error => {
+                    iss.error(error);
+                });
+        } else {
+            this.loadStep();
+        }
     }
 
     /**
@@ -439,15 +460,6 @@ class Index extends Component {
         }
 
         //TODO 保存数据
-        AreaService.getBaseInfoByVersionId(versionId)
-            .then(data => {
-                console.log("data", data);
-            })
-            .catch(error => {
-
-            });
-
-        return;
 
         let approvalCode = iss.getEVal("area");
 
@@ -653,7 +665,7 @@ class Index extends Component {
 
     renderApproval = () => {
         let stateData = this.props.location.query;
-        if (this.state.isApproval) {
+        if (this.getApprovalState()) {
             return <ProcessApprovalTab current="area" allSearchArg={stateData}/>
         }
 
