@@ -6,12 +6,17 @@ import { AreaService } from '../services';
 import { shallowCompare, knife } from '../utils';
 
 class TableBar extends Component{
-    state = {
-        loading: false,
-        dataSource:this.props.dataSource||[],//表格数据
-        columns:this.props.columns||[],//表头数据
-        columnsWidth:0, //默认表格滚动宽度
-        currentYear:this.props.year|| new Date().getFullYear()//设置显示年
+    static num=0;
+    constructor(arg){
+        super(arg);
+        TableBar.num+=1;
+        this.state = {
+            loading: false,
+            dataSource:this.props.dataSource||[],//表格数据
+            columns:this.props.columns||[],//表头数据
+            columnsWidth:0, //默认表格滚动宽度
+            currentYear:this.props.year|| new Date().getFullYear()//设置显示年
+        }
     }
     componentWillReceiveProps(nextProps, nextState) { }
     shouldComponentUpdate(nextProps, nextState) {
@@ -19,13 +24,27 @@ class TableBar extends Component{
     }
     componentWillMount() { }
     componentDidMount() {
-        this.GET_Columns();//获取头部
-        this.CET_DataSource();//数据
+        this.CREATE_Table();
     }
+    /**
+     * 绑定表头表列
+     * 返回 promise
+     */
+     CREATE_Table=()=>{
+         return new Promise((resolve,reject)=>{
+            this.GET_Columns();//获取头部
+            this.CET_DataSource();//数据
+            this.setState({
+                
+            })
+            resolve();
+         })
+     }
       /**
      * 设置表格头部
      */
     GET_Columns = arg => {
+        console.time("GET_Columns")
         let columns = [{
             title: '供货',
             dataIndex: 'Name',
@@ -227,7 +246,7 @@ class TableBar extends Component{
             columns,
             columnsWidth:width
         });
-        
+        console.timeEnd();
     }
     CET_DataSource = arg => {
         let data = { 

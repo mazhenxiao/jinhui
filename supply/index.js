@@ -2,7 +2,7 @@ import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";
 import React, { Component } from 'react';
 import { Spin, Tabs, Row, Col, Button, Select, Table } from 'antd';
-import { AreaService } from '../services';
+import { Supply } from '../services';
 import { shallowCompare, knife } from '../utils';
 import TableBar from "./table";//表格
 //import EsayuiTable from "./EsayuiTable";//esayui表格
@@ -29,7 +29,7 @@ class Index extends Component {
                
     }
     componentDidMount() {
-
+        console.log(TableBar);
     }
     use(){
         /* require.ensure([], function (require) {
