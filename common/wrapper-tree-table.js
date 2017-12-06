@@ -279,6 +279,7 @@ class WrapperTreeTable extends Component {
      * @returns {Array}
      */
     getChildColumns = (columnArray, item) => {
+        const {editState} = this.props;
         const children = [];
         item.children.forEach(childHeaderItem => {
 
