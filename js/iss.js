@@ -2,6 +2,7 @@ import { message, notification } from 'antd';
 import "babel-polyfill";  //兼容ie  
 import 'whatwg-fetch';//兼容ie fetch
 import appConfig from '../app.config';
+
 require("../css/antd.min.css");
 
 class $iss {
@@ -47,7 +48,7 @@ class $iss {
     }
 
     fetch(opt) {
-        const { url, ...params } = opt;
+        const {url, ...params} = opt;
         let token = this.token;
         if (!token) window.location.href = "/login"
         let requestInfo = {
@@ -915,10 +916,21 @@ class $iss {
     getEVal(status) {
         let eVal = "";
         switch (status) {
-            case "intallmentStatus": eVal = "10103"; break;//分期
-            case "newProjectStatus": eVal = "10102"; break;//项目
-            case "teamMaintainStatus": eVal = "10114"; break;//团队维护
-            case "priceControl": eVal = "10104"; break;//价格
+            case "intallmentStatus":
+                eVal = "10103";
+                break;//分期
+            case "newProjectStatus":
+                eVal = "10102";
+                break;//项目
+            case "teamMaintainStatus":
+                eVal = "10114";
+                break;//团队维护
+            case "priceControl":
+                eVal = "10105";
+                break;//价格
+            case "area":
+                eVal = "10104";
+                break;//面积
         }
         return eVal;
     }

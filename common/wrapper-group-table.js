@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Table, Input} from 'antd';
+import {knife} from '../utils';
 import {shallowCompare} from '../utils/index';
 
 /**
