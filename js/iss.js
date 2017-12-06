@@ -423,6 +423,7 @@ class $iss {
 
     checkLogin(callback) { //判断是否登陆过期
         let url = "/Account/ICheckLoginStatus";
+        debugger
         iss.ajax({
             url: url,
             success(da) {
