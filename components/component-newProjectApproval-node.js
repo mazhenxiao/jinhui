@@ -160,11 +160,16 @@ class ApprovalControlNode extends React.Component {
         debugger
         var th = this;
         var allSearchArg = th.state.allSearchArg;
-
+        if(allSearchArg['newId']){
+            var json = allSearchArg['newId']
+        }else{
+            var json = allSearchArg['dataKey']
+        }
+        
         var dto = {
             "runtimeUnique": {
                 EntiId: allSearchArg['e'],// 实体ID
-                DataKey: newId || allSearchArg['dataKey']// 业务ID======================================
+                DataKey: json // 业务ID======================================
             }
         };
         var turnOut = true;
@@ -189,8 +194,13 @@ class ApprovalControlNode extends React.Component {
     BIND_CHECKEDSUCESS(newId) {  //当前填报人第二次ajax提交提交流程
         let th = this;
         var allSearchArg = th.state.allSearchArg;
+        if(allSearchArg['newId']){
+            var json = allSearchArg['newId']
+        }else{
+            var json = allSearchArg['dataKey']
+        }
         let basicInfor = {
-            DataKey: newId || allSearchArg['dataKey'],// 业务ID,================================================
+            DataKey: json,// 业务ID,================================================
             EntiId: allSearchArg["e"],
             EventUserId: iss.userInfo.ID,//当前登陆人
             Files: [],//附件
