@@ -630,11 +630,22 @@ class Index extends Component {
      * 渲染步骤的颜色状态
      */
     renderStepLend = () => {
-        return Legend.map((el, ind) => {
+
+        //审批状态时,不显示状态提示
+        if (this.getApprovalState()) {
+            return null;
+        }
+        const legendArray = Legend.map((el, ind) => {
             return (
                 <li key={ind} data-guid={el.guid} className={el.class}>{el.text}</li>
             );
         });
+
+        return (
+            <ul className="processBar-header">
+                {legendArray}
+            </ul>
+        );
     };
 
     /**
@@ -726,9 +737,7 @@ class Index extends Component {
                 <Spin size="large" spinning={loading}>
                     <Row>
                         <Col span={12}>
-                            <ul className="processBar-header">
-                                {this.renderStepLend()}
-                            </ul>
+                            {this.renderStepLend()}
                         </Col>
                         <Col span={12}>
                             {this.renderButtonList()}
