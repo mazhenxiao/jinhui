@@ -10,7 +10,7 @@ import PriorityForm from './priority-form.js';
 require("../css/tools-processBar.less");
 require("../css/button.less");
 require("../area/areaCss/areaManage.less");
-require("./priority/priority.less");
+
 
 class Index extends Component {
     state = {

@@ -2,6 +2,7 @@ import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";
 import React, { Component } from 'react';
 import { Table,Input,Progress } from 'antd';
+require("./priority/priority.less");
 // In the fifth row, other columns are merged into first column
 // by setting it's colSpan to be 0
 

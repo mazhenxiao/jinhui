@@ -47,18 +47,18 @@ class Index extends Component {
     //获取数据
     BIND_TableBlockDATA = (data)=> {  //NewProjectCountDATA={this.BIND_NewProjectCountDATA.bind(this)}
             //console.log(data);
-            console.log(JSON.parse(data.initialData));
+            //console.log(JSON.parse(data.initialData));
             this.setState({
                 TableBlockDATA: data
             });
     }
     //选择年
     yearSelectChange = (val) =>{
-        console.log(val);
+        //console.log(val);
     }
     //选择季度
     quarterSelectChange = (val) =>{
-        console.log(val);
+        //console.log(val);
     }
     //点击编辑
     handleBindEdit = () =>{
