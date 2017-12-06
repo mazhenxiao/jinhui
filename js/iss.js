@@ -1,4 +1,4 @@
-import {message, notification} from 'antd';
+import { message, notification } from 'antd';
 import "babel-polyfill";  //兼容ie  
 import 'whatwg-fetch';//兼容ie fetch
 import appConfig from '../app.config';
@@ -11,13 +11,13 @@ class $iss {
         let userInfo = sessionStorage.getItem("userInfo");
         this.userInfo = userInfo ? eval(`(${userInfo})`) : "";//用户信息，在main.js中ajax获取
         this.mapEUrl = "";
-        this.token=localStorage.getItem("token");
-        this.tree=null;    
+        this.token = localStorage.getItem("token");
+        this.tree = null;
         /*标记总图地址*/
     }
-    
+
     url(arg) {
-        return `${appConfig.domain}/${arg? arg.replace(/^\//ig,""):""}`;
+        return `${appConfig.domain}/${arg ? arg.replace(/^\//ig, "") : ""}`;
     }
 
     pagination() {
@@ -46,8 +46,8 @@ class $iss {
         return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
     }
 
-    fetch(opt) { 
-        const {url, ...params} = opt;
+    fetch(opt) {
+        const { url, ...params } = opt;
         let token = this.token;
         if (!token) window.location.href = "/login"
         let requestInfo = {
@@ -98,7 +98,7 @@ class $iss {
                             message: "服务器错误",
                             description: `${_URL}接口错误！`
                         })
-                        return Promise.reject({errorcode: "500", data: requestInfo, message: `服务器错误`, url: _URL});
+                        return Promise.reject({ errorcode: "500", data: requestInfo, message: `服务器错误`, url: _URL });
                     });
             })
             .then(res => {
@@ -139,13 +139,13 @@ class $iss {
             cache: false,
         }
 
-        arg = {...arg, ...$o};
+        arg = { ...arg, ...$o };
         //$.extend(arg, $o);
         arg.url = arg.url.indexOf("http://") > -1 ? arg.url : this.url(arg.url.replace(/^\//ig, ""));
         //.indexOf("&")>=0? `&token=${token}`:`token=${token}`;
-        if(typeof arg.data =="string"){ //部分值是字符串
-            arg.url = arg.url.indexOf("?")>=0? `${arg.url}&token=${this.token}`:`${arg.url}?token=${this.token}`;
-        }else{
+        if (typeof arg.data == "string") { //部分值是字符串
+            arg.url = arg.url.indexOf("?") >= 0 ? `${arg.url}&token=${this.token}` : `${arg.url}?token=${this.token}`;
+        } else {
             arg.data["token"] = token;
         }
         $.ajax(arg).done((da) => {
@@ -159,23 +159,23 @@ class $iss {
                 opt["success"] && opt.success(_da);
                 return;
             } else if (_da["errorcode"] && _da.errorcode == "302") {
-                iss.popover({content: "登录超时，请重新登录！"});
+                iss.popover({ content: "登录超时，请重新登录！" });
                 setTimeout(function () {
                     debugger
-                    top.window.location.href = "/Login.html";
+                    top.window.location.href = "/Login";
                 }, 2000);
                 return false;
             } else if (_da["errorcode"] == "300") {
-                iss.popover({content: "操作失败，请联系后台工作人员！"});
+                iss.popover({ content: "操作失败，请联系后台工作人员！" });
                 return false;
             } else if (_da) {
-               return (opt["success"] && opt.success(_da));
+                return (opt["success"] && opt.success(_da));
             }
 
         }).fail((e, textStatus) => {
 
             if (e.status == 0 || e.status == 401 || e.status == 403) {
-                iss.popover({content: "登录超时，请重新登录！"});
+                iss.popover({ content: "登录超时，请重新登录！" });
                 setTimeout(function () {
                     // top.window.location.href = "/account/Login";
                 }, 2000);
@@ -363,7 +363,7 @@ class $iss {
 
             uploader.on("filesQueued", function (file) {
                 if (!file.length) {
-                    iss.popover({type: 2, content: "已存在上传数据！"});
+                    iss.popover({ type: 2, content: "已存在上传数据！" });
                     return
                 }
                 let tt = addFile(file);
@@ -379,7 +379,7 @@ class $iss {
                 let el = list.find("#" + f.id + " .progresses .pn"), eli = list.find("#" + f.id + " .progresses .pp"),
                     num = parseInt(t * 100)
                 el.text(num + "%");
-                eli.css({width: num + "%"});
+                eli.css({ width: num + "%" });
             })
             uploader.on("uploadSuccess", f => {
                 opt.onUploadSucess(f, render, opt["content"], opt);
@@ -433,13 +433,13 @@ class $iss {
                 iss.popover({
                     content: "登陆已过期！"
                 });
-                top.location.href = "/Login"
+                top.location.href = "/login"
             },
             error(e) {
                 iss.popover({
                     content: "登陆已过期！"
                 });
-                top.location.href = "/Login"
+                top.location.href = "/login"
             }
         })
     }
@@ -470,7 +470,7 @@ class $iss {
         let opt = {
             //url:"/Home/GetTreeInfo",//
             url: iss.url("/Common/IGetOrganizationalUsers"),
-            param: {parentid: "13ead391fd4103096735e4945339550b", condition: ""},
+            param: { parentid: "13ead391fd4103096735e4945339550b", condition: "" },
             searchURL: "/Common/ISearchUser",
             title: "选择人员",
             width: 800,
@@ -487,7 +487,7 @@ class $iss {
             }
         }
         $.extend(opt, arg);
-        opt.url=opt.url.indexOf("http")>=0? opt.url:iss.url(opt.url);
+        opt.url = opt.url.indexOf("http") >= 0 ? opt.url : iss.url(opt.url);
         let _s = "";
         /*  for(var v in opt.pepole){
              _s+=`<li class="chooseTolist"><li>`;
@@ -500,7 +500,7 @@ class $iss {
             ele = $("#chooseToTreeUl");
 
             //opt.data = to;
-            opt.param["token"]=localStorage.getItem("token");
+            opt.param["token"] = localStorage.getItem("token");
             ele.tree({
                 url: `${opt.url}`,
                 queryParams: opt.param,
@@ -525,7 +525,7 @@ class $iss {
                 },
                 onLoadError(e) {
                     if (e.status == 0 || e.status == 401 || e.status == 403) {
-                        iss.popover({content: "登录超时，请重新登录！"});
+                        iss.popover({ content: "登录超时，请重新登录！" });
                         setTimeout(function () {
                             window.location.href = "/Login";
                         }, 2000);
@@ -675,7 +675,7 @@ class $iss {
             type: "sucess",
             ...opt
         }
-        let {content, duration, onClose, type} = opt,
+        let { content, duration, onClose, type } = opt,
             TYPE = "success",
             str = "success,error,info,warning,warn,loading";
         type = str.indexOf(type) >= 0 ? type : type == "2" ? "success" : "error";
@@ -692,12 +692,12 @@ class $iss {
      */
     tip = (opt) => {
         let _opt = {
-                message: "提示",
-                description: "",
-                onClose() {
-                }, //关闭提价
-                ...opt
-            },
+            message: "提示",
+            description: "",
+            onClose() {
+            }, //关闭提价
+            ...opt
+        },
             TYPE = "success",
             str = "success,error,info,warning,warn,loading";
         TYPE = new RegExp(opt["type"] || "success").exec(str) || TYPE;
@@ -761,10 +761,10 @@ class $iss {
                         </div>
                       </div>`;
         if (state == "open") {
-            $("body").append(str).css({overflow: 'hidden'})
+            $("body").append(str).css({ overflow: 'hidden' })
         } else if (state == "close") {
             $("#loader").remove()
-            $("body").css({overflow: 'auto'})
+            $("body").css({ overflow: 'auto' })
         }
     }
 
@@ -835,7 +835,7 @@ class $iss {
 
         $("body").addClass("geogrMarker_body");
         $("<iframe src='" + mapSrc + "' id='geogrMarker' class='geogrMarker'></iframe>").appendTo("body").off("load.mark").on("load.mark", function (e) {
-            $.cookie('cookieMapMark', 'fail', {path: '/'});
+            $.cookie('cookieMapMark', 'fail', { path: '/' });
             let urlPath = localUrl.replace("status=add", "status=edit");
             if (urlPath.indexOf("dataKey") < 0) {
                 /*分期需要项目ID*/
@@ -914,11 +914,11 @@ class $iss {
     */
     getEVal(status) {
         let eVal = "";
-        switch(status){
-            case "intallmentStatus": eVal = "10103";break;//分期
-            case "newProjectStatus": eVal = "10102";break;//项目
-            case "teamMaintainStatus":eVal = "10114";break;//团队维护
-            case "priceControl":eVal = "10104";break;//价格
+        switch (status) {
+            case "intallmentStatus": eVal = "10103"; break;//分期
+            case "newProjectStatus": eVal = "10102"; break;//项目
+            case "teamMaintainStatus": eVal = "10114"; break;//团队维护
+            case "priceControl": eVal = "10104"; break;//价格
         }
         return eVal;
     }
@@ -944,17 +944,17 @@ class $iss {
 
     error = (error) => {
         this.message({
-                type: "error",
-                content: error.message ? error.message : error,
-            }
+            type: "error",
+            content: error.message ? error.message : error,
+        }
         );
     };
 
     info = (message) => {
         this.message({
-                type: "info",
-                content: message,
-            }
+            type: "info",
+            content: message,
+        }
         );
     };
 }

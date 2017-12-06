@@ -40,7 +40,7 @@ class ApprovalControlNode extends React.Component {
         let allSearchArg=th.state.allSearchArg;
         let getInfo = {
             entiId: allSearchArg['e'],
-            dataKey: allSearchArg['dataKey'],
+            dataKey: allSearchArg['dataKey'],//==================================================
             userId: iss.userInfo.ID,
             comanyId:allSearchArg["areaId"],
             comanyName:allSearchArg["areaName"]
@@ -114,17 +114,22 @@ class ApprovalControlNode extends React.Component {
     //========提交、返回=========================================
     evConfirmSubmitTo(){
         var th=this;
-        iss.checkLogin(arg=>{
-            iss.evConfirmAlert("是否确认提交",th.EVENT_CLICK_SUBMIT.bind(th));
-        })
+       // iss.checkLogin(arg=>{
+            if(th.props.location.query["e"]=="10102"){
+                iss.evConfirmAlert("是否确认提交",th.EVENT_CLICK_SUBMIT.bind(th));
+            }else{
+                iss.evConfirmAlert("是否确认提交",th.BIND_CHECKED.bind(th));
+            }
+       // })
     	
     }
     EVENT_CLICK_SUBMIT() {  //当前填报人提交
         var th = this;
+        debugger
         iss.ajax({ //老代码不再进行封装修改。
             url:"/Stage/ICreateProVersion",
             data:{
-                "id":allSearchArg['dataKey']
+                "id":allSearchArg['dataKey']  //==================================================
             }
         }).done(arg=>{
             debugger
@@ -133,14 +138,14 @@ class ApprovalControlNode extends React.Component {
         })
       //  th.BIND_CHECKED();  //检查数据
     }
-    BIND_CHECKED() {   //第一次ajax提交检查数据
+    BIND_CHECKED(newId) {   //第一次ajax提交检查数据
     	var th = this;
     	var allSearchArg=th.state.allSearchArg;
     	
         var dto = {
             "runtimeUnique": {
                 EntiId:allSearchArg['e'],// 实体ID
-                DataKey:allSearchArg['dataKey']// 业务ID
+                DataKey:newId||allSearchArg['dataKey']// 业务ID======================================
             }
         };
         var turnOut = true;
@@ -153,7 +158,7 @@ class ApprovalControlNode extends React.Component {
             data: JSON.stringify(dto),
             success: function (result) {
                 if (result.d["Data"] == "false" && result.d["Success"] == true) {
-                    th.BIND_CHECKEDSUCESS();//二次提交
+                    th.BIND_CHECKEDSUCESS(newId);//二次提交
                 }else{
                     iss.popover({content:result.d.Message});
                     $(window).trigger("treeLoad");
@@ -162,11 +167,11 @@ class ApprovalControlNode extends React.Component {
         });
 
     }
-    BIND_CHECKEDSUCESS() {  //当前填报人第二次ajax提交提交流程
+    BIND_CHECKEDSUCESS(newId) {  //当前填报人第二次ajax提交提交流程
         let th = this;
         var allSearchArg=th.state.allSearchArg;
         let basicInfor= {
-            DataKey: allSearchArg['dataKey'],// 业务ID,
+            DataKey: newId||allSearchArg['dataKey'],// 业务ID,================================================
             EntiId: allSearchArg["e"],
             EventUserId: iss.userInfo.ID,//当前登陆人
             Files: [],//附件
