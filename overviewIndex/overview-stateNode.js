@@ -34,7 +34,7 @@ class OverviewStateNode extends React.Component{
        let list = this.state.list.map((da,ind)=>{
            return <li key={ind} data-toggle="tooltip" className={"col-md-1 col-xs-1 col-lg-1 Tap Tap"+da.state}  data-placement="bottom" title={da.content}>{da.text}</li>
         })
-        return  <div className="stateNodeBox mgT20">
+        return  <div className="stateNodeBox">
             <header className="HeaderBar">
                 <h5><span>项目关键节点</span></h5>
             </header>
