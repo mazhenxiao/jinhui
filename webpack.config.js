@@ -14,8 +14,6 @@ var config = {
     entry: {
       //  "WebpackDevServer": "webpack-dev-server/client?http://localhost:5001/",
         "jinhui-Index": path.join(__dirname, '/js/main.js'), //主入口文件
-        "jinhui-areaMa": path.join(__dirname, '/js/areaMa.js'),/*面积管理*/
-        "jinhui-newOpen": path.join(__dirname, '/js/newOpen.js') //无框架文件
     },
     output: {
         path: path.join(__dirname, '/dist/js/'),

@@ -97,14 +97,7 @@ class Index extends Component {
     componentDidMount() {
         //判断是否是审批, 真:审批状态; 假:普通状态
         if (this.getApprovalState()) {
-            AreaService.getBaseInfoByVersionId(versionId)
-                .then(baseInfo => {
-                    console.log("baseInfo", baseInfo);
-                    //TODO 设置 dataKey和mode
-                })
-                .catch(error => {
-                    iss.error(error);
-                });
+
         } else {
             this.loadStep();
         }
@@ -154,6 +147,15 @@ class Index extends Component {
                     versionId,
                 });
                 this.loadData(true, step, mode, dataKey, versionId);
+
+                AreaService.getBaseInfoByVersionId(versionId)
+                    .then(baseInfo => {
+                        console.log("baseInfo", baseInfo);
+                        //TODO 设置 dataKey和mode
+                    })
+                    .catch(error => {
+                        iss.error(error);
+                    });
             })
             .catch(error => {
                 iss.error(error);
