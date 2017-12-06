@@ -322,8 +322,6 @@ class WrapperTreeTable extends Component {
             tableColumns = this.getColumns(headerData);
         }
 
-        console.log("tableColumns", tableColumns);
-        console.log("dataSource", dataSource);
         return (
             <Table
                 rowKey={rowKey}

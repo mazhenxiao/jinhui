@@ -10,78 +10,110 @@ import "babel-polyfill";  //兼容ie
 class ProcessApprovalTab extends React.Component {
     constructor(arg) {
         super(arg);
-        this.state={
-            TapList:[],
-            allSearchArg:this.props.allSearchArg/*地址栏的参数*/
+        this.state = {
+            TapList: [],
+            allSearchArg: this.props.allSearchArg/*地址栏的参数*/
         }
-        
+
     }
-    getQueryTab(){ //页面显示连接设置
-        var th=this;
+
+    getQueryTab() { //页面显示连接设置
+        var th = this;
         let url = th.props.allSearchArg["current"];
         var list = [
-            {id:`${url}`,url:`/${url}`},//审批
-            {id:"newProjectApproval",url:"/newProjectApproval"},//项目
-            {id:"newProjectStage",url:"/newProjectStage"},//分期
-            {id:"groupbuild",url:"/AreaInfo/groupbuild"},//项目团队维护
-            {id:"priceControl",url:"/AreaInfo/priceControl"}//价格
-        ],
-        id=th.state.allSearchArg['e'];
-        switch(id){
-            case iss.getEVal("newProjectStatus"):this.setState({     // 项目审批
-                TapList:[list[0],list[1]]
-            });break;
-            case iss.getEVal("intallmentStatus"):this.setState({ // 分期审批
-                TapList:[list[0],list[2]]
-            });break;
-            case iss.getEVal("teamMaintainStatus"):this.setState({ // 项目团队维护
-                TapList:[list[0],list[3]]
-            });break;
-            case iss.getEVal("priceControl"):this.setState({ // 项目团队维护
-                TapList:[list[0],list[4]]
-            });break;
+                {id: `${url}`, url: `/${url}`},//审批
+                {id: "newProjectApproval", url: "/newProjectApproval"},//项目
+                {id: "newProjectStage", url: "/newProjectStage"},//分期
+                {id: "groupbuild", url: "/AreaInfo/groupbuild"},//项目团队维护
+                {id: "priceControl", url: "/AreaInfo/priceControl"},//价格
+                {id: "area", url: "/AreaInfo/areaManage"}//面积
+            ],
+            id = th.state.allSearchArg['e'];
+        switch (id) {
+            case iss.getEVal("newProjectStatus"):
+                this.setState({     // 项目审批
+                    TapList: [list[0], list[1]]
+                });
+                break;
+            case iss.getEVal("intallmentStatus"):
+                this.setState({ // 分期审批
+                    TapList: [list[0], list[2]]
+                });
+                break;
+            case iss.getEVal("teamMaintainStatus"):
+                this.setState({ // 项目团队维护
+                    TapList: [list[0], list[3]]
+                });
+                break;
+            case iss.getEVal("priceControl"):
+                this.setState({ // 项目团队维护
+                    TapList: [list[0], list[4]]
+                });
+                break;
+            case iss.getEVal("area"):
+                this.setState({ // 项目团队维护
+                    TapList: [list[0], list[5]]
+                });
+                break;
         }
-        
+
     }
-    setTapList(){ //设置导航条
-        
-        return this.state.TapList.map((el,id)=>{
+
+    setTapList() { //设置导航条
+
+        return this.state.TapList.map((el, id) => {
             let str = "";
-            switch(el.id){
+            switch (el.id) {
                 case "ProcessApproval":
-                case "ProcessApprover":str="流程审批";break;
-                case "newProjectApproval":str="项目信息";break;
-                case "newProjectStage":str="分期信息";break;
-                case "groupbuild":str="项目团队维护";break;
-                case "priceControl":str="价格管理";break;
+                case "ProcessApprover":
+                    str = "流程审批";
+                    break;
+                case "newProjectApproval":
+                    str = "项目信息";
+                    break;
+                case "newProjectStage":
+                    str = "分期信息";
+                    break;
+                case "groupbuild":
+                    str = "项目团队维护";
+                    break;
+                case "priceControl":
+                    str = "价格管理";
+                    break;
+                case "area":
+                    str = "面积管理";
+                    break;
             }
-            return <li className={this.props.current==el.id? "active":""}  key={id} onClick={this.EVENT_CLICK_LINK.bind(this,el.url,el.id)}>{str}</li>
+            return <li className={this.props.current == el.id ? "active" : ""} key={id}
+                       onClick={this.EVENT_CLICK_LINK.bind(this, el.url, el.id)}>{str}</li>
         })
     }
-    EVENT_CLICK_LINK(url,id,ev){
-    	var th=this;
-    	var allSearchArg=th.state.allSearchArg;
-        var keyArr=[];
 
-        for(let key in allSearchArg){
-        //    if(key == "dataKey"){
-        //     keyArr.push(key+"="+allSearchArg["newId"]);
-        //    }else{
-            keyArr.push(key+"="+allSearchArg[key]);
-          // }
+    EVENT_CLICK_LINK(url, id, ev) {
+        var th = this;
+        var allSearchArg = th.state.allSearchArg;
+        var keyArr = [];
+
+        for (let key in allSearchArg) {
+            //    if(key == "dataKey"){
+            //     keyArr.push(key+"="+allSearchArg["newId"]);
+            //    }else{
+            keyArr.push(key + "=" + allSearchArg[key]);
+            // }
         }
         //console.log(keyArr)
         iss.hashHistory.push({
-        	pathname:url,
-        	search:"?"+keyArr.join("&")
+            pathname: url,
+            search: "?" + keyArr.join("&")
         });
     }
-    componentWillMount(){
+
+    componentWillMount() {
         this.getQueryTab();
     }
-    
+
     render() {
-        let th=this;
+        let th = this;
         return <section>
             <header className="JH-HeadTab">
                 <ul className="JH-HeadList">
@@ -90,9 +122,10 @@ class ProcessApprovalTab extends React.Component {
                     }
                 </ul>
             </header>
-        
+
         </section>
 
     }
 }
+
 export default ProcessApprovalTab;
