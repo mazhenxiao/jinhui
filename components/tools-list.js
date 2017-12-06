@@ -27,14 +27,14 @@ export default class ToolsList extends React.Component {
             alert("缺少页面分类和路由地址，去传递去，坑爹玩意");
         }
         $(window).trigger("treeLoad");
-
+        $(".JH-Content").removeClass("CLASS_AGENTY");
         if (pageClass == "Index") {
             th.props.callback(pageUrl + routerArr);
-            $(".icon-bar").trigger("click.bar")
+           // $(".icon-bar").trigger("click.bar")
             //  window.location.href=  //路由修改和后来不同此处为补丁
         } else {
             th.props.callback(pageUrl + pageClass + "/" + routerArr);
-            $(".icon-bar").trigger("click.bar")
+           // $(".icon-bar").trigger("click.bar")
             // window.location.href=pageUrl+pageClass+"/"+routerArr;
         }
 
