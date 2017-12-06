@@ -125,25 +125,27 @@ export default class Index extends Component{
         let th=this;
         let peopleJson={};
         var arr =th.state.propsDATA;
+
         arr.forEach((el,ind)=>{
             if(el.jobId == id){
                 var UserIds = el.UserIds.split(",")
                 var UserNames = el.UserNames.split(",")
                 UserIds.forEach((ell,indd)=>{
-                    let PrincipalId={
-                        "id":ell,
-                        "text":UserNames[indd]
+                    if(ell != ""){
+                        let PrincipalId={
+                            "id":ell,
+                            "text":UserNames[indd]
+                        }
+                        peopleJson[ell]=PrincipalId;
                     }
-                    peopleJson[ell]=PrincipalId;
                 })
                 
             }
         })
         iss.chooseTo({
-         
             title:"选择人员<i class='fontRed'>（双击选择人员）</i>",
             pepole:peopleJson,  //已选人员名单
-           // multiple:flag,
+            multiple:flag,
             callback(da){
                 //console.log(da)
                 var text = [],userId =[];
@@ -198,25 +200,27 @@ export default class Index extends Component{
             }
         }else{
             var msg = [],str='';
-            debugger
             //console.log(this.state.propsDATA)
             this.state.propsDATA.forEach((el,ind)=>{
-                // if(el.jobName == "项目负责人" && el.UserNames == ""){
-                //     iss.Alert({
-                //         title:"提示",
-                //         width:300,
-                //         height:200,
-                //         content:`<div id="msgAlert">项目负责人不能为空！！！</div>`,
-                //         okVal:"确定",
-                //         ok(da){}
-                //     })
-                    
-                // }
-                iss.popover({ content: "项目负责人不能为空！！！"});
+                if(el.jobName == "项目负责人" && el.UserNames == ""){
+                    msg.push(el.jobName)
+                    return
+                }
             })
-            return
+            if(msg.length>0){
+                // iss.Alert({
+                //     title:"提示",
+                //     width:300,
+                //     height:200,
+                //     content:`<div id="msgAlert">项目负责人不能为空！！！</div>`,
+                //     okVal:"确定",
+                //     ok(da){}
+                // })
+                iss.popover({ content: "项目负责人不能为空！！！"});
+                return
+            }
+            
         }
-        debugger
         var th = this;
         var teamMaintainStatus = iss.getEVal("teamMaintainStatus");
         var json = {
@@ -284,14 +288,14 @@ export default class Index extends Component{
                      
                      return <li key={ind} className=''>
                                  <label className="redFont">{el.jobName}</label>
-                                 <input id={el.jobId} value={el.UserNames||''} className="" type="text" />
+                                 <input id={el.jobId} defaultValue={el.UserNames||''} className="" type="text" />
                                  <img className="symbol headIcon" src="../../img/head-icon.png" />
                              </li>
                      
                  }else{
                      return <li key={ind} className=''>
                               <label className="">{el.jobName}</label>
-                              <input id={el.jobId} value={el.UserNames||''} className="" type="text" />
+                              <input id={el.jobId} defaultValue={el.UserNames||''} className="" type="text" />
                               <img className="symbol headIcon" src="../../img/head-icon.png" />
                             </li>
                      
