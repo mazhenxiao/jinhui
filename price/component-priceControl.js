@@ -49,6 +49,7 @@ class PriceControl extends React.Component {
         edit: false,//表格是否可编辑
         isApproal: false //是否是审批
     };
+    sessionCurrentData={};//点击阶段或初次加载table时暂存数据
     componentWillMount() {
 
     }
@@ -241,6 +242,7 @@ class PriceControl extends React.Component {
                     step: this.state.step.code,
                     projectLevel: this.state.mode == "Project" ? "1" : parseInt(this.state.step.guid) <= 2 ? "2" : "3" //级别项目传1，分期前两个传2，后面传3
                 }
+                this.sessionCurrentData=opt;//暂存当前数据
                 this.Fetch_GetPriceList(opt)
             })
             .catch(error => {
@@ -293,7 +295,7 @@ class PriceControl extends React.Component {
         
         return price.SavePriceList(data)
             .then(da => {
-                // debugger
+                this.Fetch_GetPriceList(this.sessionCurrentData)
             })
 
     }
@@ -386,6 +388,7 @@ class PriceControl extends React.Component {
                         step: this.state.step.code,//当前阶段
                         projectLevel: this.state.mode == "Project" ? "1" : parseInt(this.state.step.guid) <= 2 ? "2" : "3" //级别项目传1，分期前两个传2，后面传3
                     }
+                    this.sessionCurrentData=opt;//暂存当前数据
                     this.Fetch_GetPriceList(opt);
                 })
         };
@@ -406,6 +409,7 @@ class PriceControl extends React.Component {
             step: step.code,
             projectLevel: mode == "Project" ? "1" : parseInt(step.guid) <= 2 ? "2" : "3" //级别项目传1，分期前两个传2，后面传3
         }
+        this.sessionCurrentData=opt;//暂存当前数据
         this.Fetch_GetPriceList(opt)
     }
     /* 绑定button */
