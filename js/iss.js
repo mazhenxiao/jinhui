@@ -162,7 +162,7 @@ class $iss {
             } else if (_da["errorcode"] && _da.errorcode == "302") {
                 iss.popover({ content: "登录超时，请重新登录！" });
                 setTimeout(function () {
-                   // debugger
+                    debugger
                     top.window.location.href = "/Login";
                 }, 2000);
                 return false;
@@ -916,7 +916,7 @@ class $iss {
     */
     getEVal(status) {
         let eVal = "";
-        switch (status) {·
+        switch (status) {
             case "intallmentStatus":
                 eVal = "10103";
                 break;//分期
