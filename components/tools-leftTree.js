@@ -58,8 +58,8 @@ export default class ToolsTree extends React.Component {
             $(document).triggerHandler("evPageClass", [pathClass]);
         });
         Tree.bindTree("#tree", arg => {
-
-            iss.id = arg;
+            
+            iss.id ={"id":arg.id};
             pathClass = location.hash.split("/")[1].split("?")[0];
             sessionStorage.setItem("treeId", JSON.stringify(arg));
 
@@ -68,8 +68,6 @@ export default class ToolsTree extends React.Component {
              * 这个逻辑为，在tools-list菜单里this.EVENT_CLICK.bind(this,"AreaInfo","priceControl")
              * 判断当前是“AreaInfo”等，信息填报内容都在“AreaInfo”
              */
-            
-         
             	
             if(pathClass=="AreaInfo"){ //  面积管理
            	    

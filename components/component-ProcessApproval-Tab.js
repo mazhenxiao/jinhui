@@ -23,7 +23,8 @@ class ProcessApprovalTab extends React.Component {
             {id:`${url}`,url:`/${url}`},//审批
             {id:"newProjectApproval",url:"/newProjectApproval"},//项目
             {id:"newProjectStage",url:"/newProjectStage"},//分期
-            {id:"groupbuild",url:"/AreaInfo/groupbuild"}//项目团队维护
+            {id:"groupbuild",url:"/AreaInfo/groupbuild"},//项目团队维护
+            {id:"priceControl",url:"/AreaInfo/priceControl"}//价格
         ],
         id=th.state.allSearchArg['e'];
         switch(id){
@@ -35,6 +36,9 @@ class ProcessApprovalTab extends React.Component {
             });break;
             case iss.getEVal("teamMaintainStatus"):this.setState({ // 项目团队维护
                 TapList:[list[0],list[3]]
+            });break;
+            case iss.getEVal("priceControl"):this.setState({ // 项目团队维护
+                TapList:[list[0],list[4]]
             });break;
         }
         
@@ -49,6 +53,7 @@ class ProcessApprovalTab extends React.Component {
                 case "newProjectApproval":str="项目信息";break;
                 case "newProjectStage":str="分期信息";break;
                 case "groupbuild":str="项目团队维护";break;
+                case "priceControl":str="价格管理";break;
             }
             return <li className={this.props.current==el.id? "active":""}  key={id} onClick={this.EVENT_CLICK_LINK.bind(this,el.url,el.id)}>{str}</li>
         })

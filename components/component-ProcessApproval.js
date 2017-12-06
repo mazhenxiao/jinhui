@@ -18,6 +18,7 @@ class ProcessApproval extends React.Component {
             type:"readonly",  //edit自己readonly审批人
             allSearchArg:this.props.location.query,/*地址栏所有参数*/
             guid:this.props.location.query.dataKey,  //页面传入表单guid
+            newId:this.props.location.query["newId"]||""  //面积需要
         }
         this.AppState={  //临时存储
             text:"",

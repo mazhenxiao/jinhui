@@ -40,3 +40,21 @@ export const SavePriceList=data=>{
         iss.error(e);
     })
 }
+/**
+ * 获取
+ */
+const IGetProVersion=(arg)=>{
+    iss.fetch({
+        type:"GET",
+        url:"/Stage/IGetProVersion",
+        data:{
+           "id":arg 
+        }
+    })
+    .done(arg=>{
+        console.log(arg);
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+}

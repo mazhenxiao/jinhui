@@ -12,10 +12,10 @@ class $iss {
         this.userInfo = userInfo ? eval(`(${userInfo})`) : "";//用户信息，在main.js中ajax获取
         this.mapEUrl = "";
         this.token=localStorage.getItem("token");
-       
+        this.tree=null;    
         /*标记总图地址*/
     }
-
+    
     url(arg) {
         return `${appConfig.domain}/${arg? arg.replace(/^\//ig,""):""}`;
     }

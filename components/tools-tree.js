@@ -89,5 +89,6 @@ class $tree {
 }
 
 let tree = new $tree();
+iss.tree = tree;  //甩出到全局统一管理
 export default tree
 

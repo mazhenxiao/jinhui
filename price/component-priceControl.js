@@ -6,6 +6,7 @@ import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import ProcessBar from "../components/tools-processBar.js";
 import ExchangeButton from "../components/tools-exchangeButton.js";
+import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
 import { Spin, Tabs, Row, Col, Button, Select, Table,Input } from 'antd';
 import { AreaConstants } from '../constants';
 import { price, AreaService } from '../services';
@@ -284,7 +285,23 @@ class PriceControl extends React.Component {
      * 发起审批
      */
     handleApproval = params => {
-
+        this.goToApplroal();
+    }
+    /**
+     * 审批跳转
+     */
+    goToApplroal=arg=>{
+        //获取小版本跳转
+        let dataKey = this.props.location.query["dataKey"];
+  
+            let newProjectStatus=iss.getEVal("priceControl");
+            
+            iss.hashHistory.push({
+                pathname: "/ProcessApproval",
+                search: `?e=${newProjectStatus}&dataKey=${dataKey}&current=ProcessApproval&areaId=&areaName=`
+            });
+      
+        //$(window).trigger("treeLoad");
     }
     /**
   * 渲染步骤的颜色状态
@@ -388,10 +405,19 @@ class PriceControl extends React.Component {
             <li className=""><span>状态：</span><span id="statusText">{this.state.curVersion}</span></li>
         </ul>
     }
+    isApproal=arg=>{
+        let stateData = this.props.location.query;
+        if(stateData["current"]=="ProcessApproval"){
+            return  <ProcessApprovalTab current="priceControl" allSearchArg={stateData}/>
+        }
+       
+    }
     render() {
         var th = this;
         let width = knife.recursion(this.state.priceColumns,0);
+      
         return <article>
+            {this.isApproal()}
             <section className={this.props.location.query["dataKey"] ? "processBar" : "processBar none"}>
                 <header className="price" >
                     <Spin size="large" spinning={false}>
