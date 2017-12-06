@@ -123,7 +123,7 @@ class OverviewIndex extends React.Component {
                         </h5>
                     </header>
                     <div>
-                        <iframe ref="iframe" id="iframe" src="/Content/Components/map.html" frameBorder="no" width="400" height="300" />
+                        <iframe ref="iframe" id="iframe" src="../Components/map.html" frameBorder="no" width="400" height="300" />
                     </div>
                 </section>
                 <section className="index-right">

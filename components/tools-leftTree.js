@@ -59,9 +59,11 @@ export default class ToolsTree extends React.Component {
         });
         Tree.bindTree("#tree", arg => {
             
-            iss.id ={"id":arg.id};
+            iss.id ={...arg};
+            delete iss.id["children"];
+            delete iss.id["target"];
             pathClass = location.hash.split("/")[1].split("?")[0];
-            sessionStorage.setItem("treeId", JSON.stringify(arg));
+            sessionStorage.setItem("treeId", JSON.stringify(iss.id));
 
             let id, current, paths =location.hash.split("#")[1].split("?")[0]; //this.currentPath;//paths = location.hash.split("/")[1].split("?")[0];
             /**
