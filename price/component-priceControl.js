@@ -282,9 +282,9 @@ class PriceControl extends React.Component {
             return {
                 versionId: this.state.versionId,//版本id
                 producttypeId: arg["PRODUCTTYPEID"] || "",//业态ID
-                quotaId: "", //指标ID
-                averagePrice: arg["AVERAGEPRICE"] || "",//均价
-                totalSaleArea: arg["TOTALSALEAREA"] || ""//总可售面积
+                quotaId:"", //指标ID
+                averagePrice: arg["AVERAGEPRICE"] || "0",//均价
+                totalSaleArea: arg["TOTALSALEAREA"] ||"0"//总可售面积
             }
         });
         price.SavePriceList(data)
