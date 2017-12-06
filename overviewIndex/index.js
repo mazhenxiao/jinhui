@@ -9,6 +9,7 @@ import OverviewPriority from './overview-priority.js';//重点事项
 import OverviewPrimaryKey from './overview-primaryKey.js';//关键指标
 import OverviewPayment from './overview-payment.js';//回款
 import OverviewSign from './overview-sign.js';//签约
+import OverviewSupply from './overview-supply.js';//供货
 class index extends React.Component {
     constructor(arg) {
         super(arg);
@@ -45,7 +46,7 @@ class index extends React.Component {
      }
     
      //左侧树变更切换右侧数据内容
-     renderRightContent = () => {
+    renderRightContent = () => {
         let currentPosi = this.state.currentPosi;//当前级别
         
         switch(currentPosi){
@@ -196,7 +197,7 @@ class index extends React.Component {
                 return <div>项目身份证</div>
             break;
             case "supply"://供货
-                return <div>供货</div>
+                return <OverviewSupply />
             break;
             case "sign"://签约
                 return <OverviewSign />
