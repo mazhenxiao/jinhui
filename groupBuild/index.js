@@ -58,7 +58,6 @@ export default class Index extends Component{
      * param nextProps 下一阶段的props
      */
     componentWillReceiveProps(nextProps) {
-        debugger
         this.setState({
             allSearchArg:nextProps.location.query,
             readOnly:this.GetQueryString("readOnly")
@@ -128,8 +127,8 @@ export default class Index extends Component{
 
         arr.forEach((el,ind)=>{
             if(el.jobId == id){
-                var UserIds = el.UserIds.split(",")
-                var UserNames = el.UserNames.split(",")
+                var UserIds = el.UserIds.trim().split(",")
+                var UserNames = el.UserNames.trim().split(",")
                 UserIds.forEach((ell,indd)=>{
                     if(ell != ""){
                         let PrincipalId={
@@ -142,6 +141,7 @@ export default class Index extends Component{
                 
             }
         })
+        console.log(peopleJson)
         iss.chooseTo({
             title:"选择人员<i class='fontRed'>（双击选择人员）</i>",
             pepole:peopleJson,  //已选人员名单
@@ -223,11 +223,13 @@ export default class Index extends Component{
         }
         var th = this;
         var teamMaintainStatus = iss.getEVal("teamMaintainStatus");
+        console.log(this.state.propsDATA)
         var json = {
                 'baseinfo':JSON.stringify(this.state.dataHeader),
                 'data':JSON.stringify(this.state.propsDATA),
                 'EditType':"Save"
             }
+           
         iss.fetch({
             type:"POST",
             url: "/ProjectTeam/IToCreate",
@@ -238,6 +240,7 @@ export default class Index extends Component{
             
             if(launch == "launch"){
                 $(window).trigger("treeLoad");
+                //以下dataKey为newId
                 location.href=`/Index/#/ProcessApproval?e=`+teamMaintainStatus+`&dataKey=${this.state.dataHeader.ID}&current=ProcessApproval&areaId=&areaName=&readOnly=readOnly&isProOrStage=${this.number}&newId=${this.props.location.query.dataKey}`;
             }
         })

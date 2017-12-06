@@ -1,4 +1,4 @@
-import {message, notification} from 'antd';
+import { message, notification } from 'antd';
 import "babel-polyfill";  //兼容ie  
 import 'whatwg-fetch';//兼容ie fetch
 import appConfig from '../app.config';
@@ -99,7 +99,7 @@ class $iss {
                             message: "服务器错误",
                             description: `${_URL}接口错误！`
                         })
-                        return Promise.reject({errorcode: "500", data: requestInfo, message: `服务器错误`, url: _URL});
+                        return Promise.reject({ errorcode: "500", data: requestInfo, message: `服务器错误`, url: _URL });
                     });
             })
             .then(res => {
@@ -140,7 +140,7 @@ class $iss {
             cache: false,
         }
 
-        arg = {...arg, ...$o};
+        arg = { ...arg, ...$o };
         //$.extend(arg, $o);
         arg.url = arg.url.indexOf("http://") > -1 ? arg.url : this.url(arg.url.replace(/^\//ig, ""));
         //.indexOf("&")>=0? `&token=${token}`:`token=${token}`;
@@ -149,7 +149,7 @@ class $iss {
         } else {
             arg.data["token"] = token;
         }
-        $.ajax(arg).done((da) => {
+        return $.ajax(arg).done((da) => {
 
             var _da = da;
             if (typeof da == "string") {
@@ -160,14 +160,14 @@ class $iss {
                 opt["success"] && opt.success(_da);
                 return;
             } else if (_da["errorcode"] && _da.errorcode == "302") {
-                iss.popover({content: "登录超时，请重新登录！"});
+                iss.popover({ content: "登录超时，请重新登录！" });
                 setTimeout(function () {
                     debugger
-                    top.window.location.href = "/Login.html";
+                    top.window.location.href = "/Login";
                 }, 2000);
                 return false;
             } else if (_da["errorcode"] == "300") {
-                iss.popover({content: "操作失败，请联系后台工作人员！"});
+                iss.popover({ content: "操作失败，请联系后台工作人员！" });
                 return false;
             } else if (_da) {
                 return (opt["success"] && opt.success(_da));
@@ -176,7 +176,7 @@ class $iss {
         }).fail((e, textStatus) => {
 
             if (e.status == 0 || e.status == 401 || e.status == 403) {
-                iss.popover({content: "登录超时，请重新登录！"});
+                iss.popover({ content: "登录超时，请重新登录！" });
                 setTimeout(function () {
                     // top.window.location.href = "/account/Login";
                 }, 2000);
@@ -364,7 +364,7 @@ class $iss {
 
             uploader.on("filesQueued", function (file) {
                 if (!file.length) {
-                    iss.popover({type: 2, content: "已存在上传数据！"});
+                    iss.popover({ type: 2, content: "已存在上传数据！" });
                     return
                 }
                 let tt = addFile(file);
@@ -380,7 +380,7 @@ class $iss {
                 let el = list.find("#" + f.id + " .progresses .pn"), eli = list.find("#" + f.id + " .progresses .pp"),
                     num = parseInt(t * 100)
                 el.text(num + "%");
-                eli.css({width: num + "%"});
+                eli.css({ width: num + "%" });
             })
             uploader.on("uploadSuccess", f => {
                 opt.onUploadSucess(f, render, opt["content"], opt);
@@ -424,6 +424,7 @@ class $iss {
 
     checkLogin(callback) { //判断是否登陆过期
         let url = "/Account/ICheckLoginStatus";
+        debugger
         iss.ajax({
             url: url,
             success(da) {
@@ -434,13 +435,13 @@ class $iss {
                 iss.popover({
                     content: "登陆已过期！"
                 });
-                top.location.href = "/Login"
+                top.location.href = "/login"
             },
             error(e) {
                 iss.popover({
                     content: "登陆已过期！"
                 });
-                top.location.href = "/Login"
+                top.location.href = "/login"
             }
         })
     }
@@ -471,7 +472,7 @@ class $iss {
         let opt = {
             //url:"/Home/GetTreeInfo",//
             url: iss.url("/Common/IGetOrganizationalUsers"),
-            param: {parentid: "13ead391fd4103096735e4945339550b", condition: ""},
+            param: { parentid: "13ead391fd4103096735e4945339550b", condition: "" },
             searchURL: "/Common/ISearchUser",
             title: "选择人员",
             width: 800,
@@ -526,7 +527,7 @@ class $iss {
                 },
                 onLoadError(e) {
                     if (e.status == 0 || e.status == 401 || e.status == 403) {
-                        iss.popover({content: "登录超时，请重新登录！"});
+                        iss.popover({ content: "登录超时，请重新登录！" });
                         setTimeout(function () {
                             window.location.href = "/Login";
                         }, 2000);
@@ -676,7 +677,7 @@ class $iss {
             type: "sucess",
             ...opt
         }
-        let {content, duration, onClose, type} = opt,
+        let { content, duration, onClose, type } = opt,
             TYPE = "success",
             str = "success,error,info,warning,warn,loading";
         type = str.indexOf(type) >= 0 ? type : type == "2" ? "success" : "error";
@@ -693,12 +694,12 @@ class $iss {
      */
     tip = (opt) => {
         let _opt = {
-                message: "提示",
-                description: "",
-                onClose() {
-                }, //关闭提价
-                ...opt
-            },
+            message: "提示",
+            description: "",
+            onClose() {
+            }, //关闭提价
+            ...opt
+        },
             TYPE = "success",
             str = "success,error,info,warning,warn,loading";
         TYPE = new RegExp(opt["type"] || "success").exec(str) || TYPE;
@@ -762,10 +763,10 @@ class $iss {
                         </div>
                       </div>`;
         if (state == "open") {
-            $("body").append(str).css({overflow: 'hidden'})
+            $("body").append(str).css({ overflow: 'hidden' })
         } else if (state == "close") {
             $("#loader").remove()
-            $("body").css({overflow: 'auto'})
+            $("body").css({ overflow: 'auto' })
         }
     }
 
@@ -836,7 +837,7 @@ class $iss {
 
         $("body").addClass("geogrMarker_body");
         $("<iframe src='" + mapSrc + "' id='geogrMarker' class='geogrMarker'></iframe>").appendTo("body").off("load.mark").on("load.mark", function (e) {
-            $.cookie('cookieMapMark', 'fail', {path: '/'});
+            $.cookie('cookieMapMark', 'fail', { path: '/' });
             let urlPath = localUrl.replace("status=add", "status=edit");
             if (urlPath.indexOf("dataKey") < 0) {
                 /*分期需要项目ID*/
@@ -956,17 +957,17 @@ class $iss {
 
     error = (error) => {
         this.message({
-                type: "error",
-                content: error.message ? error.message : error,
-            }
+            type: "error",
+            content: error.message ? error.message : error,
+        }
         );
     };
 
     info = (message) => {
         this.message({
-                type: "info",
-                content: message,
-            }
+            type: "info",
+            content: message,
+        }
         );
     };
 }
