@@ -49,7 +49,7 @@ class PriceControl extends React.Component {
         edit: false,//表格是否可编辑
         isApproal: false //是否是审批
     };
-    sessionCurrentData={};//点击阶段或初次加载table时暂存数据
+    sessionCurrentData = {};//点击阶段或初次加载table时暂存数据
     componentWillMount() {
 
     }
@@ -242,7 +242,7 @@ class PriceControl extends React.Component {
                     step: this.state.step.code,
                     projectLevel: this.state.mode == "Project" ? "1" : parseInt(this.state.step.guid) <= 2 ? "2" : "3" //级别项目传1，分期前两个传2，后面传3
                 }
-                this.sessionCurrentData=opt;//暂存当前数据
+                this.sessionCurrentData = opt;//暂存当前数据
                 this.Fetch_GetPriceList(opt)
             })
             .catch(error => {
@@ -280,19 +280,19 @@ class PriceControl extends React.Component {
         this.setState({
             edit: false
         });
-        let data =[]; 
+        let data = [];
         this.state.priceData.forEach(arg => {
-            if(arg["LEVELS"]=="2"){
+            if (arg["LEVELS"] == "2") {
                 data.push({
                     versionId: this.state.versionId,//版本id
                     producttypeId: arg["PRODUCTTYPEID"] || "",//业态ID
-                    quotaId:"", //指标ID
+                    quotaId: "", //指标ID
                     averagePrice: arg["AVERAGEPRICE"] || "0",//均价
-                    totalSaleArea: arg["TOTALSALEAREA"] ||"0"//总可售面积
+                    totalSaleArea: arg["TOTALSALEAREA"] || "0"//总可售面积
                 })
             }
         });
-        
+
         return price.SavePriceList(data)
             .then(da => {
                 this.Fetch_GetPriceList(this.sessionCurrentData)
@@ -306,10 +306,10 @@ class PriceControl extends React.Component {
      */
     handleApproval = params => {
         this.saveNewPriceVersion()
-            .then(arg=>{
+            .then(arg => {
                 this.goToApplroal();
             })
-       
+
     }
     /**
      * 审批跳转
@@ -323,10 +323,10 @@ class PriceControl extends React.Component {
             pathname: "/ProcessApproval",
             search: `?e=${newProjectStatus}&dataKey=${dataKey}&current=ProcessApproval&areaId=&areaName=`
         });
-   /*      price.IGetProVersion(dataKey)
-            .then(arg => {
-           
-            }) */
+        /*      price.IGetProVersion(dataKey)
+                 .then(arg => {
+                
+                 }) */
 
 
 
@@ -388,7 +388,7 @@ class PriceControl extends React.Component {
                         step: this.state.step.code,//当前阶段
                         projectLevel: this.state.mode == "Project" ? "1" : parseInt(this.state.step.guid) <= 2 ? "2" : "3" //级别项目传1，分期前两个传2，后面传3
                     }
-                    this.sessionCurrentData=opt;//暂存当前数据
+                    this.sessionCurrentData = opt;//暂存当前数据
                     this.Fetch_GetPriceList(opt);
                 })
         };
@@ -409,7 +409,7 @@ class PriceControl extends React.Component {
             step: step.code,
             projectLevel: mode == "Project" ? "1" : parseInt(step.guid) <= 2 ? "2" : "3" //级别项目传1，分期前两个传2，后面传3
         }
-        this.sessionCurrentData=opt;//暂存当前数据
+        this.sessionCurrentData = opt;//暂存当前数据
         this.Fetch_GetPriceList(opt)
     }
     /* 绑定button */
@@ -439,7 +439,9 @@ class PriceControl extends React.Component {
     isApproal = arg => {
         let stateData = this.props.location.query;
         if (this.state.isApproal) {
-            return <ProcessApprovalTab current="priceControl" allSearchArg={stateData} />
+            return <section className="padB20">
+                <ProcessApprovalTab current="priceControl" allSearchArg={stateData} />
+            </section>
         }
 
     }
@@ -448,9 +450,9 @@ class PriceControl extends React.Component {
         let width = knife.recursion(this.state.priceColumns, 0);
 
         return <article>
-            <section className="padB20">
-                {this.isApproal()}
-            </section>
+
+            {this.isApproal()}
+
             <section className={this.props.location.query["dataKey"] ? "processBar" : "processBar none"}>
                 <header className="price" >
                     <Spin size="large" spinning={false}>
