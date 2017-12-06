@@ -274,20 +274,24 @@ class PriceControl extends React.Component {
     /**
      * 保存内容
      */
-    saveNewPriceVersion = params => {
+    saveNewPriceVersion = () => {
         this.setState({
             edit: false
         });
-        let data = this.state.priceData.map(arg => {
-            return {
-                versionId: this.state.versionId,//版本id
-                producttypeId: arg["PRODUCTTYPEID"] || "",//业态ID
-                quotaId:"", //指标ID
-                averagePrice: arg["AVERAGEPRICE"] || "0",//均价
-                totalSaleArea: arg["TOTALSALEAREA"] ||"0"//总可售面积
+        let data =[]; 
+        this.state.priceData.forEach(arg => {
+            if(arg["LEVELS"]=="2"){
+                data.push({
+                    versionId: this.state.versionId,//版本id
+                    producttypeId: arg["PRODUCTTYPEID"] || "",//业态ID
+                    quotaId:"", //指标ID
+                    averagePrice: arg["AVERAGEPRICE"] || "0",//均价
+                    totalSaleArea: arg["TOTALSALEAREA"] ||"0"//总可售面积
+                })
             }
         });
-        price.SavePriceList(data)
+        
+        return price.SavePriceList(data)
             .then(da => {
                 // debugger
             })
@@ -299,7 +303,11 @@ class PriceControl extends React.Component {
      * 发起审批
      */
     handleApproval = params => {
-        this.goToApplroal();
+        this.saveNewPriceVersion()
+            .then(arg=>{
+                this.goToApplroal();
+            })
+       
     }
     /**
      * 审批跳转

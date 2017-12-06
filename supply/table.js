@@ -252,7 +252,7 @@ class TableBar extends Component{
             }
         
         let _da=[];
-         for(var i=0;i<100;i++){
+         for(var i=0;i<20;i++){
             let json = JSON.parse(JSON.stringify(data));
                 json["key"]=i;
             _da.push(json)
