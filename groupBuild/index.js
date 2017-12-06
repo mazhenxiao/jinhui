@@ -58,7 +58,7 @@ export default class Index extends Component{
      * param nextProps 下一阶段的props
      */
     componentWillReceiveProps(nextProps) {
-
+        debugger
         this.setState({
             allSearchArg:nextProps.location.query,
             readOnly:this.GetQueryString("readOnly")
@@ -288,14 +288,14 @@ export default class Index extends Component{
                      
                      return <li key={ind} className=''>
                                  <label className="redFont">{el.jobName}</label>
-                                 <input id={el.jobId} defaultValue={el.UserNames||''} className="" type="text" />
+                                 <input id={el.jobId} value={el.UserNames||''} className="" type="text" />
                                  <img className="symbol headIcon" src="../../img/head-icon.png" />
                              </li>
                      
                  }else{
                      return <li key={ind} className=''>
                               <label className="">{el.jobName}</label>
-                              <input id={el.jobId} defaultValue={el.UserNames||''} className="" type="text" />
+                              <input id={el.jobId} value={el.UserNames||''} className="" type="text" />
                               <img className="symbol headIcon" src="../../img/head-icon.png" />
                             </li>
                      

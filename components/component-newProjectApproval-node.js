@@ -285,14 +285,24 @@ class ApprovalControlNode extends React.Component {
         switch(this.props.allSearchArg.e){
             case iss.getEVal("intallmentStatus"):url="intallment";break; //分期
             case iss.getEVal("newProjectStatus"):url="newProject";break;//项目
+            case iss.getEVal("teamMaintainStatus"):url="AreaInfo/groupbuild";break;//项目团队维护
         }
         sessionStorage.removeItem("currentApprovalText");//清楚临时历史数据存储，解决路由切换不能记录用户输入内容问题
         sessionStorage.removeItem("currentApprovalList");//清楚临时历史数据存储，解决路由切换不能记录用户选择内容问题
-        iss.hashHistory.replace({
-            pathname:`/${url}`,
-            search:`?status=edit&dataKey=${this.props.allSearchArg.dataKey}&e=${this.props.allSearchArg.e}`
-        });
-        location.href=`${location.origin}${location.pathname.replace(/\/$/ig,"")}/#/${url}?status=edit&dataKey=${this.props.allSearchArg.dataKey}&e=${this.props.allSearchArg.e}`
+        if(this.props.allSearchArg["newId"]){
+            iss.hashHistory.replace({
+                pathname:`/${url}`,
+                search:`?status=edit&dataKey=${this.props.allSearchArg.newId}&e=${this.props.allSearchArg.e}&isProOrStage=${this.props.allSearchArg.isProOrStage}`
+            });
+            location.href=`${location.origin}${location.pathname.replace(/\/$/ig,"")}/#/${url}?status=edit&dataKey=${this.props.allSearchArg.newId}&e=${this.props.allSearchArg.e}&isProOrStage=${this.props.allSearchArg.isProOrStage}`
+        }else{
+            iss.hashHistory.replace({
+                pathname:`/${url}`,
+                search:`?status=edit&dataKey=${this.props.allSearchArg.dataKey}&e=${this.props.allSearchArg.e}`
+            });
+            location.href=`${location.origin}${location.pathname.replace(/\/$/ig,"")}/#/${url}?status=edit&dataKey=${this.props.allSearchArg.dataKey}&e=${this.props.allSearchArg.e}`
+        }
+        
     }
     BIND_CHECKEDIT() {
         if (this.type != "edit") {
