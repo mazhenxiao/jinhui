@@ -108,15 +108,17 @@ class $iss {
                         description: `登陆超时请重新登陆！`
                     })
                     top.window.location.href = "/Login";
-                } else if (res["errorcode"] && res["errorcode"] == "300") {
-                    iss.tip({
-                        type: "error",
-                        message: "服务器错误",
-                        description: `操作失败，请联系后台工作人员！`
-                    })
-                    //iss.popover({ content: "操作失败，请联系后台工作人员！" });
-                    return Promise.reject(res);
-                } else {
+                }
+                // else if (res["errorcode"] && res["errorcode"] == "300") {
+                //     iss.tip({
+                //         type: "error",
+                //         message: "服务器错误",
+                //         description: `操作失败，请联系后台工作人员！`
+                //     })
+                //     //iss.popover({ content: "操作失败，请联系后台工作人员！" });
+                //     return Promise.reject(res);
+                // }
+                else {
                     return Promise.reject(res);
                 }
             })
