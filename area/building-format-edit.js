@@ -85,7 +85,7 @@ class BuildingFormatEdit extends Component {
             title: '标准层层高(m)',
             dataIndex: 'standardfloorheight',
             key: 'standardfloorheight',
-            width: 200,
+            width: 120,
             render: (text, record) => {
                 if (record["levelId"] == "1") {
                     return (
@@ -113,7 +113,7 @@ class BuildingFormatEdit extends Component {
             title: '产权属性',
             dataIndex: 'ishaveproperty',
             key: 'ishaveproperty',
-            width: 200,
+            width: 160,
             render: (text, record) => {
                 if (record["levelId"] == "1") {
                     return "-";
@@ -129,7 +129,7 @@ class BuildingFormatEdit extends Component {
             title: '精装属性',
             dataIndex: 'isdecoration',
             key: 'isdecoration',
-            width: 200,
+            width: 160,
             render: (text, record) => {
                 if (record["levelId"] == "1") {
                     return "-";
@@ -145,7 +145,7 @@ class BuildingFormatEdit extends Component {
             title: '层高属性',
             dataIndex: 'storeyheight',
             key: 'storeyheight',
-            width: 200,
+            width: 160,
             render: (text, record) => {
                 if (record["levelId"] == "1") {
                     return "-";
@@ -177,6 +177,7 @@ class BuildingFormatEdit extends Component {
         return () => {
             const {dataSource} = this.state;
             let remain = [];
+            let deleteArray = [];
             if (record["levelId"] == "1") {
                 //点击的一级楼栋删除，则删除楼栋与楼栋下的业态
                 remain = dataSource.filter(item => item.id != id && item.parentid != id);
@@ -185,9 +186,11 @@ class BuildingFormatEdit extends Component {
                 let parentId = record["parentid"];
                 let other = dataSource.filter(item => item.parentid == parentId && item.id != id);
                 if (other.length === 0) {
+                    //如果没有同级业态,则同时删除父级楼栋
                     remain = dataSource.filter(item => item.id != parentId && item.parentid != parentId);
                 } else {
-                    remain = dataSource.filter(item => item.parentid != parentId);
+                    //只过滤掉当前业态
+                    remain = dataSource.filter(item => item.id != id);
                 }
             }
             this.setState({

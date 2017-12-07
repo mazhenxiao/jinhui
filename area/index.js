@@ -74,7 +74,7 @@ class Index extends Component {
      * param nextProps 下一阶段的props
      */
     componentWillReceiveProps(nextProps) {
-        const {dataKey, mode} = this.state;
+        const {dataKey} = this.state;
         const {location} = nextProps;
         const nextDataKey = location.query.dataKey || "";
         let nextMode = location.query.isProOrStage || "";
@@ -82,8 +82,7 @@ class Index extends Component {
 
         //切换路由之后，重新获取数据
 
-        if (dataKey != nextDataKey
-            || mode != nextMode) {
+        if (dataKey != nextDataKey) {
             this.setState({
                     dataKey: nextDataKey,
                     mode: nextMode,
@@ -368,10 +367,7 @@ class Index extends Component {
 
         AreaService.areaInfoISaveAreaPlanInfo(versionId, step.code, data)
             .then(da => {
-                iss.message({
-                    content: "保存成功"
-                })
-
+                iss.info("保存成功");
             })
             .catch(err => {
                 iss.error(err);
@@ -708,12 +704,9 @@ class Index extends Component {
      *  渲染空页面
      */
     renderEmpty = () => {
-        const {loading} = this.state;
         return (
             <div className="processBar">
-                <Spin size="large" spinning={loading}>
-                    请点击左侧树，项目/分期
-                </Spin>
+                请点击左侧树，项目/分期
             </div>
         );
     };
