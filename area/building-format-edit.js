@@ -85,7 +85,7 @@ class BuildingFormatEdit extends Component {
             title: '标准层层高(m)',
             dataIndex: 'standardfloorheight',
             key: 'standardfloorheight',
-            width: 200,
+            width: 120,
             render: (text, record) => {
                 if (record["levelId"] == "1") {
                     return (
@@ -113,7 +113,7 @@ class BuildingFormatEdit extends Component {
             title: '产权属性',
             dataIndex: 'ishaveproperty',
             key: 'ishaveproperty',
-            width: 200,
+            width: 160,
             render: (text, record) => {
                 if (record["levelId"] == "1") {
                     return "-";
@@ -129,7 +129,7 @@ class BuildingFormatEdit extends Component {
             title: '精装属性',
             dataIndex: 'isdecoration',
             key: 'isdecoration',
-            width: 200,
+            width: 160,
             render: (text, record) => {
                 if (record["levelId"] == "1") {
                     return "-";
@@ -145,7 +145,7 @@ class BuildingFormatEdit extends Component {
             title: '层高属性',
             dataIndex: 'storeyheight',
             key: 'storeyheight',
-            width: 200,
+            width: 160,
             render: (text, record) => {
                 if (record["levelId"] == "1") {
                     return "-";
