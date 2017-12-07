@@ -141,9 +141,9 @@ class PriceControl extends React.Component {
                         return <Input value={text} className="text-right" onChange={th.EventChangeInput.bind(this, record, da["field"])} />
                     } else {
                         let localText = text;
-                        if (da.field == "ISHAVEPROPERTY" || da.field == "ISDECORATION") {
+                   /*      if (da.field == "ISHAVEPROPERTY" || da.field == "ISDECORATION") {
                             localText = text == 1 ? "是" : "否";
-                        }
+                        } */
                         return <span>{localText}</span>;
                     }
                 }

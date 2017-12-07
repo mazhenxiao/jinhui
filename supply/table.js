@@ -33,7 +33,7 @@ class TableBar extends Component{
      CREATE_Table=()=>{
          return new Promise((resolve,reject)=>{
             this.GET_Columns();//获取头部
-            this.CET_DataSource();//数据
+           
             this.setState({
                 
             })
@@ -44,7 +44,7 @@ class TableBar extends Component{
      * 设置表格头部
      */
     GET_Columns = arg => {
-        console.time("GET_Columns")
+      
         let columns = [{
             title: '供货',
             dataIndex: 'Name',
@@ -245,44 +245,13 @@ class TableBar extends Component{
         this.setState({
             columns,
             columnsWidth:width
-        });
-        console.timeEnd();
-    }
-    CET_DataSource = arg => {
-        let data = { 
-                "Name":10,
-                "TotalArea":80,
-                "TotalSaleArea":80,
-                "TotalMonery":90,
-                "TotalBuildingArea":20,
-                "SuppliedSaleArea":30,
-                "SuppliedMonery":30,
-                "SuppliedNumber":30,
-                "StockInitInvSaleaArea":30,
-                "StockInitInvMonery":30,
-                "Stock18MonthSaleArea":30,
-                "Stock18MonthMonery":30,
-                "Stock12MonthSaleArea":30,
-                "Stock12MonthMonery":30,
-                "Stock6MonthSaleArea":30,
-                "Stock6MonthMonery":30,
-                "StockMonthSaleArea":30,
-                "StockMonthMonery":30
-            }
-        
-        let _da=[];
-         for(var i=0;i<20;i++){
-            let json = JSON.parse(JSON.stringify(data));
-                json["key"]=i;
-            _da.push(json)
 
-        } 
-        this.setState({
-            dataSource:_da
-        })
+        });
+       
     }
+
     render(){
-        return <Table pagination={false} scroll={{ y:300,x:this.state.columnsWidth }}  bordered dataSource={this.state.dataSource} columns={this.state.columns}></Table>
+        return <Table pagination={false} scroll={{ y:300,x:this.state.columnsWidth }}  bordered dataSource={this.props.dataSource} columns={this.state.columns}></Table>
     }
 }
 export default TableBar;
