@@ -25,11 +25,11 @@ export default class Index extends Component{
     componentWillMount() {
         if(this.state.allSearchArg["isProOrStage"]==this.number){
             const lev = this.lev;
-            if(this.state.allSearchArg["newId"]){
-                var leid = this.state.allSearchArg["newId"];
-            }else{
+            // if(this.state.allSearchArg["newId"]){
+            //     var leid = this.state.allSearchArg["newId"];
+            // }else{
                 var leid = this.state.allSearchArg["dataKey"];
-            }
+            //}
             
             this.setState({
                 level_id: lev,
@@ -65,11 +65,11 @@ export default class Index extends Component{
             
             if(this.state.allSearchArg["isProOrStage"]==this.number){
                 const lev = this.lev;
-                if(this.state.allSearchArg["newId"]){
-                    var leid = this.state.allSearchArg["newId"];
-                }else{
+                // if(this.state.allSearchArg["newId"]){
+                //     var leid = this.state.allSearchArg["newId"];
+                // }else{
                     var leid = this.state.allSearchArg["dataKey"];
-                }
+                //}
                 this.setState({
                     level_id: lev,
                     id:leid 
@@ -238,8 +238,8 @@ export default class Index extends Component{
             
             if(launch == "launch"){
                 $(window).trigger("treeLoad");
-                //以下dataKey为newId
-                location.href=`/Index/#/ProcessApproval?e=`+teamMaintainStatus+`&dataKey=${this.state.dataHeader.ID}&current=ProcessApproval&areaId=&areaName=&readOnly=readOnly&isProOrStage=${this.number}&newId=${this.props.location.query.dataKey}`;
+                //以下dataKey为newId  &newId=${this.props.location.query.dataKey}
+                location.href=`/Index/#/ProcessApproval?e=`+teamMaintainStatus+`&dataKey=${this.state.dataHeader.ID}&current=ProcessApproval&areaId=&areaName=&readOnly=readOnly&isProOrStage=${this.number}`;
             }
         })
         .catch(err=>{   
