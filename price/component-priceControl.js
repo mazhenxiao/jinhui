@@ -141,10 +141,28 @@ class PriceControl extends React.Component {
                         return <Input value={text} className="text-right" onChange={th.EventChangeInput.bind(this, record, da["field"])} />
                     } else {
                         let localText = text;
-                   /*      if (da.field == "ISHAVEPROPERTY" || da.field == "ISDECORATION") {
-                            localText = text == 1 ? "是" : "否";
-                        } */
-                        return <span>{localText}</span>;
+                        /*      if (da.field == "ISHAVEPROPERTY" || da.field == "ISDECORATION") {
+                                 localText = text == 1 ? "是" : "否";
+                             } */
+                        
+                        if (th.state.step.guid <= 2) {  //前两阶段标准层高级 为空
+                            if (da.field == "STANDARDFLOORHEIGHT") {
+                                return "";
+                            } else{
+                                return <span>{localText}</span>;
+                            }
+
+                        } else {  
+                            //后几个阶段标准层高 级别==1的为空
+                            if (da.field == "STANDARDFLOORHEIGHT"&&record.LEVELS=="1" ) {
+                                return "";
+                            } else{
+                                return <span>{localText}</span>;
+                            }
+
+                        }
+
+
                     }
                 }
             }
@@ -370,7 +388,6 @@ class PriceControl extends React.Component {
             });
             AreaService.getVersion(newStep, dataKey, mode, "Price")
                 .then(versionData => {
-
                     let versionId = this.getDefaultVersionId(versionData),
                         curVersion = versionData.filter(arg => {
                             return arg["id"] == versionId;
