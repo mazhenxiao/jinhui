@@ -49,7 +49,8 @@ class Index extends Component {
         conditionData: {},
 
         activeTapKey: "plan-quota",//tab页当前标签
-        modalKey: "",//TODO 测试
+        modalKey: "",//模态窗口的key
+        modalParam: "",//打开模态窗口时的额外参数
         record: null,//面积调整时，点击的那一行数据
     };
 
@@ -418,7 +419,7 @@ class Index extends Component {
      * 处理弹窗
      */
     handleModalClick = (modalKey, modalType) => {
-        return (record) => {
+        return (record, param) => {
             if (modalType === "edit") {
                 const {versionId} = this.state;
                 if (!versionId) {
@@ -428,7 +429,8 @@ class Index extends Component {
             }
             this.setState({
                 modalKey,
-                record
+                record,
+                modalParam: param,
             });
         };
     };
@@ -649,7 +651,7 @@ class Index extends Component {
      * @returns {*}
      */
     renderEditOrAdjust = () => {
-        const {modalKey, record, conditionData, step, mode, versionId, dataKey} = this.state;
+        const {modalKey, modalParam, record, conditionData, step, mode, versionId, dataKey} = this.state;
         switch (modalKey) {
             case "block-format-edit"://业态维护
                 return (
@@ -692,6 +694,7 @@ class Index extends Component {
                         step={step}
                         mode={mode}
                         versionId={versionId}
+                        modalParam={modalParam}
                         approvalState={this.getApprovalState()}
                     />
                 );
