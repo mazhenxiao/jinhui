@@ -8,7 +8,7 @@ import TableBar from "./table";//表格
 //import EsayuiTable from "./EsayuiTable";//esayui表格
 import "../css/button.less";
 import "./css/supply.less";
-import { resolve } from "url";
+
 
 
 const TabPane = Tabs.TabPane;
@@ -49,13 +49,13 @@ class Index extends Component {
      */
     Modal_OpenGropu=()=>{
         var th = this;
-            require.ensure([], function (require) {
+             require.ensure([], function (require) {
               let SupplyModal = require('./supplyModal').default;
                 th.setState({
                     ModalVisiblity:true,
                     content:<SupplyModal />   
                 }) 
-              }, "supplyModal");     
+              }, "supplyModal");      
     }
     /**
      * 表格库存编辑版本设置
@@ -75,7 +75,19 @@ class Index extends Component {
             <label>版本：<Select defaultValue={this.state.versionData.length ? this.state.versionData[0]["id"] : ""} className="ipt120">{Options()}</Select></label>
         </div>
     }
-
+    /**
+     * 模态窗口ok事件
+     */
+    EVENT_CLICK_OK=()=>{
+        this.setState({
+            ModalVisiblity:false
+        })
+    }
+    EVENT_CLICK_CANCEL=()=>{
+        this.setState({
+            ModalVisiblity:false
+        })
+    }
     bindModal=()=>{
 
       return  <Modal
@@ -83,6 +95,8 @@ class Index extends Component {
         visible={this.state.ModalVisiblity}
         okText="确认"
         cancelText="取消"
+        onOk={this.EVENT_CLICK_OK}
+        onCancel={this.EVENT_CLICK_CANCEL}
       >
        {this.state.content}
       </Modal>
@@ -126,7 +140,7 @@ class Index extends Component {
                 </Tabs>
             </article>
             {
-                this.bindModal("绑定页面所需要的模态窗口")
+                this.bindModal("绑定页面所需要的模态窗口") 
             }
         </Spin>
     }

@@ -2,8 +2,7 @@ import {message, notification} from 'antd';
 import "babel-polyfill";  //兼容ie  
 import 'whatwg-fetch';//兼容ie fetch
 import appConfig from '../app.config';
-
-require("../css/antd.min.css");
+import "../css/antd.min.css";
 
 class $iss {
     constructor() {
@@ -18,7 +17,13 @@ class $iss {
     }
 
     url(arg) {
-        return `${appConfig.domain}/${arg ? arg.replace(/^\//ig, "") : ""}`;
+        if(window["localDomain"]){  //外部调试接口直接改为本地路径即可
+            
+            return `${window.local}/${arg ? arg.replace(/^\//ig, "") : ""}`;
+        }else{
+            
+            return `${appConfig.domain}/${arg ? arg.replace(/^\//ig, "") : ""}`;
+        }
     }
 
     pagination() {
