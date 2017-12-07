@@ -48,6 +48,14 @@ class ComFormat extends Component {
         }
     }
 
+    columnRender = {
+        PRODUCTNAME: (text, record) => {
+            if (record["LevelId"] === 1)
+                return <a className="format-tree-parent">{text}</a>;
+            return <a className="format-tree-child">{text}</a>;
+        }
+    };
+
     /**
      *  处理文本框change事件
      */
@@ -55,20 +63,6 @@ class ComFormat extends Component {
         this.setState({
             [key]: e.target.value,
         });
-    };
-
-    // handleClick = (text, record) => {
-    //     return () => {
-    //         this.props.onFormatClick && this.props.onFormatClick(record);
-    //     };
-    // };
-
-    columnRender = {
-        PRODUCTNAME: (text, record) => {
-            if (record["LevelId"] === 1)
-                return <span className="format-tree-parent">{text}</span>;
-            return <span className="format-tree-child">{text}</span>;
-        }
     };
 
     /**

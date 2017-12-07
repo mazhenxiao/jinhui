@@ -22,6 +22,7 @@ class WrapperSelect extends React.Component {
         dataSource: React.PropTypes.array,//同步情况下的数据源
         showRequired: React.PropTypes.bool,//显示必填 *
         showDefault: React.PropTypes.bool,//是否显示默认项 请选择
+        defaultValue: React.PropTypes.string,//默认值
     };
 
     static defaultProps = {
@@ -65,7 +66,7 @@ class WrapperSelect extends React.Component {
 
     render() {
 
-        let {labelText, labelSpan, inputSpan, dataSource, showDefault, showRequired, ...selectProps} = this.props;
+        let {labelText, labelSpan, inputSpan, dataSource, showDefault, showRequired, className, ...selectProps} = this.props;
 
         let options = [];
         let defaultOption = <Option key="1" value="">请选择</Option>;
@@ -83,7 +84,7 @@ class WrapperSelect extends React.Component {
 
         if (labelText) {
             return (
-                <Row style={rowStyle}>
+                <Row style={rowStyle} className={className}>
                     <Col span={labelSpan} style={labelStyle}>
                         {showRequired ? <span style={{color: "red"}}>*</span> : null}
                         {labelText}

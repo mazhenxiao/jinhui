@@ -8,9 +8,9 @@ const AreaManageStep = [
     {"guid": "4", "name": "启动会", "code": "Startup"},
     {"guid": "5", "name": "工规证", "code": "Rules"},
     {"guid": "6", "name": "决策书", "code": "Decision"},
-    {"guid": "7", "name": "预售证", "code": "PreSale"},
-    {"guid": "8", "name": "签约", "code": "Sign"},
-    {"guid": "9", "name": "交付", "code": "Deliver"}
+    // {"guid": "7", "name": "预售证", "code": "PreSale"},
+    // {"guid": "8", "name": "签约", "code": "Sign"},
+    // {"guid": "9", "name": "交付", "code": "Deliver"},
 ];
 
 /**
@@ -21,7 +21,7 @@ const Legend = [
     {"guid": "l2", "text": "编制中", "class": "legend-blue"},
     {"guid": "l3", "text": "审批通过", "class": "legend-green"},
     {"guid": "l4", "text": "审批驳回", "class": "legend-red"}
-]
+];
 
 /**
  * 产权属性

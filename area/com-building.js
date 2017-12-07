@@ -13,6 +13,7 @@ class ComBuilding extends Component {
         headerData: React.PropTypes.array,
         dataSource: React.PropTypes.array,
         onBuildingClick: React.PropTypes.func,
+        approvalState: React.PropTypes.bool,//是否是审批
     };
 
     static defaultProps = {
@@ -20,6 +21,7 @@ class ComBuilding extends Component {
         dataSource: [],
         onBuildingClick: () => {
         },
+        approvalState: false,
     };
 
     state = {
@@ -66,11 +68,24 @@ class ComBuilding extends Component {
         };
     };
 
-    columnRender = {
-        PRODUCTNAME: (text, record) => {
-            if (record["LevelId"] === 1)
-                return <a className="format-tree-parent" onClick={this.handleClick(text, record)}>{text}</a>;
-            return <a className="format-tree-child" onClick={this.handleClick(text, record)}>{text}</a>;
+    getColumnRender = () => {
+        const {approvalState} = this.props;
+        if (approvalState) {
+            return {
+                PRODUCTNAME: (text, record) => {
+                    if (record["LevelId"] === 1)
+                        return <a className="format-tree-parent">{text}</a>;
+                    return <a className="format-tree-child">{text}</a>;
+                }
+            };
+        } else {
+            return {
+                PRODUCTNAME: (text, record) => {
+                    if (record["LevelId"] === 1)
+                        return <a className="format-tree-parent" onClick={this.handleClick(text, record)}>{text}</a>;
+                    return <a className="format-tree-child" onClick={this.handleClick(text, record)}>{text}</a>;
+                }
+            };
         }
     };
 
@@ -147,8 +162,8 @@ class ComBuilding extends Component {
     };
 
     render() {
-        const {headerData} = this.props;
         const {formatKey, buildingKey} = this.state;
+        const {headerData} = this.props;
 
         let filterDataSource = this.getFilterDataSource();
 
@@ -171,7 +186,7 @@ class ComBuilding extends Component {
                     headerData={headerData}
                     dataSource={filterDataSource}
                     rowKey="KEY"
-                    columnRender={this.columnRender}
+                    columnRender={this.getColumnRender()}
                     fixedAble={true}
                 />
             </div>
