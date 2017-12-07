@@ -125,7 +125,7 @@ class ApprovalControlNode extends React.Component {
         var th = this;
         let { e, dataKey } = th.state.allSearchArg
         // iss.checkLogin(arg=>{  //暂时注销
-
+        console.log(th)
         iss.evConfirmAlert("是否确认提交", th.BIND_CHECKED.bind(th));
 
         // })
@@ -172,6 +172,7 @@ class ApprovalControlNode extends React.Component {
                 DataKey:this.newId||dataKey // 业务ID======================================
             }
         };
+        console.log(th.state.allSearchArg)
         var turnOut = true;
 
         iss.ajax({
