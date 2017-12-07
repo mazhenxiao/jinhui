@@ -16,7 +16,7 @@ class OverviewSupply extends Component {
         this.state = {
             data: [{
                 key: 1,
-                sign: '项目1—分期1-地块1',
+                supply: '项目1—分期1-地块1',
                 saleableArea: '22',
                 money: '3',
                 setNumber: '4',
@@ -31,7 +31,7 @@ class OverviewSupply extends Component {
                 monthSetNumber2: '10',
                 children: [{
                     key: 11,
-                    sign: '1组团',
+                    supply: '1组团',
                     saleableArea: '2',
                     money: '3',
                     setNumber: '4',
@@ -46,7 +46,7 @@ class OverviewSupply extends Component {
                     monthSetNumber2: '10',
                     children: [{
                         key: 111,
-                        sign: '叠拼别墅',
+                        supply: '叠拼别墅',
                         saleableArea: '2',
                         money: '3',
                         setNumber: '4',
@@ -62,7 +62,7 @@ class OverviewSupply extends Component {
                     }],
                 }, {
                     key: 12,
-                    sign: '未分配车位',
+                    supply: '未分配车位',
                     saleableArea: '2',
                     money: '3',
                     setNumber: '4',
@@ -77,7 +77,7 @@ class OverviewSupply extends Component {
                     monthSetNumber2: '10',
                     children: [{
                         key: 112,
-                        sign: '可售楼栋',
+                        supply: '可售楼栋',
                         saleableArea: '2',
                         money: '3',
                         setNumber: '4',
@@ -98,14 +98,11 @@ class OverviewSupply extends Component {
         }
         this.columns = [{
             title: '供货',
-            dataIndex: 'sign',
-            key: 'sign',
+            dataIndex: 'supply',
+            key: 'supply',
             width: 200,
             fixed: 'left'
-        }, {
-            title: '截止当月1日零点期初库存',
-            children: [{
-                title: '已签约',
+        }, {title: '已签约',
                 children: [{
                     title: '可售面积',
                     dataIndex: 'saleableArea',
@@ -139,13 +136,8 @@ class OverviewSupply extends Component {
                     dataIndex: 'overArea',
                     key: 'overArea',
                     width: 100,
-                }]
             }]
-        }, {
-            title: '当年-1月',
-            key: 2222,
-            children: [{
-                title: '',
+        }, { title: '',
                 children: [{
                     title: '可售面积',
                     dataIndex: 'monthSaleableArea1',
@@ -164,13 +156,8 @@ class OverviewSupply extends Component {
                     key: 'monthSetNumber1',
                     width: 100,
                     // render: (text, record) => this.renderColumns(text, record, 'monthSetNumber1')
-                }]
             }]
-        }, {
-            title: '当年-2月',
-            key: 222,
-            children: [{
-                title: '',
+        }, {title: '',
                 children: [{
                     title: '可售面积',
                     dataIndex: 'monthSaleableArea2',
@@ -186,7 +173,6 @@ class OverviewSupply extends Component {
                     dataIndex: 'monthSetNumber2',
                     key: 'monthSetNumber2',
                     width: 100,
-                }]
             }]
         }],
             this.oldData = this.state.data,
