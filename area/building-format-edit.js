@@ -177,6 +177,7 @@ class BuildingFormatEdit extends Component {
         return () => {
             const {dataSource} = this.state;
             let remain = [];
+            let deleteArray = [];
             if (record["levelId"] == "1") {
                 //点击的一级楼栋删除，则删除楼栋与楼栋下的业态
                 remain = dataSource.filter(item => item.id != id && item.parentid != id);
@@ -185,9 +186,11 @@ class BuildingFormatEdit extends Component {
                 let parentId = record["parentid"];
                 let other = dataSource.filter(item => item.parentid == parentId && item.id != id);
                 if (other.length === 0) {
+                    //如果没有同级业态,则同时删除父级楼栋
                     remain = dataSource.filter(item => item.id != parentId && item.parentid != parentId);
                 } else {
-                    remain = dataSource.filter(item => item.parentid != parentId);
+                    //只过滤掉当前业态
+                    remain = dataSource.filter(item => item.id != id);
                 }
             }
             this.setState({
