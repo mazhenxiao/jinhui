@@ -24,7 +24,10 @@ class ApproalHistory extends React.Component{
             	break; //项目
             case iss.getEVal("intallmentStatus"): 
             	search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover`; 
-            	break; //分期
+                break; //分期
+            case iss.getEVal("teamMaintainStatus"):
+                search=`?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover&readOnly=readOnly&isProOrStage=2`;
+                break;
             default:
             	search ="";
         }

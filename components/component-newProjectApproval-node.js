@@ -28,7 +28,7 @@ class ApprovalControlNode extends React.Component {
         if (this.props.callback) {
             this.props.callback(this);
         }
-        if (e == "10102"||e=="10114") {
+        if (e == "10102") {
             this.EVENT_CLICK_SUBMIT()
             .then(arg=>{
                 this.newId = arg;
@@ -54,6 +54,7 @@ class ApprovalControlNode extends React.Component {
             comanyId: allSearchArg["areaId"],
             comanyName: allSearchArg["areaName"]
         }
+        console.log(getInfo)
         iss.ajax({ //流程导航
             url: "/iWorkflow/Workflow/api/WFServices.asmx/GetSubmitWorkflows",
             type: "POST",
@@ -125,7 +126,6 @@ class ApprovalControlNode extends React.Component {
         var th = this;
         let { e, dataKey } = th.state.allSearchArg
         // iss.checkLogin(arg=>{  //暂时注销
-        console.log(th)
         iss.evConfirmAlert("是否确认提交", th.BIND_CHECKED.bind(th));
 
         // })
@@ -165,7 +165,6 @@ class ApprovalControlNode extends React.Component {
         }else{
             var json = allSearchArg['dataKey']
         } */
-        
         var dto = {
             "runtimeUnique": {
                 EntiId: e,// 实体ID
