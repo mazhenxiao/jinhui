@@ -23,21 +23,47 @@ export default class Index extends Component{
         number = "2"; //2
         lev ="5"; //5
     componentWillMount() {
-        if(this.state.allSearchArg["isProOrStage"]==this.number){
-            const lev = this.lev;
-            // if(this.state.allSearchArg["newId"]){
-            //     var leid = this.state.allSearchArg["newId"];
-            // }else{
-                var leid = this.state.allSearchArg["dataKey"];
-            //}
-            
-            this.setState({
-                level_id: lev,
-                id:leid 
-            },()=>{
-                this.getAjax();
-            })
-        }
+
+        // if(this.state.allSearchArg["isProOrStage"]==this.number){
+        //     var leid = "";
+        //     const lev = this.lev;
+        //     if(this.state.allSearchArg["readOnly"]){
+        //         iss.fetch({
+        //             type:"GET",
+        //             async: true,
+        //             url: "/ProjectTeam/IGetTrInfo",
+        //             data:{
+        //                 id:this.state.allSearchArg["dataKey"]
+        //             }
+        //         })
+        //         .then(data=>{
+        //              leid = data.rows.Id
+        //              this.setState({
+        //                     level_id: lev,
+        //                     id:leid 
+        //                 },()=>{
+        //                     this.getAjax();
+        //                 })
+        //         })
+        //         .catch(err=>{
+        //             console.log("请求失败")
+        //         })
+        //     }else{
+        //          leid = this.state.allSearchArg["dataKey"];
+        //          this.setState({
+        //             level_id: lev,
+        //             id:leid 
+        //         },()=>{
+        //             this.getAjax();
+        //         })
+        //     }
+    
+        //     // if(this.state.allSearchArg["newId"]){
+        //     //     var leid = this.state.allSearchArg["newId"];
+        //     // }else{
+                
+        //     //})
+        // }
 
         this.setState({
             readOnly:this.GetQueryString("readOnly")
@@ -62,20 +88,45 @@ export default class Index extends Component{
             allSearchArg:nextProps.location.query,
             readOnly:this.GetQueryString("readOnly")
         },arg=>{
-            
             if(this.state.allSearchArg["isProOrStage"]==this.number){
+                var leid = "";
                 const lev = this.lev;
+                if(this.state.allSearchArg["readOnly"]){
+                    iss.fetch({
+                        type:"GET",
+                        async: true,
+                        url: "/ProjectTeam/IGetTrInfo",
+                        data:{
+                            id:this.state.allSearchArg["dataKey"]
+                        }
+                    })
+                    .then(data=>{
+                         leid = data.rows.Id
+                         this.setState({
+                                level_id: lev,
+                                id:leid 
+                            },()=>{
+                                this.getAjax();
+                            })
+                    })
+                    .catch(err=>{
+                        console.log("请求失败")
+                    })
+                }else{
+                     leid = this.state.allSearchArg["dataKey"];
+                     this.setState({
+                        level_id: lev,
+                        id:leid 
+                    },()=>{
+                        this.getAjax();
+                    })
+                }
+        
                 // if(this.state.allSearchArg["newId"]){
                 //     var leid = this.state.allSearchArg["newId"];
                 // }else{
-                    var leid = this.state.allSearchArg["dataKey"];
-                //}
-                this.setState({
-                    level_id: lev,
-                    id:leid 
-                },()=>{
-                    this.getAjax();
-                })
+                    
+                //})
             }
 
             
@@ -239,7 +290,7 @@ export default class Index extends Component{
             if(launch == "launch"){
                 $(window).trigger("treeLoad");
                 //以下dataKey为newId  &newId=${this.props.location.query.dataKey}
-                location.href=`/Index/#/ProcessApproval?e=`+teamMaintainStatus+`&dataKey=${this.state.dataHeader.ID}&current=ProcessApproval&areaId=&areaName=&readOnly=readOnly&isProOrStage=${this.number}`;
+                location.href=`/Index/#/ProcessApproval?e=`+teamMaintainStatus+`&dataKey=${this.state.dataHeader.ID}&current=ProcessApproval&areaId=&areaName=&readOnly=readOnly&isProOrStage=${this.number}&newId=${this.state.allSearchArg["dataKey"]}`;
             }
         })
         .catch(err=>{   
@@ -339,7 +390,6 @@ export default class Index extends Component{
         );
     };
     isProcessApproval=arg=>{
-       
         if(this.props.location.query["readOnly"]){
         
             let stateData=this.state;
@@ -349,7 +399,6 @@ export default class Index extends Component{
     }
     render(){ 
        
-        
         if (this.state.allSearchArg["isProOrStage"]!=this.number) {
             
             return this.renderEmpty();

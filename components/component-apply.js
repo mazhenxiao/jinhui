@@ -31,11 +31,21 @@ class Apply extends React.Component {
             switch (da.entiid) {
                 case iss.getEVal("intallmentStatus"):url="intallment";break; //分期
                 case iss.getEVal("newProjectStatus"):url="newProject";break;//项目
+                case iss.getEVal("teamMaintainStatus"):url="AreaInfo/groupbuild";break;//项目团队维护
             }
-            iss.hashHistory.push({
-                pathname:`/${url}`,
-                search:`?status=edit&dataKey=${da.runtrecordid}&e=${da.entiid}`
-            });
+            if(da.entiid == "10114"){
+                
+                iss.hashHistory.push({
+                    pathname:`/${url}`,
+                    search:`?status=edit&dataKey=${da.runtrecordid}&e=${da.entiid}&readOnly=readOnly&isProOrStage=2`
+                });
+            }else{
+                iss.hashHistory.push({
+                    pathname:`/${url}`,
+                    search:`?status=edit&dataKey=${da.runtrecordid}&e=${da.entiid}`
+                });
+            }
+            
             $(".JH-Content").removeClass("CLASS_AGENTY");
         }else{
             switch(da.entiid) {
@@ -44,7 +54,10 @@ class Apply extends React.Component {
                 	break;
                 case iss.getEVal("intallmentStatus"): 
                 	search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover`; 
-                	break;
+                    break;
+                case iss.getEVal("teamMaintainStatus"):
+                    search=`?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover&readOnly=readOnly&isProOrStage=2`;
+                    break;
                 default:
                 	search="";
             }

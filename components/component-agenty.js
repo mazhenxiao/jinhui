@@ -39,6 +39,7 @@ class Agenty extends React.Component {
             switch(da.ENTIID){
                 case iss.getEVal("intallmentStatus"):url="intallment";break; //分期
                 case iss.getEVal("newProjectStatus"):url="newProject";break;//项目
+                case iss.getEVal("teamMaintainStatus"):url="/AreaInfo/groupbuild";break;//项目团队维护
             };
             iss.hashHistory.push({
                 pathname:`/${url}`,
@@ -48,7 +49,12 @@ class Agenty extends React.Component {
 
         }else{
         	if(pageUrlArr.length>1){
-        		search="?"+pageUrlArr[1];
+                if(da.ENTIID =="10114"){
+                    search="?"+pageUrlArr[1]+"&readOnly=readOnly&isProOrStage=2";
+                }else{
+                    search="?"+pageUrlArr[1];
+                }
+        		
         	}else{
         		switch(da.ENTIID){
 	                case iss.getEVal("newProjectStatus"):
@@ -56,7 +62,10 @@ class Agenty extends React.Component {
 	                	break;
 	                case iss.getEVal("intallmentStatus"):
 	                	search=`?e=${da.ENTIID}&dataKey=${da.RUNTRECORDID}&current=ProcessApprover`;
-	                	break;
+                        break;
+                    case iss.getEVal("teamMaintainStatus"):
+                        search=`?e=${da.ENTIID}&dataKey=${da.RUNTRECORDID}&current=ProcessApprover&readOnly=readOnly&isProOrStage=2`;
+                        break;
 	                default:
 	                	search="";
 	           }

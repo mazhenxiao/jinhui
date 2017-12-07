@@ -19,7 +19,13 @@ class ProcessApprovalTab extends React.Component {
 
     getQueryTab() { //页面显示连接设置
         var th = this;
-        let url = th.props.allSearchArg["current"];
+        let url ="";
+        if(th.props.allSearchArg["current"]){
+            url = th.props.allSearchArg["current"];
+        }else{
+            url = "ProcessApprover"
+        }
+         
         var list = [
                 {id: `${url}`, url: `/${url}`},//审批
                 {id: "newProjectApproval", url: "/newProjectApproval"},//项目
@@ -60,7 +66,6 @@ class ProcessApprovalTab extends React.Component {
     }
 
     setTapList() { //设置导航条
-
         return this.state.TapList.map((el, id) => {
             let str = "";
             switch (el.id) {
