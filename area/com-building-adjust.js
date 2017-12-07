@@ -248,7 +248,7 @@ class ComBuildingAdjust extends Component {
                 width="500px"
                 footer={[
                     <Button key="save" type="primary" size="large" onClick={this.handleSelectSave}>
-                        关闭
+                        确定
                     </Button>
                 ]}>
                 <div className="building-batch-select">
@@ -277,7 +277,7 @@ class ComBuildingAdjust extends Component {
      */
     renderBuildingOrFormat = () => {
         const {buildingHeaderData, buildingDataSource, singleFormatData} = this.state;
-        const {approvalState} = this.props;
+        const {approvalState, modalParam} = this.props;
         if (this.isFromBuilding) {
             return (
                 <div>
@@ -308,7 +308,7 @@ class ComBuildingAdjust extends Component {
                     各产品形态用地面积
                 </div>
                 <div className="single-format-house">
-                    <span className="title">联排别墅:</span>
+                    <span className="title">{modalParam}:</span>
                     <span><Input onChange={this.handleInputChange} style={{width: "120px"}}
                                  value={singleFormatData.singleProductTypeValue}/></span>
                 </div>

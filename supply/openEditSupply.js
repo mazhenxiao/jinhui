@@ -4,11 +4,14 @@ import React, { Component } from 'react';
 import { Spin,Row, Col,Select, Table } from 'antd';
 import { AreaService } from '../services';
 import {knife} from '../utils';
-import TableBar from "./table";//表格
-require("../css/button.less");
-require("./css/supply.less");
+import "../css/button.less";
+import "./css/supply.less";
+
 let Option = Select.Option;
-export default class ComponentOpenEditSupply extends Component{
-    
+ class ComponentOpenEditSupply extends Component{
+    render(){
+        
+    }
     
 }
+export default ComponentOpenEditSupply;

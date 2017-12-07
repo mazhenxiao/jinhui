@@ -62,7 +62,7 @@ class ComBuilding extends Component {
             //楼栋 Building
             //业态 ProductType
             record.descType = "Building";//ProductType
-            this.props.onBuildingClick && this.props.onBuildingClick(record);
+            this.props.onBuildingClick && this.props.onBuildingClick(record, text);
         };
     };
 

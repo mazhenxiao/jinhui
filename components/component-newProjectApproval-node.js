@@ -19,7 +19,7 @@ class ApprovalControlNode extends React.Component {
             history: [] //历史纪录
         }
         this.type = "edit"  //this.props["type"] || "edit"; //以防外部没有设置type类型
-
+        this.newId=null;//10102项目所需新id
         this.selectedFlows = [] //选人数据 
         this.currentApprovalList = sessionStorage.getItem("currentApprovalList") ? JSON.parse(sessionStorage.getItem("currentApprovalList")) : [];
     }
@@ -31,8 +31,8 @@ class ApprovalControlNode extends React.Component {
         if (e == "10102") {
             this.EVENT_CLICK_SUBMIT()
             .then(arg=>{
-                
-                th.GetAjax(arg);
+                this.newId = arg;
+                th.GetAjax();
             })
         } else {
             this.GetAjax();
@@ -49,11 +49,12 @@ class ApprovalControlNode extends React.Component {
         let allSearchArg = th.state.allSearchArg;
         let getInfo = {
             entiId: allSearchArg['e'],
-            dataKey:arg||allSearchArg['dataKey'],//==================================================
+            dataKey:this.newId||allSearchArg['dataKey'],//==================================================
             userId: iss.userInfo.ID,
             comanyId: allSearchArg["areaId"],
             comanyName: allSearchArg["areaName"]
         }
+        console.log(getInfo)
         iss.ajax({ //流程导航
             url: "/iWorkflow/Workflow/api/WFServices.asmx/GetSubmitWorkflows",
             type: "POST",
@@ -125,7 +126,6 @@ class ApprovalControlNode extends React.Component {
         var th = this;
         let { e, dataKey } = th.state.allSearchArg
         // iss.checkLogin(arg=>{  //暂时注销
-
         iss.evConfirmAlert("是否确认提交", th.BIND_CHECKED.bind(th));
 
         // })
@@ -156,22 +156,22 @@ class ApprovalControlNode extends React.Component {
         })
         //  th.BIND_CHECKED();  //检查数据
     }
-    BIND_CHECKED(newId) {   //第一次ajax提交检查数据
-        debugger
+    BIND_CHECKED() {   //第一次ajax提交检查数据
+        
         var th = this;
-        var allSearchArg = th.state.allSearchArg;
-        if(allSearchArg['newId']){
+        var {e,dataKey} = th.state.allSearchArg;
+        /* if(allSearchArg['newId']){
             var json = allSearchArg['newId']
         }else{
             var json = allSearchArg['dataKey']
-        }
-        
+        } */
         var dto = {
             "runtimeUnique": {
-                EntiId: allSearchArg['e'],// 实体ID
-                DataKey: json // 业务ID======================================
+                EntiId: e,// 实体ID
+                DataKey:this.newId||dataKey // 业务ID======================================
             }
         };
+        console.log(th.state.allSearchArg)
         var turnOut = true;
 
         iss.ajax({
@@ -182,7 +182,7 @@ class ApprovalControlNode extends React.Component {
             data: JSON.stringify(dto),
             success: function (result) {
                 if (result.d["Data"] == "false" && result.d["Success"] == true) {
-                    th.BIND_CHECKEDSUCESS(newId);//二次提交
+                    th.BIND_CHECKEDSUCESS();//二次提交
                 } else {
                     iss.popover({ content: result.d.Message });
                     $(window).trigger("treeLoad");
@@ -191,17 +191,17 @@ class ApprovalControlNode extends React.Component {
         });
 
     }
-    BIND_CHECKEDSUCESS(newId) {  //当前填报人第二次ajax提交提交流程
+    BIND_CHECKEDSUCESS() {  //当前填报人第二次ajax提交提交流程
         let th = this;
-        var allSearchArg = th.state.allSearchArg;
-        if(allSearchArg['newId']){
+        var {e,dataKey} = th.state.allSearchArg;
+       /*  if(allSearchArg['newId']){
             var json = allSearchArg['newId']
         }else{
             var json = allSearchArg['dataKey']
-        }
+        } */
         let basicInfor = {
-            DataKey: json,// 业务ID,================================================
-            EntiId: allSearchArg["e"],
+            DataKey:this.newId||dataKey,// 业务ID,================================================
+            EntiId: e,
             EventUserId: iss.userInfo.ID,//当前登陆人
             Files: [],//附件
             ProcessComment: this.props["data"] || ""

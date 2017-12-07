@@ -49,7 +49,8 @@ class Index extends Component {
         conditionData: {},
 
         activeTapKey: "plan-quota",//tab页当前标签
-        modalKey: "",//TODO 测试
+        modalKey: "",//模态窗口的key
+        modalParam: "",//打开模态窗口时的额外参数
         record: null,//面积调整时，点击的那一行数据
     };
 
@@ -74,7 +75,7 @@ class Index extends Component {
      * param nextProps 下一阶段的props
      */
     componentWillReceiveProps(nextProps) {
-        const {dataKey, mode} = this.state;
+        const {dataKey} = this.state;
         const {location} = nextProps;
         const nextDataKey = location.query.dataKey || "";
         let nextMode = location.query.isProOrStage || "";
@@ -82,8 +83,7 @@ class Index extends Component {
 
         //切换路由之后，重新获取数据
 
-        if (dataKey != nextDataKey
-            || mode != nextMode) {
+        if (dataKey != nextDataKey) {
             this.setState({
                     dataKey: nextDataKey,
                     mode: nextMode,
@@ -368,10 +368,7 @@ class Index extends Component {
 
         AreaService.areaInfoISaveAreaPlanInfo(versionId, step.code, data)
             .then(da => {
-                iss.message({
-                    content: "保存成功"
-                })
-
+                iss.info("保存成功");
             })
             .catch(err => {
                 iss.error(err);
@@ -422,7 +419,7 @@ class Index extends Component {
      * 处理弹窗
      */
     handleModalClick = (modalKey, modalType) => {
-        return (record) => {
+        return (record, param) => {
             if (modalType === "edit") {
                 const {versionId} = this.state;
                 if (!versionId) {
@@ -432,7 +429,8 @@ class Index extends Component {
             }
             this.setState({
                 modalKey,
-                record
+                record,
+                modalParam: param,
             });
         };
     };
@@ -507,8 +505,9 @@ class Index extends Component {
         const len = stepData.length;
 
         const stepArray = stepData.map((item, index) => {
+
             return (
-                <li key={item.guid} style={{zIndex: len - index}} className={item.guid == step.guid ? "active" : ""}
+                <li key={item.guid} style={{zIndex: len - index}} className={item.guid == step.guid ? "active " : ""}
                     onClick={this.handleStepClick(item)}><span className={item.className}></span>{item.name}</li>
             );
         });
@@ -630,11 +629,22 @@ class Index extends Component {
      * 渲染步骤的颜色状态
      */
     renderStepLend = () => {
-        return Legend.map((el, ind) => {
+
+        //审批状态时,不显示状态提示
+        if (this.getApprovalState()) {
+            return null;
+        }
+        const legendArray = Legend.map((el, ind) => {
             return (
                 <li key={ind} data-guid={el.guid} className={el.class}>{el.text}</li>
             );
         });
+
+        return (
+            <ul className="processBar-header">
+                {legendArray}
+            </ul>
+        );
     };
 
     /**
@@ -642,7 +652,7 @@ class Index extends Component {
      * @returns {*}
      */
     renderEditOrAdjust = () => {
-        const {modalKey, record, conditionData, step, mode, versionId, dataKey} = this.state;
+        const {modalKey, modalParam, record, conditionData, step, mode, versionId, dataKey} = this.state;
         switch (modalKey) {
             case "block-format-edit"://业态维护
                 return (
@@ -685,6 +695,7 @@ class Index extends Component {
                         step={step}
                         mode={mode}
                         versionId={versionId}
+                        modalParam={modalParam}
                         approvalState={this.getApprovalState()}
                     />
                 );
@@ -697,12 +708,9 @@ class Index extends Component {
      *  渲染空页面
      */
     renderEmpty = () => {
-        const {loading} = this.state;
         return (
             <div className="processBar">
-                <Spin size="large" spinning={loading}>
-                    请点击左侧树，项目/分期
-                </Spin>
+                请点击左侧树，项目/分期
             </div>
         );
     };
@@ -726,9 +734,7 @@ class Index extends Component {
                 <Spin size="large" spinning={loading}>
                     <Row>
                         <Col span={12}>
-                            <ul className="processBar-header">
-                                {this.renderStepLend()}
-                            </ul>
+                            {this.renderStepLend()}
                         </Col>
                         <Col span={12}>
                             {this.renderButtonList()}

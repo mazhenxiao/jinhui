@@ -25,6 +25,7 @@ const getStep = (dataKey, mode, dataType = "Area") => {
                 const matchStep = serverSteps.filter(serverStep => serverStep.code === localStep.code)[0];
                 if (matchStep) {
                     localStep.name = matchStep.name;
+                    localStep.className = matchStep.className;
                     stepData.push(localStep);
                 }
             });
