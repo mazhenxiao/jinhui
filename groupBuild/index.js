@@ -175,13 +175,15 @@ export default class Index extends Component{
         let th=this;
         let peopleJson={};
         var arr =th.state.propsDATA;
-
         arr.forEach((el,ind)=>{
             if(el.jobId == id){
                 var UserIds = el.UserIds.trim().split(",")
                 var UserNames = el.UserNames.trim().split(",")
                 UserIds.forEach((ell,indd)=>{
+                    
                     if(ell != ""){
+                        console.log(ell)
+                        console.log(UserNames[indd])
                         let PrincipalId={
                             "id":ell,
                             "text":UserNames[indd]
@@ -192,12 +194,13 @@ export default class Index extends Component{
                 
             }
         })
+        console.log(peopleJson)
         iss.chooseTo({
             title:"选择人员<i class='fontRed'>（双击选择人员）</i>",
             pepole:peopleJson,  //已选人员名单
             multiple:flag,
             callback(da){
-                //console.log(da)
+                console.log(da)
                 var text = [],userId =[];
                 for(let key in da){
                     text.push(da[key].text)
@@ -213,6 +216,8 @@ export default class Index extends Component{
                         if(el.UserNames.substr(el.UserNames.length-1, el.UserNames.length)==","){
                             el.UserNames = el.UserNames.substring(0, el.UserNames.length-1)
                         }
+                        
+                        console.log(el.UserNames)
                     }
                 })
                 th.setState({
