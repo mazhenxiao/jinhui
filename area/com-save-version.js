@@ -54,13 +54,12 @@ class SaveVersion extends Component {
         return null;
     };
 
-    render() {
-        const {versionData, versionId} = this.props;
-        const currentVersion = versionData.filter(item => item.id === versionId)[0];
-
-        return <div className="PosRight">
-            <span className="areaUnit Left">（面积单位：㎡，车位单位：个，限高单位：米）</span>
-            {this.renderSaveButton()}
+    renderVersion = () => {
+        const {versionData, versionId, approvalState} = this.props;
+        if (approvalState) {
+            return null;
+        }
+        return (
             <div className="areaVeSel">
                 <WrapperSelect dataSource={versionData} labelText="当前版本:" showDefault={false}
                                labelSpan={10}
@@ -69,8 +68,26 @@ class SaveVersion extends Component {
                                value={versionId}
                                onChange={this.handleChange}/>
             </div>
-            <span className="areaStatus">状态: {currentVersion ? currentVersion["statusName"] : "无"}</span>
-        </div>
+        );
+    };
+
+    render() {
+        const {versionData, versionId, approvalState} = this.props;
+        const currentVersion = versionData.filter(item => item.id === versionId)[0];
+
+        return (
+            <div className="PosRight">
+                <span className="areaUnit Left">（面积单位：㎡，车位单位：个，限高单位：米）</span>
+                {this.renderSaveButton()}
+                {this.renderVersion()}
+                {
+                    !approvalState ?
+                        <span className="areaStatus">状态: {currentVersion ? currentVersion["statusName"] : "无"}</span>
+                        : null
+                }
+
+            </div>
+        );
 
     }
 

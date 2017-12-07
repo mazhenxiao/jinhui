@@ -495,21 +495,24 @@ class Index extends Component {
      */
     renderStepList = () => {
 
-        //审批状态时,不显示阶段按钮
-        if (this.getApprovalState()) {
-            return null;
-        }
-
         //阶段
         const {step, stepData} = this.state;
         const len = stepData.length;
 
         const stepArray = stepData.map((item, index) => {
-
-            return (
-                <li key={item.guid} style={{zIndex: len - index}} className={item.guid == step.guid ? "active " : ""}
-                    onClick={this.handleStepClick(item)}><span className={item.className}></span>{item.name}</li>
-            );
+            if (this.getApprovalState()) {
+                return (
+                    <li key={item.guid} style={{zIndex: len - index}}
+                        className={item.guid == step.guid ? "active " : ""}>
+                        <span className={item.className}></span>{item.name}</li>
+                );
+            } else {
+                return (
+                    <li key={item.guid} style={{zIndex: len - index}}
+                        className={item.guid == step.guid ? "active " : ""}
+                        onClick={this.handleStepClick(item)}><span className={item.className}></span>{item.name}</li>
+                );
+            }
         });
 
         return (
@@ -601,6 +604,7 @@ class Index extends Component {
                         dataSource={buildingData["areadataInfo"]}
                         headerData={buildingData["titleInfo"]}
                         onBuildingClick={this.handleModalClick("com-building-adjust")}
+                        approvalState={this.getApprovalState()}
                     />
                 </TabPane>);
             panelArray.push(
