@@ -14,7 +14,7 @@ import "./sign.less";
 
 const TabPane = Tabs.TabPane;
 
-class Index extends Component {
+class SignIndex extends Component {
 
     state = {
         loading: false,
@@ -146,4 +146,4 @@ class Index extends Component {
     }
 }
 
-export default Index;
+export default SignIndex;
