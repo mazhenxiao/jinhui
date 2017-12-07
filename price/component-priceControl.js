@@ -144,19 +144,19 @@ class PriceControl extends React.Component {
                         /*      if (da.field == "ISHAVEPROPERTY" || da.field == "ISDECORATION") {
                                  localText = text == 1 ? "是" : "否";
                              } */
-                        
+
                         if (th.state.step.guid <= 2) {  //前两阶段标准层高级 为空
                             if (da.field == "STANDARDFLOORHEIGHT") {
                                 return "";
-                            } else{
+                            } else {
                                 return <span>{localText}</span>;
                             }
 
-                        } else {  
+                        } else {
                             //后几个阶段标准层高 级别==1的为空
-                            if (da.field == "STANDARDFLOORHEIGHT"&&record.LEVELS=="1" ) {
+                            if (da.field == "STANDARDFLOORHEIGHT" && record.LEVELS == "1") {
                                 return "";
-                            } else{
+                            } else {
                                 return <span>{localText}</span>;
                             }
 
@@ -462,9 +462,30 @@ class PriceControl extends React.Component {
         }
 
     }
+    renderTable = () => {
+        let width = knife.recursion(this.state.priceColumns, 0);
+        if (this.state.isApproal) {
+            return <div>
+                <Table pagination={false} scroll={{ x: width, y: 400 }} loading={this.state.tableLoading} border columns={this.state.priceColumns} dataSource={this.state.priceData}></Table>
+            </div>
+        } else {
+            return <Tabs tabBarExtraContent={this.BIND_Button()}>
+                <TabPane tab="价格管理" key="plan-quota" >
+
+                    <Spin spinning={false}>
+                        <div>
+                            <Table pagination={false} scroll={{ x: width, y: 400 }} loading={this.state.tableLoading} border columns={this.state.priceColumns} dataSource={this.state.priceData}></Table>
+                        </div>
+
+                    </Spin>
+
+                </TabPane>
+            </Tabs>
+        }
+    }
     render() {
         var th = this;
-        let width = knife.recursion(this.state.priceColumns, 0);
+        
 
         return <article>
 
@@ -473,14 +494,14 @@ class PriceControl extends React.Component {
             <section className={this.props.location.query["dataKey"] ? "processBar" : "processBar none"}>
                 <header className="price" >
                     <Spin size="large" spinning={false}>
-                        <Row>
+                        <Row className={this.state.isApproal ? "hide" : ""}>
                             <Col span={12}>
                                 <ul className="processBar-header">
                                     {this.renderStepLend()}
                                 </ul>
                             </Col>
                             <Col span={12}>
-                                <div className={this.state.isApproal ? "hide" : "Right"}>
+                                <div className="Right">
                                     <button type="button" onClick={this.handleApproval} className="jh_btn jh_btn22 jh_btn_apro">发起审批
                                 </button>
                                 </div>
@@ -502,18 +523,7 @@ class PriceControl extends React.Component {
             <section className={this.props.location.query["dataKey"] ? "" : "none"}>
                 <article className="index-supply mgT20 clearboth">
                     <section className="supply-ys">
-                        <Tabs tabBarExtraContent={this.BIND_Button()}>
-                            <TabPane tab="价格管理" key="plan-quota" >
-
-                                <Spin spinning={false}>
-                                    <div>
-                                        <Table pagination={false} scroll={{ x: width, y: 400 }} loading={this.state.tableLoading} border columns={this.state.priceColumns} dataSource={this.state.priceData}></Table>
-                                    </div>
-
-                                </Spin>
-
-                            </TabPane>
-                        </Tabs>
+                        {this.renderTable()}
                     </section>
                 </article>
             </section>
