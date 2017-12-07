@@ -175,12 +175,12 @@ export default class Index extends Component{
         let th=this;
         let peopleJson={};
         var arr =th.state.propsDATA;
-
         arr.forEach((el,ind)=>{
             if(el.jobId == id){
                 var UserIds = el.UserIds.trim().split(",")
                 var UserNames = el.UserNames.trim().split(",")
                 UserIds.forEach((ell,indd)=>{
+                    
                     if(ell != ""){
                         let PrincipalId={
                             "id":ell,
@@ -197,7 +197,6 @@ export default class Index extends Component{
             pepole:peopleJson,  //已选人员名单
             multiple:flag,
             callback(da){
-                //console.log(da)
                 var text = [],userId =[];
                 for(let key in da){
                     text.push(da[key].text)
