@@ -632,7 +632,7 @@ class NewProject extends React.Component {
                                 iss.popover({ content: "保存成功", type: 2 });
                                 setTimeout(()=>{
                                     window.location.reload();
-                                },2000);
+                                },500);
                                 
 
                                 
