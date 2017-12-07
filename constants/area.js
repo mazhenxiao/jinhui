@@ -2,15 +2,15 @@
  * 阶段
  */
 const AreaManageStep = [
-    {"guid": "1", "name": "投决会", "code": "Vote", "className": "legend-blue"},
-    {"guid": "2", "name": "产品定位会", "code": "ProductPosition", "className": "legend-green"},
-    {"guid": "3", "name": "项目定位会", "code": "ProjectPosition", "className": "legend-white"},
-    {"guid": "4", "name": "启动会", "code": "Startup", "className": "legend-green"},
-    {"guid": "5", "name": "工规证", "code": "Rules", "className": "legend-blue"},
-    {"guid": "6", "name": "决策书", "code": "Decision", "className": "legend-red"},
-    {"guid": "7", "name": "预售证", "code": "PreSale", "className": "legend-white"},
-    {"guid": "8", "name": "签约", "code": "Sign", "className": "legend-white"},
-    {"guid": "9", "name": "交付", "code": "Deliver", "className": "legend-white"}
+    {"guid": "1", "name": "投决会", "code": "Vote"},
+    {"guid": "2", "name": "产品定位会", "code": "ProductPosition"},
+    {"guid": "3", "name": "项目定位会", "code": "ProjectPosition"},
+    {"guid": "4", "name": "启动会", "code": "Startup"},
+    {"guid": "5", "name": "工规证", "code": "Rules"},
+    {"guid": "6", "name": "决策书", "code": "Decision"},
+    {"guid": "7", "name": "预售证", "code": "PreSale"},
+    {"guid": "8", "name": "签约", "code": "Sign"},
+    {"guid": "9", "name": "交付", "code": "Deliver"}
 ];
 
 /**

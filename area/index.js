@@ -505,8 +505,9 @@ class Index extends Component {
         const len = stepData.length;
 
         const stepArray = stepData.map((item, index) => {
+
             return (
-                <li key={item.guid} style={{zIndex: len - index}} className={item.guid == step.guid ? "active" : ""}
+                <li key={item.guid} style={{zIndex: len - index}} className={item.guid == step.guid ? "active " : ""}
                     onClick={this.handleStepClick(item)}><span className={item.className}></span>{item.name}</li>
             );
         });

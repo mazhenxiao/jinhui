@@ -248,7 +248,7 @@ class ComBuildingAdjust extends Component {
                 width="500px"
                 footer={[
                     <Button key="save" type="primary" size="large" onClick={this.handleSelectSave}>
-                        关闭
+                        确定
                     </Button>
                 ]}>
                 <div className="building-batch-select">
