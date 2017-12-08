@@ -155,6 +155,9 @@ class Index extends Component {
                 if (!step) {
                     step = stepData[0];
                 }
+                if (!step) {
+                    return Promise.reject("发生错误: 未获取到阶段信息!");
+                }
 
                 this.setState({
                     stepData,
@@ -477,7 +480,7 @@ class Index extends Component {
         }
         const approvalingStep = stepData.filter(item => item.statusCode == "draft" || item.statusCode == "approvaling")[0];
         if (approvalingStep && approvalingStep.code != step.code) {
-            iss.error("滚犊纸,有问题找春艳");
+            iss.error("同一时间只允许有一个阶段处于审批或者草稿状态!");
             return;
         }
 

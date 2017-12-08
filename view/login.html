@@ -429,7 +429,10 @@
 
 
 <script type="text/javascript">
-    var home = "http://pocstest.radiance.com.cn:10016";
+
+        var home = "http://192.168.10.164:8000";//test
+    //    var home = "http://pocstest.radiance.com.cn:10016";//uat
+    //    var home = "http://pocs.radiance.com.cn:10016";//prod
 
     $(function () {
         var login = function () {
@@ -443,6 +446,7 @@
                 success: function (result) {
                     console.log("result", result);
                     if (result.errorcode == 200) {
+                        // window.location.href = "/Home/Index/#/index";
                         if (result.token) {
                             localStorage.setItem("token", result.token);
                             window.location.href = "/index/#/agenty?login=" + _username;
