@@ -8,6 +8,7 @@ import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import "../css/newProjectApproval.less";
+
 class ApprovalControlNode extends React.Component {
     constructor(arg) {
         super(arg);
@@ -19,37 +20,40 @@ class ApprovalControlNode extends React.Component {
             history: [] //历史纪录
         }
         this.type = "edit"  //this.props["type"] || "edit"; //以防外部没有设置type类型
-        this.newId=null;//10102项目所需新id
+        this.newId = null;//10102项目所需新id
         this.selectedFlows = [] //选人数据 
         this.currentApprovalList = sessionStorage.getItem("currentApprovalList") ? JSON.parse(sessionStorage.getItem("currentApprovalList")) : [];
     }
+
     componentWillMount() {
-        let { e, dataKey } = this.state.allSearchArg,th = this;
+        let {e, dataKey} = this.state.allSearchArg, th = this;
         if (this.props.callback) {
             this.props.callback(this);
         }
         if (e == "10102") {
             this.EVENT_CLICK_SUBMIT()
-            .then(arg=>{
-                this.newId = arg;
-                th.GetAjax();
-            })
+                .then(arg => {
+                    this.newId = arg;
+                    th.GetAjax();
+                })
         } else {
             this.GetAjax();
         }
 
 
     }
+
     /*监听审核意见*/
     changeAOinions(event) {
-        this.setState({ aOpinions: event.target.value });
+        this.setState({aOpinions: event.target.value});
     }
+
     GetAjax(arg) {
         let th = this;
         let allSearchArg = th.state.allSearchArg;
         let getInfo = {
             entiId: allSearchArg['e'],
-            dataKey:this.newId||allSearchArg['dataKey'],//==================================================
+            dataKey: this.newId || allSearchArg['dataKey'],//==================================================
             userId: iss.userInfo.ID,
             comanyId: allSearchArg["areaId"],
             comanyName: allSearchArg["areaName"]
@@ -86,6 +90,7 @@ class ApprovalControlNode extends React.Component {
             }
         });
     }
+
     EVENT_CHANGE_LIST(da, ev) { //修改
         var th = this, _data = this.state.InfoData[0]["Flows"];
         var id = (ev.target.value);
@@ -97,6 +102,7 @@ class ApprovalControlNode extends React.Component {
         }
         sessionStorage.setItem("currentApprovalList", JSON.stringify(this.selectedFlows));
     }
+
     EVENT_CHANGE_CHECKBOX(da, ev) {//input
         var ta = ev.target;
         this.selectedFlows.forEach((el, ind) => {
@@ -121,20 +127,22 @@ class ApprovalControlNode extends React.Component {
         });
         sessionStorage.setItem("currentApprovalList", JSON.stringify(this.selectedFlows));
     }
+
     //========提交、返回=========================================
     evConfirmSubmitTo() {
         var th = this;
-        let { e, dataKey } = th.state.allSearchArg
+        let {e, dataKey} = th.state.allSearchArg
         // iss.checkLogin(arg=>{  //暂时注销
         iss.evConfirmAlert("是否确认提交", th.BIND_CHECKED.bind(th));
 
         // })
 
     }
+
     EVENT_CLICK_SUBMIT() {  //当前填报人提交
         var th = this;
-        let { e, dataKey } = th.state.allSearchArg
-      return  new Promise((resolve, reject) => {
+        let {e, dataKey} = th.state.allSearchArg
+        return new Promise((resolve, reject) => {
             iss.ajax({ //老代码不再进行封装修改。
                 url: "/Stage/ICreateProVersion",
                 data: {
@@ -156,10 +164,11 @@ class ApprovalControlNode extends React.Component {
         })
         //  th.BIND_CHECKED();  //检查数据
     }
+
     BIND_CHECKED() {   //第一次ajax提交检查数据
-        
+
         var th = this;
-        var {e,dataKey} = th.state.allSearchArg;
+        var {e, dataKey} = th.state.allSearchArg;
         /* if(allSearchArg['newId']){
             var json = allSearchArg['newId']
         }else{
@@ -168,7 +177,7 @@ class ApprovalControlNode extends React.Component {
         var dto = {
             "runtimeUnique": {
                 EntiId: e,// 实体ID
-                DataKey:this.newId||dataKey // 业务ID======================================
+                DataKey: this.newId || dataKey // 业务ID======================================
             }
         };
         console.log(th.state.allSearchArg)
@@ -184,23 +193,24 @@ class ApprovalControlNode extends React.Component {
                 if (result.d["Data"] == "false" && result.d["Success"] == true) {
                     th.BIND_CHECKEDSUCESS();//二次提交
                 } else {
-                    iss.popover({ content: result.d.Message });
+                    iss.popover({content: result.d.Message});
                     $(window).trigger("treeLoad");
                 }
             }
         });
 
     }
+
     BIND_CHECKEDSUCESS() {  //当前填报人第二次ajax提交提交流程
         let th = this;
-        var {e,dataKey} = th.state.allSearchArg;
-       /*  if(allSearchArg['newId']){
-            var json = allSearchArg['newId']
-        }else{
-            var json = allSearchArg['dataKey']
-        } */
+        var {e, dataKey} = th.state.allSearchArg;
+        /*  if(allSearchArg['newId']){
+             var json = allSearchArg['newId']
+         }else{
+             var json = allSearchArg['dataKey']
+         } */
         let basicInfor = {
-            DataKey:this.newId||dataKey,// 业务ID,================================================
+            DataKey: this.newId || dataKey,// 业务ID,================================================
             EntiId: e,
             EventUserId: iss.userInfo.ID,//当前登陆人
             Files: [],//附件
@@ -228,22 +238,25 @@ class ApprovalControlNode extends React.Component {
                 var rt = result.d;
                 // turnOut = rt.Success;
                 if (rt.Success == true) {
-                    iss.popover({ content: "提交成功！", type: 2 });
+                    iss.popover({content: "提交成功！", type: 2});
                     sessionStorage.removeItem("currentApprovalText");//清楚临时历史数据存储，解决路由切换不能记录用户输入内容问题
                     sessionStorage.removeItem("currentApprovalList");//清楚临时历史数据存储，解决路由切换不能记录用户选择内容问题
                     $(window).trigger("treeLoad");
-                    iss.hashHistory.push({ pathname: "agenty" });
+                    iss.hashHistory.push({pathname: "agenty"});
 
                 } else {
-                    iss.popover({ content: rt.Message });
+                    iss.popover({content: rt.Message});
                 }
             }
         });
 
     }
+
     setInfoDataList() {
         var th = this;
-        if (!th.state.InfoData.length) { return }
+        if (!th.state.InfoData.length) {
+            return
+        }
         let list = th.state.InfoData[0]["Flows"];
         th.selectedFlows = th.currentApprovalList.length ? th.currentApprovalList : [];
         return list.map((el, ind) => {
@@ -260,7 +273,9 @@ class ApprovalControlNode extends React.Component {
             !th.currentApprovalList.length && th.selectedFlows.push(submit);  //按地址引用先push后修改
             let _id = this.currentApprovalList.length ? this.currentApprovalList[ind]["Participants"] : "";
             if (el.Type == "Approve" && th.type == "edit" && el.Users.length >= 2) {
-                let arr1 = el.Users.filter((v1, i1) => { return v1 });
+                let arr1 = el.Users.filter((v1, i1) => {
+                    return v1
+                });
                 return <li key={ind}>
                     <span>{el.Text}</span>
                     <select ref="select" defaultValue={_id} onChange={th.EVENT_CHANGE_LIST.bind(th, el)}>
@@ -277,21 +292,29 @@ class ApprovalControlNode extends React.Component {
                     </select>
                 </li>
             } else if (el.Type == "AutoInform" && th.type == "edit") {
-                let arr2 = el.Users.filter((v2, i2) => { return v2 });
+                let arr2 = el.Users.filter((v2, i2) => {
+                    return v2
+                });
                 _id = (typeof _id != "string") ? _id.join(",") : "";
-                return <li key={ind} ><span>{el.Text}【
+                return <li key={ind}><span>{el.Text}【
                     {
                         arr2.map((h, l) => {
 
                             userArra.push(h.UId);
                             submit.Participants = userArra;
-                            return <label key={l}><input key={l} type="checkbox" defaultChecked={_id ? _d.indexOf(h.UId) >= 0 : "true"} value={h.UId} onChange={th.EVENT_CHANGE_CHECKBOX.bind(th, el)} />{h.Name + (l == el.Users.length - 1 ? "" : ",")}</label>
+                            return <label key={l}><input key={l} type="checkbox"
+                                                         defaultChecked={_id ? _d.indexOf(h.UId) >= 0 : "true"}
+                                                         value={h.UId}
+                                                         onChange={th.EVENT_CHANGE_CHECKBOX.bind(th, el)}/>{h.Name + (l == el.Users.length - 1 ? "" : ",")}
+                            </label>
                         })
                     }
                     】</span>
                 </li>
             } else {
-                let arr3 = el.Users.filter((v3, i3) => { return v3 });
+                let arr3 = el.Users.filter((v3, i3) => {
+                    return v3
+                });
                 let str = arr3.map((vv, jj) => {
 
                     for (let i = 0; i < userArra.length; i++) {
@@ -302,7 +325,7 @@ class ApprovalControlNode extends React.Component {
                 })
                 submit.Participants = userArra;
                 // th.selectedFlows.push(submit);
-                return <li key={ind} >
+                return <li key={ind}>
                     <span>{el.Text}</span>
                     <span>【{str}】</span>
 
@@ -310,18 +333,31 @@ class ApprovalControlNode extends React.Component {
             }
         }, this);
     }
+
     //========通过、驳回===========================================
     EVENT_CLICK_PASS() {
 
     }
+
     Event_click_cancel() { //取消
+        const {businessId, e} = this.props.allSearchArg;
         var url = "";
         switch (this.props.allSearchArg.e) {
-            case iss.getEVal("intallmentStatus"): url = "intallment"; break; //分期
-            case iss.getEVal("newProjectStatus"): url = "newProject"; break;//项目
-            case iss.getEVal("teamMaintainStatus"): url = "AreaInfo/groupbuild"; break;//项目团队维护
-            case iss.getEVal("priceControl"): url = "AreaInfo/priceControl"; break;//价格
-            case iss.getEVal("area"): url = "AreaInfo/areaManage"; break;//面积
+            case iss.getEVal("intallmentStatus"):
+                url = "intallment";
+                break; //分期
+            case iss.getEVal("newProjectStatus"):
+                url = "newProject";
+                break;//项目
+            case iss.getEVal("teamMaintainStatus"):
+                url = "AreaInfo/groupbuild";
+                break;//项目团队维护
+            case iss.getEVal("priceControl"):
+                url = "AreaInfo/priceControl";
+                break;//价格
+            case iss.getEVal("area"):
+                url = "AreaInfo/areaManage";
+                break;//面积
         }
         sessionStorage.removeItem("currentApprovalText");//清楚临时历史数据存储，解决路由切换不能记录用户输入内容问题
         sessionStorage.removeItem("currentApprovalList");//清楚临时历史数据存储，解决路由切换不能记录用户选择内容问题
@@ -331,7 +367,14 @@ class ApprovalControlNode extends React.Component {
                 search: `?status=edit&dataKey=${this.props.allSearchArg.newId}&e=${this.props.allSearchArg.e}&isProOrStage=${this.props.allSearchArg.isProOrStage}`
             });
             location.href = `${location.origin}${location.pathname.replace(/\/$/ig, "")}/#/${url}?status=edit&dataKey=${this.props.allSearchArg.newId}&e=${this.props.allSearchArg.e}&isProOrStage=${this.props.allSearchArg.isProOrStage}`
-        } else {
+        } else if (businessId) {
+            iss.hashHistory.replace({
+                pathname: `/${url}`,
+                search: `?status=edit&dataKey=${businessId}&e=${e}`
+            });
+            location.href = `${location.origin}${location.pathname.replace(/\/$/ig, "")}/#/${url}?status=edit&dataKey=${businessId}&e=${e}`
+        }
+        else {
             iss.hashHistory.replace({
                 pathname: `/${url}`,
                 search: `?status=edit&dataKey=${this.props.allSearchArg.dataKey}&e=${this.props.allSearchArg.e}`
@@ -340,6 +383,7 @@ class ApprovalControlNode extends React.Component {
         }
 
     }
+
     BIND_CHECKEDIT() {
         if (this.type != "edit") {
             return <p className="btnBox">
@@ -353,6 +397,7 @@ class ApprovalControlNode extends React.Component {
             </p>
         }
     }
+
     BIND_HISTORY() {
         return this.state.history.map((el, ind) => {
             return <tr key={ind}>
@@ -364,32 +409,37 @@ class ApprovalControlNode extends React.Component {
             </tr>
         })
     }
+
     render() {
 
         var re_aOpinions = this.state.aOpinions;
         return (<div className="boxGroupDetail">
 
             <table className="table tableProject">
-                <tbody><tr>
+                <tbody>
+                <tr>
                     <td width="100">审批流程</td>
-                    <td><ul className="ApplyFlow">
-                        <li className="Running">发起人【{iss.userInfo.empName}】</li>
-                        {this.setInfoDataList()}
-                    </ul>
+                    <td>
+                        <ul className="ApplyFlow">
+                            <li className="Running">发起人【{iss.userInfo.empName}】</li>
+                            {this.setInfoDataList()}
+                        </ul>
                     </td>
                 </tr>
-                    {
-                        this.type != "edit" && <tr>
-                            <td>
+                {
+                    this.type != "edit" && <tr>
+                        <td>
 
-                            </td>
-                            <td>
-                                <textarea className="textareaText" value={re_aOpinions} onChange={this.changeAOinions.bind(this)}></textarea>
-                            </td>
-                        </tr>
-                    }
+                        </td>
+                        <td>
+                            <textarea className="textareaText" value={re_aOpinions}
+                                      onChange={this.changeAOinions.bind(this)}></textarea>
+                        </td>
+                    </tr>
+                }
 
-                </tbody></table>
+                </tbody>
+            </table>
             {
 
                 this.BIND_CHECKEDIT()
@@ -397,17 +447,19 @@ class ApprovalControlNode extends React.Component {
             }
 
             <table className="table tableProject approvalProcess">
-                <tbody><tr>
+                <tbody>
+                <tr>
                     <th>节点</th>
                     <th>意见</th>
                     <th>操作人</th>
                     <th>操作时间</th>
                     <th>操作</th>
                 </tr>
-                    {
-                        this.BIND_HISTORY()
-                    }
-                </tbody></table>
+                {
+                    this.BIND_HISTORY()
+                }
+                </tbody>
+            </table>
         </div>);
 
     }

@@ -35,7 +35,7 @@ class Index extends Component {
         loading: false,
         stepData: [],
         versionId: "",//当前版本id
-        stepId: 1,//在审批状态时, 默认显示的阶段
+        stepId: "",//在审批状态时, 默认显示的阶段
         step: {}, /*当前阶段*/
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : "Stage",//显示模式，项目或者分期
@@ -357,8 +357,7 @@ class Index extends Component {
     handleSaveVersionData = () => {
         //TODO 保存当前版本的规划方案指标数据，需要保存贞晓写的规划方案指标组件里的更新数据
         // console.log("TODO 保存当前版本的规划方案指标数据，需要保存贞晓写的规划方案指标组件里的更新数据");
-        const {step, areaData, activeTapKey, dataKey, versionId} = this.state;
-        //console.log("planQuotaUpdateData",this.planQuotaUpdateData)
+        const {step, versionId} = this.state;
         let data = [];
         this.planQuotaUpdateData = this.planQuotaUpdateData.filter(arg => arg["val"]);
         this.planQuotaUpdateData.forEach((arg, ind) => {
@@ -472,7 +471,7 @@ class Index extends Component {
      * 发起审批
      */
     handleApproval = () => {
-        const {versionId, step, stepData} = this.state;
+        const {versionId, dataKey, step, stepData} = this.state;
 
         if (!versionId) {
             iss.error("当前阶段还没有创建版本");
@@ -480,7 +479,7 @@ class Index extends Component {
         }
         const approvalingStep = stepData.filter(item => item.statusCode == "draft" || item.statusCode == "approvaling")[0];
         if (approvalingStep && approvalingStep.code != step.code) {
-            iss.error("同一时间只允许有一个阶段处于审批或者草稿状态!");
+            iss.error("同一时间只允许有一个阶段处于草稿或审批状态!");
             return;
         }
 
@@ -490,7 +489,7 @@ class Index extends Component {
 
         iss.hashHistory.push({
             pathname: "/ProcessApproval",
-            search: `?e=${approvalCode}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=`
+            search: `?e=${approvalCode}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${dataKey}`
         });
     };
 
