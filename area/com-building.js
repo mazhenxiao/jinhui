@@ -59,11 +59,11 @@ class ComBuilding extends Component {
         });
     };
 
-    handleClick = (text, record) => {
+    handleClick = (text, record, descType) => {
         return () => {
             //楼栋 Building
             //业态 ProductType
-            record.descType = "Building";//ProductType
+            record.descType = descType;
             this.props.onBuildingClick && this.props.onBuildingClick(record, text);
         };
     };
@@ -82,8 +82,10 @@ class ComBuilding extends Component {
             return {
                 PRODUCTNAME: (text, record) => {
                     if (record["LevelId"] === 1)
-                        return <a className="format-tree-parent" onClick={this.handleClick(text, record)}>{text}</a>;
-                    return <a className="format-tree-child" onClick={this.handleClick(text, record)}>{text}</a>;
+                        return <a className="format-tree-parent"
+                                  onClick={this.handleClick(text, record, "Building")}>{text}</a>;
+                    return <a className="format-tree-child"
+                              onClick={this.handleClick(text, record, "ProductType")}>{text}</a>;
                 }
             };
         }
