@@ -35,7 +35,7 @@ class Index extends Component {
         loading: false,
         stepData: [],
         versionId: "",//当前版本id
-        stepId: 1,//在审批状态时, 默认显示的阶段
+        defaultStepId: "",//默认显示的阶段,(只用在创建新版本时 和 审批状态时)
         step: {}, /*当前阶段*/
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : "Stage",//显示模式，项目或者分期
@@ -102,15 +102,15 @@ class Index extends Component {
                 .then(baseInfo => {
                     const dataKey = baseInfo["parentid"];
                     const mode = baseInfo["projectlevel"] == "1" ? "Project" : "Stage";
-                    const stepId = baseInfo["step"];
+                    const defaultStepId = baseInfo["step"];
 
                     this.setState({
                         dataKey,
                         mode,
-                        stepId,
+                        defaultStepId,
                     });
 
-                    this.loadStep(dataKey, mode, stepId);
+                    this.loadStep(dataKey, mode, defaultStepId);
                 })
                 .catch(error => {
                     iss.error(error);
@@ -122,12 +122,15 @@ class Index extends Component {
 
     /**
      * 加载步骤
+     * @param dataKey
+     * @param mode
+     * @param defaultStepId  默认显示的阶段Id
      */
-    loadStep = (dataKey, mode, stepId) => {
+    loadStep = (dataKey, mode, defaultStepId) => {
         if (dataKey === undefined) {
             dataKey = this.state.dataKey;
             mode = this.state.mode;
-            stepId = this.state.stepId;
+            defaultStepId = this.state.defaultStepId;
         }
 
         if (!dataKey) {
@@ -147,8 +150,8 @@ class Index extends Component {
          */
         AreaService.getStep(dataKey, mode)
             .then(stepData => {
-                if (stepId) {
-                    step = stepData.filter(item => item.guid == stepId)[0];
+                if (defaultStepId) {
+                    step = stepData.filter(item => item.guid == defaultStepId)[0];
                 } else {
                     step = stepData.filter(item => item.statusCode == "draft" || item.statusCode == "approvaling")[0];
                 }
@@ -318,16 +321,7 @@ class Index extends Component {
                 }
             })
             .then(() => {
-                return AreaService.getVersion(step, dataKey, mode);
-            })
-            .then(versionData => {
-                let versionId = this.getDefaultVersionId(versionData);
-                this.setState({
-                    versionData,
-                    versionId
-                });
-
-                this.loadData(false, step, mode, dataKey, versionId);
+                this.loadStep(dataKey, mode, step.guid);
             })
             .catch(error => {
                 this.setState({
@@ -357,8 +351,7 @@ class Index extends Component {
     handleSaveVersionData = () => {
         //TODO 保存当前版本的规划方案指标数据，需要保存贞晓写的规划方案指标组件里的更新数据
         // console.log("TODO 保存当前版本的规划方案指标数据，需要保存贞晓写的规划方案指标组件里的更新数据");
-        const {step, areaData, activeTapKey, dataKey, versionId} = this.state;
-        //console.log("planQuotaUpdateData",this.planQuotaUpdateData)
+        const {step, versionId} = this.state;
         let data = [];
         this.planQuotaUpdateData = this.planQuotaUpdateData.filter(arg => arg["val"]);
         this.planQuotaUpdateData.forEach((arg, ind) => {
@@ -472,7 +465,7 @@ class Index extends Component {
      * 发起审批
      */
     handleApproval = () => {
-        const {versionId, step, stepData} = this.state;
+        const {versionId, dataKey, step, stepData} = this.state;
 
         if (!versionId) {
             iss.error("当前阶段还没有创建版本");
@@ -480,7 +473,7 @@ class Index extends Component {
         }
         const approvalingStep = stepData.filter(item => item.statusCode == "draft" || item.statusCode == "approvaling")[0];
         if (approvalingStep && approvalingStep.code != step.code) {
-            iss.error("同一时间只允许有一个阶段处于审批或者草稿状态!");
+            iss.error("同一时间只允许有一个阶段处于草稿或审批状态!");
             return;
         }
 
@@ -490,7 +483,7 @@ class Index extends Component {
 
         iss.hashHistory.push({
             pathname: "/ProcessApproval",
-            search: `?e=${approvalCode}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=`
+            search: `?e=${approvalCode}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${dataKey}`
         });
     };
 
