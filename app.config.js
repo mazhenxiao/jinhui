@@ -17,5 +17,5 @@ const config = {
     },
 };
 
-const appConfig = config[process.env.NODE_ENV || "test"];
+const appConfig = config[process.env.NODE_ENV || "uat"];
 module.exports = appConfig;
