@@ -429,15 +429,17 @@
 
 
 <script type="text/javascript">
-    var home = "http://192.168.10.164:8000/";
-    //    var home = "http://192.168.14.168/"
+
+        var home = "http://192.168.10.164:8000";//test
+    //    var home = "http://pocstest.radiance.com.cn:10016";//uat
+    //    var home = "http://pocs.radiance.com.cn:10016";//prod
 
     $(function () {
         var login = function () {
             var _username = $('#username').val();
             var _pwd = $('#pwd').val();
             $.ajax({
-                url: home + "Account/ILogin",
+                url: home + "/Account/ILogin",
                 data: {"UserName": _username, "UserPwd": _pwd},
                 type: "POST",
                 dataType: "JSON",

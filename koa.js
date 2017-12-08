@@ -8,6 +8,8 @@ var staticServer = require('koa-static');
 var process = require("process");
 const appConfig = require("./app.config");
 
+console.log("appConfig", appConfig);
+
 render(app, {
     root: path.join(__dirname, "view"),
     layout: 'template',
