@@ -17,11 +17,10 @@ class $iss {
     }
 
     url(arg) {
-        if(window["localDomain"]){  //外部调试接口直接改为本地路径即可
-            
-            return `${window.local}/${arg ? arg.replace(/^\//ig, "") : ""}`;
-        }else{
-            
+        if (window["localDomain"]) {  //外部调试接口直接改为本地路径即可
+            return `${window["localDomain"]}/${arg ? arg.replace(/^\//ig, "") : ""}`;
+        } else {
+
             return `${appConfig.domain}/${arg ? arg.replace(/^\//ig, "") : ""}`;
         }
     }
