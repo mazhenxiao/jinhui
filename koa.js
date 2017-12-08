@@ -5,8 +5,9 @@ const render = require('koa-ejs');
 const path = require('path');
 var c = require('child_process');
 var staticServer = require('koa-static');
-var process = require("process")
- console.log("process:",process.argv.pop())
+var process = require("process");
+const appConfig = require("./app.config");
+
 render(app, {
     root: path.join(__dirname, "view"),
     layout: 'template',
@@ -14,6 +15,7 @@ render(app, {
     cache: false,
     debug: true
 });
+
 app.use(staticServer(
     path.join(__dirname, "./")
 ));
@@ -48,8 +50,9 @@ router.get('/', async (ctx, next) => {
         await ctx.render("AreaInfo", {layout: false})
     });
 
-app.listen(8090, arg => {
-     c.exec('start http://localhost:8090/login');
-    console.log("启动成功，请访问 http://localhost:8090/login");
+let port = appConfig["port"] || 8090;
+app.listen(port, arg => {
+    c.exec(`start http://localhost:${port}/login`);
+    console.log(`启动成功，请访问 http://localhost:${port}/login`);
 });
 

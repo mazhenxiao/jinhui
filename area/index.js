@@ -155,6 +155,9 @@ class Index extends Component {
                 if (!step) {
                     step = stepData[0];
                 }
+                if (!step) {
+                    return Promise.reject("发生错误: 未获取到阶段信息!");
+                }
 
                 this.setState({
                     stepData,
