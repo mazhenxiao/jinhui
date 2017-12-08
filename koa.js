@@ -35,7 +35,7 @@ const errorHandle = async (ctx, next) => {
 app.use(errorHandle);
 
 router.get('/', async (ctx, next) => {
-    await ctx.render("index", {layout: false})
+    await ctx.render("login", {layout: false})
 })
     .get('/login', async (ctx, next) => {
         await ctx.render("login", {layout: false})

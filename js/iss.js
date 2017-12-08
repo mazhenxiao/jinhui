@@ -96,7 +96,7 @@ class $iss {
                             type: "error",
                             message: "服务器错误",
                             description: `${_URL}接口错误！`
-                        })
+                        });
                         return Promise.reject({errorcode: "500", data: requestInfo, message: `服务器错误`, url: _URL});
                     });
             })
