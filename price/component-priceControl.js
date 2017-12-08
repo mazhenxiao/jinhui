@@ -9,7 +9,7 @@ import ExchangeButton from "../components/tools-exchangeButton.js";
 import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
 import { Spin, Tabs, Row, Col, Button, Select, Table, Input } from 'antd';
 import { AreaConstants } from '../constants';
-import { price, AreaService } from '../services';
+import { price, AreaService,Common } from '../services';
 import { knife } from '../utils';
 import { debug } from 'util';
 const { AreaManageStep, Legend } = AreaConstants;
@@ -114,7 +114,7 @@ class PriceControl extends React.Component {
 
             })
             .catch(err => {
-                console.logs(err);
+                //console.logs(err);
             })
 
     }
@@ -226,10 +226,12 @@ class PriceControl extends React.Component {
          */
         AreaService.getStep(dataKey, mode, "Price")
             .then(stepData => {
-                let step = stepData[0];
+                
+               // let step = stepData[0];
+               let step = stepData.filter(params=>{
+                   return params.statusCode=="draft";
+               })[0];
                 let versionId = this.getDefaultVersionId(this.state.versionData);
-
-
                 this.setState({
                     versionId,
                     stepData,
@@ -245,12 +247,13 @@ class PriceControl extends React.Component {
                     curVersion = versionData.filter(arg => {
                         return arg["id"] == versionId;
                     })[0]
-
+            
                 this.setState({
                     versionData,
                     versionId,
                     curVersion: curVersion ? curVersion.statusName : ""
                 });
+
                 return versionId;
 
             })
@@ -278,7 +281,6 @@ class PriceControl extends React.Component {
         if (!versionData || !Array.isArray(versionData) || versionData.length === 0) {
             return "";
         }
-
         return versionData[0]["id"];
     };
 

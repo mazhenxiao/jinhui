@@ -59,7 +59,7 @@ export default class SupplyModal extends Component{
                             <section>
                                 <Row>
                                     <Col span={10}></Col>
-                                    <Col span={4}><DatePicker defaultValue={moment('2015-01-01', 'YYYY-MM-DD')} /></Col>
+                                    <Col span={4}><DatePicker /></Col>
                                     <Col span={10}></Col>
                                 </Row>
                             </section>

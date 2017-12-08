@@ -54,8 +54,8 @@ class Index extends Component {
                 th.setState({
                     ModalVisiblity:true,
                     content:<SupplyModal />   
-                }) 
-              }, "supplyModal");      
+                }); 
+              }, "supplyModal");     
     }
     /**
      * 表格库存编辑版本设置
@@ -91,6 +91,7 @@ class Index extends Component {
     bindModal=()=>{
 
       return  <Modal
+        width={800}
         title={this.state.title}
         visible={this.state.ModalVisiblity}
         okText="确认"
