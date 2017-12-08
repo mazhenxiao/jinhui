@@ -189,7 +189,7 @@ export default class Index extends Component{
                         peopleJson[ell]=PrincipalId;
                     }
                 })
-                
+                return
             }
         })
         iss.chooseTo({
