@@ -331,6 +331,9 @@ const getFormatAreaData = (versionId, record) => {
             productTypeId: record["PRODUCTTYPEID"] || "",
             buildId: record["BUILDID"],
             descType: record["descType"],
+            isDecoration: record["ISDECORATION"],
+            isHaveProperty: record["ISHAVEPROPERTY"],
+            storeyHeight: record["STOREYHEIGHT"],
         },
     }).then(res => res.rows);
 };

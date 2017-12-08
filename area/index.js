@@ -35,7 +35,7 @@ class Index extends Component {
         loading: false,
         stepData: [],
         versionId: "",//当前版本id
-        stepId: "",//在审批状态时, 默认显示的阶段
+        defaultStepId: "",//默认显示的阶段,(只用在创建新版本时 和 审批状态时)
         step: {}, /*当前阶段*/
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : "Stage",//显示模式，项目或者分期
@@ -102,15 +102,15 @@ class Index extends Component {
                 .then(baseInfo => {
                     const dataKey = baseInfo["parentid"];
                     const mode = baseInfo["projectlevel"] == "1" ? "Project" : "Stage";
-                    const stepId = baseInfo["step"];
+                    const defaultStepId = baseInfo["step"];
 
                     this.setState({
                         dataKey,
                         mode,
-                        stepId,
+                        defaultStepId,
                     });
 
-                    this.loadStep(dataKey, mode, stepId);
+                    this.loadStep(dataKey, mode, defaultStepId);
                 })
                 .catch(error => {
                     iss.error(error);
@@ -130,7 +130,7 @@ class Index extends Component {
         if (dataKey === undefined) {
             dataKey = this.state.dataKey;
             mode = this.state.mode;
-            defaultStepId = this.state.stepId;
+            defaultStepId = this.state.defaultStepId;
         }
 
         if (!dataKey) {
