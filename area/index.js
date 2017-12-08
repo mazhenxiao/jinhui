@@ -122,12 +122,15 @@ class Index extends Component {
 
     /**
      * 加载步骤
+     * @param dataKey
+     * @param mode
+     * @param defaultStepId  默认显示的阶段Id
      */
-    loadStep = (dataKey, mode, stepId) => {
+    loadStep = (dataKey, mode, defaultStepId) => {
         if (dataKey === undefined) {
             dataKey = this.state.dataKey;
             mode = this.state.mode;
-            stepId = this.state.stepId;
+            defaultStepId = this.state.stepId;
         }
 
         if (!dataKey) {
@@ -147,8 +150,8 @@ class Index extends Component {
          */
         AreaService.getStep(dataKey, mode)
             .then(stepData => {
-                if (stepId) {
-                    step = stepData.filter(item => item.guid == stepId)[0];
+                if (defaultStepId) {
+                    step = stepData.filter(item => item.guid == defaultStepId)[0];
                 } else {
                     step = stepData.filter(item => item.statusCode == "draft" || item.statusCode == "approvaling")[0];
                 }
@@ -318,16 +321,7 @@ class Index extends Component {
                 }
             })
             .then(() => {
-                return AreaService.getVersion(step, dataKey, mode);
-            })
-            .then(versionData => {
-                let versionId = this.getDefaultVersionId(versionData);
-                this.setState({
-                    versionData,
-                    versionId
-                });
-
-                this.loadData(false, step, mode, dataKey, versionId);
+                this.loadStep(dataKey, mode, step.guid);
             })
             .catch(error => {
                 this.setState({
