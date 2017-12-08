@@ -90,7 +90,6 @@ class $iss {
         _URL = _URL.indexOf("http://") > -1 ? _URL : this.url(_URL);
         return fetch(_URL, requestInfo)
             .then(res => {
-
                 return res.json()
                     .catch(arg => {
                         iss.tip({
@@ -104,24 +103,14 @@ class $iss {
             .then(res => {
                 if (res["errorcode"] && res.errorcode == "200") {
                     return res;
-                } else if (res["errorcode"] && res.errorcode == "302") {
-                    // iss.popover({ content: "登陆超时请重新登陆！" });
+                } else if (res["errorcode"] && res.errorcode == "401") {
                     iss.tip({
                         type: "error",
                         message: "登陆超时",
                         description: `登陆超时请重新登陆！`
-                    })
-                    top.window.location.href = "/Login";
+                    });
+                    top.window.location.href = "/login";
                 }
-                // else if (res["errorcode"] && res["errorcode"] == "300") {
-                //     iss.tip({
-                //         type: "error",
-                //         message: "服务器错误",
-                //         description: `操作失败，请联系后台工作人员！`
-                //     })
-                //     //iss.popover({ content: "操作失败，请联系后台工作人员！" });
-                //     return Promise.reject(res);
-                // }
                 else {
                     return Promise.reject(res);
                 }
@@ -160,12 +149,11 @@ class $iss {
             if (_da["errorcode"] && _da.errorcode == "200") {
                 opt["success"] && opt.success(_da);
                 return;
-            } else if (_da["errorcode"] && _da.errorcode == "302") {
+            } else if (_da["errorcode"] && _da.errorcode == "401") {
                 iss.popover({content: "登录超时，请重新登录！"});
                 setTimeout(function () {
-                    debugger
-                    top.window.location.href = "/Login";
-                }, 2000);
+                    top.window.location.href = "/login";
+                }, 1500);
                 return false;
             } else if (_da["errorcode"] == "300") {
                 iss.popover({content: "操作失败，请联系后台工作人员！"});
@@ -179,8 +167,8 @@ class $iss {
             if (e.status == 0 || e.status == 401 || e.status == 403) {
                 iss.popover({content: "登录超时，请重新登录！"});
                 setTimeout(function () {
-                    // top.window.location.href = "/account/Login";
-                }, 2000);
+                    top.window.location.href = "/login";
+                }, 1500);
             } else {
                 opt["error"] && opt.error(e, textStatus);
             }
@@ -530,8 +518,8 @@ class $iss {
                     if (e.status == 0 || e.status == 401 || e.status == 403) {
                         iss.popover({content: "登录超时，请重新登录！"});
                         setTimeout(function () {
-                            window.location.href = "/Login";
-                        }, 2000);
+                            window.location.href = "/login";
+                        }, 1500);
                     }
                 }
             });
