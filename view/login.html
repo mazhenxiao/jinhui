@@ -429,21 +429,20 @@
 
 
 <script type="text/javascript">
-    var home = "http://192.168.5.82:10016/";
+    var home = "http://pocstest.radiance.com.cn:10013";
 
     $(function () {
         var login = function () {
             var _username = $('#username').val();
             var _pwd = $('#pwd').val();
             $.ajax({
-                url: home + "Account/ILogin",
+                url: home + "/Account/ILogin",
                 data: {"UserName": _username, "UserPwd": _pwd},
                 type: "POST",
                 dataType: "JSON",
                 success: function (result) {
                     console.log("result", result);
                     if (result.errorcode == 200) {
-                        // window.location.href = "/Home/Index/#/index";
                         if (result.token) {
                             localStorage.setItem("token", result.token);
                             window.location.href = "/index/#/agenty?login=" + _username;

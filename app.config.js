@@ -6,7 +6,7 @@ const config = {
         domain: "http://192.168.10.164:8000",
     },
     'uat': {
-        domain: "http://192.168.5.82:10016",
+        domain: "http://pocstest.radiance.com.cn:10013",
     },
     'prod': {
         domain: "http://192.168.14.168",
