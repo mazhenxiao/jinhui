@@ -57,8 +57,8 @@ class ApprovalControlNode extends React.Component {
             userId: iss.userInfo.ID,
             comanyId: allSearchArg["areaId"],
             comanyName: allSearchArg["areaName"]
-        }
-        console.log(getInfo)
+        };
+
         iss.ajax({ //流程导航
             url: "/iWorkflow/Workflow/api/WFServices.asmx/GetSubmitWorkflows",
             type: "POST",
