@@ -8,9 +8,6 @@ const AreaManageStep = [
     {"guid": "4", "name": "启动会", "code": "Startup"},
     {"guid": "5", "name": "工规证", "code": "Rules"},
     {"guid": "6", "name": "决策书", "code": "Decision"},
-    // {"guid": "7", "name": "预售证", "code": "PreSale"},
-    // {"guid": "8", "name": "签约", "code": "Sign"},
-    // {"guid": "9", "name": "交付", "code": "Deliver"},
 ];
 
 /**

@@ -150,6 +150,9 @@ class Index extends Component {
                 if (stepId) {
                     step = stepData.filter(item => item.guid == stepId)[0];
                 } else {
+                    step = stepData.filter(item => item.statusCode == "draft" || item.statusCode == "approvaling")[0];
+                }
+                if (!step) {
                     step = stepData[0];
                 }
 
@@ -466,10 +469,15 @@ class Index extends Component {
      * 发起审批
      */
     handleApproval = () => {
-        const {versionId} = this.state;
+        const {versionId, step, stepData} = this.state;
 
         if (!versionId) {
             iss.error("当前阶段还没有创建版本");
+            return;
+        }
+        const approvalingStep = stepData.filter(item => item.statusCode == "draft" || item.statusCode == "approvaling")[0];
+        if (approvalingStep && approvalingStep.code != step.code) {
+            iss.error("滚犊纸,有问题找春艳");
             return;
         }
 

@@ -3,10 +3,15 @@ import appConfig from '../app.config';
 import {AreaConstants} from '../constants';
 
 const {AreaManageStep} = AreaConstants;
-const website = appConfig.domain;
+const website = "";
 
 /**
- * 获取步骤
+ * 获取阶段
+ * 阶段:
+ *      未编制 undraft
+ *      编制中 draft
+ *      审批中 approvaling
+ *      审批通过 approvaled
  */
 const getStep = (dataKey, mode, dataType = "Area") => {
     return iss.fetch({
@@ -26,6 +31,7 @@ const getStep = (dataKey, mode, dataType = "Area") => {
                 if (matchStep) {
                     localStep.name = matchStep.name;
                     localStep.className = matchStep.className;
+                    localStep.statusCode = matchStep.statusCode;
                     stepData.push(localStep);
                 }
             });
