@@ -103,15 +103,16 @@ iss.chooseTo({
             pepole:{}  //已选人员名单
 })
 ~~~
-1、发起审批和在发起审批取消的时候参考
+* 发起审批和在发起审批取消的时候参考
+------
 ~~~ 
-/** 取消
- * status  当前【状态】是编辑还是升级具体咨询 成委
- * areaId  【区域id 】 只有项目和分期会用--项目列表下  其余页面赋空值
- * areaName  【区域名称】   只有项目和分期会用--项目列表下 其余页面赋空值
- * dataKey 【项目id】【分期版本id】列表下是左侧树  在信息填报下首次进入是左侧树然后替换为版本id
- * current  ProcessApproval提交 取消 ProcessApprover 同意 驳回
- * businessId 信息填报下所需，因为不依赖左侧树需要的是版本所以此值为【版本id】
- * isProOrStage 【项目1 分期2】信息填报所需
- */
+ 
+  status  当前【状态】是编辑还是升级具体咨询 成委
+  areaId  【区域id 】 只有项目和分期会用--项目列表下  其余页面赋空值
+  areaName  【区域名称】   只有项目和分期会用--项目列表下 其余页面赋空值
+  dataKey 【项目id】【分期版本id】列表下是左侧树  在信息填报下首次进入是左侧树然后替换为版本id
+  current  ProcessApproval提交 取消 ProcessApprover 同意 驳回
+  businessId 信息填报下所需，因为不依赖左侧树需要的是版本所以此值为【版本id】
+  isProOrStage 【项目1 分期2】信息填报所需
+ 
 ~~~
