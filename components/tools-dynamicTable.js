@@ -6,7 +6,8 @@ import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import {Select,Input} from 'antd';
-require("../css/antd.min.css");
+import {shallowCompare} from '../utils';
+import "../css/antd.min.css";
 const Option = Select.Option;
 class DynamicTable extends React.Component {
     constructor(arg) {
@@ -26,16 +27,16 @@ class DynamicTable extends React.Component {
     componentDidMount() {
 
     }
-    componentDidUpdate(prevProps, prevState) {
-        var th = this;
-        //this.setState({data:this.props.DynamicData})
-
-        /*   if (this.count == 0) {
-              this.count = 1;
-              this.BIND_INPUT_STATE();
-          } */
-
+    componentWillReceiveProps(nextProps,nextStage){
+        let {readOnly} = nextProps;
+        this.setState({
+            readOnly
+        })
     }
+    shouldComponentUpdate(nextProps, nextState){
+        
+        return shallowCompare(this, nextProps.planData, nextState.planData);
+    } 
     BIND_INPUT_STATE() {
         let $da = this.state.data;
         $da.forEach((da, ind) => {

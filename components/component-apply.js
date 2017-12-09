@@ -1,6 +1,6 @@
 /* 我的申请 */
 import React from 'react';
-import "../js/iss.js";
+import iss from "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import AgentyTab from "./tools-agenty-tab.js";//引入头部
 import Page from "./tools-page.js";//基于bootstrap分页组件
@@ -28,19 +28,24 @@ class Apply extends React.Component {
      * 
      * @param {*判断路由跳转} da 
      */
-    EVENT_CLICK_PROJECTNAME(da){
-        let url=iss.convertURL(da.entiid),search = "";
-        switch(da.entiid) {
+    EVENT_CLICK_PROJECTNAME(da) {
+        debugger
+        let url = iss.convertURL(da.entiid), search = "";
+        switch (da.entiid) {
             case iss.getEVal("newProjectStatus"):  //项目列表-项目
-                search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover`; 
-                break;  
+                search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover`;
+                break;
             case iss.getEVal("intallmentStatus"): //项目列表-分期
-                search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover`; 
+                search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover`;
                 break;
             case iss.getEVal("teamMaintainStatus"): //信息填报-组团
-                search=`?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover&readOnly=readOnly&isProOrStage=2`;
+                search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover&readOnly=readOnly&isProOrStage=2`;
                 break;
-            default:iss.tip({type:"error",description:"url地址未带出，请联系后台工作人员。"});break
+            case iss.getEVal("area"): //信息填报-面积
+            case iss.getEVal("priceControl"): //信息填报-价格
+                search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover`;
+                break;
+            default: iss.tip({ type: "error", description: "url地址未带出，请联系后台工作人员。" }); break
         }
         iss.hashHistory.push({
             pathname: "/ProcessApprover",
@@ -102,14 +107,14 @@ class Apply extends React.Component {
     }
     */
     getAjax(arg) {
-        var th = this,page=1,size=10;
-        if(arg){
-            page=arg
+        var th = this, page = 1, size = 10;
+        if (arg) {
+            page = arg
         }
-        
+
         iss.ajax({
             url: this.url,
-            data:{
+            data: {
                 page: page,
                 size: size
             },
@@ -132,14 +137,14 @@ class Apply extends React.Component {
         var th = this;
         return th.state.dataList.map((el, ind) => {
             let type = "";
-            if(el.runstatetext.indexOf("审批中")>=0){ type="type1" }else 
-            if(el.runstatetext.indexOf("通过")>=0){ type="type2" }else
-            if(el.runstatetext.indexOf("驳回")>=0){ type="type3" }
+            if (el.runstatetext.indexOf("审批中") >= 0) { type = "type1" } else
+                if (el.runstatetext.indexOf("通过") >= 0) { type = "type2" } else
+                    if (el.runstatetext.indexOf("驳回") >= 0) { type = "type3" }
             return <tr key={ind}>
-                <td className="center">{ind+1}</td>
+                <td className="center">{ind + 1}</td>
                 <td className="left">{el.entiname}</td>
                 <td className="left"><a href="javascript:;" onClick={this.EVENT_CLICK_PROJECTNAME.bind(this, el)}>{el.workflowtitle}</a></td>
-                <td className="center">{el.submitdatetime.replace("T"," ")}</td>
+                <td className="center">{el.submitdatetime.replace("T", " ")}</td>
                 <td className="left"><span className="pseudo"><i className={type}></i>{el.runstatetext}</span></td>
                 <td className="center">{el.currentflowname}</td>
                 <td className="center">{el.approvername}</td>
@@ -176,7 +181,7 @@ class Apply extends React.Component {
                         {this.agentyTabel()}
                     </tbody>
                 </table>
-         
+
             </section>
             <Page total={this.state.pageTotal} count={this.state.pageCount} callback={this.Bind_Click_Page.bind(this)} />
         </article>

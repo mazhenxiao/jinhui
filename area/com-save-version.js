@@ -49,10 +49,12 @@ class SaveVersion extends Component {
          * 春燕说让先放开保存按钮
          */
        // if (parseInt(step.guid) <= 2 && !approvalState) {
+           if(!approvalState){
             return (
                 <button type="button" className="jh_btn jh_btn28 jh_btn_save Left" onClick={this.handleSave}>
                     保存</button>
             );
+        }
        // }
         return null;
     };
