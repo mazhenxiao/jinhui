@@ -116,8 +116,14 @@ class DynamicTable extends React.Component {
      * antd多选
      */
     EVENT_CHANGE_ANTD_SELECTS=(da,el)=>{
+         let val = el[el.length-1];
+         let bool = da.data.some(params=>{
+             return (val&&val==params.val)
+         })
+         if(bool){
+            this.props.CallBack(da,Array.isArray(el)? el.join(","):el);
+         }
         
-        this.props.CallBack(da,Array.isArray(el)? el.join(","):el);
     }
     Bind_checked(da, val) { //检测数据
         let reg = eval(`(${da.regExp})`);
@@ -197,9 +203,9 @@ class DynamicTable extends React.Component {
                 } else if(el.type=="selects"){ //多选
                     if(!Array.isArray(el.data)){return}
                     let children = el.data.map((_d, _i) => {
-                        return <Option  key={_i}>{_d.label}</Option>
+                        return <Option  key={_d.val}>{_d.label}</Option>
                     })
-                    return <Select mode="tags" name={el.id} tokenSeparators={[',']} className={(el.edit.indexOf("+m") >= 0 && !el.val) ? "required selects" : "selects"} onChange={this.EVENT_CHANGE_ANTD_SELECTS.bind(this,el)} value={Array.isArray(el.val)? el.val: el.val? el.val.split(","):[]}>{children}</Select>
+                    return <Select mode="tags" filterOption={false} name={el.id} tokenSeparators={[',']} className={(el.edit.indexOf("+m") >= 0 && !el.val) ? "required selects" : "selects"} onChange={this.EVENT_CHANGE_ANTD_SELECTS.bind(this,el)} value={Array.isArray(el.val)? el.val: el.val? el.val.split(","):[]}>{children}</Select>
                 }else{
                     if(el.edit.indexOf("+r")>=0&&(fixed=="0"||fixed)){
                         return <input name={el.id} id={el.id} className={(el.edit.indexOf("+m") >= 0 && !el.val) ? " required" : ""} data-pid={el.pid} value={el.val? parseFloat(el.val).toFixed(fixed):""} placeholder={el.edit.indexOf("+m") >= 0 ? "" : ""} type="text" onBlur={this.EVENT_BLUR_INPUT.bind(this, el)} onChange={this.EVENT_CHANGE_INPUT.bind(this, el)} readOnly={el.edit.indexOf("+r") >= 0} />

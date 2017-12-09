@@ -51,12 +51,7 @@ class PriceControl extends React.Component {
     };
     sessionCurrentData = {};//点击阶段或初次加载table时暂存数据
     componentWillMount() {
-        if(this.props.location.query["current"]){
-            Common.getCurrentStepService()
-                  .then(response=>{
-                      debugger
-                  })
-        }
+       
     }
     /**
      * 在组件接收到一个新的prop时被调用,这个方法在初始化render时不会被调用
@@ -86,7 +81,19 @@ class PriceControl extends React.Component {
     componentDidMount() {
         this.loadStep();
         this.SetisApproal();
+        this.Approal_RevertDataKey();
         //this.Fetch_GetPriceList();
+    }
+    /**
+     * 从待审跳转的页面用（dataKey：小版本）去转换老的dataKey
+     */
+    Approal_RevertDataKey=()=>{
+        if(this.props.location.query["current"]){
+            Common.getCurrentStepService()
+                  .then(response=>{
+                      debugger
+                  })
+        }
     }
     /**
      * 当前是否是审批

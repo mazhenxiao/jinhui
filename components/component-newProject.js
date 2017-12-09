@@ -3,7 +3,7 @@ import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import NewProjectCount from "./component-newProject-count.js";
 import DynamicTable from "./tools-dynamicTable.js";
-import {project} from '../services';
+import {Project} from '../services';
 import NewProjectTime from "./component-newProject-time.js"
 import "../css/tools-dynamicTable.less";//专用css
 /* import Peripheral from "./component-newProject-peripheral.js";//外设条件 */
@@ -41,8 +41,11 @@ class NewProject extends React.Component {
         this.time = "";//延时变量
         this.firstData = [];//初始化数据
         this.child1 = "";//子集指针
+
+      
     }
     componentWillMount() {
+        
         let th = this;
         let local = th.props.location;
         let status = local.query["status"];
@@ -71,6 +74,7 @@ class NewProject extends React.Component {
         let th = this;
         th.BIIND_FIST_LAND(); //获取地块信息
     }
+
     //=====================================================地块外设条件
     EVENT_CLICK_PERIPHERAL() { //点击外设条件
         //window.open("/Home/MYTodo/","mytodo",`width=800,height=400,location=0,toolbar=0,status=0,top=50%,left=50%`);

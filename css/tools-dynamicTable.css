@@ -17,6 +17,11 @@ tools-dynamicTable.less
   padding-top: 5px;
   float: left;
 }
+.tools-dynamicTable ul li label.require:before {
+  content: "*";
+  color: #f00;
+  display: inline-block;
+}
 .tools-dynamicTable ul li .dynamicTableDIV {
   display: block;
   margin: 0 65px 0 115px;

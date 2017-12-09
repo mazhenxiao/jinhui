@@ -7,52 +7,26 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-import ProcessApprovalTab from "./component-ProcessApproval-Tab.js"; //导航信息
-import {Project} from '../services';
-import DynamicTable from "./tools-dynamicTable.js"; //地块
-import NewProjectCountView from "./component-newProject-countView.js";//项目基本信息
+import DynamicTable from "../components/tools-dynamicTable.js"; //地块
+import NewProjectCountView from "../components/component-newProject-countView.js";//项目基本信息
 import "../css/tools-dynamicTable.less";//专用css  
-class ApprovalControl extends React.Component {
+class OverviewProject extends React.Component {
     constructor(arg) {
         super(arg);
         this.state = {
             CountData: [],//地块统计数据
             pid:this.props.location.query["dataKey"],//地块id
             propsDATA:[],//地块数据
-            allSearchArg:this.props.location.query,/*地址栏所有参数*/
-            oldDataDey:"" //如果从审批过来的页面取此处
+            //allSearchArg:this.props.location.query,/*地址栏所有参数*/
         }
     }
     componentWillMount(){
       this.BIIND_FIST_LAND();
-      this.SERVICE_IGetProVersion();
-    }
-        /**
-     * 获取老DataKey
-     */
-    SERVICE_IGetProVersion=()=>{
-        
-        let {dataKey,current}=this.props.location.query;
-        
-        if(current){
-            Project.IGetProVersion(dataKey)
-            .then(response=>{
-                this.props.location.query["dataKey"]=dataKey;
-                this.setState({
-                    oldDataDey:dataKey,
-                    pid:dataKey
-                })
-            })
-            .catch(err=>{
-                console.log(err);
-            })
-        }
-       
     }
     
     BIIND_FIST_LAND() {  //获取已有地块
         let THIS = this;
-        let id = this.state.oldDataDey||this.props.location.query["dataKey"]; //iss.id.id;
+        let id = this.props.location.query["dataKey"]; //iss.id.id;
         iss.ajax({  //获取已有地块
             url: "/Project/IProjectLandsInfo",
             data: { projectId: id },
@@ -168,8 +142,6 @@ class ApprovalControl extends React.Component {
         let th = this;
         let stateData=th.state;
         return <section>
-        
-            <ProcessApprovalTab current="newProjectApproval" allSearchArg={stateData.allSearchArg}/>
             <NewProjectCountView all={this.props.location} />
             <section>
                 <h3 className="boxGroupTit">
@@ -192,4 +164,4 @@ class ApprovalControl extends React.Component {
 
     }
 }
-export default ApprovalControl;
+export default OverviewProject;
