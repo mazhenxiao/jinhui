@@ -19,6 +19,14 @@ tools-dynamicTable.less
                text-align:right;
                padding-top:5px;
                float:left;
+               &.require{
+                   &:before{
+                       content:"*";
+                       color:#f00;
+                       display: inline-block;
+                    
+                   }
+               }
             }
             .dynamicTableDIV{ display: block;margin:0 65px 0 115px; 
                 input{ width:100%;padding:3px;border:@border;

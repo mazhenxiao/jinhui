@@ -11,7 +11,8 @@ import OverviewPrimaryKey from './overview-primaryKey.js';//关键指标
 import OverviewPayment from './overview-payment.js';//回款
 import OverviewSign from './overview-sign.js';//签约
 import OverviewSupply from './overview-supply.js';//供货
-//import StageControl from '../components/component-newProjectStage.js'//分期
+import OverviewProject from './overview-project.js'//项目
+import OverviewIntallment from './overview-intallment.js'//分期
 const TabPane = Tabs.TabPane;
 class OverviewTab extends React.Component {
     
@@ -20,14 +21,14 @@ class OverviewTab extends React.Component {
         
         this.state={
             data:[
-                { "guid":"0","text":"项目概览","tap":"index"},
-                // { "guid":"1","text":"项目身份证","tap":"identity"},
-                // { "guid":"2","text":"供货","tap":"supply"},
-                // { "guid":"3","text":"签约","tap":"sign"},
-                // { "guid":"4","text":"回款","tap":"payment"},
-                // { "guid":"5","text":"计划","tap":"plan"},
-                // { "guid":"6","text":"重点事项","tap":"matter"},
-                // { "guid":"7","text":"关键指标","tap":"keyPoint"},
+                { "guid":"1","text":"项目概览","tap":"index"},
+                //{ "guid":"2","text":"项目身份证","tap":"identity"},
+                { "guid":"2","text":"供货","tap":"supply"},
+                { "guid":"3","text":"签约","tap":"sign"},
+                { "guid":"4","text":"回款","tap":"payment"},
+                { "guid":"5","text":"计划","tap":"plan"},
+                { "guid":"6","text":"重点事项","tap":"matter"},
+                { "guid":"7","text":"关键指标","tap":"keyPoint"},
             ],
             ...this.state,
             ...this.props.data,
@@ -40,6 +41,8 @@ class OverviewTab extends React.Component {
         let dataKey = nextProps.dataKey;//获取左侧树当前id
         this.setState({
             currentPosi:currentPosi,
+            dataKey:dataKey,
+            activeKey:"0",
         },()=>{
             this.renderRightTab();
             this.renderTabs();
@@ -55,12 +58,12 @@ class OverviewTab extends React.Component {
                     data:[
                         { "guid":"1","text":"项目概览","tap":"index"},
                         // { "guid":"2","text":"项目身份证","tap":"identity"},
-                        // { "guid":"3","text":"供货","tap":"supply"},
-                        // { "guid":"4","text":"签约","tap":"sign"},
-                        // { "guid":"5","text":"回款","tap":"payment"},
-                        // { "guid":"6","text":"计划","tap":"plan"},
-                        // { "guid":"7","text":"重点事项","tap":"matter"},
-                        // { "guid":"8","text":"关键指标","tap":"keyPoint"},
+                        { "guid":"2","text":"供货","tap":"supply"},
+                        { "guid":"3","text":"签约","tap":"sign"},
+                        { "guid":"4","text":"回款","tap":"payment"},
+                        { "guid":"5","text":"计划","tap":"plan"},
+                        { "guid":"6","text":"重点事项","tap":"matter"},
+                        { "guid":"7","text":"关键指标","tap":"keyPoint"},
                     ],
                 })
             break;
@@ -69,12 +72,12 @@ class OverviewTab extends React.Component {
                     data:[
                         { "guid":"1","text":"项目概览","tap":"index"},
                         // { "guid":"2","text":"项目身份证","tap":"identity"},
-                        // { "guid":"3","text":"供货","tap":"supply"},
-                        // { "guid":"4","text":"签约","tap":"sign"},
-                        // { "guid":"5","text":"回款","tap":"payment"},
-                        // { "guid":"6","text":"计划","tap":"plan"},
-                        // { "guid":"7","text":"重点事项","tap":"matter"},
-                        // { "guid":"8","text":"关键指标","tap":"keyPoint"},
+                        { "guid":"2","text":"供货","tap":"supply"},
+                        { "guid":"3","text":"签约","tap":"sign"},
+                        { "guid":"4","text":"回款","tap":"payment"},
+                        { "guid":"5","text":"计划","tap":"plan"},
+                        { "guid":"6","text":"重点事项","tap":"matter"},
+                        { "guid":"7","text":"关键指标","tap":"keyPoint"},
                         
                     ],
                 })
@@ -84,12 +87,12 @@ class OverviewTab extends React.Component {
                     data:[
                         { "guid":"1","text":"项目概览","tap":"index"},
                         // { "guid":"2","text":"项目身份证","tap":"identity"},
-                        // { "guid":"3","text":"供货","tap":"supply"},
-                        // { "guid":"4","text":"签约","tap":"sign"},
-                        // { "guid":"5","text":"回款","tap":"payment"},
-                        // { "guid":"6","text":"计划","tap":"plan"},
-                        // { "guid":"7","text":"重点事项","tap":"matter"},
-                        // { "guid":"8","text":"关键指标","tap":"keyPoint"},
+                        { "guid":"2","text":"供货","tap":"supply"},
+                        { "guid":"3","text":"签约","tap":"sign"},
+                        { "guid":"4","text":"回款","tap":"payment"},
+                        { "guid":"5","text":"计划","tap":"plan"},
+                        { "guid":"6","text":"重点事项","tap":"matter"},
+                        { "guid":"7","text":"关键指标","tap":"keyPoint"},
                     ],
                 })
             break;
@@ -97,13 +100,13 @@ class OverviewTab extends React.Component {
                 this.setState({
                     data:[
                         { "guid":"1","text":"项目概览","tap":"index"},
-                        // { "guid":"2","text":"项目身份证","tap":"identity"},
-                        // { "guid":"3","text":"供货","tap":"supply"},
-                        // { "guid":"4","text":"签约","tap":"sign"},
-                        // { "guid":"5","text":"回款","tap":"payment"},
-                        // { "guid":"6","text":"计划","tap":"plan"},
-                        // { "guid":"7","text":"重点事项","tap":"matter"},
-                        // { "guid":"8","text":"关键指标","tap":"keyPoint"},
+                        { "guid":"2","text":"项目身份证","tap":"identity"},
+                        { "guid":"3","text":"供货","tap":"supply"},
+                        { "guid":"4","text":"签约","tap":"sign"},
+                        { "guid":"5","text":"回款","tap":"payment"},
+                        { "guid":"6","text":"计划","tap":"plan"},
+                        { "guid":"7","text":"重点事项","tap":"matter"},
+                        { "guid":"8","text":"关键指标","tap":"keyPoint"},
                     ],
                 })
             break;
@@ -111,13 +114,13 @@ class OverviewTab extends React.Component {
                 this.setState({
                     data:[
                         { "guid":"1","text":"项目概览","tap":"index"},
-                        // { "guid":"2","text":"分期身份证","tap":"identity"},
-                        // { "guid":"3","text":"供货","tap":"supply"},
-                        // { "guid":"4","text":"签约","tap":"sign"},
-                        // { "guid":"5","text":"回款","tap":"payment"},
-                        // { "guid":"6","text":"计划","tap":"plan"},
-                        // { "guid":"7","text":"重点事项","tap":"matter"},
-                        // { "guid":"8","text":"关键指标","tap":"keyPoint"},
+                        { "guid":"2","text":"分期身份证","tap":"identity"},
+                        { "guid":"3","text":"供货","tap":"supply"},
+                        { "guid":"4","text":"签约","tap":"sign"},
+                        { "guid":"5","text":"回款","tap":"payment"},
+                        { "guid":"6","text":"计划","tap":"plan"},
+                        { "guid":"7","text":"重点事项","tap":"matter"},
+                        { "guid":"8","text":"关键指标","tap":"keyPoint"},
                     ],
                 })
             break;
@@ -127,15 +130,16 @@ class OverviewTab extends React.Component {
     //切换tab菜单渲染内容
     renderSyncEele=arg=>{
          let currentPosi=this.state.currentPosi;
+         let location = this.props.data.location;
          switch(arg){
             case "index"://项目概览
                 return <OverviewIndex />
             break;
             case "identity"://项目身份证
                 if(currentPosi=="project"){
-                    return <div>项目身份证</div>          
+                    return <OverviewProject location={location} />          
                 }else if (currentPosi =="intallment"){
-                    return <div>分期身份证</div>    
+                    return <OverviewIntallment location={location} />
                 }else{
                     return <div>***身份证</div>
                 }
@@ -169,13 +173,15 @@ class OverviewTab extends React.Component {
     }
     
     callback = (key) => {
-
+        this.setState({
+            activeKey:key,
+        })
     }
 
     renderTabs = () =>{
         let currentPosi=this.state.currentPosi;
         return(
-            <Tabs onChange={this.callback} defaultActiveKey="0" type="card">
+            <Tabs onChange={this.callback} defaultActiveKey="0" activeKey={this.state.activeKey} type="card">
                 {this.renderTabMenu1()}
             </Tabs>
         );

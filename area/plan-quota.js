@@ -8,7 +8,7 @@ import "babel-polyfill";  //兼容ie
 import {shallowCompare,knife} from '../utils';
 import iss from "../js/iss.js";//公共类
 import { AreaConstants } from '../constants'; 
-require("../css/tools-dynamicTable.less");//专用css
+import "../css/tools-dynamicTable.less";//专用css
 import DynamicTable from "../components/tools-dynamicTable.js";
 class PlanQuota extends Component {
     state={
@@ -26,7 +26,10 @@ class PlanQuota extends Component {
     }
 
     componentWillReceiveProps(nextProps,nextState){
-   
+       
+      this.setState({
+            DynamicData:nextProps.planData
+           })
      /*    let data = nextProps.planData.map(arg=>{
             
                 arg["valueId"]=iss.guid();
@@ -95,6 +98,7 @@ class PlanQuota extends Component {
                });
     }
      shouldComponentUpdate(nextProps, nextState){
+       
         return shallowCompare(this, nextProps.planData, nextState.planData);
     } 
 
@@ -103,6 +107,7 @@ class PlanQuota extends Component {
       //  console.log("haha-will",this.props.planData)
     }
     componentDidMount() {
+      
       //  console.log("haha-did",this.props.planData)
      // this.GET_FetchData()
     // knife.SET_CountExec({a:1,b:2,c:0},"{a}+{b}")

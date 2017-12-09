@@ -11,14 +11,13 @@ import { Spin, Tabs, Row, Col, Button, Select, Table, Input } from 'antd';
 import { AreaConstants } from '../constants';
 import { price, AreaService,Common } from '../services';
 import { knife } from '../utils';
-import { debug } from 'util';
+import"../css/tools-processBar.less";
+import "../css/button.less";
+import "../area/areaCss/areaManage.less";
+import "./price/price.less";
 const { AreaManageStep, Legend } = AreaConstants;
 const TabPane = Tabs.TabPane;
 const { Option } = Select;
-require("../css/tools-processBar.less");
-require("../css/button.less");
-require("../area/areaCss/areaManage.less");
-require("./price/price.less");
 class PriceControl extends React.Component {
     //  this.bindTab();
     state = {
@@ -32,12 +31,12 @@ class PriceControl extends React.Component {
             frozenColumns: [],//固定列
             columns: []//滚动列
         },
-        dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
+        dataKey:this.props.location.query["businessId"]||this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : "Stage",//显示模式，项目或者分期
         stepData: [],//阶段
         gridData: [],//表格数据
         version: [],//版本
-        step: 0,//阶段
+        step:0,//阶段
         stepName: "",//阶段名称
         curVersion: "空",//当前版本
         status: "",//当前版本状态
@@ -47,11 +46,12 @@ class PriceControl extends React.Component {
         priceData: [],//价格数据
         tableLoading: true,//表格加载中
         edit: false,//表格是否可编辑
-        isApproal: false //是否是审批
+        isApproal: false, //是否是审批
+        disabled:false  //默认
     };
     sessionCurrentData = {};//点击阶段或初次加载table时暂存数据
     componentWillMount() {
-
+       
     }
     /**
      * 在组件接收到一个新的prop时被调用,这个方法在初始化render时不会被调用
@@ -60,7 +60,7 @@ class PriceControl extends React.Component {
     componentWillReceiveProps(nextProps) {
         const { dataKey, mode } = this.state;
         const { location } = nextProps;
-        const nextDataKey = location.query.dataKey || "";
+        const nextDataKey = location.query["businessId"]||location.query.dataKey || "";
         let nextMode = location.query.isProOrStage || "";
         nextMode = nextMode == "1" ? "Project" : "Stage";
 
@@ -81,7 +81,19 @@ class PriceControl extends React.Component {
     componentDidMount() {
         this.loadStep();
         this.SetisApproal();
+        this.Approal_RevertDataKey();
         //this.Fetch_GetPriceList();
+    }
+    /**
+     * 从待审跳转的页面用（dataKey：小版本）去转换老的dataKey
+     */
+    Approal_RevertDataKey=()=>{
+        if(this.props.location.query["current"]){
+            Common.getCurrentStepService()
+                  .then(response=>{
+                      debugger
+                  })
+        }
     }
     /**
      * 当前是否是审批
@@ -145,7 +157,7 @@ class PriceControl extends React.Component {
                                  localText = text == 1 ? "是" : "否";
                              } */
 
-                        if (th.state.step.guid <= 2) {  //前两阶段标准层高级 为空
+                        if (th.state.step&&th.state.step.guid <= 2) {  //前两阶段标准层高级 为空
                             if (da.field == "STANDARDFLOORHEIGHT") {
                                 return "";
                             } else {
@@ -268,7 +280,7 @@ class PriceControl extends React.Component {
             })
             .catch(error => {
                 this.setState({
-                    loading: false,
+                    tableLoading: false,
                 });
                 console.error("发生错误", error);
                 iss.error(error);
@@ -336,12 +348,11 @@ class PriceControl extends React.Component {
      */
     goToApplroal = arg => {
         //获取小版本跳转
-        let dataKey = this.props.location.query["dataKey"];
-
+        let versionId = this.state.versionId; //;
         let newProjectStatus = iss.getEVal("priceControl");
         iss.hashHistory.push({
             pathname: "/ProcessApproval",
-            search: `?e=${newProjectStatus}&dataKey=${dataKey}&current=ProcessApproval&areaId=&areaName=`
+            search: `?e=${newProjectStatus}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${this.props.location.query["dataKey"]}`
         });
         /*      price.IGetProVersion(dataKey)
                  .then(arg => {
@@ -370,7 +381,7 @@ class PriceControl extends React.Component {
         let len = stepData.length;
         return stepData.map((item, ind) => {
             return (
-                <li key={item.guid} style={{ zIndex: len - ind }} className={item.guid == step.guid ? "active" : ""}
+                <li key={item.guid} style={{ zIndex: len - ind }} className={(step&&item.guid == step.guid) ? "active" : ""}
                     onClick={this.handleStepClick(item)}><span className={item.className}></span>{item.name}</li>
             );
         });

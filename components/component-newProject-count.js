@@ -62,25 +62,34 @@ class NewProjectCount extends React.Component {
             url: urlProject,
             data: json,
             success(res) {
-                th.editProjectOldName=(res.rows.BaseFormInfo.Project["PROJECTNAME"]||"").toString();
+                
+               // th.editProjectOldName =(res.rows.BaseFormInfo.Project["PROJECTNAME"]||"").toString();
+                 let {
+                    PROJECTNAME,CASENAME,EQUITYRATIO,PROJECTCODE,PRINCIPAL,PROJECTADDRESS,
+                    TRADERMODE,PARENTID,CITY,CREATETIME
+                    }=res.rows.BaseFormInfo.Project;
+                let {
+                    PRINCIPALNAME,ObtainStatusName,CompanyAreaId,CompanyAreaName,CompanyCityName,APPROVETIME
+                    }=res.rows.BaseFormInfo;
+                    th.editProjectOldName=(PROJECTNAME||"").toString()
                 th.setState({
-                    "PROJECTNAME": res.rows.BaseFormInfo.Project.PROJECTNAME,//项目名称
-                    "CASENAME": res.rows.BaseFormInfo.Project.CASENAME,
-                    "EQUITYRATIO": res.rows.BaseFormInfo.Project.EQUITYRATIO,
-                    "PROJECTCODE": res.rows.BaseFormInfo.Project.PROJECTCODE,
-                    "PRINCIPALNAME": res.rows.BaseFormInfo.PRINCIPALNAME,
-                    "PRINCIPAL": res.rows.BaseFormInfo.Project.PRINCIPAL,
-                    "PROJECTADDRESS": res.rows.BaseFormInfo.Project.PROJECTADDRESS,
-                    //"PROJECTTYPE":res.rows.BaseFormInfo.Project.PROJECTTYPE,
-                    "TRADERMODE": res.rows.BaseFormInfo.Project.TRADERMODE,
-                    "ObtainStatusName": res.rows.BaseFormInfo.ObtainStatusName,
-                    "CompanyAreaId":res.rows.BaseFormInfo.CompanyAreaId,
-                    "CompanyAreaName": res.rows.BaseFormInfo.CompanyAreaName,
-                    "CompanyCityName": res.rows.BaseFormInfo.CompanyCityName,
-                    "PARENTID": res.rows.BaseFormInfo.Project.PARENTID,
-                    "CITY": res.rows.BaseFormInfo.Project.CITY,
-                    "CREATETIME":res.rows.BaseFormInfo.Project.CREATETIME,//项目创建时间
-                    "APPROVETIME":res.rows.BaseFormInfo.APPROVETIME,//审批通过时间
+                    "PROJECTNAME": PROJECTNAME,//项目名称
+                    "CASENAME": CASENAME,
+                    "EQUITYRATIO": EQUITYRATIO,
+                    "PROJECTCODE": PROJECTCODE,
+                    "PRINCIPALNAME": PRINCIPALNAME,
+                    "PRINCIPAL": PRINCIPAL,
+                    "PROJECTADDRESS": PROJECTADDRESS,
+                    //"PROJECTTYPE":Project.PROJECTTYPE,
+                    "TRADERMODE": TRADERMODE,
+                    "ObtainStatusName": ObtainStatusName,
+                    "CompanyAreaId":CompanyAreaId,
+                    "CompanyAreaName": CompanyAreaName,
+                    "CompanyCityName": CompanyCityName,
+                    "PARENTID": PARENTID,
+                    "CITY": CITY,
+                    "CREATETIME":CREATETIME,//项目创建时间
+                    "APPROVETIME":APPROVETIME,//审批通过时间
                     //"ID":res.rows.BaseFormInfo.Project.ID,
                 }, arg => {
                     th.bind_combobox(res);
@@ -88,7 +97,7 @@ class NewProjectCount extends React.Component {
                     if(callback){
                         callback();
                     }
-                });
+                }); 
             }
         });
     }
@@ -227,9 +236,9 @@ class NewProjectCount extends React.Component {
             required:true,
             panelHeight: "auto",
             onChange: th.handleSelectTextChange.bind(th, "TRADERMODE"),
-            data: arg.rows.SelectOptions.TRADERMODE,
+            data: arg.rows.SelectOptions["TRADERMODE"],
         });
-        tradersWay.combobox("select", arg.rows.BaseFormInfo.Project.TRADERMODE);
+        tradersWay.combobox("select", arg.rows.BaseFormInfo.Project["TRADERMODE"]);
     }
     
     BIND_CHECKPROJECTNAME(ev) {   //检查姓名名称是否冲突

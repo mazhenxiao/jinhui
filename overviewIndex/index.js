@@ -9,7 +9,7 @@ class index extends React.Component {
     constructor(arg) {
         super(arg);
         this.state = {
-           
+            activeKey:"0",
         }
         this.handleChildChangeTab = this.handleChildChangeTab.bind(this);
     }
@@ -21,6 +21,7 @@ class index extends React.Component {
         this.setState({
             currentPosi:currentPosi,
             dataKey:dataKey,
+            location:nextProps.location,
         });
         
     }
@@ -46,6 +47,7 @@ class index extends React.Component {
                             onChangeTab={this.handleChildChangeTab}
                             data = {this.state}
                             currentPosi={this.state.currentPosi}
+                            location={this.state.location}
                         />
                 </Col>
             </Row>
