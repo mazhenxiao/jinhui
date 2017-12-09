@@ -259,6 +259,7 @@ class StagingInformation extends React.Component {
     BIND_OPENGroupIframe(){
         var th=this,data = this.grupInfo,okVal = "";
         let status = th.props.status;
+        
         if(th.grupInfo.length == 0 || th.grupInfo.state.flag){
             okVal = "保存"
         }else{
@@ -305,7 +306,8 @@ class StagingInformation extends React.Component {
                         }
                         newGroup.push(newG)
                     }
-                    if(el.buildingId != null && el.groupId != null){
+
+                    if(el.buildingId != null || el.groupId != null){
                         var oldG = {
                             "key": el.buildingId,
                             "value": el.groupId
@@ -324,7 +326,6 @@ class StagingInformation extends React.Component {
                     "deleteGroup":deleteGroup,
                     "newGroupNumber":newGroupNumber
                 }
-                //console.log(json)
                 iss.ajax({
                     url: "/Stage/ISaveGroupBuildingMapping",
                     data:json,

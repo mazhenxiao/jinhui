@@ -32,7 +32,7 @@ tools-dynamicTable.less
   border: #ddd solid 1px;
 }
 .tools-dynamicTable ul li .dynamicTableDIV input[readonly] {
-  background: #fbfbfb;
+  background: #e5e5e5;
 }
 .tools-dynamicTable ul li .dynamicTableDIV input.required {
   background: #fff3f3;
