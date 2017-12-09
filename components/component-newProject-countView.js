@@ -40,7 +40,7 @@ class NewProjectCountView extends React.Component {
                 projectId: th.props.all.query["dataKey"]//iss.id.id,
             },
             success(res) {
-                
+                debugger
 
                  let {
                     PROJECTNAME, CASENAME, EQUITYRATIO, PROJECTCODE, PRINCIPAL, PROJECTADDRESS,
