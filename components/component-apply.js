@@ -49,6 +49,7 @@ class Apply extends React.Component {
         $(".JH-Content").removeClass("CLASS_AGENTY");
     }
     //废弃重写
+    /*
     _EVENT_CLICK_PROJECTNAME(da) {
         
         let search = "";
@@ -99,6 +100,7 @@ class Apply extends React.Component {
         }
         
     }
+    */
     getAjax(arg) {
         var th = this,page=1,size=10;
         if(arg){
