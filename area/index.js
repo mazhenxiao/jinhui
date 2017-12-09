@@ -59,6 +59,7 @@ class Index extends Component {
      * @returns {boolean} 真:审批状态; 假:普通状态
      */
     getApprovalState = () => {
+        
         if (this.props.location.query["current"] == "ProcessApproval") {
             return true;
         }
@@ -98,29 +99,34 @@ class Index extends Component {
         
         //判断是否是审批, 真:审批状态; 假:普通状态
         if (this.getApprovalState()) {
-            const versionId = this.props.location.query.dataKey;
-            AreaService.getBaseInfoByVersionId(versionId)
-                .then(baseInfo => {
-                    const dataKey = baseInfo["parentid"];
-                    const mode = baseInfo["projectlevel"] == "1" ? "Project" : "Stage";
-                    const defaultStepId = baseInfo["step"];
-
-                    this.setState({
-                        dataKey,
-                        mode,
-                        defaultStepId,
-                    });
-
-                    this.loadStep(dataKey, mode, defaultStepId);
-                })
-                .catch(error => {
-                    iss.error(error);
-                });
+            this.getOldDataKey();
         } else {
             this.loadStep();
         }
     }
+    /**
+     * 用新dataKey换取老的datakey用于从待审过来的页面
+     */
+     getOldDataKey=()=>{
+        const versionId = this.props.location.query.dataKey;
+        AreaService.getBaseInfoByVersionId(versionId)
+            .then(baseInfo => {
+                const dataKey = baseInfo["parentid"];
+                const mode = baseInfo["projectlevel"] == "1" ? "Project" : "Stage";
+                const defaultStepId = baseInfo["step"];
+                 
+                this.setState({
+                    dataKey,
+                    mode,
+                    defaultStepId,
+                });
 
+                this.loadStep(dataKey, mode, defaultStepId);
+            })
+            .catch(error => {
+                iss.error(error);
+            });
+     }
     /**
      * 加载步骤
      * @param dataKey
@@ -128,6 +134,7 @@ class Index extends Component {
      * @param defaultStepId  默认显示的阶段Id
      */
     loadStep = (dataKey, mode, defaultStepId) => {
+        
         if (dataKey === undefined) {
             dataKey = this.state.dataKey;
             mode = this.state.mode;
@@ -174,6 +181,7 @@ class Index extends Component {
                 return Promise.reject("未获取到阶段数据！");
             })
             .then(versionData => {
+                
                 versionId = this.getDefaultVersionId(versionData);
                 this.setState({
                     versionData,
@@ -369,7 +377,7 @@ class Index extends Component {
             }
         });
 
-        AreaService.areaInfoISaveAreaPlanInfo(versionId, step.code, data)
+       return AreaService.areaInfoISaveAreaPlanInfo(versionId, step.code, data)
             .then(da => {
                 iss.info("保存成功");
             })
@@ -470,7 +478,7 @@ class Index extends Component {
      */
     handleApproval = () => {
         const {versionId, dataKey, step, stepData} = this.state;
-
+        const {isProOrStage} = this.props.location.query;
         if (!versionId) {
             iss.error("当前阶段还没有创建版本");
             return;
@@ -484,11 +492,20 @@ class Index extends Component {
         //TODO 保存数据
 
         let approvalCode = iss.getEVal("area");
+        
+        //先保存数据再进行跳转
+        this.handleSaveVersionData()
+            .then(params=>{
+                iss.hashHistory.push({
+                    pathname: "/ProcessApproval",
+                    search: `?e=${approvalCode}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${dataKey}&isProOrStage=${isProOrStage}`
+                });
+            })
+            .catch(err=>{
+                iss.error("保存失败请重试！")
+            })
 
-        iss.hashHistory.push({
-            pathname: "/ProcessApproval",
-            search: `?e=${approvalCode}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${dataKey}`
-        });
+ 
     };
 
     /**
@@ -738,6 +755,7 @@ class Index extends Component {
     render() {
         const {loading, dataKey, step, versionId, versionData} = this.state;
         if (!dataKey) {
+            
             return this.renderEmpty();
         }
         return (

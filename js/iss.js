@@ -66,13 +66,14 @@ class $iss {
         };
         let _URL = url.replace(/^\\/ig, "");
         if (params) {
-            let ParamsStr = "";
+            let ParamsStr = ``;
             if (typeof params["data"] == "string") {
                 ParamsStr += "paramsData=" + params["data"];
             } else {
                 for (var li in params["data"]) {
                     ParamsStr += `${li}=${params["data"][li]}&`;
                 }
+
             }
 
             ParamsStr = ParamsStr.replace(/\&$/ig, "");
