@@ -24,7 +24,34 @@ class Apply extends React.Component {
             iss.hashHistory.push({ pathname: "/ProcessApprover", state: iss.id.id });
         }
     }
-    EVENT_CLICK_PROJECTNAME(da) {
+    /**
+     * 
+     * @param {*判断路由跳转} da 
+     */
+    EVENT_CLICK_PROJECTNAME(da){
+        let url=iss.convertURL(da.entiid),search = "";
+        switch(da.entiid) {
+            case iss.getEVal("newProjectStatus"):  //项目列表-项目
+                search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover`; 
+                break;  
+            case iss.getEVal("intallmentStatus"): //项目列表-分期
+                search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover`; 
+                break;
+            case iss.getEVal("teamMaintainStatus"): //信息填报-组团
+                search=`?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover&readOnly=readOnly&isProOrStage=2`;
+                break;
+            default:iss.tip({type:"error",description:"url地址未带出，请联系后台工作人员。"});break
+        }
+        iss.hashHistory.push({
+            pathname: "/ProcessApprover",
+            search: search
+        });
+        $(".JH-Content").removeClass("CLASS_AGENTY");
+    }
+    //废弃重写
+    /*
+    _EVENT_CLICK_PROJECTNAME(da) {
+        
         let search = "";
         var url="";
         if(da.runstate=="Rejected"){
@@ -33,6 +60,7 @@ class Apply extends React.Component {
                 case iss.getEVal("newProjectStatus"):url="newProject";break;//项目
                 case iss.getEVal("teamMaintainStatus"):url="AreaInfo/groupbuild";break;//项目团队维护
             }
+            
             if(da.entiid == "10114"){
                 
                 iss.hashHistory.push({
@@ -72,12 +100,13 @@ class Apply extends React.Component {
         }
         
     }
+    */
     getAjax(arg) {
         var th = this,page=1,size=10;
         if(arg){
             page=arg
         }
-
+        
         iss.ajax({
             url: this.url,
             data:{

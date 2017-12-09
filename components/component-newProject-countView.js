@@ -41,8 +41,6 @@ class NewProjectCountView extends React.Component {
                 projectId: th.props.all.query["dataKey"]//iss.id.id,
             },
             success(res) {
-                
-
                  let {
                     PROJECTNAME, CASENAME, EQUITYRATIO, PROJECTCODE, PRINCIPAL, PROJECTADDRESS,
                     ID, PARENTID, CITY } = res.rows.BaseFormInfo.Project; //默认选中数据
