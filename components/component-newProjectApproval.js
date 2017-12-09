@@ -40,8 +40,8 @@ class ApprovalControl extends React.Component {
                 debugger
                 this.props.location.query["dataKey"]=response;
                 this.setState({
-                    oldDataDey:response,
-                    pid:response
+                    oldDataDey:response, 
+                    pid:response 
                 })
             })
             .catch(err=>{
