@@ -28,11 +28,11 @@ class ApprovalControl extends React.Component {
        
     }
     componentWillMount(){
-       // this.BIIND_FIST_LAND();
+        this.BIIND_FIST_LAND();
      
     }
     componentDidMount(){
-        this.SERVICE_IGetProVersion();
+       // this.SERVICE_IGetProVersion();
     }
    
         /**
