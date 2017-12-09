@@ -60,7 +60,7 @@ class Index extends Component {
      */
     getApprovalState = () => {
         
-        if (this.props.location.query["current"] == "ProcessApproval") {
+        if (this.props.location.query["current"]) {
             return true;
         }
         return false;
