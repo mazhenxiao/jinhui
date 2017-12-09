@@ -4,7 +4,7 @@ import iss from "../js/iss";//公共类
 import {AreaConstants} from '../constants';
 import {WrapperSelect} from '../common';
 import "babel-polyfill";  //兼容ie
-require("./areaCss/com-SaveVersion.less");
+import "./areaCss/com-SaveVersion.less";
 const {AreaManageStep, Legend, SelectVertionData} = AreaConstants;
 const {Option} = Select;
 
