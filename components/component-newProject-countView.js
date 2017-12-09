@@ -80,14 +80,12 @@ class NewProjectCountView extends React.Component {
     componentDidMount() {
        this.BIND_GetBaseData();
 
-
     }
     componentWillReceiveProps(){
-        
         this.BIND_GetBaseData();
     }
     /**
-     * 获取基础数据
+     * 获取基础数据获取
      */
     BIND_GetBaseData=()=>{
         let th = this;
