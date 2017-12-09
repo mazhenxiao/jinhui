@@ -215,6 +215,7 @@ class PriceControl extends React.Component {
      * 加载步骤
      */
     loadStep = (dataKey, mode) => {
+        debugger
         if (dataKey === undefined) {
             dataKey = this.state.dataKey;
             mode = this.state.mode;
