@@ -37,10 +37,11 @@ class ApprovalControl extends React.Component {
         if(current){
             Project.IGetProVersion(dataKey)
             .then(response=>{
-                this.props.location.query["dataKey"]=dataKey;
+                debugger
+                this.props.location.query["dataKey"]=response;
                 this.setState({
-                    oldDataDey:dataKey,
-                    pid:dataKey
+                    oldDataDey:response,
+                    pid:response
                 })
             })
             .catch(err=>{

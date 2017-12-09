@@ -19,9 +19,9 @@ import iss from '../js/iss';
 import {knife} from '../utils';
 import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
 
-require("../css/tools-processBar.less");
-require("../css/button.less");
-require("../area/areaCss/areaManage.less");
+import "../css/tools-processBar.less";
+import "../css/button.less";
+import "../area/areaCss/areaManage.less";
 const TabPane = Tabs.TabPane;
 const {Legend} = AreaConstants;
 
@@ -95,6 +95,7 @@ class Index extends Component {
     }
 
     componentDidMount() {
+        
         //判断是否是审批, 真:审批状态; 假:普通状态
         if (this.getApprovalState()) {
             const versionId = this.props.location.query.dataKey;
@@ -189,6 +190,7 @@ class Index extends Component {
      *  加载数据
      */
     loadData = (isInit, step, mode, dataKey, versionId) => {
+        
         this.setState({
             loading: true,
         });
@@ -226,6 +228,7 @@ class Index extends Component {
 
         Promise.all(allPromise)
             .then(([planData, blockData, buildingData, formatData, conditionData]) => {
+                
                 this.setState({
                     loading: false,
                     areaData: {
@@ -286,6 +289,7 @@ class Index extends Component {
 
         Promise.all(allPromise)
             .then(([planData, blockData, buildingData, formatData]) => {
+                
                 this.setState({
                     loading: false,
                     areaData: {
