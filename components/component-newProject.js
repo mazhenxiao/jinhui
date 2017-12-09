@@ -490,7 +490,7 @@ class NewProject extends React.Component {
                 if (data.message == "成功") {
                     iss.hashHistory.push({
                         pathname: "/ProcessApproval",
-                        search: '?e=' + newProjectStatus + '&dataKey=' + th.state.NewProjectCountDATA.ID + '&current=ProcessApproval&areaId=' + areaId + '&areaName=' + areaName
+                        search: `?e=${newProjectStatus}&dataKey=${th.state.NewProjectCountDATA.ID}&current=ProcessApproval&areaId=${areaId}&areaName=${areaName}`
                     });
                     $(window).trigger("treeLoad");
                 } else {
