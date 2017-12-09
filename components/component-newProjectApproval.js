@@ -23,10 +23,15 @@ class ApprovalControl extends React.Component {
             oldDataDey:"" //如果从审批过来的页面取此处
         }
     }
+    componentDidUpdate(){
+ 
+       
+    }
     componentWillMount(){
-      this.BIIND_FIST_LAND();
+       // this.BIIND_FIST_LAND();
       this.SERVICE_IGetProVersion();
     }
+   
         /**
      * 获取老DataKey
      */
@@ -37,18 +42,21 @@ class ApprovalControl extends React.Component {
         if(current){
             Project.IGetProVersion(dataKey)
             .then(response=>{
-                
                 this.props.location.query["dataKey"]=response;
                 this.setState({
                     oldDataDey:response, 
                     pid:response 
+                },arg=>{
+                    
+                    this.BIIND_FIST_LAND();
                 })
             })
             .catch(err=>{
                 console.log(err);
             })
+            return;
         }
-       
+        this.BIIND_FIST_LAND();
     }
     
     BIIND_FIST_LAND() {  //获取已有地块
@@ -80,7 +88,6 @@ class ApprovalControl extends React.Component {
         iss.ajax({
             url: "/Project/ILandsStatistics",
             success(a) {
-
                 if (a["rows"]) {
                     THIS.setState({
                         CountData: a["rows"]
