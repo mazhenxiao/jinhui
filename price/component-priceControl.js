@@ -391,6 +391,7 @@ class PriceControl extends React.Component {
     * 根据阶段获取版本数据 => 再获取 规划方案指标和面积数据
     */
     handleStepClick = (newStep) => {
+        if(this.state.isApproal){ return}
         return () => {
             const { step, dataKey, mode, versionId } = this.state;
             if (newStep.code === step.code) return;
