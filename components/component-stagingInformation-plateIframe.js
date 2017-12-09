@@ -42,7 +42,7 @@ class PlateIframe extends React.Component{
             },
             scriptCharset: 'utf-8',
             success(data) {
-                if(null != data.rows && data.rows.length>0){
+                if(null != data.rows){
                     var arr = [];
                     data.rows.forEach((el,ind) => {
                         arr.push(el.pushPlateNumber)
@@ -353,8 +353,8 @@ class PlateIframe extends React.Component{
         var th = this;
         iss.Alert({
             title:"",
-            width:500,
-            height:250,
+            width:600,
+            height:305,
             content:`<p class='Promptinfo'>温馨提示：引用组团划分数据会覆盖当前已有推盘数据，</p><p class='Promptinfo'>确定引用组团划分数据吗？</p>`,
             okVal:"确定",
             cancel:"取消",
