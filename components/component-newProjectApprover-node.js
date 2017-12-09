@@ -266,9 +266,7 @@ class ApprovalControlNode2 extends React.Component {
                         /*window.parent.opener.location.reload();
                         alert("审批成功！");*/
                         iss.popover({ content: "通过成功！", type: 2 });
-                        iss.hashHistory.push({ "pathname": "/agenty" });
-                        /*审批通过一条数据,触发一次我的里面的数量查询*/
-                        $(document).triggerHandler("reloadMyCount");
+                        
                         resolve();
                     } else {
                         iss.popover({ content: rt.Message });
@@ -283,6 +281,7 @@ class ApprovalControlNode2 extends React.Component {
             });
         }).then(arg=>{
             if(entiId=="10104"){  //只有面积提交当前数据
+                
                 return iss.fetch({
                     url:"/Price/CreatePriceVersion",
                     data:{
@@ -291,6 +290,11 @@ class ApprovalControlNode2 extends React.Component {
                 })
             }
            
+        }).then(()=>{
+            
+            iss.hashHistory.push({ "pathname": "/agenty" });
+            /*审批通过一条数据,触发一次我的里面的数量查询*/
+            $(document).triggerHandler("reloadMyCount");
         })
 
 
