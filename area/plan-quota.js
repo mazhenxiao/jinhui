@@ -10,10 +10,13 @@ import iss from "../js/iss.js";//公共类
 import { AreaConstants } from '../constants'; 
 import "../css/tools-dynamicTable.less";//专用css
 import DynamicTable from "../components/tools-dynamicTable.js";
+import { setTimeout } from 'timers';
 class PlanQuota extends Component {
+    
     state={
         pid:1,//项目id或当前版本id
         DynamicData:this.props.planData || [],//获取
+       
     }
     staticData={
         number:0
@@ -26,10 +29,13 @@ class PlanQuota extends Component {
     }
 
     componentWillReceiveProps(nextProps,nextState){
-       
+      let {approvalState} = nextProps;
       this.setState({
-            DynamicData:nextProps.planData
+            DynamicData:nextProps.planData,
+            approvalState,
+            readOnly:approvalState
            })
+         //  console.log("approvalState",approvalState)
      /*    let data = nextProps.planData.map(arg=>{
             
                 arg["valueId"]=iss.guid();
@@ -98,12 +104,12 @@ class PlanQuota extends Component {
                });
     }
      shouldComponentUpdate(nextProps, nextState){
-       
+        
         return shallowCompare(this, nextProps.planData, nextState.planData);
     } 
 
     componentWillMount() {
-      
+    
       //  console.log("haha-will",this.props.planData)
     }
     componentDidMount() {
@@ -180,7 +186,7 @@ class PlanQuota extends Component {
         return (
             <article>
                 
-                 <DynamicTable pid={this.state.pid} DynamicData={this.state.DynamicData} CallBack={this.BIND_CALLBACK} />
+                 <DynamicTable readOnly={this.state.readOnly}  pid={this.state.pid} DynamicData={this.state.DynamicData} CallBack={this.BIND_CALLBACK} />
             </article>
         );
     };
