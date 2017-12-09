@@ -933,7 +933,21 @@ class $iss {
         }
         return eVal;
     }
-
+    /**
+     * 通过url判断页面路由
+     */
+    convertURL(id){
+        let url="";
+        switch(id){
+            case "10103":url="intallment";break; //分期
+            case "10102":url="newProject";break; //项目
+            case "10114":url="AreaInfo/groupbuild";break; //团队维护
+            case "10104":url="AreaInfo/areaManage";break; //面积
+            case "10105":url="AreaInfo/priceControl";break; //价格
+            default:console.error("iss.js里没有配置convertURL");break;
+        }
+        return url;
+    }
     /*
     *配置上传标记总图url
     */

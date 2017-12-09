@@ -32,7 +32,7 @@ class NewProjectCountView extends React.Component {
         }
     }
     getAjax(callback) {
-        debugger
+        
         let th = this;
         iss.ajax({  //获取数据
             type: "post",
