@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import ProcessApprovalTab from "./component-ProcessApproval-Tab.js"; //导航信息
+import {Project} from '../services';
 import DynamicTable from "./tools-dynamicTable.js"; //地块
 import NewProjectCountView from "./component-newProject-countView.js";//项目基本信息
 import "../css/tools-dynamicTable.less";//专用css  
@@ -19,15 +20,39 @@ class ApprovalControl extends React.Component {
             pid:this.props.location.query["dataKey"],//地块id
             propsDATA:[],//地块数据
             allSearchArg:this.props.location.query,/*地址栏所有参数*/
+            oldDataDey:"" //如果从审批过来的页面取此处
         }
     }
     componentWillMount(){
       this.BIIND_FIST_LAND();
+      this.SERVICE_IGetProVersion();
+    }
+        /**
+     * 获取老DataKey
+     */
+    SERVICE_IGetProVersion=()=>{
+        
+        let {dataKey,current}=this.props.location.query;
+        
+        if(current){
+            Project.IGetProVersion(dataKey)
+            .then(response=>{
+                this.props.location.query["dataKey"]=dataKey;
+                this.setState({
+                    oldDataDey:dataKey,
+                    pid:dataKey
+                })
+            })
+            .catch(err=>{
+                console.log(err);
+            })
+        }
+       
     }
     
     BIIND_FIST_LAND() {  //获取已有地块
         let THIS = this;
-        let id = this.props.location.query["dataKey"]; //iss.id.id;
+        let id = this.state.oldDataDey||this.props.location.query["dataKey"]; //iss.id.id;
         iss.ajax({  //获取已有地块
             url: "/Project/IProjectLandsInfo",
             data: { projectId: id },

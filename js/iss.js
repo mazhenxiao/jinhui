@@ -158,6 +158,14 @@ class $iss {
             } else if (_da["errorcode"] == "300") {
                 iss.popover({content: "操作失败，请联系后台工作人员！"});
                 return false;
+            }else if(_da["errorcode"]=="500"){
+                opt["error"] && opt.error(_da,_da);
+             /*    iss.tip({
+                    type:"error",
+                    description:`未获取到页面数据`
+                }); */
+                console.log("ajaxError500",_da)
+              //  $.Deferred().reject(_da);
             } else if (_da) {
                 return (opt["success"] && opt.success(_da));
             }

@@ -3,7 +3,7 @@ import * as Payment from './payment-service';
 import * as Supply from './supply-service';
 import * as PrimaryKey from './primaryKey-service';
 import * as price from './price-service.js';
-import * as project from './project-service';
+import * as Project from './project-service';
 import * as Common from "./common-service";
 export {
     Common,
@@ -12,5 +12,5 @@ export {
     Supply,
     PrimaryKey,
     price,
-    project
+    Project
 };
