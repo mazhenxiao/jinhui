@@ -156,7 +156,7 @@ class GroupIframe extends React.Component{
     }
     // 组团名称
     groupName() {  
-        
+         
          var th = this,arr=[];
          var _len=th.state.dataList.length;
          th._group=[];
@@ -267,40 +267,45 @@ class GroupIframe extends React.Component{
     //楼栋
     groupFloor() {
         var th = this;
-        if(th.state.dataList.length != 0){ 
-            return th.state.dataList.map((el, ind) => {
-                let id = el.groupnumber; 
-                if(id == th.state.index && null!=el.buildingName && id != 0){
-                    
-                    return <li key={ind} className='toggle-checkbox'>
-                                <input type="checkbox" checked={true} id={"check"+ind} onChange={this.inputChange.bind(this,ind,el)} />
-                                <label className="track" htmlFor={"check"+ind}>
-                                <span className="buildingName">{el.buildingName}</span>
-                                    <span className="icon"></span>
-                                </label>
-                                
-                        </li>
-                }else if(id == 0 && null!=el.buildingName){
-
-                    if(th.state.index == 0){
-                        return <li key={ind}>
-                                    <span className="buildingName">{el.buildingName}</span>
-                            </li>
-                    }else{
+        if(th.state.index == "n"){
+            return 
+        }else{
+            if(th.state.dataList.length != 0){ 
+                return th.state.dataList.map((el, ind) => {
+                    let id = el.groupnumber; 
+                    if(id == th.state.index && null!=el.buildingName && id != 0){
+                        
                         return <li key={ind} className='toggle-checkbox'>
-                                    <input type="checkbox" id={"check"+ind} checked={false} onChange={this.inputChange.bind(this,ind,el)} />
+                                    <input type="checkbox" checked={true} id={"check"+ind} onChange={this.inputChange.bind(this,ind,el)} />
                                     <label className="track" htmlFor={"check"+ind}>
+                                    <span className="buildingName">{el.buildingName}</span>
                                         <span className="icon"></span>
-                                        <span className="buildingName">{el.buildingName}</span>
                                     </label>
                                     
                             </li>
+                    }else if(id == 0 && null!=el.buildingName){
+    
+                        if(th.state.index == 0){
+                            return <li key={ind}>
+                                        <span className="buildingName">{el.buildingName}</span>
+                                </li>
+                        }else{
+                            return <li key={ind} className='toggle-checkbox'>
+                                        <input type="checkbox" id={"check"+ind} checked={false} onChange={this.inputChange.bind(this,ind,el)} />
+                                        <label className="track" htmlFor={"check"+ind}>
+                                            <span className="icon"></span>
+                                            <span className="buildingName">{el.buildingName}</span>
+                                        </label>
+                                        
+                                </li>
+                        }
+                        
                     }
                     
-                }
-                
-            })
+                })
+            }
         }
+        
         
     }
 
@@ -348,6 +353,7 @@ class GroupIframe extends React.Component{
                         <li className={(this.state.index== 0)? "active":""} onClick={this.EVENT_CLICK_LI.bind(this,0)}>未分配楼栋</li>
                         <li className={(this.state.index== 1)? "active":""} onClick={this.EVENT_CLICK_LI.bind(this,1)}>1组团<span onClick={this.delGroup.bind(this,1)}></span></li>
                         {this.groupName()}
+                        <li className={(this.state.index== "n")? "active":""} onClick={this.EVENT_CLICK_LI.bind(this,"n")}>未分配车位</li>
                     </ul>
                 </div>
                 <div className='groupFloor'>

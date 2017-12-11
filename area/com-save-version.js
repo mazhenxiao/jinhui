@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
-import {Spin, Tabs, Row, Col, Button, Select} from 'antd';
+import {Spin, Tabs, Row, Col, Button, Select, Modal} from 'antd';
 import iss from "../js/iss";//公共类
 import {AreaConstants} from '../constants';
 import {WrapperSelect} from '../common';
 import "babel-polyfill";  //兼容ie
 import "./areaCss/com-SaveVersion.less";
+
+const confirm = Modal.confirm;
 
 const {AreaManageStep, Legend, SelectVertionData} = AreaConstants;
 const {Option} = Select;
@@ -42,7 +44,17 @@ class SaveVersion extends Component {
     };
 
     handleDelete = () => {
-        this.props.onDeleteVersionData && this.props.onDeleteVersionData();
+        confirm({
+            title: '删除确认',
+            content: '确认要删除该版本吗? ',
+            onOk: () => {
+                this.props.onDeleteVersionData && this.props.onDeleteVersionData();
+            },
+            onCancel() {
+
+            },
+        });
+
     };
 
     /**
