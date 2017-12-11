@@ -189,8 +189,13 @@ class PriceControl extends React.Component {
 
     Create_TabelData = priceData => {
         // console.log("data",priceData)
+        let isNoPriceData =!Boolean(priceData.length);
+        if(this.state.versionData&&this.state.versionData.length){
+            isNoPriceData = this.state.versionData[0].id == this.state.versionId;
+        }
+        
         this.setState({
-            isNoPriceData:!Boolean(priceData.length),
+            isNoPriceData,
             priceData,
             tableLoading: false
         })
