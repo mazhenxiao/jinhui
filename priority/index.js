@@ -103,7 +103,7 @@ class Index extends Component {
            )
         }else{
             return(
-                <div>
+                <div className="PriorityTable">
                     <Row>
                         <Col span={4}>
                             <WrapperInput labelText="项目：" labelSpan={10} inputSpan={14} />
