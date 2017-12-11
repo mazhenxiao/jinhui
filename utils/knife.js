@@ -152,7 +152,13 @@ class $knife {
      * @param {*数组} dataSource
      */
     setTableExec(Obj, headerData, dataSource){
-        debugger
+        
+    }
+    /**
+     * 递归计算
+     */
+    Count_Exec(headerData,dataSource){
+
     }
     /**
      * 数据有效性检测
