@@ -242,7 +242,7 @@ class PriceControl extends React.Component {
      * 非当前阶段和非当前最新版本不现实保存和编辑
      */
     CheckNotCurrentStepAndVertionId=(id)=>{
-        let currentVertionid=true,currentStep=true,versionId = id|| this.state.versionId;
+      /*   let currentVertionid=true,currentStep=true,versionId = id|| this.state.versionId;
         if(this.state.versionData&&this.state.versionData.length){
             currentVertionid= this.state.versionData[0].id != versionId;
         }
@@ -251,7 +251,18 @@ class PriceControl extends React.Component {
             currentStep = this.state.step.statusCode!=this.FindCurrentStep(this.state.stepData);
             
         }
-        return currentVertionid||currentStep;
+        return currentVertionid||currentStep; */
+          /* let currentVertionid=true,currentStep=true,versionId = id|| this.state.versionId;
+        if(this.state.versionData&&this.state.versionData.length){
+            currentVertionid= this.state.versionData[0].id != versionId;
+        }
+        if(this.state.step){
+            
+            currentStep = this.state.step.statusCode!="draft";
+            
+        }
+        return currentVertionid||currentStep; */
+        return (this.state.versionData.length)||(this.state.step.statusCode!="draft");
     }
     /**
      * 查找当前阶段
