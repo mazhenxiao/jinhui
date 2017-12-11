@@ -237,7 +237,6 @@ class OverviewSign extends Component {
 
     render() {
         return (
-            <div className="processBar">
                 
                 <Row>
                     <Col span={24}>
@@ -246,7 +245,6 @@ class OverviewSign extends Component {
                         </article>
                     </Col>
                 </Row>
-            </div>
         );
 
     }
