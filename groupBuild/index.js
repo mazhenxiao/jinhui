@@ -284,12 +284,12 @@ export default class Index extends Component{
             data: json
         })
         .then(data=>{
-            iss.popover({ content: "保存成功", type: 2 });
-            
             if(launch == "launch"){
                 $(window).trigger("treeLoad");
                 //以下dataKey为newId  &newId=${this.props.location.query.dataKey}
                 location.href=`/Index/#/ProcessApproval?e=`+teamMaintainStatus+`&dataKey=${this.state.dataHeader.ID}&current=ProcessApproval&areaId=&areaName=&readOnly=readOnly&isProOrStage=${this.number}&newId=${this.state.allSearchArg["dataKey"]}`;
+            }else{
+                iss.popover({ content: "保存成功", type: 2 });
             }
         })
         .catch(err=>{   

@@ -11,10 +11,13 @@ export default class ToolsList extends React.Component {
             myApprovalHistCount: 0, /*审批历史*/
             mySubmitionCount: 0, /*我的申请*/
             myMytaskDraftCount: 0, /*我的草稿*/
-            myTodoCount: 0/*我的待审*/
+            myTodoCount: 0,/*我的待审*/
+            toURL:""//基础设置需要跳转的地址
         }
     }
-
+    componentWillMount(){
+        this.EVENT_CLICKSETUP();
+    }
     /*菜单跳转
      *pageClass 页面分类，例如项目列表，面积管理，具有单独的index页面
      *routerArr 页面分类下对应的路由
@@ -62,13 +65,17 @@ export default class ToolsList extends React.Component {
 
     /*基础设置*/
     EVENT_CLICKSETUP() {
+        var th =this;
         iss.ajax({
             type: "post",
             url: "/Common/ILoginEncryp",
             success(res) {
                 if (res.message == "成功") {
-                    var tempwindow = window.open('_blank');//打开一个窗口，然后用
-                    tempwindow.location = res.rows;//使这个窗口跳转到百度，这样就会呈现弹出百度窗口的效果了。
+                   // var tempwindow = window.open('_blank');//打开一个窗口，然后用
+                    //tempwindow.location = res.rows;//使这个窗口跳转到百度，这样就会呈现弹出百度窗口的效果了。
+                    th.setState({
+                        toURL:res.rows
+                    })
                 }
             },
             error(e) {
@@ -157,7 +164,7 @@ export default class ToolsList extends React.Component {
                        onClick={this.EVENT_CLICK.bind(this, "Index", "index")}>项目列表</a>
                 </li>
                 <li>
-                    <a href="javascript:void(0);" onClick={this.EVENT_CLICKSETUP.bind(this)}>基础设置</a>
+                    <a href={this.state.toURL} target="_blank" className={this.state.toURL? "":"hide"} >基础设置</a>
                 </li>
                 <li>
                     <a id="areaInfo" href="javascript:void(0);">信息填报</a>

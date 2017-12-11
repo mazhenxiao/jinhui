@@ -32,6 +32,7 @@ class NewProjectCountView extends React.Component {
         }
     }
     getAjax(callback) {
+        
         let th = this;
         iss.ajax({  //获取数据
             type: "post",
@@ -40,8 +41,6 @@ class NewProjectCountView extends React.Component {
                 projectId: th.props.all.query["dataKey"]//iss.id.id,
             },
             success(res) {
-                
-
                  let {
                     PROJECTNAME, CASENAME, EQUITYRATIO, PROJECTCODE, PRINCIPAL, PROJECTADDRESS,
                     ID, PARENTID, CITY } = res.rows.BaseFormInfo.Project; //默认选中数据
@@ -77,14 +76,22 @@ class NewProjectCountView extends React.Component {
         });
     }
     componentDidMount() {
+       this.BIND_GetBaseData();
+
+    }
+    componentWillReceiveProps(){
+        this.BIND_GetBaseData();
+    }
+    /**
+     * 获取基础数据获取
+     */
+    BIND_GetBaseData=()=>{
         let th = this;
-        $(function () {
+        $(function () { //老数据依赖jquery不做修改
             th.getAjax(arg => {
                 th.BIND_ONLOAD();
             });
         });
-
-
     }
     BIND_ONLOAD() {
         let th = this;

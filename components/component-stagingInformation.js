@@ -167,7 +167,7 @@ class StagingInformation extends React.Component {
     BIND_OPENPlateIframe(){
         var th=this,data = this.plateInfo;
         let status = th.props.status;
-        if(status=="add"){
+        if(status=="add" || status=="update"){
         		iss.popover({ content: "请先暂存分期信息"});
         		return false;
         }
@@ -257,9 +257,15 @@ class StagingInformation extends React.Component {
     
     //组团划分
     BIND_OPENGroupIframe(){
-        var th=this,data = this.grupInfo;
+        var th=this,data = this.grupInfo,okVal = "";
         let status = th.props.status;
-        if(status=="add"){
+        
+        if(th.grupInfo.length == 0 || th.grupInfo.state.flag){
+            okVal = "保存"
+        }else{
+            okVal = false
+        }
+        if(status=="add" || status=="update"){
         		iss.popover({ content: "请先暂存分期信息"});
         		return false;
         }
@@ -268,7 +274,7 @@ class StagingInformation extends React.Component {
             width:600,
             height:300,
             content:`<div id="GroupIframeBox"></div>`,
-            okVal:"保存",
+            okVal:okVal,
             cancel:"取消",
             ok(da){
                 var stageversionid = th.state.STAGEVERSIONID,
@@ -300,7 +306,8 @@ class StagingInformation extends React.Component {
                         }
                         newGroup.push(newG)
                     }
-                    if(el.buildingId != null && el.groupId != null){
+
+                    if(el.buildingId != null || el.groupId != null){
                         var oldG = {
                             "key": el.buildingId,
                             "value": el.groupId
@@ -319,7 +326,6 @@ class StagingInformation extends React.Component {
                     "deleteGroup":deleteGroup,
                     "newGroupNumber":newGroupNumber
                 }
-                //console.log(json)
                 iss.ajax({
                     url: "/Stage/ISaveGroupBuildingMapping",
                     data:json,
@@ -339,7 +345,12 @@ class StagingInformation extends React.Component {
         })
         ReactDOM.render(<GroupIframe  data={data} callback={th.GroupIframeCallback.bind(this)}  versionId = {th.state.STAGEVERSIONID} />,document.querySelector("#GroupIframeBox"));
     }
+    /**
+     * 点击
+     * @param {*} da 
+     */
     GroupIframeCallback(da){
+       // console.log("352",da)
         this.grupInfo=da;
     }
     PlateIframeCallback(da){
@@ -780,7 +791,9 @@ class StagingInformation extends React.Component {
         eleDom.validatebox(valideRule);
    	});
    }
-   /*验证form*/
+   /*验证form
+     新增组团校验，如果若【组团划分中存在未划分组团的楼栋，则不允许发起审批】
+   */
   evValidForm(){
   	var isValid=$("#stageInforForm").form("validate");
   	//console.log(isValid);
