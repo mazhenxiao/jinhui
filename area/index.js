@@ -631,20 +631,19 @@ class Index extends Component {
         return (
             <div>
                 <div className="areaTopbtn jhBtn-wrap">
-                    <button type="button" className="jh_btn jh_btn22 jh_btn_add" onClick={this.handleCreateVersion}>
+                    <button type="button" className="jh_btn jh_btn28 jh_btn_add" onClick={this.handleCreateVersion}>
                         生成新版本
                     </button>
                     {
                         parseInt(step.guid) <= 2 ?
-                            <button type="button" className="jh_btn jh_btn22 jh_btn_save"
+                            <button type="button" className="jh_btn jh_btn28 jh_btn_save"
                                     onClick={this.handleModalClick("block-format-edit", "edit")}>业态维护
                             </button> :
-                            <button type="button" className="jh_btn jh_btn22 jh_btn_save"
+                            <button type="button" className="jh_btn jh_btn28 jh_btn_save"
                                     onClick={this.handleModalClick("building-format-edit", "edit")}>业态/楼栋维护
                             </button>
                     }
-                    <button type="button" onClick={this.handleApproval} className="jh_btn jh_btn22 jh_btn_apro">发起审批
-                    </button>
+                    
                 </div>
             </div>
         );
@@ -830,11 +829,8 @@ class Index extends Component {
                 {this.renderApproval()}
                 <Spin size="large" spinning={loading}>
                     <Row>
-                        <Col span={12}>
+                        <Col span={24}>
                             {this.renderStepLend()}
-                        </Col>
-                        <Col span={12}>
-                            {this.renderButtonList()}
                         </Col>
                     </Row>
                     {this.renderStepList()}
@@ -842,6 +838,7 @@ class Index extends Component {
                         <Col span={24}>
                             {this.renderTabList()}
                             <div>
+                                {this.renderButtonList()}
                                 <SaveVersion versionId={versionId}
                                              versionData={versionData}
                                              versionStatus={this.getVersionStatus()}
@@ -849,7 +846,8 @@ class Index extends Component {
                                              step={step}
                                              onSaveVersionData={this.handleSaveVersionData}
                                              onDeleteVersionData={this.handleDeleteVersionData}
-                                             onVersionChange={this.handleVersionChange}/>
+                                             onVersionChange={this.handleVersionChange}
+                                             onHandleApproval={this.handleApproval}/>
                             </div>
                         </Col>
                     </Row>
