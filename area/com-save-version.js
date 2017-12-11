@@ -32,6 +32,8 @@ class SaveVersion extends Component {
         },
         onDeleteVersionData: () => {
         },
+        onHandleApproval: () => {
+        },
         approvalStatus: false,
         versionStatus: "",
     };
@@ -43,6 +45,9 @@ class SaveVersion extends Component {
         this.props.onSaveVersionData && this.props.onSaveVersionData();
     };
 
+    handleApproval = () => {
+        this.props.onHandleApproval && this.props.onHandleApproval();
+    };
     handleDelete = () => {
         confirm({
             title: '删除确认',
@@ -89,6 +94,16 @@ class SaveVersion extends Component {
         }
         return null;
     };
+    
+    initiateApproval = () => {
+        const {approvalStatus, versionStatus} = this.props;
+            return (
+                <button type="button" onClick={this.handleApproval} className="jh_btn jh_btn28 jh_btn_apro Left">发起审批
+                    </button>
+            );
+        
+        return null;
+    };
 
     renderVersion = () => {
         const {versionData, versionId, approvalStatus} = this.props;
@@ -110,19 +125,19 @@ class SaveVersion extends Component {
     render() {
         const {versionData, versionId, approvalStatus} = this.props;
         const currentVersion = versionData.filter(item => item.id === versionId)[0];
-
+    
         return (
             <div className="PosRight">
-                <span className="areaUnit Left">（面积单位:㎡,车位单位:个,限高单位:米）</span>
-                {this.renderSaveButton()}
-                {this.renderDeleteButton()}
+                {/* <span className="areaUnit Left">（面积单位:㎡,车位单位:个,限高单位:米）</span> */}
                 {this.renderVersion()}
                 {
                     !approvalStatus ?
                         <span className="areaStatus">状态: {currentVersion ? currentVersion["statusName"] : "无"}</span>
                         : null
                 }
-
+                {this.renderSaveButton()}
+                {this.renderDeleteButton()}
+                {this.initiateApproval()}
             </div>
         );
 
