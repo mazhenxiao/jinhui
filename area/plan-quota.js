@@ -29,13 +29,13 @@ class PlanQuota extends Component {
     }
 
     componentWillReceiveProps(nextProps,nextState){
-      let {approvalState} = nextProps;
+      let {approvalStatus} = nextProps;
       this.setState({
             DynamicData:nextProps.planData,
-            approvalState,
-            readOnly:approvalState
+            approvalStatus,
+            readOnly:approvalStatus
            })
-         //  console.log("approvalState",approvalState)
+         //  console.log("approvalStatus",approvalStatus)
      /*    let data = nextProps.planData.map(arg=>{
             
                 arg["valueId"]=iss.guid();

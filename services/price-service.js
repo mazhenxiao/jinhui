@@ -5,6 +5,7 @@ import "../js/iss.js";
  * 价格
  * @param {*} arg 
  */
+
 export const GetPriceList=({stageversionid,step,projectLevel}=arg)=>{
     let url = "/Price/GetPriceList";
     return iss.fetch({
@@ -56,5 +57,23 @@ export const IGetProVersion=(arg)=>{
     })
     .catch(err=>{
         return Promise.resolve(err)
+    })
+}
+/**
+ * 获取价格下版本id
+ * /Price/GetPriceNewEdit?stageversionId=
+ * @param (stageversionId) 项目id或分期版本id
+ */
+export const GetPriceNewEdit=(step,dataKey, mode,Price)=>{
+    debugger
+    return iss.fetch({
+        type:`GET`,
+        url:`/Price/GetPriceNewEdit`,
+        data:{
+            "stageversionId":dataKey
+        }
+    })
+    .then(params=>{
+        debugger
     })
 }

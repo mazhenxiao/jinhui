@@ -9,7 +9,7 @@ import {shallowCompare} from '../utils/index';
  */
 const defaultWidth = 105;
 
-const numberReg = /^\d{1,8}(?:\.\d{0,2})?$/;
+const numberReg = /^\d{1,10}(?:\.\d{0,2})?$/;
 
 /**
  * 分组表格
@@ -46,7 +46,7 @@ export default class WrapperGroupTable extends Component {
         return (e) => {
             let value = e.target.value;
             if (!numberReg.test(value)) {
-                value = 0;
+                value = "";
             }
             record[key] = value;
             this.props.onDataChange && this.props.onDataChange(record.KEY, key, value);
@@ -77,7 +77,6 @@ export default class WrapperGroupTable extends Component {
             }
 
             if (editState && !column.render) {
-                console.log("editState", editState);
                 column.render = (text, record) => {
                     if (item.edit !== "+w") {
                         return text;

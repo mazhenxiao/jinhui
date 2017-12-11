@@ -22,6 +22,7 @@ import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js";
 import "../css/tools-processBar.less";
 import "../css/button.less";
 import "../area/areaCss/areaManage.less";
+
 const TabPane = Tabs.TabPane;
 const {Legend} = AreaConstants;
 
@@ -58,12 +59,26 @@ class Index extends Component {
      * 获取是否是审批状态
      * @returns {boolean} 真:审批状态; 假:普通状态
      */
-    getApprovalState = () => {
-        
+    getApprovalStatus = () => {
         if (this.props.location.query["current"]) {
             return true;
         }
         return false;
+    };
+
+    /**
+     * 获取当前版本数据
+     */
+    getVersionStatus = () => {
+        const {versionId, versionData} = this.state;
+        if (!versionId) {
+            return "";
+        }
+        const currentVersion = versionData.filter(version => version.id == versionId)[0];
+        if (currentVersion) {
+            return currentVersion["statusCode"];
+        }
+        return "";
     };
 
     /**
@@ -96,25 +111,26 @@ class Index extends Component {
     }
 
     componentDidMount() {
-        
+
         //判断是否是审批, 真:审批状态; 假:普通状态
-        if (this.getApprovalState()) {
-            this.getOldDataKey();
+        if (this.getApprovalStatus()) {
+            this.changeVersionIdToDataKey();
         } else {
             this.loadStep();
         }
     }
+
     /**
-     * 用新dataKey换取老的datakey用于从待审过来的页面
+     * 转换数据: 版本id → 项目Id/分期Id
      */
-     getOldDataKey=()=>{
+    changeVersionIdToDataKey = () => {
         const versionId = this.props.location.query.dataKey;
         AreaService.getBaseInfoByVersionId(versionId)
             .then(baseInfo => {
                 const dataKey = baseInfo["parentid"];
                 const mode = baseInfo["projectlevel"] == "1" ? "Project" : "Stage";
                 const defaultStepId = baseInfo["step"];
-                 
+
                 this.setState({
                     dataKey,
                     mode,
@@ -126,7 +142,8 @@ class Index extends Component {
             .catch(error => {
                 iss.error(error);
             });
-     }
+    };
+
     /**
      * 加载步骤
      * @param dataKey
@@ -134,7 +151,7 @@ class Index extends Component {
      * @param defaultStepId  默认显示的阶段Id
      */
     loadStep = (dataKey, mode, defaultStepId) => {
-        
+
         if (dataKey === undefined) {
             dataKey = this.state.dataKey;
             mode = this.state.mode;
@@ -181,7 +198,7 @@ class Index extends Component {
                 return Promise.reject("未获取到阶段数据！");
             })
             .then(versionData => {
-                
+
                 versionId = this.getDefaultVersionId(versionData);
                 this.setState({
                     versionData,
@@ -198,7 +215,7 @@ class Index extends Component {
      *  加载数据
      */
     loadData = (isInit, step, mode, dataKey, versionId) => {
-        
+
         this.setState({
             loading: true,
         });
@@ -236,7 +253,7 @@ class Index extends Component {
 
         Promise.all(allPromise)
             .then(([planData, blockData, buildingData, formatData, conditionData]) => {
-                
+
                 this.setState({
                     loading: false,
                     areaData: {
@@ -297,7 +314,7 @@ class Index extends Component {
 
         Promise.all(allPromise)
             .then(([planData, blockData, buildingData, formatData]) => {
-                
+
                 this.setState({
                     loading: false,
                     areaData: {
@@ -361,9 +378,11 @@ class Index extends Component {
      *  保存当前版本的规划方案指标数据
      */
     handleSaveVersionData = () => {
-        //TODO 保存当前版本的规划方案指标数据，需要保存贞晓写的规划方案指标组件里的更新数据
-        // console.log("TODO 保存当前版本的规划方案指标数据，需要保存贞晓写的规划方案指标组件里的更新数据");
         const {step, versionId} = this.state;
+        if (!versionId) {
+            iss.error("请先创建新版本");
+            return;
+        }
         let data = [];
         this.planQuotaUpdateData = this.planQuotaUpdateData.filter(arg => arg["val"]);
         this.planQuotaUpdateData.forEach((arg, ind) => {
@@ -377,12 +396,39 @@ class Index extends Component {
             }
         });
 
-       return AreaService.areaInfoISaveAreaPlanInfo(versionId, step.code, data)
+        return AreaService.areaInfoISaveAreaPlanInfo(versionId, step.code, data)
             .then(da => {
                 iss.info("保存成功");
             })
             .catch(err => {
                 iss.error(err);
+            })
+    };
+
+    /**
+     * 删除当前版本所有的数据
+     */
+    handleDeleteVersionData = () => {
+        this.setState({
+            loading: true,
+        });
+        const {step, mode, dataKey, versionId} = this.state;
+        AreaService.deleteVersion(versionId)
+            .then(res => {
+                if (res.rows === "success") {
+                    iss.info("版本删除成功!");
+                } else {
+                    return Promise.reject(res.message || "版本删除失败");
+                }
+            })
+            .then(() => {
+                this.loadStep(dataKey, mode, step.guid);
+            })
+            .catch(error => {
+                this.setState({
+                    loading: false,
+                });
+                iss.error(error);
             })
     };
 
@@ -435,6 +481,16 @@ class Index extends Component {
                 const {versionId} = this.state;
                 if (!versionId) {
                     iss.error("请先创建新版本");
+                    return;
+                }
+
+                const versionStatus = this.getVersionStatus();
+                if (versionStatus == "approvaling") {
+                    iss.error("当前版本在审批中, 不能编辑!");
+                    return;
+                }
+                if (versionStatus == "approvaled") {
+                    iss.error("当前版本已审批通过, 请创建新版本后进行编辑!");
                     return;
                 }
             }
@@ -492,27 +548,20 @@ class Index extends Component {
         //TODO 保存数据
 
         let approvalCode = iss.getEVal("area");
-        
+
         //先保存数据再进行跳转
         this.handleSaveVersionData()
-            .then(params=>{
+            .then(params => {
                 iss.hashHistory.push({
                     pathname: "/ProcessApproval",
                     search: `?e=${approvalCode}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${dataKey}&isProOrStage=${isProOrStage}`
                 });
             })
-            .catch(err=>{
+            .catch(err => {
                 iss.error("保存失败请重试！")
             })
 
- 
-    };
 
-    /**
-     * 数据校验
-     */
-    bindCheckFrom = arg => {
-        return knife.valid(this.planQuotaUpdateData);  //数据校验
     };
 
     /**
@@ -523,19 +572,24 @@ class Index extends Component {
         //阶段
         const {step, stepData} = this.state;
         const len = stepData.length;
-
+        const classNameObj = {
+            "undraft": "legend-white",
+            "draft": "legend-blue",
+            "approvaling": "legend-yellow",
+            "approvaled": "legend-green",
+        };
         const stepArray = stepData.map((item, index) => {
-            if (this.getApprovalState()) {
+            if (this.getApprovalStatus()) {
                 return (
                     <li key={item.guid} style={{zIndex: len - index}}
                         className={item.guid == step.guid ? "active " : ""}>
-                        <span className={item.className}></span>{item.name}</li>
+                        <span className={classNameObj[item.statusCode]}></span>{item.name}</li>
                 );
             } else {
                 return (
                     <li key={item.guid} style={{zIndex: len - index}}
                         className={item.guid == step.guid ? "active " : ""}
-                        onClick={this.handleStepClick(item)}><span className={item.className}></span>{item.name}</li>
+                        onClick={this.handleStepClick(item)}><span className={classNameObj[item.statusCode]}></span>{item.name}</li>
                 );
             }
         });
@@ -558,7 +612,7 @@ class Index extends Component {
     renderButtonList = () => {
 
         //审批状态时,不显示阶段按钮
-        if (this.getApprovalState()) {
+        if (this.getApprovalStatus()) {
             return null;
         }
 
@@ -597,9 +651,10 @@ class Index extends Component {
             <TabPane tab="规划方案指标" key="plan-quota">
                 <PlanQuota planData={planData}
                            versionId={versionId}
+                           versionStatus={this.getVersionStatus()}
                            dataKey={dataKey}
                            onPlanQuotaDataChange={this.handlePlanQuotaDataChange}
-                           approvalState={this.getApprovalState()}
+                           approvalStatus={this.getApprovalStatus()}
                 />
             </TabPane>);
 
@@ -611,9 +666,11 @@ class Index extends Component {
                         step={step}
                         dataKey={dataKey}
                         versionId={versionId}
+                        versionStatus={this.getVersionStatus()}
                         dataSource={blockData["areadataInfo"]}
                         headerData={blockData["titleInfo"]}
                         onBlockFormatClick={this.handleModalClick("block-format-adjust")}
+                        approvalStatus={this.getApprovalStatus()}
                     />
                 </TabPane>);
         } else {
@@ -626,10 +683,11 @@ class Index extends Component {
                         step={step}
                         dataKey={dataKey}
                         versionId={versionId}
+                        versionStatus={this.getVersionStatus()}
                         dataSource={buildingData["areadataInfo"]}
                         headerData={buildingData["titleInfo"]}
                         onBuildingClick={this.handleModalClick("com-building-adjust")}
-                        approvalState={this.getApprovalState()}
+                        approvalStatus={this.getApprovalStatus()}
                     />
                 </TabPane>);
             panelArray.push(
@@ -660,7 +718,7 @@ class Index extends Component {
     renderStepLend = () => {
 
         //审批状态时,不显示状态提示
-        if (this.getApprovalState()) {
+        if (this.getApprovalStatus()) {
             return null;
         }
         const legendArray = Legend.map((el, ind) => {
@@ -702,7 +760,6 @@ class Index extends Component {
                         step={step}
                         mode={mode}
                         versionId={versionId}
-                        approvalState={this.getApprovalState()}
                     />
                 );
             case "building-format-edit"://业态/楼栋维护
@@ -725,7 +782,6 @@ class Index extends Component {
                         mode={mode}
                         versionId={versionId}
                         modalParam={modalParam}
-                        approvalState={this.getApprovalState()}
                     />
                 );
             default:
@@ -746,7 +802,7 @@ class Index extends Component {
 
     renderApproval = () => {
         let stateData = this.props.location.query;
-        if (this.getApprovalState()) {
+        if (this.getApprovalStatus()) {
             return <ProcessApprovalTab current="area" allSearchArg={stateData}/>
         }
 
@@ -755,7 +811,7 @@ class Index extends Component {
     render() {
         const {loading, dataKey, step, versionId, versionData} = this.state;
         if (!dataKey) {
-            
+
             return this.renderEmpty();
         }
         return (
@@ -775,10 +831,13 @@ class Index extends Component {
                         <Col span={24}>
                             {this.renderTabList()}
                             <div>
-                                <SaveVersion versionId={versionId} versionData={versionData}
-                                             approvalState={this.getApprovalState()}
+                                <SaveVersion versionId={versionId}
+                                             versionData={versionData}
+                                             versionStatus={this.getVersionStatus()}
+                                             approvalStatus={this.getApprovalStatus()}
                                              step={step}
                                              onSaveVersionData={this.handleSaveVersionData}
+                                             onDeleteVersionData={this.handleDeleteVersionData}
                                              onVersionChange={this.handleVersionChange}/>
                             </div>
                         </Col>
