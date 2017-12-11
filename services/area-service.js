@@ -1,5 +1,4 @@
 import iss from '../js/iss';
-import appConfig from '../app.config';
 import {AreaConstants} from '../constants';
 
 const {AreaManageStep} = AreaConstants;

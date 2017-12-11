@@ -60,7 +60,7 @@ var config = {
         }),
         new webpack.DefinePlugin({
             'process.env': {
-                'NODE_ENV': JSON.stringify('dev')
+                'NODE_ENV': JSON.stringify('test')
             }
         }),
         /*      new compress({
@@ -94,9 +94,6 @@ var config = {
             echarts:path.join(__dirname,"/source/echarts.min.js")
         } */
     },
-}
-if (process.argv.pop().indexOf("-w") >= 0) {
-    c.exec("npm run koa");
-}
+};
 
 module.exports = config;
