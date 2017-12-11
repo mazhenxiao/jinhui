@@ -262,7 +262,7 @@ class PriceControl extends React.Component {
             
         }
         return currentVertionid||currentStep; */
-        return (this.state.versionData.length<=0)||(this.state.step.statusCode!="draft");
+        return (this.state.versionData.length<=0)||(this.state.step.statusCode!="draft"); 
     }
     /**
      * 查找当前阶段
