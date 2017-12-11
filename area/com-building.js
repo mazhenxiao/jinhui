@@ -76,8 +76,8 @@ class ComBuilding extends Component {
             return {
                 PRODUCTNAME: (text, record) => {
                     if (record["LevelId"] === 1)
-                        return <a className="format-tree-parent">{text}</a>;
-                    return <a className="format-tree-child">{text}</a>;
+                        return <span className="format-tree-parent">{text}</span>;
+                    return <span className="format-tree-child">{text}</span>;
                 }
             };
         } else {
@@ -109,7 +109,7 @@ class ComBuilding extends Component {
      */
     getFilterDataSource = () => {
         const {dataSource} = this.props;
-        const {buildingKey, formatKey} = this.state;
+
         if (this.filterBuildingKey == "" && this.filterFormatKey == "") {
             return dataSource;
         }
@@ -139,7 +139,6 @@ class ComBuilding extends Component {
             }
             return false;
         });
-
         //根据匹配的一级楼栋进行筛选
         let filterDataSource = dataSource.filter(item => {
             return matchBuildingData.some(filterItem => {
@@ -160,9 +159,7 @@ class ComBuilding extends Component {
                 }
             });
         });
-
         return filterDataSource;
-
     };
 
     render() {
