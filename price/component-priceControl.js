@@ -540,7 +540,7 @@ class PriceControl extends React.Component {
                 return <button type="button" className="jh_btn jh_btn22 jh_btn_save" onClick={this.saveNewPriceVersion}>保存</button>
 
             } else {
-                return <button type="button" className={this.state.isNoPriceData? "hide":"jh_btn jh_btn22 jh_btn_edit"} onClick={this.editNewPriceVersion}>编辑版本</button>
+                return <button type="button" className={this.state.isNoPriceData? "hide":"jh_btn jh_btn22 jh_btn_edit"} onClick={this.editNewPriceVersion}>编辑</button>
             }
         }
 
