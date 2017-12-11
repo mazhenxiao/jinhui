@@ -179,7 +179,12 @@ class Index extends Component {
                 if (defaultStepId) {
                     step = stepData.filter(item => item.guid == defaultStepId)[0];
                 } else {
-                    step = stepData.filter(item => item.statusCode == "draft" || item.statusCode == "approvaling")[0];
+                    const filterStep = stepData.filter(item => item.statusCode == "draft"
+                        || item.statusCode == "approvaling"
+                        || item.statusCode == "approvaled");
+                    if (filterStep.length > 0) {
+                        step = filterStep[filterStep.length - 1];
+                    }
                 }
                 if (!step) {
                     step = stepData[0];
