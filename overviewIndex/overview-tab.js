@@ -199,12 +199,17 @@ class OverviewTab extends React.Component {
     }
     
     callback = (key) => {
+        let dataKey  = this.props.data.dataKey;
+        let iframeUrl=this.state.planUrl+dataKey;
         this.setState({
             activeKey:key,
-        })
+        });
+        let outheIframe = this.refs.outheIframe;
+        outheIframe.src = outheIframe.src;
     }
 
     renderTabs = () =>{
+        
         let currentPosi=this.state.currentPosi;
         return(
             <Tabs onChange={this.callback} defaultActiveKey="0" activeKey={this.state.activeKey} type="card">
