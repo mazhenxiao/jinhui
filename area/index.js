@@ -572,19 +572,24 @@ class Index extends Component {
         //阶段
         const {step, stepData} = this.state;
         const len = stepData.length;
-
+        const classNameObj = {
+            "undraft": "legend-white",
+            "draft": "legend-blue",
+            "approvaling": "legend-yellow",
+            "approvaled": "legend-green",
+        };
         const stepArray = stepData.map((item, index) => {
             if (this.getApprovalStatus()) {
                 return (
                     <li key={item.guid} style={{zIndex: len - index}}
                         className={item.guid == step.guid ? "active " : ""}>
-                        <span className={item.className}></span>{item.name}</li>
+                        <span className={classNameObj[item.statusCode]}></span>{item.name}</li>
                 );
             } else {
                 return (
                     <li key={item.guid} style={{zIndex: len - index}}
                         className={item.guid == step.guid ? "active " : ""}
-                        onClick={this.handleStepClick(item)}><span className={item.className}></span>{item.name}</li>
+                        onClick={this.handleStepClick(item)}><span className={classNameObj[item.statusCode]}></span>{item.name}</li>
                 );
             }
         });

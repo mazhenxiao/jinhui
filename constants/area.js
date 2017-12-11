@@ -3,7 +3,7 @@
  * "approvaled"  审批通过
  * "undraft"     未编制
  * "draft"       编制中
- * ""            驳回   
+ * "approvaling" 审批中
  */
 const AreaManageStep = [
     {"guid": "1", "name": "投决会", "code": "Vote"},

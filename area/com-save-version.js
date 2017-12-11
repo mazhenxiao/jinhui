@@ -88,7 +88,7 @@ class SaveVersion extends Component {
                 <WrapperSelect dataSource={versionData} labelText="当前版本:" showDefault={false}
                                labelSpan={10}
                                inputSpan={14}
-                               style={{width: "100px"}}
+                               style={{width: "80px"}}
                                value={versionId}
                                onChange={this.handleChange}/>
             </div>
@@ -101,7 +101,7 @@ class SaveVersion extends Component {
 
         return (
             <div className="PosRight">
-                <span className="areaUnit Left">（面积单位：㎡，车位单位：个，限高单位：米）</span>
+                <span className="areaUnit Left">（面积单位:㎡,车位单位:个,限高单位:米）</span>
                 {this.renderSaveButton()}
                 {this.renderDeleteButton()}
                 {this.renderVersion()}
