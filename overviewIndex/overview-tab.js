@@ -52,6 +52,10 @@ class OverviewTab extends React.Component {
             
         })
     }
+
+    componentDidMount(){
+
+    }
    //
     //左侧树变更切换右侧数据内容
     renderRightTab = () => {
@@ -140,10 +144,12 @@ class OverviewTab extends React.Component {
         }else{
             //alert(iframeUrl)
             //$(event.target).attr("src",iframeUrl);
-            return <iframe ref="outheIframe" src={iframeUrl} scrolling="no" width="100%" height="700" style={{border: 0}}></iframe>
+            let att = <iframe ref="outheIframe" scrolling="no" width="100%" height="700" src={iframeUrl} style={{border: 0,width:"100%",height:"700px"}}></iframe>;
+            return att;
         } 
         
     }
+   
    
     //切换tab菜单渲染内容
     renderSyncEele=arg=>{
@@ -159,7 +165,7 @@ class OverviewTab extends React.Component {
                 }else if (currentPosi =="intallment"){
                     return <OverviewIntallment location={location} />
                 }else{
-                    return <div>***身份证</div>
+                    return 
                 }
                 
             break;
@@ -173,7 +179,9 @@ class OverviewTab extends React.Component {
                 return <OverviewPayment />
             break;
             case "plan"://计划
-                return  this.iframeLoad();
+                return <div className="iframeLoad"> 
+                        {this.iframeLoad()}
+                    </div>
             break;
             case "matter"://重点事项
                 return <OverviewPriority />

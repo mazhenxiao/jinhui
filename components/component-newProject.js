@@ -470,7 +470,7 @@ class NewProject extends React.Component {
     //===================================================发起审批=========================
     /*发起审批*/
     EVENT_CLICK_POSTAPP() {
-        let approvalTime= approvalTime==undefined || "" || null ? "" : this.state.NewProjectCountDATA.APPROVETIME;
+        let approvalTime= this.state.NewProjectCountDATA.APPROVETIME==undefined || "" || null ? "" : this.state.NewProjectCountDATA.APPROVETIME;
         let currentTime =(new Date().getTime())/1000;//此时此刻时间戳
         if(approvalTime!=""){
             approvalTime = new Date(Date.parse(approvalTime.replace(/-/g, "/")));
@@ -575,7 +575,7 @@ class NewProject extends React.Component {
     }
     /*暂存*/
     EVENT_CLICK_SAVE(callback) {
-        let approvalTime= approvalTime==undefined || "" || null ? "" : this.state.NewProjectCountDATA.APPROVETIME;
+        let approvalTime= this.state.NewProjectCountDATA.APPROVETIME==undefined || "" || null ? "" : this.state.NewProjectCountDATA.APPROVETIME;
         let currentTime =(new Date().getTime())/1000;//此时此刻时间戳
         if(approvalTime!=""){
             approvalTime = new Date(Date.parse(approvalTime.replace(/-/g, "/")));
