@@ -854,7 +854,11 @@ class Index extends Component {
                                              onSaveVersionData={this.handleSavePlanQuotaData}
                                              onDeleteVersionData={this.handleDeleteVersionData}
                                              onVersionChange={this.handleVersionChange}
-                                             onHandleApproval={this.handleApproval}/>
+                                             onHandleApproval={this.handleApproval}
+                                             onHandleCreateVersion={this.handleCreateVersion}
+                                             onHandleBlockFormatEdit={this.handleModalClick("block-format-edit", "edit")}
+                                             onHandleBuildingFormatEdit={this.handleModalClick("building-format-edit", "edit")}
+                                />
                             </div>
                         </Col>
                     </Row>

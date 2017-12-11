@@ -94,15 +94,16 @@ class SaveVersion extends Component {
         }
         return null;
     };
-    
-    initiateApproval = () => {
+
+    renderApprovalButton = () => {
         const {approvalStatus, versionStatus} = this.props;
-            return (
-                <button type="button" onClick={this.handleApproval} className="jh_btn jh_btn28 jh_btn_apro Left">发起审批
-                    </button>
-            );
-        
-        return null;
+        if (approvalStatus || versionStatus == "approvaling" || versionStatus == "approvaled") {
+            return null;
+        }
+        return (
+            <button type="button" onClick={this.handleApproval} className="jh_btn jh_btn28 jh_btn_apro Left">发起审批
+            </button>
+        );
     };
 
     renderVersion = () => {
@@ -125,10 +126,9 @@ class SaveVersion extends Component {
     render() {
         const {versionData, versionId, approvalStatus} = this.props;
         const currentVersion = versionData.filter(item => item.id === versionId)[0];
-    
+
         return (
             <div className="PosRight">
-                {/* <span className="areaUnit Left">（面积单位:㎡,车位单位:个,限高单位:米）</span> */}
                 {this.renderVersion()}
                 {
                     !approvalStatus ?
@@ -137,7 +137,7 @@ class SaveVersion extends Component {
                 }
                 {this.renderSaveButton()}
                 {this.renderDeleteButton()}
-                {this.initiateApproval()}
+                {this.renderApprovalButton()}
             </div>
         );
 
