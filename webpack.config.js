@@ -60,9 +60,9 @@ var config = {
         }),
         new webpack.DefinePlugin({
             'process.env': {
-                'NODE_ENV': JSON.stringify('dev')
+                'NODE_ENV': JSON.stringify('test')
             }
-        }),
+        })
         /*      new compress({
               output: {
                   comments: false,   // remove all comments
