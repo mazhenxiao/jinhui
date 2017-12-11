@@ -40,6 +40,7 @@ class Index extends Component {
         step: {}, /*当前阶段*/
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : "Stage",//显示模式，项目或者分期
+        current: this.props.location.query["current"],
         //方案指标数据，面积数据
         areaData: {},
         //面积数据里的查询
@@ -487,6 +488,7 @@ class Index extends Component {
      * 处理弹窗
      */
     handleModalClick = (modalKey, modalType) => {
+        debugger
         return (record, param) => {
             if (modalType === "edit") {
                 const {versionId} = this.state;
@@ -620,34 +622,34 @@ class Index extends Component {
     /**
      * 渲染button
      */
-    renderButtonList = () => {
+    // renderButtonList = () => {
 
-        //审批状态时,不显示阶段按钮
-        if (this.getApprovalStatus()) {
-            return null;
-        }
+    //     //审批状态时,不显示阶段按钮
+    //     if (this.getApprovalStatus()) {
+    //         return null;
+    //     }
 
-        const {step} = this.state;
-        return (
-            <div>
-                <div className="areaTopbtn jhBtn-wrap">
-                    <button type="button" className="jh_btn jh_btn28 jh_btn_add" onClick={this.handleCreateVersion}>
-                        生成新版本
-                    </button>
-                    {
-                        parseInt(step.guid) <= 2 ?
-                            <button type="button" className="jh_btn jh_btn28 jh_btn_save"
-                                    onClick={this.handleModalClick("block-format-edit", "edit")}>业态维护
-                            </button> :
-                            <button type="button" className="jh_btn jh_btn28 jh_btn_save"
-                                    onClick={this.handleModalClick("building-format-edit", "edit")}>业态/楼栋维护
-                            </button>
-                    }
+    //     const {step} = this.state;
+    //     return (
+    //         <div>
+    //             {/* <div className="areaTopbtn jhBtn-wrap"> */}
+    //                 <button type="button" className="jh_btn jh_btn28 jh_btn_add" onClick={this.handleCreateVersion}>
+    //                     生成新版本
+    //                 </button>
+    //                 {
+    //                     parseInt(step.guid) <= 2 ?
+    //                         <button type="button" className="jh_btn jh_btn28 jh_btn_save"
+    //                                 onClick={this.handleModalClick("block-format-edit", "edit")}>业态维护
+    //                         </button> :
+    //                         <button type="button" className="jh_btn jh_btn28 jh_btn_save"
+    //                                 onClick={this.handleModalClick("building-format-edit", "edit")}>业态/楼栋维护
+    //                         </button>
+    //                 }
                     
-                </div>
-            </div>
-        );
-    };
+    //             {/* </div> */}
+    //         </div>
+    //     );
+    // };
 
     /**
      * 渲染Tab 保存按钮显示部分
@@ -819,7 +821,7 @@ class Index extends Component {
     };
 
     render() {
-        const {loading, dataKey, step, versionId, versionData} = this.state;
+        const {loading, dataKey, step, versionId, versionData,current} = this.state;
         if (!dataKey) {
 
             return this.renderEmpty();
@@ -836,10 +838,9 @@ class Index extends Component {
                     {this.renderStepList()}
                     <Row gutter={0}>
                         <Col span={24}>
-                            {this.renderTabList()}
                             <div>
-                                {this.renderButtonList()}
                                 <SaveVersion versionId={versionId}
+                                             current={current}
                                              versionData={versionData}
                                              versionStatus={this.getVersionStatus()}
                                              approvalStatus={this.getApprovalStatus()}
@@ -847,7 +848,9 @@ class Index extends Component {
                                              onSaveVersionData={this.handleSaveVersionData}
                                              onDeleteVersionData={this.handleDeleteVersionData}
                                              onVersionChange={this.handleVersionChange}
-                                             onHandleApproval={this.handleApproval}/>
+                                             onHandleCreateVersion={this.handleCreateVersion}
+                                             onHandleApproval={this.handleApproval}
+                                             onHandleModalClick={this.handleModalClick}/>
                             </div>
                         </Col>
                     </Row>
