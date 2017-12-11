@@ -157,7 +157,17 @@ class DynamicTable extends React.Component {
             }
             return val == "" ? true : !numreg.test(val);
         }else if(reg&&reg.type.indexOf("regExp")>=0){
-           // let paramsReg = new RegExp(reg.regExp);
+            if(val==""){ return true}
+            try{
+                let paramsReg = new RegExp(reg.regExp);
+                let bools = paramsReg.test(val);
+                return bools;
+            }catch(e){
+                return false;
+                console.error(`tools-dynamicTable.js里正则错误`,da)
+            }
+           
+
         }
         return true
     }
