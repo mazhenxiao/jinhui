@@ -191,7 +191,7 @@ class PriceControl extends React.Component {
         // console.log("data",priceData)
         let isNoPriceData =!Boolean(priceData.length);
         if(this.state.versionData&&this.state.versionData.length){
-            isNoPriceData = this.state.versionData[0].id == this.state.versionId;
+            isNoPriceData = this.state.versionData[0].id != this.state.versionId;
         }
         
         this.setState({
