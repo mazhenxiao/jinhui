@@ -44,8 +44,8 @@
   top: 12px;
   z-index: 888;
 }
-.ant-tabs-nav-wrap {
-  margin-top: 10px;
+.ant-tabs .ant-tabs-bar {
+  padding-top: 10px;
 }
 .jh_btn {
   padding-right: 10px;
