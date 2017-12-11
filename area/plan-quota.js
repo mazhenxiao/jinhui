@@ -79,6 +79,10 @@ class PlanQuota extends Component {
 
     render() {
         const {readonly, pid, DynamicData} = this.state;
+        const {versionId} = this.props;
+        if (!versionId) {
+            return <div className="empty-div">暂无数据</div>
+        }
         return (
             <article>
                 <DynamicTable readOnly={readonly} pid={pid} DynamicData={DynamicData}

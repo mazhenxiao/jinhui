@@ -8,8 +8,6 @@ import {AreaService} from '../services';
 
 require("../css/antd.min.css");
 require("../css/payment.css");
-require("../css/tools-processBar.less");
-require("../css/button.less");
 require("../area/areaCss/areaManage.less");
 
 class OverviewSign extends Component {
