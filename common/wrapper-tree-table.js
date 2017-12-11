@@ -216,7 +216,7 @@ class WrapperTreeTable extends Component {
         return (e) => {
             let value = e.target.value;
             if (!numberReg.test(value)) {
-                value = 0;
+                value = "";
             }
             record[key] = value;
             this.props.onDataChange && this.props.onDataChange(record.KEY, key, value);

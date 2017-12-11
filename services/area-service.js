@@ -133,10 +133,22 @@ const getVersion = (stepInfo, dataKey, mode, dataType = "Area") => {
                 return {
                     id: item["id"],
                     name: item["versioncode"],
-                    statusName: item["statusname"]
+                    statusName: item["statusname"],
+                    statusCode: item["statusCode"],
                 };
             });
         });
+};
+
+/**
+ * 删除版本
+ */
+const deleteVersion = (versionId) => {
+    return iss.fetch({
+        url: website.concat("/AreaInfo/DeleteAreaVersion"),
+        type: "post",
+        data: versionId,
+    })
 };
 
 /**
@@ -369,9 +381,7 @@ const adjustBuildingAreaData = (record, buildIds, buildingChangeDataArray, forma
         url: website.concat("/AreaInfo/ISaveEditBuild"),
         type: "post",
         data: JSON.stringify(paramsValue),
-    }).then(res => res.rows).then(obj => {
-        return obj;
-    })
+    }).then(res => res.rows)
 };
 
 /**
@@ -435,6 +445,7 @@ export {
     getAreaPlanQuota,
     createVersion,
     getVersion,
+    deleteVersion,
     getCreateCondition,
 
     getSearchData,

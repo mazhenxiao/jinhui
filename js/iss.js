@@ -66,13 +66,14 @@ class $iss {
         };
         let _URL = url.replace(/^\\/ig, "");
         if (params) {
-            let ParamsStr = "";
+            let ParamsStr = ``;
             if (typeof params["data"] == "string") {
                 ParamsStr += "paramsData=" + params["data"];
             } else {
                 for (var li in params["data"]) {
                     ParamsStr += `${li}=${params["data"][li]}&`;
                 }
+
             }
 
             ParamsStr = ParamsStr.replace(/\&$/ig, "");
@@ -158,6 +159,14 @@ class $iss {
             } else if (_da["errorcode"] == "300") {
                 iss.popover({content: "操作失败，请联系后台工作人员！"});
                 return false;
+            }else if(_da["errorcode"]=="500"){
+                opt["error"] && opt.error(_da,_da);
+             /*    iss.tip({
+                    type:"error",
+                    description:`未获取到页面数据`
+                }); */
+                console.log("ajaxError500",_da)
+              //  $.Deferred().reject(_da);
             } else if (_da) {
                 return (opt["success"] && opt.success(_da));
             }
@@ -924,7 +933,21 @@ class $iss {
         }
         return eVal;
     }
-
+    /**
+     * 通过url判断页面路由
+     */
+    convertURL(id){
+        let url="";
+        switch(id){
+            case "10103":url="intallment";break; //分期
+            case "10102":url="newProject";break; //项目
+            case "10114":url="AreaInfo/groupbuild";break; //团队维护
+            case "10104":url="AreaInfo/areaManage";break; //面积
+            case "10105":url="AreaInfo/priceControl";break; //价格
+            default:console.error("iss.js里没有配置convertURL");break;
+        }
+        return url;
+    }
     /*
     *配置上传标记总图url
     */

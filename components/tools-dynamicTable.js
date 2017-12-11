@@ -6,7 +6,8 @@ import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import {Select,Input} from 'antd';
-require("../css/antd.min.css");
+import {shallowCompare} from '../utils';
+import "../css/antd.min.css";
 const Option = Select.Option;
 class DynamicTable extends React.Component {
     constructor(arg) {
@@ -23,19 +24,16 @@ class DynamicTable extends React.Component {
 
 
     }
-    componentDidMount() {
-
+    componentDidMount() { }
+    componentWillReceiveProps(nextProps,nextStage){
+        let {readOnly} = nextProps;
+        this.setState({
+            readOnly
+        })
     }
-    componentDidUpdate(prevProps, prevState) {
-        var th = this;
-        //this.setState({data:this.props.DynamicData})
-
-        /*   if (this.count == 0) {
-              this.count = 1;
-              this.BIND_INPUT_STATE();
-          } */
-
-    }
+    shouldComponentUpdate(nextProps, nextState){    
+        return shallowCompare(this, nextProps.planData, nextState.planData);
+    } 
     BIND_INPUT_STATE() {
         let $da = this.state.data;
         $da.forEach((da, ind) => {
@@ -64,6 +62,11 @@ class DynamicTable extends React.Component {
             error(e) { }
         })
     }
+    /**
+     * 日期控件
+     * @param {当前数据} el 
+     * @param {event} ev 
+     */
     setEventDate(el, ev) {
         
         let th = this;
@@ -86,7 +89,11 @@ class DynamicTable extends React.Component {
 
 
     }
-
+      /**
+       * 修改input后出发事件
+       * @param {当前数据} da 
+       * @param {event} ev 
+       */
     EVENT_CHANGE_INPUT(da, ev) { //input修改
         var th = this;
         da.edit=da.edit||" +w";//默认值伪可写
@@ -102,6 +109,11 @@ class DynamicTable extends React.Component {
         }
 
     }
+    /**
+     * 单选select模块change事件
+     * @param {当前编辑数据} da 
+     * @param {event} ev 
+     */
     EVENT_CHANGE_SELECT(da, ev) {
 
         // el.test.check=false;
@@ -116,9 +128,20 @@ class DynamicTable extends React.Component {
      * antd多选
      */
     EVENT_CHANGE_ANTD_SELECTS=(da,el)=>{
+         let val = el[el.length-1];
+         let bool = da.data.some(params=>{
+             return (val&&val==params.val)
+         })
+         if(bool){
+            this.props.CallBack(da,Array.isArray(el)? el.join(","):el);
+         }
         
-        this.props.CallBack(da,Array.isArray(el)? el.join(","):el);
     }
+    /**
+     * 数据校验
+     * @param {当前数据} da 
+     * @param {实际值} val 
+     */
     Bind_checked(da, val) { //检测数据
         let reg = eval(`(${da.regExp})`);
         if (reg && reg.type.indexOf("number") >= 0) {
@@ -133,9 +156,26 @@ class DynamicTable extends React.Component {
 
             }
             return val == "" ? true : !numreg.test(val);
+        }else if(reg&&reg.type.indexOf("regExp")>=0){
+            if(val==""){ return true}
+            try{
+                let paramsReg = new RegExp(reg.regExp);
+                let bools = paramsReg.test(val);
+                return bools;
+            }catch(e){
+                return false;
+                console.error(`tools-dynamicTable.js里正则错误`,da)
+            }
+           
+
         }
         return true
     }
+    /**
+     * 但范围的max  min值失去焦点校验
+     * @param {当前data数据} el 
+     * @param {event} ev 
+     */
     EVENT_BLUR_INPUT(el, ev) { //失去焦点
       
         let reg = el.regExp ? eval("(" + el.regExp + ")") : {};
@@ -165,7 +205,10 @@ class DynamicTable extends React.Component {
         }
 
     }
-
+ /**
+  * 生成列表
+  * @param {所有动态数据} da 
+  */
     setList(da) {
         let typeBox = el => {
             let numreg = (/number\((\d+)\)/).exec(el.regExp||"");
@@ -197,9 +240,9 @@ class DynamicTable extends React.Component {
                 } else if(el.type=="selects"){ //多选
                     if(!Array.isArray(el.data)){return}
                     let children = el.data.map((_d, _i) => {
-                        return <Option  key={_i}>{_d.label}</Option>
+                        return <Option  key={_d.val}>{_d.label}</Option>
                     })
-                    return <Select mode="tags" name={el.id} tokenSeparators={[',']} className={(el.edit.indexOf("+m") >= 0 && !el.val) ? "required selects" : "selects"} onChange={this.EVENT_CHANGE_ANTD_SELECTS.bind(this,el)} value={Array.isArray(el.val)? el.val: el.val? el.val.split(","):[]}>{children}</Select>
+                    return <Select mode="tags" filterOption={false} name={el.id} tokenSeparators={[',']} className={(el.edit.indexOf("+m") >= 0 && !el.val) ? "required selects" : "selects"} onChange={this.EVENT_CHANGE_ANTD_SELECTS.bind(this,el)} value={Array.isArray(el.val)? el.val: el.val? el.val.split(","):[]}>{children}</Select>
                 }else{
                     if(el.edit.indexOf("+r")>=0&&(fixed=="0"||fixed)){
                         return <input name={el.id} id={el.id} className={(el.edit.indexOf("+m") >= 0 && !el.val) ? " required" : ""} data-pid={el.pid} value={el.val? parseFloat(el.val).toFixed(fixed):""} placeholder={el.edit.indexOf("+m") >= 0 ? "" : ""} type="text" onBlur={this.EVENT_BLUR_INPUT.bind(this, el)} onChange={this.EVENT_CHANGE_INPUT.bind(this, el)} readOnly={el.edit.indexOf("+r") >= 0} />

@@ -14,6 +14,8 @@ class ComBlock extends Component {
         headerData: React.PropTypes.array,
         dataSource: React.PropTypes.array,
         onBlockFormatClick: React.PropTypes.func,
+        approvalStatus: React.PropTypes.bool,//是否是审批
+        versionStatus: React.PropTypes.string,//版本状态  未编制 undraft, 编制中 draft, 审批中 approvaling, 审批通过 approvaled
     };
 
     static defaultProps = {
@@ -21,6 +23,8 @@ class ComBlock extends Component {
         dataSource: [],
         onBlockFormatClick: () => {
         },
+        approvalStatus: false,
+        versionStatus: "",
     };
 
     state = {
@@ -59,11 +63,24 @@ class ComBlock extends Component {
         };
     };
 
-    columnRender = {
-        PRODUCTNAME: (text, record) => {
-            if (record["LevelId"] === 1)
-                return <span className="format-tree-parent">{text}</span>;
-            return <a className="format-tree-child" onClick={this.handleClick(text, record)}>{text}</a>;
+    getColumnRender = () => {
+        const {approvalStatus, versionStatus} = this.props;
+        if (approvalStatus || versionStatus == "approvaling" || versionStatus == "approvaled") {
+            return {
+                PRODUCTNAME: (text, record) => {
+                    if (record["LevelId"] === 1)
+                        return <span className="format-tree-parent">{text}</span>;
+                    return <a className="format-tree-child">{text}</a>;
+                }
+            };
+        } else {
+            return {
+                PRODUCTNAME: (text, record) => {
+                    if (record["LevelId"] === 1)
+                        return <span className="format-tree-parent">{text}</span>;
+                    return <a className="format-tree-child" onClick={this.handleClick(text, record)}>{text}</a>;
+                }
+            };
         }
     };
 
@@ -137,7 +154,7 @@ class ComBlock extends Component {
                     headerData={headerData}
                     dataSource={filterDataSource}
                     rowKey="KEY"
-                    columnRender={this.columnRender}
+                    columnRender={this.getColumnRender()}
                     fixedAble={true}
                 />
             </div>

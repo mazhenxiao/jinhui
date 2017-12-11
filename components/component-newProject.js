@@ -3,7 +3,7 @@ import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import NewProjectCount from "./component-newProject-count.js";
 import DynamicTable from "./tools-dynamicTable.js";
-import {project} from '../services';
+import {Project} from '../services';
 import NewProjectTime from "./component-newProject-time.js"
 import "../css/tools-dynamicTable.less";//专用css
 /* import Peripheral from "./component-newProject-peripheral.js";//外设条件 */
@@ -41,8 +41,11 @@ class NewProject extends React.Component {
         this.time = "";//延时变量
         this.firstData = [];//初始化数据
         this.child1 = "";//子集指针
+
+      
     }
     componentWillMount() {
+        
         let th = this;
         let local = th.props.location;
         let status = local.query["status"];
@@ -71,6 +74,7 @@ class NewProject extends React.Component {
         let th = this;
         th.BIIND_FIST_LAND(); //获取地块信息
     }
+
     //=====================================================地块外设条件
     EVENT_CLICK_PERIPHERAL() { //点击外设条件
         //window.open("/Home/MYTodo/","mytodo",`width=800,height=400,location=0,toolbar=0,status=0,top=50%,left=50%`);
@@ -158,6 +162,7 @@ class NewProject extends React.Component {
 
                         var da = {};
                         th.BIND_CHECKINewLand(d.rows).forEach((el, ind) => {
+                            
                             if (ind == 0) { //初次加载地块
 
                                 th.setState({
@@ -221,8 +226,16 @@ class NewProject extends React.Component {
         if (this.state.states) {
             // this.DynamicData["pid"]=iss.guid();
             let guid = iss.guid();
-
             this.state.DynamicData[guid] = { LandId: guid, FieldList: nd }; //向数据树添加一条数据
+            //先手动修改后面让后台去修改数据库
+          /*    nd.forEach((ele,ind)=>{
+                if(ele.id=="LANDCODE"){
+                    ele.regExp=`{
+                        type:"regExp",
+                        regExp:"^[A-Za-z]{1}$"
+                    }`
+                }
+            })  */
             this.setState({
                 propsDATA: nd,  //新增地块
                 pid: guid
@@ -486,7 +499,7 @@ class NewProject extends React.Component {
                 if (data.message == "成功") {
                     iss.hashHistory.push({
                         pathname: "/ProcessApproval",
-                        search: '?e=' + newProjectStatus + '&dataKey=' + th.state.NewProjectCountDATA.ID + '&current=ProcessApproval&areaId=' + areaId + '&areaName=' + areaName
+                        search: `?e=${newProjectStatus}&dataKey=${th.state.NewProjectCountDATA.ID}&current=ProcessApproval&areaId=${areaId}&areaName=${areaName}`
                     });
                     $(window).trigger("treeLoad");
                 } else {

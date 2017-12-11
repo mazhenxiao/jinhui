@@ -12,7 +12,8 @@ class GroupIframe extends React.Component{
             versionId:this.props.versionId,
             index:0,  //当前组团
             _group:[],
-            checked:''
+            checked:'',
+            flag :true
         },
         this.index = 0;
         this.nameList = [];
@@ -39,14 +40,12 @@ class GroupIframe extends React.Component{
                 //stageversionid: th.state.versionId
             },
             success(data) {
-                if(null != data.rows && data.rows.length>0){
+                if(null != data.rows){
                     var arr = [];
                     data.rows.forEach((el,ind) => {
                         arr.push(el.groupnumber)
                     })
-                    
                     if(arr.indexOf(1) == -1){
-                       
                         var newId = iss.guid()
                         var addObj = {
                             "groupId": newId,
@@ -60,7 +59,6 @@ class GroupIframe extends React.Component{
                     }
                     th.setState({
                         dataList: data.rows,
-                        index:data.rows[0]["groupnumber"],
                         _group:th._group
                     });
                 }
@@ -72,10 +70,11 @@ class GroupIframe extends React.Component{
         })
     }
     //删除组团
-    delGroup(da,ev){
-        const target = ev.currentTarget;
+
+    delGroupFun(da,ev){
         var th = this,arr=[];
         var delAr = th.state.dataList;
+        const target = ev.currentTarget;
         th.setState({
             index: da
         })
@@ -101,6 +100,59 @@ class GroupIframe extends React.Component{
         th.setState({
             dataList:delAr
         })
+    }
+
+    delGroup(da,ev){
+        var th = this,arr=[];
+        var delAr = th.state.dataList,groupid="";
+        delAr.forEach((el,ind) =>{
+            if(el.groupnumber == da){
+                groupid = el.groupId
+            }
+        })
+        iss.ajax({
+            url: "/Stage/ICheckCanDeleteGroup",
+            data:{
+                stageversionid: th.state.versionId,
+                groupid: groupid
+            },
+            success(data) {
+                    if(data.rows == 0){
+                        if(th.state.flag){
+                            th.setState({
+                                flag:false
+                            })
+                            iss.Alert({
+                                title:"",
+                                width:600,
+                                height:305,
+                                content:`<p class='Promptinfo' style='padding-top:70px; padding-right:25px;'>温馨提示：此组团已编制主项计划，删除此组团后会永久丢失此组团的当前主项计划数据。确定仍要删除此组团吗？</p>`,
+                                okVal:"确定",
+                                cancel:"取消",
+                                ok(){
+                                    th.delGroupFun(da,ev)
+                                    th.setState({
+                                        flag:true
+                                    })
+                                },
+                                cancel(da){
+                                    th.setState({
+                                        flag:true
+                                    })
+                                }
+                            })
+                        }
+                    }else{
+                        th.delGroupFun(da,ev)
+                    }
+                
+                
+            },
+            error() {
+                console.log('失败')
+            }
+        })
+        
     }
     // 组团名称
     groupName() {  
@@ -182,7 +234,6 @@ class GroupIframe extends React.Component{
             }else{
                 brr.forEach((el,ind) =>{
                     if(el.buildingName == text){
-                        var n = th.state.index
                         el.groupName = "nomapping",
                         el.groupnumber = 0,
                         el.groupId = null;
@@ -255,6 +306,9 @@ class GroupIframe extends React.Component{
 
     //增加组团
     addGroup(){
+        if(!this.state.flag){
+            return
+        }
         var th=this;
         var crr = th.state.dataList;
         var addObj = {},len = 1,

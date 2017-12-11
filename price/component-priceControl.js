@@ -47,16 +47,12 @@ class PriceControl extends React.Component {
         tableLoading: true,//表格加载中
         edit: false,//表格是否可编辑
         isApproal: false, //是否是审批
-        disabled:false  //默认
+        disabled:false,  //默认
+        isNoPriceData:true //默认没有数据
     };
     sessionCurrentData = {};//点击阶段或初次加载table时暂存数据
     componentWillMount() {
-        if(this.props.location.query["current"]){
-            Common.getCurrentStepService()
-                  .then(response=>{
-                      debugger
-                  })
-        }
+       
     }
     /**
      * 在组件接收到一个新的prop时被调用,这个方法在初始化render时不会被调用
@@ -78,6 +74,7 @@ class PriceControl extends React.Component {
                 mode: nextMode,
             }
             );
+            
             this.loadStep(nextDataKey, nextMode);
         }
         this.SetisApproal();
@@ -86,14 +83,26 @@ class PriceControl extends React.Component {
     componentDidMount() {
         this.loadStep();
         this.SetisApproal();
+       // this.Approal_RevertDataKey();
         //this.Fetch_GetPriceList();
+    }
+    /**
+     * 从待审跳转的页面用（dataKey：小版本）去转换老的dataKey
+     */
+    Approal_RevertDataKey=()=>{
+        if(this.props.location.query["current"]){
+            Common.getCurrentStepService()
+                  .then(response=>{
+                      
+                  })
+        }
     }
     /**
      * 当前是否是审批
      */
     SetisApproal = arg => {
         let stateData = this.props.location.query;
-        if (stateData["current"] && stateData["current"] == "ProcessApproval") {
+        if (stateData["current"]) {
             this.setState({
                 isApproal: true
             })
@@ -191,6 +200,7 @@ class PriceControl extends React.Component {
     Create_TabelData = priceData => {
         // console.log("data",priceData)
         this.setState({
+            isNoPriceData:!Boolean(priceData.length),
             priceData,
             tableLoading: false
         })
@@ -208,6 +218,7 @@ class PriceControl extends React.Component {
      * 加载步骤
      */
     loadStep = (dataKey, mode) => {
+        
         if (dataKey === undefined) {
             dataKey = this.state.dataKey;
             mode = this.state.mode;
@@ -236,6 +247,7 @@ class PriceControl extends React.Component {
                let step = stepData.filter(params=>{
                    return params.statusCode=="draft";
                })[0];
+               step = step? step:stepData[0]; 
                 let versionId = this.getDefaultVersionId(this.state.versionData);
                 this.setState({
                     versionId,
@@ -243,16 +255,17 @@ class PriceControl extends React.Component {
                     step: step,
                 });
                 if (step) {
-                    return AreaService.getVersion(step, dataKey, mode, "Price")
+                    return AreaService.getVersion(step, dataKey, mode,"Price"); //获取版本
                 }
                 return Promise.reject("未获取到阶段数据！");
             })
             .then(versionData => {
+                
                 let versionId = this.getDefaultVersionId(versionData),
                     curVersion = versionData.filter(arg => {
                         return arg["id"] == versionId;
                     })[0]
-            
+                
                 this.setState({
                     versionData,
                     versionId,
@@ -384,6 +397,7 @@ class PriceControl extends React.Component {
     * 根据阶段获取版本数据 => 再获取 规划方案指标和面积数据
     */
     handleStepClick = (newStep) => {
+        if(this.state.isApproal){ return}
         return () => {
             const { step, dataKey, mode, versionId } = this.state;
             if (newStep.code === step.code) return;
@@ -447,7 +461,7 @@ class PriceControl extends React.Component {
                 return <button type="button" className="jh_btn jh_btn22 jh_btn_save" onClick={this.saveNewPriceVersion}>保存</button>
 
             } else {
-                return <button type="button" className="jh_btn jh_btn22 jh_btn_edit" onClick={this.editNewPriceVersion}>编辑版本</button>
+                return <button type="button" className={this.state.isNoPriceData? "hide":"jh_btn jh_btn22 jh_btn_edit"} onClick={this.editNewPriceVersion}>编辑版本</button>
             }
         }
 
@@ -508,7 +522,7 @@ class PriceControl extends React.Component {
                             </Col>
                             <Col span={12}>
                                 <div className="Right">
-                                    <button type="button" onClick={this.handleApproval} className="jh_btn jh_btn22 jh_btn_apro">发起审批
+                                    <button type="button" onClick={this.handleApproval} className={this.state.isNoPriceData? "hide":"jh_btn jh_btn22 jh_btn_apro"}>发起审批
                                 </button>
                                 </div>
                             </Col>

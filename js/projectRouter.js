@@ -48,36 +48,19 @@ export const projectRouter=[
         path: "/supply",
         getComponent: function (next, callback) {
           require.ensure([], function (require) {
-            var app = require('../components/component-supply.js');//============================生日祝福
+            var app = require('../components/component-supply.js');//============================双向滚动demo
             callback(null, app.default);
           }, "component-supply");
         }
       },
-      {
-        path: "/projectList",
-        getComponent: function (next, callback) {
-          require.ensure([], function (require) {
-            var app = require('../components/component-projectList.js');//============================生日祝福
-            callback(null, app.default);
-          }, "component-projectList");
-        }
-      },//代办
+       //代办
       {
         path: "/agenty",
         getComponent: function (next, callback) {
           require.ensure([], function (require) {
-            var app = require('../components/component-agenty.js');//============================生日祝福
+            var app = require('../components/component-agenty.js');//============================我的待审
             callback(null, app.default);
           }, "component-agenty");
-        }
-      },//弹出层
-      {
-        path: "/todo",
-        getComponent: function (next, callback) {
-          require.ensure([], function (require) {
-            var app = require('../components/component-todo.js');//============================生日祝福
-            callback(null, app.default);
-          }, "component-todo");
         }
       },
       { //分期

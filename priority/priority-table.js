@@ -318,7 +318,6 @@ class PriorityTable extends Component {
       render() {
           // pagination 是否分页，columns头部标题数据，dataSource表内容数据
           return (
-              
               <Table 
                   columns={this.columns||[]}
                   dataSource={this.state.data||[]} 
