@@ -10,8 +10,8 @@ require("../css/antd.min.css");
 class $knife {
     checked = true; //默认校验数据为真
     /**
-  *  数据校验 
-  * knife.valid([接口定义好的Filed内容])  
+  *  数据校验
+  * knife.valid([接口定义好的Filed内容])
   * 参数                返回值
   * 接口Filed内容        true/false
   */
@@ -88,8 +88,8 @@ class $knife {
         return ii;
     }
     /**
-     * 
-     * @param {Array} list  全部数据    
+     *
+     * @param {Array} list  全部数据
      * @param {Object} d    当前数据
      * 第一种计算
      *  let newList = knife.SET_CountExec(list); //通用计算传入json 修改json后返回json
@@ -147,10 +147,11 @@ class $knife {
     }
     /**
      * 第二种计算工具，用于表格计算
-     * @param {*对象} Obj 
-     * @param {*数组} List 
+     * @param {*对象} Obj
+     * @param {*数组} headerData
+     * @param {*数组} dataSource
      */
-    setTableExec(Obj,List){
+    setTableExec(Obj, headerData, dataSource){
 
     }
     /**

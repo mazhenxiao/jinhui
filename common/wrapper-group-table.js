@@ -44,11 +44,13 @@ export default class WrapperGroupTable extends Component {
 
     handleInputChange = (record, key, column) => {
         return (e) => {
+            const {headerData, dataSource} = this.props;
             let value = e.target.value;
             if (!numberReg.test(value)) {
                 value = "";
             }
             record[key] = value;
+            knife.setTableExec(column, headerData, dataSource);
             this.props.onDataChange && this.props.onDataChange(record.KEY, key, value);
             this.forceUpdate();
         };
