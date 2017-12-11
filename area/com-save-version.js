@@ -37,7 +37,10 @@ class SaveVersion extends Component {
         },
         onHandleCreateVersion: () =>{
         },
-        onHandleModalClick: (modalKey, modalType) =>{
+        onHandleBlockFormatEdit: ()=>{
+
+        },
+        onHandleBuildingFormatEdit: () =>{
 
         },
         approvalStatus: false,
@@ -57,9 +60,11 @@ class SaveVersion extends Component {
     handleCreateVersion = () => {
         this.props.onHandleCreateVersion && this.props.onHandleCreateVersion();
     }
-    handleModalClick = (modalKey, modalType) => {
-        console.log(modalKey)
-        this.props.onHandleModalClick && this.props.onHandleModalClick(modalKey, modalType);
+    handleBlockFormatEdit = () =>{
+        this.props.onHandleBlockFormatEdit && this.props.onHandleBlockFormatEdit();
+    }
+    handleBuildingFormatEdit = () =>{
+        this.props.onHandleBuildingFormatEdit && this.props.onHandleBuildingFormatEdit();
     }
     handleDelete = () => {
         confirm({
@@ -114,28 +119,24 @@ class SaveVersion extends Component {
         }
         return false;
     };
-    initiateApproval = () => {
-        const {approvalStatus, versionStatus, current} = this.props;
-                if (this.getApprovalStatus()) {
-                    return null;
-                }
-                return (
-                    <button type="button" onClick={this.handleApproval} className="jh_btn jh_btn28 jh_btn_apro Left">发起审批
-                        </button>
-                );
-            
-            
-        
-        return null;
+    renderApprovalButton = () => {
+        const {approvalStatus, versionStatus} = this.props;
+        if (approvalStatus || versionStatus == "approvaling" || versionStatus == "approvaled") {
+            return null;
+        }
+        return (
+            <button type="button" onClick={this.handleApproval} className="jh_btn jh_btn28 jh_btn_apro Left">发起审批
+            </button>
+        );
     };
     renderButtonList = () => {
         
                 //审批状态时,不显示阶段按钮
-        if (this.getApprovalStatus()) {
+        const {approvalStatus, versionStatus,step} = this.props;
+        if (approvalStatus || versionStatus == "approvaling" || versionStatus == "approvaled") {
             return null;
         }
 
-        const {step} = this.props;
         return (
             <div className="Left">
                 {/* <div className="areaTopbtn jhBtn-wrap"> */}
@@ -145,10 +146,10 @@ class SaveVersion extends Component {
                     {
                         parseInt(step.guid) <= 2 ?
                             <button type="button" className="jh_btn jh_btn28 jh_btn_save"
-                                onClick={this.handleModalClick("block-format-edit", "edit")}>业态维护
+                                onClick={this.handleBlockFormatEdit}>业态维护
                             </button> :
                             <button type="button" className="jh_btn jh_btn28 jh_btn_save"
-                                onClick={this.handleModalClick("building-format-edit", "edit")}>业态/楼栋维护
+                                onClick={this.handleBuildingFormatEdit}>业态/楼栋维护
                             </button>
                     }
                     
@@ -176,10 +177,9 @@ class SaveVersion extends Component {
     render() {
         const {versionData, versionId, approvalStatus} = this.props;
         const currentVersion = versionData.filter(item => item.id === versionId)[0];
-    
+
         return (
             <div className="PosRight">
-                {/* <span className="areaUnit Left">（面积单位:㎡,车位单位:个,限高单位:米）</span> */}
                 {this.renderVersion()}
                 {
                     !approvalStatus ?
@@ -190,7 +190,7 @@ class SaveVersion extends Component {
                 {this.renderButtonList()}
                 {this.renderSaveButton()}
                 {this.renderDeleteButton()}
-                {this.initiateApproval()}
+                {this.renderApprovalButton()}
             </div>
         );
 

@@ -255,11 +255,11 @@ class Index extends Component {
         Promise.all(allPromise)
             .then(([planData, blockData, buildingData, formatData, conditionData]) => {
                 //模拟景观软硬比正则校验，后台添加后移除
-                planData.forEach(arg=>{
-                    
-                    if(arg.id=="SCENERYHARDSOFTRATE"){
-                
-                        arg.regExp=`{
+                planData.forEach(arg => {
+
+                    if (arg.id == "SCENERYHARDSOFTRATE") {
+
+                        arg.regExp = `{
                             type:"regExp",
                             regExp:"^#d+#\:#\d+$"
                         }`
@@ -389,7 +389,7 @@ class Index extends Component {
     /**
      *  保存当前版本的规划方案指标数据
      */
-    handleSaveVersionData = () => {
+    handleSavePlanQuotaData = (showTip = true) => {
         const {step, versionId} = this.state;
         if (!versionId) {
             iss.error("请先创建新版本");
@@ -409,8 +409,10 @@ class Index extends Component {
         });
 
         return AreaService.areaInfoISaveAreaPlanInfo(versionId, step.code, data)
-            .then(da => {
-                iss.info("保存成功");
+            .then(res => {
+                if (showTip) {
+                    iss.info("保存成功");
+                }
             })
             .catch(err => {
                 iss.error(err);
@@ -455,6 +457,9 @@ class Index extends Component {
 
             let versionId = undefined;
 
+            //保存当前版本的规划方案指标数据
+            this.handleSavePlanQuotaData(false);
+
             this.setState({
                 loading: true,
                 versionId: "",
@@ -488,7 +493,6 @@ class Index extends Component {
      * 处理弹窗
      */
     handleModalClick = (modalKey, modalType) => {
-        debugger
         return (record, param) => {
             if (modalType === "edit") {
                 const {versionId} = this.state;
@@ -533,6 +537,7 @@ class Index extends Component {
      * 处理Tab切换
      */
     handleTabChange = (activeTapKey) => {
+        this.handleSavePlanQuotaData(false);
         this.setState({activeTapKey});
     };
 
@@ -563,7 +568,7 @@ class Index extends Component {
         let approvalCode = iss.getEVal("area");
 
         //先保存数据再进行跳转
-        this.handleSaveVersionData()
+        this.handleSavePlanQuotaData(false)
             .then(params => {
                 iss.hashHistory.push({
                     pathname: "/ProcessApproval",
@@ -602,7 +607,8 @@ class Index extends Component {
                 return (
                     <li key={item.guid} style={{zIndex: len - index}}
                         className={item.guid == step.guid ? "active " : ""}
-                        onClick={this.handleStepClick(item)}><span className={classNameObj[item.statusCode]}></span>{item.name}</li>
+                        onClick={this.handleStepClick(item)}><span
+                        className={classNameObj[item.statusCode]}></span>{item.name}</li>
                 );
             }
         });
@@ -650,6 +656,7 @@ class Index extends Component {
     //         </div>
     //     );
     // };
+
 
     /**
      * 渲染Tab 保存按钮显示部分
@@ -845,12 +852,14 @@ class Index extends Component {
                                              versionStatus={this.getVersionStatus()}
                                              approvalStatus={this.getApprovalStatus()}
                                              step={step}
-                                             onSaveVersionData={this.handleSaveVersionData}
+                                             onSaveVersionData={this.handleSavePlanQuotaData}
                                              onDeleteVersionData={this.handleDeleteVersionData}
                                              onVersionChange={this.handleVersionChange}
                                              onHandleCreateVersion={this.handleCreateVersion}
                                              onHandleApproval={this.handleApproval}
-                                             onHandleModalClick={this.handleModalClick}/>
+                                             onHandleBlockFormatEdit={this.handleModalClick("block-format-edit", "edit")}
+                                             onHandleBuildingFormatEdit={this.handleModalClick("building-format-edit", "edit")}
+                                />
                             </div>
                         </Col>
                     </Row>

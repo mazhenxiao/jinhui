@@ -6,9 +6,12 @@
   "scripts": {
     "start": "node server.js&webpack --display-error-details -w",
     "dev": "webpack --display-error-details -w",
-    "web": "node server.js",
-    "koa": "node koa",
-    "build": "webpack --display-error-details"
+    "server-test": "NODE_ENV=test node koa",
+    "server-uat": "NODE_ENV=uat node koa",
+    "server-prod": "NODE_ENV=prod node koa",
+    "build-test": "webpack --config ./webpack.config.test.js --display-error-details",
+    "build-uat": "webpack --config ./webpack.config.uat.js --display-error-details --progress",
+    "build-prod": "webpack --config ./webpack.config.prod.js --display-error-details --progress"
   },
   "author": "",
   "license": "ISC",
