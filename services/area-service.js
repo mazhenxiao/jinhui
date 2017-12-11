@@ -418,10 +418,6 @@ const areaInfoISaveAreaPlanInfo = (versionId = "", step = "2", data = []) => {
             detaileData: JSON.stringify(data)
         }
     })
-        .then(arg => arg)
-        .catch(error => {
-            return Promise.reject(error);
-        })
 };
 
 /**
