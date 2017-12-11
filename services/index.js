@@ -4,9 +4,10 @@ import * as Supply from './supply-service';
 import * as PrimaryKey from './primaryKey-service';
 import * as price from './price-service.js';
 import * as Project from './project-service';
-import * as Common from "./common-service";
+import * as CommonService from "./common-service";
+
 export {
-    Common,
+    CommonService,
     AreaService,
     Payment,
     Supply,
