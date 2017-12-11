@@ -40,6 +40,7 @@ class Index extends Component {
         step: {}, /*当前阶段*/
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : "Stage",//显示模式，项目或者分期
+        current: this.props.location.query["current"],
         //方案指标数据，面积数据
         areaData: {},
         //面积数据里的查询
@@ -254,11 +255,11 @@ class Index extends Component {
         Promise.all(allPromise)
             .then(([planData, blockData, buildingData, formatData, conditionData]) => {
                 //模拟景观软硬比正则校验，后台添加后移除
-                planData.forEach(arg=>{
-                    
-                    if(arg.id=="SCENERYHARDSOFTRATE"){
-                
-                        arg.regExp=`{
+                planData.forEach(arg => {
+
+                    if (arg.id == "SCENERYHARDSOFTRATE") {
+
+                        arg.regExp = `{
                             type:"regExp",
                             regExp:"^#d+#\:#\d+$"
                         }`
@@ -388,7 +389,7 @@ class Index extends Component {
     /**
      *  保存当前版本的规划方案指标数据
      */
-    handleSaveVersionData = () => {
+    handleSavePlanQuotaData = (showTip = true) => {
         const {step, versionId} = this.state;
         if (!versionId) {
             iss.error("请先创建新版本");
@@ -408,8 +409,10 @@ class Index extends Component {
         });
 
         return AreaService.areaInfoISaveAreaPlanInfo(versionId, step.code, data)
-            .then(da => {
-                iss.info("保存成功");
+            .then(res => {
+                if (showTip) {
+                    iss.info("保存成功");
+                }
             })
             .catch(err => {
                 iss.error(err);
@@ -453,6 +456,9 @@ class Index extends Component {
             if (newStep.code === step.code) return;
 
             let versionId = undefined;
+
+            //保存当前版本的规划方案指标数据
+            this.handleSavePlanQuotaData(false);
 
             this.setState({
                 loading: true,
@@ -504,6 +510,8 @@ class Index extends Component {
                     iss.error("当前版本已审批通过, 请创建新版本后进行编辑!");
                     return;
                 }
+
+                this.handleSavePlanQuotaData(false);
             }
             this.setState({
                 modalKey,
@@ -531,6 +539,7 @@ class Index extends Component {
      * 处理Tab切换
      */
     handleTabChange = (activeTapKey) => {
+        this.handleSavePlanQuotaData(false);
         this.setState({activeTapKey});
     };
 
@@ -561,7 +570,7 @@ class Index extends Component {
         let approvalCode = iss.getEVal("area");
 
         //先保存数据再进行跳转
-        this.handleSaveVersionData()
+        this.handleSavePlanQuotaData(false)
             .then(params => {
                 iss.hashHistory.push({
                     pathname: "/ProcessApproval",
@@ -600,7 +609,8 @@ class Index extends Component {
                 return (
                     <li key={item.guid} style={{zIndex: len - index}}
                         className={item.guid == step.guid ? "active " : ""}
-                        onClick={this.handleStepClick(item)}><span className={classNameObj[item.statusCode]}></span>{item.name}</li>
+                        onClick={this.handleStepClick(item)}><span
+                        className={classNameObj[item.statusCode]}></span>{item.name}</li>
                 );
             }
         });
@@ -620,34 +630,35 @@ class Index extends Component {
     /**
      * 渲染button
      */
-    renderButtonList = () => {
+    // renderButtonList = () => {
 
-        //审批状态时,不显示阶段按钮
-        if (this.getApprovalStatus()) {
-            return null;
-        }
+    //     //审批状态时,不显示阶段按钮
+    //     if (this.getApprovalStatus()) {
+    //         return null;
+    //     }
 
-        const {step} = this.state;
-        return (
-            <div>
-                <div className="areaTopbtn jhBtn-wrap">
-                    <button type="button" className="jh_btn jh_btn28 jh_btn_add" onClick={this.handleCreateVersion}>
-                        生成新版本
-                    </button>
-                    {
-                        parseInt(step.guid) <= 2 ?
-                            <button type="button" className="jh_btn jh_btn28 jh_btn_save"
-                                    onClick={this.handleModalClick("block-format-edit", "edit")}>业态维护
-                            </button> :
-                            <button type="button" className="jh_btn jh_btn28 jh_btn_save"
-                                    onClick={this.handleModalClick("building-format-edit", "edit")}>业态/楼栋维护
-                            </button>
-                    }
+    //     const {step} = this.state;
+    //     return (
+    //         <div>
+    //             {/* <div className="areaTopbtn jhBtn-wrap"> */}
+    //                 <button type="button" className="jh_btn jh_btn28 jh_btn_add" onClick={this.handleCreateVersion}>
+    //                     生成新版本
+    //                 </button>
+    //                 {
+    //                     parseInt(step.guid) <= 2 ?
+    //                         <button type="button" className="jh_btn jh_btn28 jh_btn_save"
+    //                                 onClick={this.handleModalClick("block-format-edit", "edit")}>业态维护
+    //                         </button> :
+    //                         <button type="button" className="jh_btn jh_btn28 jh_btn_save"
+    //                                 onClick={this.handleModalClick("building-format-edit", "edit")}>业态/楼栋维护
+    //                         </button>
+    //                 }
                     
-                </div>
-            </div>
-        );
-    };
+    //             {/* </div> */}
+    //         </div>
+    //     );
+    // };
+
 
     /**
      * 渲染Tab 保存按钮显示部分
@@ -819,7 +830,7 @@ class Index extends Component {
     };
 
     render() {
-        const {loading, dataKey, step, versionId, versionData} = this.state;
+        const {loading, dataKey, step, versionId, versionData,current} = this.state;
         if (!dataKey) {
 
             return this.renderEmpty();
@@ -836,18 +847,21 @@ class Index extends Component {
                     {this.renderStepList()}
                     <Row gutter={0}>
                         <Col span={24}>
-                            {this.renderTabList()}
                             <div>
-                                {this.renderButtonList()}
                                 <SaveVersion versionId={versionId}
+                                             current={current}
                                              versionData={versionData}
                                              versionStatus={this.getVersionStatus()}
                                              approvalStatus={this.getApprovalStatus()}
                                              step={step}
-                                             onSaveVersionData={this.handleSaveVersionData}
+                                             onSaveVersionData={this.handleSavePlanQuotaData}
                                              onDeleteVersionData={this.handleDeleteVersionData}
                                              onVersionChange={this.handleVersionChange}
-                                             onHandleApproval={this.handleApproval}/>
+                                             onHandleCreateVersion={this.handleCreateVersion}
+                                             onHandleApproval={this.handleApproval}
+                                             onHandleBlockFormatEdit={this.handleModalClick("block-format-edit", "edit")}
+                                             onHandleBuildingFormatEdit={this.handleModalClick("building-format-edit", "edit")}
+                                />
                             </div>
                         </Col>
                     </Row>

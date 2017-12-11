@@ -7,7 +7,7 @@
 .areaTopbtn {
   position: absolute;
   top: 6px;
-  right: 233px;
+  right: 0;
   z-index: 300;
 }
 .areaVeSel {
@@ -21,7 +21,6 @@
   font-size: 12px;
   color: #999;
   min-width: 79px;
-  padding-right: 200px;
 }
 .areaUnit {
   display: inline-block;
