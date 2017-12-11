@@ -248,9 +248,9 @@ class PriceControl extends React.Component {
                    return params.statusCode=="draft";
                })[0];
                step = step? step:stepData[0]; 
-                let versionId = this.getDefaultVersionId(this.state.versionData);
+               // let versionId = this.getDefaultVersionId(this.state.versionData);
                 this.setState({
-                    versionId,
+                  //  versionId,
                     stepData,
                     step: step,
                 });
@@ -356,9 +356,10 @@ class PriceControl extends React.Component {
         //获取小版本跳转
         let versionId = this.state.versionId; //;
         let newProjectStatus = iss.getEVal("priceControl");
+        const {isProOrStage} = this.props.location.query;
         iss.hashHistory.push({
             pathname: "/ProcessApproval",
-            search: `?e=${newProjectStatus}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${this.props.location.query["dataKey"]}`
+            search: `?e=${newProjectStatus}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${this.props.location.query["dataKey"]}&isProOrStage=${isProOrStage}`
         });
         /*      price.IGetProVersion(dataKey)
                  .then(arg => {
@@ -437,9 +438,17 @@ class PriceControl extends React.Component {
      *  projectLevel //级别项目传1，分期前两个传2，后面传3
      */
     EventChangeSelectVersion = versionId => {
-        this.setState({
-            versionId
-        });
+        if(this.state.versionData[0]["id"]!=versionId){
+            this.setState({
+                isNoPriceData:true,
+                versionId
+            });
+        }else{
+            this.setState({
+                versionId
+            });
+        }
+       
         let { step, mode } = this.state;
         let opt = {
             stageversionid: versionId,
