@@ -247,9 +247,33 @@ class PriceControl extends React.Component {
             currentVertionid= this.state.versionData[0].id != versionId;
         }
         if(this.state.step){
-            currentStep = this.state.step.statusCode!="draft"
+            debugger
+            currentStep = this.state.step.statusCode!=this.FindCurrentStep(this.state.stepData);
+            
         }
         return currentVertionid||currentStep;
+    }
+    /**
+     * 查找当前阶段
+     * approvaling【审批中】 -> draft【编制中】 -> approvaled 【审批通过】-> undraft 【未编制】 
+     */
+    FindCurrentStep=(step)=>{
+
+         let da = step;//[{"guid":"1","name":"拿地版","code":"Vote","className":"legend-white","statusCode":"undraft"},{"guid":"2","name":"项目定位会版","code":"ProductPosition","className":"legend-white","statusCode":"undraft"},{"guid":"4","name":"启动会版","code":"Startup","className":"legend-yellow","statusCode":"approvaling"},{"guid":"5","name":"工规证版","code":"Rules","className":"legend-white","statusCode":"undraft"},{"guid":"6","name":"决策书版","code":"Decision","className":"legend-white","statusCode":"undraft"}]
+        let state = "approvaling,draft,approvaled,undraft".split(",");
+        let currentString="";
+            for(var k=0;k<state.length;k++){
+                let current =  da.filter(key=>key.statusCode==state[k]);
+                if(current.length){
+                    
+                    currentString=state[k];
+                    return currentString;
+                  
+                }
+
+            }
+            debugger
+            return "";
     }
     /**
      * 加载步骤
@@ -282,8 +306,10 @@ class PriceControl extends React.Component {
                 
                // let step = stepData[0];
                let step = stepData.filter(params=>{
-                   return params.statusCode=="draft";
+                   
+                   return params.statusCode==this.FindCurrentStep(stepData);
                })[0];
+               
                step = step? step:stepData[0]; 
                // let versionId = this.getDefaultVersionId(this.state.versionData);
                 this.setState({
