@@ -253,6 +253,17 @@ class Index extends Component {
 
         Promise.all(allPromise)
             .then(([planData, blockData, buildingData, formatData, conditionData]) => {
+                //模拟景观软硬比正则校验，后台添加后移除
+                planData.forEach(arg=>{
+                    
+                    if(arg.id=="SCENERYHARDSOFTRATE"){
+                
+                        arg.regExp=`{
+                            type:"regExp",
+                            regExp:"^#d+#\:#\d+$"
+                        }`
+                    }
+                })
 
                 this.setState({
                     loading: false,
