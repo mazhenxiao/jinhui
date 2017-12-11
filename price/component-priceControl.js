@@ -190,9 +190,7 @@ class PriceControl extends React.Component {
     Create_TabelData = priceData => {
         // console.log("data",priceData)
         let isNoPriceData =!Boolean(priceData.length);
-        if(this.state.versionData&&this.state.versionData.length){
-            isNoPriceData = this.state.versionData[0].id != this.state.versionId;
-        }
+        isNoPriceData = this.CheckNotCurrentStepAndVertionId();
         
         this.setState({
             isNoPriceData,
@@ -208,7 +206,19 @@ class PriceControl extends React.Component {
         params[row] = val;
         this.forceUpdate();
     }
-
+    /**
+     * 非当前阶段和非当前最新版本不现实保存和编辑
+     */
+    CheckNotCurrentStepAndVertionId=(id)=>{
+        let currentVertionid=true,currentStep=true,versionId = id|| this.state.versionId;
+        if(this.state.versionData&&this.state.versionData.length){
+            currentVertionid= this.state.versionData[0].id != versionId;
+        }
+        if(this.state.step){
+            currentStep = this.state.step.statusCode!="draft"
+        }
+        return currentVertionid||currentStep;
+    }
     /**
      * 加载步骤
      */
@@ -433,16 +443,12 @@ class PriceControl extends React.Component {
      *  projectLevel //级别项目传1，分期前两个传2，后面传3
      */
     EventChangeSelectVersion = versionId => {
-        if(this.state.versionData[0]["id"]!=versionId){
+
             this.setState({
-                isNoPriceData:true,
+              //  isNoPriceData:this.CheckNotCurrentStepAndVertionId(versionId),
                 versionId
             });
-        }else{
-            this.setState({
-                versionId
-            });
-        }
+        
        
         let { step, mode } = this.state;
         let opt = {

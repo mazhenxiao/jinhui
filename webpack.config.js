@@ -96,7 +96,7 @@ var config = {
     },
 }
 if (process.argv.pop().indexOf("-w") >= 0) {
-    c.exec("npm run koa");
+    c.exec("node koa");
 }
 
 module.exports = config;
