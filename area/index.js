@@ -509,6 +509,8 @@ class Index extends Component {
                     iss.error("当前版本已审批通过, 请创建新版本后进行编辑!");
                     return;
                 }
+
+                this.handleSavePlanQuotaData(false);
             }
             this.setState({
                 modalKey,
