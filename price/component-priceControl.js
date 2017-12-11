@@ -9,7 +9,7 @@ import ExchangeButton from "../components/tools-exchangeButton.js";
 import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
 import { Spin, Tabs, Row, Col, Button, Select, Table, Input } from 'antd';
 import { AreaConstants } from '../constants';
-import { price, AreaService,Common } from '../services';
+import { price, AreaService } from '../services';
 import { knife } from '../utils';
 import"../css/tools-processBar.less";
 import "../css/button.less";
@@ -86,17 +86,7 @@ class PriceControl extends React.Component {
        // this.Approal_RevertDataKey();
         //this.Fetch_GetPriceList();
     }
-    /**
-     * 从待审跳转的页面用（dataKey：小版本）去转换老的dataKey
-     */
-    Approal_RevertDataKey=()=>{
-        if(this.props.location.query["current"]){
-            Common.getCurrentStepService()
-                  .then(response=>{
-                      
-                  })
-        }
-    }
+
     /**
      * 当前是否是审批
      */
@@ -248,9 +238,9 @@ class PriceControl extends React.Component {
                    return params.statusCode=="draft";
                })[0];
                step = step? step:stepData[0]; 
-                let versionId = this.getDefaultVersionId(this.state.versionData);
+               // let versionId = this.getDefaultVersionId(this.state.versionData);
                 this.setState({
-                    versionId,
+                  //  versionId,
                     stepData,
                     step: step,
                 });
@@ -356,9 +346,10 @@ class PriceControl extends React.Component {
         //获取小版本跳转
         let versionId = this.state.versionId; //;
         let newProjectStatus = iss.getEVal("priceControl");
+        const {isProOrStage} = this.props.location.query;
         iss.hashHistory.push({
             pathname: "/ProcessApproval",
-            search: `?e=${newProjectStatus}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${this.props.location.query["dataKey"]}`
+            search: `?e=${newProjectStatus}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${this.props.location.query["dataKey"]}&isProOrStage=${isProOrStage}`
         });
         /*      price.IGetProVersion(dataKey)
                  .then(arg => {
@@ -437,9 +428,17 @@ class PriceControl extends React.Component {
      *  projectLevel //级别项目传1，分期前两个传2，后面传3
      */
     EventChangeSelectVersion = versionId => {
-        this.setState({
-            versionId
-        });
+        if(this.state.versionData[0]["id"]!=versionId){
+            this.setState({
+                isNoPriceData:true,
+                versionId
+            });
+        }else{
+            this.setState({
+                versionId
+            });
+        }
+       
         let { step, mode } = this.state;
         let opt = {
             stageversionid: versionId,
