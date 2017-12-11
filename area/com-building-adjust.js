@@ -288,6 +288,7 @@ class ComBuildingAdjust extends Component {
                             headerData={buildingHeaderData}
                             dataSource={buildingDataSource}
                             rowKey="KEY"
+                            editState={true}
                             // fixedAble={true}
                             onDataChange={this.handleBuildingDataChange}
                         />
@@ -358,6 +359,7 @@ class ComBuildingAdjust extends Component {
                         headerData={formatHeaderData}
                         dataSource={formatDataSource}
                         rowKey="KEY"
+                        editState={true}
                         // fixedAble={true}
                         onDataChange={this.handleFormatDataChange}
                         columnRender={this.columnRender}
