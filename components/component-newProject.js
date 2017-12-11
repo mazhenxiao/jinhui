@@ -162,6 +162,7 @@ class NewProject extends React.Component {
 
                         var da = {};
                         th.BIND_CHECKINewLand(d.rows).forEach((el, ind) => {
+                            
                             if (ind == 0) { //初次加载地块
 
                                 th.setState({
@@ -225,8 +226,16 @@ class NewProject extends React.Component {
         if (this.state.states) {
             // this.DynamicData["pid"]=iss.guid();
             let guid = iss.guid();
-
             this.state.DynamicData[guid] = { LandId: guid, FieldList: nd }; //向数据树添加一条数据
+            //先手动修改后面让后台去修改数据库
+          /*   nd.forEach((ele,ind)=>{
+                if(ele.id=="LANDCODE"){
+                    ele.regExp=`{
+                        type:"regExp",
+                        check:"[]"
+                    }`
+                }
+            }) */
             this.setState({
                 propsDATA: nd,  //新增地块
                 pid: guid

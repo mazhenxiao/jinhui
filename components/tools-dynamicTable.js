@@ -24,17 +24,14 @@ class DynamicTable extends React.Component {
 
 
     }
-    componentDidMount() {
-
-    }
+    componentDidMount() { }
     componentWillReceiveProps(nextProps,nextStage){
         let {readOnly} = nextProps;
         this.setState({
             readOnly
         })
     }
-    shouldComponentUpdate(nextProps, nextState){
-        
+    shouldComponentUpdate(nextProps, nextState){    
         return shallowCompare(this, nextProps.planData, nextState.planData);
     } 
     BIND_INPUT_STATE() {
@@ -65,6 +62,11 @@ class DynamicTable extends React.Component {
             error(e) { }
         })
     }
+    /**
+     * 日期控件
+     * @param {当前数据} el 
+     * @param {event} ev 
+     */
     setEventDate(el, ev) {
         
         let th = this;
@@ -87,7 +89,11 @@ class DynamicTable extends React.Component {
 
 
     }
-
+      /**
+       * 修改input后出发事件
+       * @param {当前数据} da 
+       * @param {event} ev 
+       */
     EVENT_CHANGE_INPUT(da, ev) { //input修改
         var th = this;
         da.edit=da.edit||" +w";//默认值伪可写
@@ -103,6 +109,11 @@ class DynamicTable extends React.Component {
         }
 
     }
+    /**
+     * 单选select模块change事件
+     * @param {当前编辑数据} da 
+     * @param {event} ev 
+     */
     EVENT_CHANGE_SELECT(da, ev) {
 
         // el.test.check=false;
@@ -126,6 +137,11 @@ class DynamicTable extends React.Component {
          }
         
     }
+    /**
+     * 数据校验
+     * @param {当前数据} da 
+     * @param {实际值} val 
+     */
     Bind_checked(da, val) { //检测数据
         let reg = eval(`(${da.regExp})`);
         if (reg && reg.type.indexOf("number") >= 0) {
@@ -143,6 +159,11 @@ class DynamicTable extends React.Component {
         }
         return true
     }
+    /**
+     * 但范围的max  min值失去焦点校验
+     * @param {当前data数据} el 
+     * @param {event} ev 
+     */
     EVENT_BLUR_INPUT(el, ev) { //失去焦点
       
         let reg = el.regExp ? eval("(" + el.regExp + ")") : {};
@@ -172,7 +193,10 @@ class DynamicTable extends React.Component {
         }
 
     }
-
+ /**
+  * 生成列表
+  * @param {所有动态数据} da 
+  */
     setList(da) {
         let typeBox = el => {
             let numreg = (/number\((\d+)\)/).exec(el.regExp||"");

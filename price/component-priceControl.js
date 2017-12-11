@@ -218,7 +218,7 @@ class PriceControl extends React.Component {
      * 加载步骤
      */
     loadStep = (dataKey, mode) => {
-        debugger
+        
         if (dataKey === undefined) {
             dataKey = this.state.dataKey;
             mode = this.state.mode;
@@ -255,11 +255,12 @@ class PriceControl extends React.Component {
                     step: step,
                 });
                 if (step) {
-                    return AreaService.getVersion(step, dataKey, mode, "Price") //获取价格版本id
+                    return price.GetPriceNewEdit(step,dataKey, mode, "Price") //获取价格版本id
                 }
                 return Promise.reject("未获取到阶段数据！");
             })
             .then(versionData => {
+                debugger
                 let versionId = this.getDefaultVersionId(versionData),
                     curVersion = versionData.filter(arg => {
                         return arg["id"] == versionId;
