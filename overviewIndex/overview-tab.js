@@ -31,8 +31,8 @@ class OverviewTab extends React.Component {
                 // { "guid":"6","text":"重点事项","tap":"matter"},
                 // { "guid":"7","text":"关键指标","tap":"keyPoint"},
             ],
-            //dataKey:"1E1CB1E95A864AFA961392C3E3644642",
-            iframeUrl:"http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=",
+            planUrl:"http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=",
+            iframeUrl:"http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=1E1CB1E95A864AFA961392C3E3644642",
             ...this.state,
             ...this.props.data,
         
@@ -131,18 +131,17 @@ class OverviewTab extends React.Component {
         }
     }
     iframeLoad = () =>{
-        let iframeUrl = this.state.iframeUrl;
         let dataKey  = this.props.data.dataKey;
-        iframeUrl = iframeUrl+dataKey;
-        
-        if(dataKey==""){
-            return <div></div>
+        let iframeUrl=this.state.planUrl+dataKey;
+        if(dataKey == undefined ){
+            //alert("http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=1E1CB1E95A864AFA961392C3E3644642")
+            //$(event.target).attr("src", );
+            return <iframe ref="outheIframe" src={"http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=1E1CB1E95A864AFA961392C3E3644642"} scrolling="no" width="100%" height="700" style={{border: 0}}></iframe>
         }else{
-            //setTimeout(this.refs.outheIframe.window.reload(),3000);
+            //alert(iframeUrl)
+            //$(event.target).attr("src",iframeUrl);
             return <iframe ref="outheIframe" src={iframeUrl} scrolling="no" width="100%" height="700" style={{border: 0}}></iframe>
-            console.log(this.refs.outheIframe);
-            setTimeout(this.refs.outheIframe.window.reload(),3000);
-        }
+        } 
         
     }
    
@@ -150,7 +149,6 @@ class OverviewTab extends React.Component {
     renderSyncEele=arg=>{
          let currentPosi=this.state.currentPosi;
          let location = this.props.data.location;
-        
          switch(arg){
             case "index"://项目概览
                 return <OverviewIndex />
@@ -175,7 +173,7 @@ class OverviewTab extends React.Component {
                 return <OverviewPayment />
             break;
             case "plan"://计划
-                return this.iframeLoad();
+                return  this.iframeLoad();
             break;
             case "matter"://重点事项
                 return <OverviewPriority />
