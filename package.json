@@ -10,8 +10,8 @@
     "server-uat": "NODE_ENV=uat node koa",
     "server-prod": "NODE_ENV=prod node koa",
     "build-test": "webpack --config ./webpack.config.test.js --display-error-details",
-    "build-uat": "webpack --config ./webpack.config.uat.js --display-error-details",
-    "build-prod": "webpack --config ./webpack.config.prod.js --display-error-details"
+    "build-uat": "webpack --config ./webpack.config.uat.js --display-error-details --progress",
+    "build-prod": "webpack --config ./webpack.config.prod.js --display-error-details --progress"
   },
   "author": "",
   "license": "ISC",
