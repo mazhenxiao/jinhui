@@ -71,7 +71,7 @@ class $knife {
      * 参数                   返回值
      */
     count = arg => {
-
+       
     }
     /**
      * 递归计算用于处理包含children递归
@@ -152,7 +152,7 @@ class $knife {
      * @param {*数组} dataSource
      */
     setTableExec(Obj, headerData, dataSource){
-
+        debugger
     }
     /**
      * 数据有效性检测
