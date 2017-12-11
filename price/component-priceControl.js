@@ -110,7 +110,7 @@ class PriceControl extends React.Component {
      * 转换数据: 版本id → 项目Id/分期Id
      */
     changeVersionIdToDataKey = () => {
-        debugger
+        
          const versionId = this.props.location.query.dataKey;
         AreaService.getBaseInfoByVersionId(versionId)
             .then(baseInfo => {
