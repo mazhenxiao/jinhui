@@ -81,7 +81,14 @@ class PriceControl extends React.Component {
     }
 
     componentDidMount() {
-        this.loadStep();
+        //判断是否是审批, 真:审批状态; 假:普通状态
+        
+        if (this.SetisApproal()) {
+            this.changeVersionIdToDataKey();
+        } else {
+            this.loadStep();
+        }
+       // this.loadStep();
       //  this.SetisApproal();
        // this.Approal_RevertDataKey();
         //this.Fetch_GetPriceList();
@@ -93,12 +100,36 @@ class PriceControl extends React.Component {
     SetisApproal = arg => {
         
         let stateData = arg? arg.location.query:this.props.location.query;
-        
             this.setState({
                 isApproal: Boolean(stateData["current"])
             })
-        
+        return Boolean(stateData["current"])
     }
+    
+    /**
+     * 转换数据: 版本id → 项目Id/分期Id
+     */
+    changeVersionIdToDataKey = () => {
+        
+         const versionId = this.props.location.query.dataKey;
+        AreaService.getBaseInfoByVersionId(versionId)
+            .then(baseInfo => {
+                const dataKey = baseInfo["parentid"];
+                const mode = baseInfo["projectlevel"] == "1" ? "Project" : "Stage";
+                const defaultStepId = baseInfo["step"];
+
+                this.setState({
+                    dataKey,
+                    mode,
+                    defaultStepId,
+                });
+
+                this.loadStep(dataKey, mode, defaultStepId);
+            })
+            .catch(error => {
+                iss.error(error);
+            }); 
+    };
     /** 获取
      *  stageversionid,  //项目或版本id
      *  step,  //当前阶段
