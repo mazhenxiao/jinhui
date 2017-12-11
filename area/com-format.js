@@ -51,8 +51,8 @@ class ComFormat extends Component {
     columnRender = {
         PRODUCTNAME: (text, record) => {
             if (record["LevelId"] === 1)
-                return <a className="format-tree-parent">{text}</a>;
-            return <a className="format-tree-child">{text}</a>;
+                return <span className="format-tree-parent">{text}</span>;
+            return <span className="format-tree-child">{text}</span>;
         }
     };
 
@@ -81,7 +81,7 @@ class ComFormat extends Component {
      */
     getFilterDataSource = () => {
         const {dataSource} = this.props;
-        const {buildingKey, formatKey} = this.state;
+
         if (this.filterBuildingKey == "" && this.filterFormatKey == "") {
             return dataSource;
         }
@@ -111,8 +111,7 @@ class ComFormat extends Component {
             }
             return false;
         });
-
-        //根据匹配的一级楼栋进行筛选
+        //根据匹配的一级业态进行筛选
         let filterDataSource = dataSource.filter(item => {
             return matchFormatData.some(filterItem => {
                 if (item["LevelId"] == 1) {
@@ -122,7 +121,7 @@ class ComFormat extends Component {
                 }
             });
         });
-        //匹配的二级业态进行筛选
+        //匹配的二级楼栋进行筛选
         filterDataSource = filterDataSource.filter(item => {
             return matchBuildingData.some(filterItem => {
                 if (item["LevelId"] == 1) {
@@ -132,9 +131,7 @@ class ComFormat extends Component {
                 }
             });
         });
-
         return filterDataSource;
-
     };
 
     render() {

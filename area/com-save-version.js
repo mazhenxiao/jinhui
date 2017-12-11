@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
-import {Spin, Tabs, Row, Col, Button, Select} from 'antd';
+import {Spin, Tabs, Row, Col, Button, Select, Modal} from 'antd';
 import iss from "../js/iss";//公共类
 import {AreaConstants} from '../constants';
 import {WrapperSelect} from '../common';
 import "babel-polyfill";  //兼容ie
 import "./areaCss/com-SaveVersion.less";
+
+const confirm = Modal.confirm;
+
 const {AreaManageStep, Legend, SelectVertionData} = AreaConstants;
 const {Option} = Select;
 
@@ -15,7 +18,9 @@ class SaveVersion extends Component {
         versionId: React.PropTypes.string,//当前版本
         onVersionChange: React.PropTypes.func,//版本选择项发生改变时
         onSaveVersionData: React.PropTypes.func,//保存当前版本的规划方案指标数据
-        approvalState: React.PropTypes.bool,//审核状态, 真:是审核状态, 假:非审核状态
+        onDeleteVersionData: React.PropTypes.func,//保存当前版本的数据
+        approvalStatus: React.PropTypes.bool,//审核状态, 真:是审核状态, 假:非审核状态
+        versionStatus: React.PropTypes.string,//版本状态  未编制 undraft, 编制中 draft, 审批中 approvaling, 审批通过 approvaled
     };
 
     static defaultProps = {
@@ -25,7 +30,10 @@ class SaveVersion extends Component {
         },
         onSaveVersionData: () => {
         },
-        approvalState: false,
+        onDeleteVersionData: () => {
+        },
+        approvalStatus: false,
+        versionStatus: "",
     };
 
     /**
@@ -33,6 +41,20 @@ class SaveVersion extends Component {
      */
     handleSave = () => {
         this.props.onSaveVersionData && this.props.onSaveVersionData();
+    };
+
+    handleDelete = () => {
+        confirm({
+            title: '删除确认',
+            content: '确认要删除该版本吗? ',
+            onOk: () => {
+                this.props.onDeleteVersionData && this.props.onDeleteVersionData();
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+
     };
 
     /**
@@ -44,24 +66,33 @@ class SaveVersion extends Component {
     };
 
     renderSaveButton = () => {
-        const {step, approvalState} = this.props;
-        /**
-         * 春燕说让先放开保存按钮
-         */
-       // if (parseInt(step.guid) <= 2 && !approvalState) {
-           if(!approvalState){
+        const {approvalStatus, versionStatus} = this.props;
+        if (approvalStatus || versionStatus == "approvaling" || versionStatus == "approvaled") {
+            return null;
+        }
+        return (
+            <button type="button" className="jh_btn jh_btn28 jh_btn_save Left" onClick={this.handleSave}>
+                保存</button>
+        );
+    };
+
+    renderDeleteButton = () => {
+        const {approvalStatus, versionStatus} = this.props;
+        if (approvalStatus) {
+            return null;
+        }
+        if (versionStatus == "draft") {
             return (
-                <button type="button" className="jh_btn jh_btn28 jh_btn_save Left" onClick={this.handleSave}>
-                    保存</button>
+                <button type="button" className="jh_btn jh_btn28 jh_btn_delete Left" onClick={this.handleDelete}>
+                    删除</button>
             );
         }
-       // }
         return null;
     };
 
     renderVersion = () => {
-        const {versionData, versionId, approvalState} = this.props;
-        if (approvalState) {
+        const {versionData, versionId, approvalStatus} = this.props;
+        if (approvalStatus) {
             return null;
         }
         return (
@@ -69,7 +100,7 @@ class SaveVersion extends Component {
                 <WrapperSelect dataSource={versionData} labelText="当前版本:" showDefault={false}
                                labelSpan={10}
                                inputSpan={14}
-                               style={{width: "100px"}}
+                               style={{width: "80px"}}
                                value={versionId}
                                onChange={this.handleChange}/>
             </div>
@@ -77,16 +108,17 @@ class SaveVersion extends Component {
     };
 
     render() {
-        const {versionData, versionId, approvalState} = this.props;
+        const {versionData, versionId, approvalStatus} = this.props;
         const currentVersion = versionData.filter(item => item.id === versionId)[0];
 
         return (
             <div className="PosRight">
-                <span className="areaUnit Left">（面积单位：㎡，车位单位：个，限高单位：米）</span>
+                <span className="areaUnit Left">（面积单位:㎡,车位单位:个,限高单位:米）</span>
                 {this.renderSaveButton()}
+                {this.renderDeleteButton()}
                 {this.renderVersion()}
                 {
-                    !approvalState ?
+                    !approvalStatus ?
                         <span className="areaStatus">状态: {currentVersion ? currentVersion["statusName"] : "无"}</span>
                         : null
                 }

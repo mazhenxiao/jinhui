@@ -345,7 +345,12 @@ class StagingInformation extends React.Component {
         })
         ReactDOM.render(<GroupIframe  data={data} callback={th.GroupIframeCallback.bind(this)}  versionId = {th.state.STAGEVERSIONID} />,document.querySelector("#GroupIframeBox"));
     }
+    /**
+     * 点击
+     * @param {*} da 
+     */
     GroupIframeCallback(da){
+       // console.log("352",da)
         this.grupInfo=da;
     }
     PlateIframeCallback(da){
@@ -786,7 +791,9 @@ class StagingInformation extends React.Component {
         eleDom.validatebox(valideRule);
    	});
    }
-   /*验证form*/
+   /*验证form
+     新增组团校验，如果若【组团划分中存在未划分组团的楼栋，则不允许发起审批】
+   */
   evValidForm(){
   	var isValid=$("#stageInforForm").form("validate");
   	//console.log(isValid);

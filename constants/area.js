@@ -3,7 +3,7 @@
  * "approvaled"  审批通过
  * "undraft"     未编制
  * "draft"       编制中
- * ""            驳回   
+ * "approvaling" 审批中
  */
 const AreaManageStep = [
     {"guid": "1", "name": "投决会", "code": "Vote"},
@@ -20,8 +20,8 @@ const AreaManageStep = [
 const Legend = [
     {"guid": "l1", "text": "未编制", "class": "legend-white"},
     {"guid": "l2", "text": "编制中", "class": "legend-blue"},
-    {"guid": "l3", "text": "审批通过", "class": "legend-green"},
-    {"guid": "l4", "text": "审批驳回", "class": "legend-red"}
+    {"guid": "l3", "text": "审批中", "class": "legend-yellow"},
+    {"guid": "l4", "text": "审批通过", "class": "legend-green"},
 ];
 
 /**
