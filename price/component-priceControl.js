@@ -535,7 +535,7 @@ class PriceControl extends React.Component {
         }
 
         // let defaultValue = this.state.versionData.length ? [this.state.versionData[0]["id"]] : "请选择";
-        return <ul className="BTN_GROUP">
+        return <ul className="BTN_GROUP"> 
             <li className={this.state.isNoPriceData? "hide":""}> {ButtonBar()}</li>
             <li className=""></li>
             <li className=""><span>当前版本：</span><Select value={this.state.versionId} onChange={this.EventChangeSelectVersion} style={{ width: 90 }}>{list}</Select></li>
