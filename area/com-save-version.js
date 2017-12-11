@@ -51,7 +51,7 @@ class SaveVersion extends Component {
                 this.props.onDeleteVersionData && this.props.onDeleteVersionData();
             },
             onCancel() {
-                console.log('Cancel');
+
             },
         });
 
