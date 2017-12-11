@@ -1,14 +1,17 @@
 {
-  "name": "longhu",
+  "name": "pocs-web",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node server.js&webpack --display-error-details -w",
     "dev": "webpack --display-error-details -w",
-    "web": "node server.js",
-    "koa": "node koa",
-    "build": "webpack --display-error-details"
+    "build-test": "webpack --config ./webpack.config.test.js --display-error-details",
+    "build-uat": "webpack --config ./webpack.config.uat.js --display-error-details --progress",
+    "build-prod": "webpack --config ./webpack.config.prod.js --display-error-details --progress",
+    "server-test": "set NODE_ENV=test&&node koa",
+    "server-uat": "set NODE_ENV=uat&&node koa",
+    "server-prod": "set NODE_ENV=prod&&node koa"
   },
   "author": "",
   "license": "ISC",

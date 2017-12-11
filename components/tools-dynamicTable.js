@@ -5,8 +5,8 @@
 import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-import {Select,Input} from 'antd';
-import {shallowCompare} from '../utils';
+import { Select, Input } from 'antd';
+import { shallowCompare } from '../utils';
 import "../css/antd.min.css";
 const Option = Select.Option;
 class DynamicTable extends React.Component {
@@ -24,19 +24,16 @@ class DynamicTable extends React.Component {
 
 
     }
-    componentDidMount() {
-
-    }
-    componentWillReceiveProps(nextProps,nextStage){
-        let {readOnly} = nextProps;
+    componentDidMount() { }
+    componentWillReceiveProps(nextProps, nextStage) {
+        let { readOnly } = nextProps;
         this.setState({
             readOnly
         })
     }
-    shouldComponentUpdate(nextProps, nextState){
-        
+    shouldComponentUpdate(nextProps, nextState) {
         return shallowCompare(this, nextProps.planData, nextState.planData);
-    } 
+    }
     BIND_INPUT_STATE() {
         let $da = this.state.data;
         $da.forEach((da, ind) => {
@@ -48,7 +45,7 @@ class DynamicTable extends React.Component {
             return ""
         } else {
             return d;
-        }      
+        }
     }
 
     getPost() {
@@ -65,12 +62,17 @@ class DynamicTable extends React.Component {
             error(e) { }
         })
     }
+    /**
+     * 日期控件
+     * @param {当前数据} el 
+     * @param {event} ev 
+     */
     setEventDate(el, ev) {
-        
+
         let th = this;
         let de = new Date().Format("yyyy-MM-dd");
         let event = ev.target;
-        el.edit=el.edit||" +w";//默认值伪可写
+        el.edit = el.edit || " +w";//默认值伪可写
         iss.calendar(de, arg => {
             el.val = arg;
 
@@ -87,10 +89,14 @@ class DynamicTable extends React.Component {
 
 
     }
-
+    /**
+     * 修改input后出发事件
+     * @param {当前数据} da 
+     * @param {event} ev 
+     */
     EVENT_CHANGE_INPUT(da, ev) { //input修改
         var th = this;
-        da.edit=da.edit||" +w";//默认值伪可写
+        da.edit = da.edit || " +w";//默认值伪可写
         if (th.Bind_checked(da, ev.target.value)) {
 
             th.props.CallBack(da, ev)
@@ -103,6 +109,11 @@ class DynamicTable extends React.Component {
         }
 
     }
+    /**
+     * 单选select模块change事件
+     * @param {当前编辑数据} da 
+     * @param {event} ev 
+     */
     EVENT_CHANGE_SELECT(da, ev) {
 
         // el.test.check=false;
@@ -116,16 +127,21 @@ class DynamicTable extends React.Component {
     /**
      * antd多选
      */
-    EVENT_CHANGE_ANTD_SELECTS=(da,el)=>{
-         let val = el[el.length-1];
-         let bool = da.data.some(params=>{
-             return (val&&val==params.val)
-         })
-         if(bool){
-            this.props.CallBack(da,Array.isArray(el)? el.join(","):el);
-         }
-        
+    EVENT_CHANGE_ANTD_SELECTS = (da, el) => {
+        let val = el[el.length - 1];
+        let bool = da.data.some(params => {
+            return (val && val == params.val)
+        })
+        if (bool) {
+            this.props.CallBack(da, Array.isArray(el) ? el.join(",") : el);
+        }
+
     }
+    /**
+     * 数据校验
+     * @param {当前数据} da 
+     * @param {实际值} val 
+     */
     Bind_checked(da, val) { //检测数据
         let reg = eval(`(${da.regExp})`);
         if (reg && reg.type.indexOf("number") >= 0) {
@@ -143,42 +159,73 @@ class DynamicTable extends React.Component {
         }
         return true
     }
+    /**
+     * 但范围的max  min值失去焦点校验
+     * @param {当前data数据} el 
+     * @param {event} ev 
+     */
     EVENT_BLUR_INPUT(el, ev) { //失去焦点
-      
+
         let reg = el.regExp ? eval("(" + el.regExp + ")") : {};
-        if(!el.regExp){ return}
+        el["test"] = el["test"]||{"check":true,"val":""}
+        if (!el.regExp) { return }
         var th = this;
         if (reg) {  //范围限制带添加
             let max = parseFloat(reg["max"] || 0);
             let min = parseFloat(reg["min"] || 0);
-            let val =  (reg["type"].indexOf("string") >= 0)? (el.val||"").length:parseFloat(el.val || 0);
+            let val="";
             
-                if (max && val > max && el.test) {
-                    el.test.check = false;
-                    el.test.val = "值不应大于" + max + (el.unit || "");
+             if(reg["type"].indexOf("string") >= 0){ //string类型
+                val=(el.val || "").length 
+             }else if(reg["type"].indexOf("regExp")>=0){ //正则类型
+                val = el.val;
+             }else{  //其他类型
+                val = parseFloat(el.val || 0);
+             } 
+
+            if (max && val > max && el.test) {  //最大值判断
+                el.test["check"] = false;
+                el.test["val"] = "值不应大于" + max + (el.unit || "");
+                th.props.CallBack(el, ev);
+                return
+            } else if (min && val < min && el.test) {  //最小值判断
+                el.test["check"] = false;
+                el.test["val"] = "值不应小于" + min + (el.unit || "");
+                th.props.CallBack(el, ev);
+                return
+            } else if (reg && reg["type"]&&reg["type"].indexOf("regExp") >= 0) {  //正则校验
+                try {
+                    
+                    let paramsReg = new RegExp(reg.regExp.replace(/#/ig,"\\"));
+                    let bools = paramsReg.test(val);
+                    el.test["check"] = bools;
+                    el.test["val"] = bools? "":"输入不合法";
                     th.props.CallBack(el, ev);
-                    return
-                } else if (min && val < min && el.test) {
-                    el.test.check = false;
-                    el.test.val = "值不应小于" + min + (el.unit || "");
-                    th.props.CallBack(el, ev);
-                    return
-                } else {
-                    el.test && (el.test.check = true);
-                    el.test && (el.test.val = "");
-                    th.props.CallBack(el, ev);
+                } catch (e) {
+                   // return false;
+                    console.error(`tools-dynamicTable.js里正则错误`,el)
                 }
-           
+
+
+            } else {
+                el.test && (el.test["check"] = true);
+                el.test && (el.test["val"] = "");
+                th.props.CallBack(el, ev);
+            }
+
         }
 
     }
-
+    /**
+     * 生成列表
+     * @param {所有动态数据} da 
+     */
     setList(da) {
         let typeBox = el => {
-            let numreg = (/number\((\d+)\)/).exec(el.regExp||"");
-            let fixed = numreg? numreg[1]:"";
-            el.edit=el.edit||" +w";//默认值伪可写
-           // fixed=2;
+            let numreg = (/number\((\d+)\)/).exec(el.regExp || "");
+            let fixed = numreg ? numreg[1] : "";
+            el.edit = el.edit || " +w";//默认值伪可写
+            // fixed=2;
             if (this.state.readOnly) {
                 if (el.type == "select") {
                     let list = el.data.map((_d, _i) => {
@@ -186,40 +233,40 @@ class DynamicTable extends React.Component {
                     })
                     return <select readOnly="true" disabled="disabled" name={el.id} className={(el.edit.indexOf("+m") >= 0 && !el.val) ? "required" : ""} onChange={this.EVENT_CHANGE_SELECT.bind(this, el)} value={el.val || ""}>{list}</select>
                 }
-               
-                if(fixed||fixed=="0"){
-                    return <input className="" type="text" readOnly="true" value={el.val? parseFloat(el.val).toFixed(fixed):""} />
-                }else{
+
+                if (fixed || fixed == "0") {
+                    return <input className="" type="text" readOnly="true" value={el.val ? parseFloat(el.val).toFixed(fixed) : ""} />
+                } else {
                     return <input className="" type="text" readOnly="true" value={el.val || ""} />
                 }
             } else {
                 if (el.type == "select") { //单选
-                    if(!Array.isArray(el.data)){return}
+                    if (!Array.isArray(el.data)) { return }
                     let list = el.data.map((_d, _i) => {
                         return <option key={_i} value={_d.val}>{_d.label}</option>
                     })
                     return <select name={el.id} className={(el.edit.indexOf("+m") >= 0 && !el.val) ? "required" : ""} onChange={this.EVENT_CHANGE_SELECT.bind(this, el)} value={el.val || ""}>{list}</select>
                 } else if (el.type == "date") { //日期
                     return <input name={el.id} className={(el.edit.indexOf("+m") >= 0 && !el.val) ? "esayuiDate required" : "esayuiDate"} id={el.id} data-pid={el.pid} value={el.val || ""} placeholder={el.edit.indexOf("+m") >= 0 ? "" : ""} type="text" onClick={this.setEventDate.bind(this, el)} readOnly="true" />
-                } else if(el.type=="selects"){ //多选
-                    if(!Array.isArray(el.data)){return}
+                } else if (el.type == "selects") { //多选
+                    if (!Array.isArray(el.data)) { return }
                     let children = el.data.map((_d, _i) => {
-                        return <Option  key={_d.val}>{_d.label}</Option>
+                        return <Option key={_d.val}>{_d.label}</Option>
                     })
-                    return <Select mode="tags" filterOption={false} name={el.id} tokenSeparators={[',']} className={(el.edit.indexOf("+m") >= 0 && !el.val) ? "required selects" : "selects"} onChange={this.EVENT_CHANGE_ANTD_SELECTS.bind(this,el)} value={Array.isArray(el.val)? el.val: el.val? el.val.split(","):[]}>{children}</Select>
-                }else{
-                    if(el.edit.indexOf("+r")>=0&&(fixed=="0"||fixed)){
-                        return <input name={el.id} id={el.id} className={(el.edit.indexOf("+m") >= 0 && !el.val) ? " required" : ""} data-pid={el.pid} value={el.val? parseFloat(el.val).toFixed(fixed):""} placeholder={el.edit.indexOf("+m") >= 0 ? "" : ""} type="text" onBlur={this.EVENT_BLUR_INPUT.bind(this, el)} onChange={this.EVENT_CHANGE_INPUT.bind(this, el)} readOnly={el.edit.indexOf("+r") >= 0} />
-                    }else{
+                    return <Select mode="tags" filterOption={false} name={el.id} tokenSeparators={[',']} className={(el.edit.indexOf("+m") >= 0 && !el.val) ? "required selects" : "selects"} onChange={this.EVENT_CHANGE_ANTD_SELECTS.bind(this, el)} value={Array.isArray(el.val) ? el.val : el.val ? el.val.split(",") : []}>{children}</Select>
+                } else {
+                    if (el.edit.indexOf("+r") >= 0 && (fixed == "0" || fixed)) {
+                        return <input name={el.id} id={el.id} className={(el.edit.indexOf("+m") >= 0 && !el.val) ? " required" : ""} data-pid={el.pid} value={el.val ? parseFloat(el.val).toFixed(fixed) : ""} placeholder={el.edit.indexOf("+m") >= 0 ? "" : ""} type="text" onBlur={this.EVENT_BLUR_INPUT.bind(this, el)} onChange={this.EVENT_CHANGE_INPUT.bind(this, el)} readOnly={el.edit.indexOf("+r") >= 0} />
+                    } else {
                         return <input name={el.id} id={el.id} className={(el.edit.indexOf("+m") >= 0 && !el.val) ? " required" : ""} data-pid={el.pid} value={el.val || ""} placeholder={el.edit.indexOf("+m") >= 0 ? "" : ""} type="text" onBlur={this.EVENT_BLUR_INPUT.bind(this, el)} onChange={this.EVENT_CHANGE_INPUT.bind(this, el)} readOnly={el.edit.indexOf("+r") >= 0} />
                     }
-                       
+
                 }
             }
         }
 
         return da.map((el, ind) => {
-            el.edit=el.edit||" +w";//默认值伪可写
+            el.edit = el.edit || " +w";//默认值伪可写
             if (el.exec) {
                 let reg = /\{.*?\}/ig;
                 let arr = el.exec.match(reg);
@@ -245,7 +292,7 @@ class DynamicTable extends React.Component {
                 }
             }
             let classNames = el["colspan"] ? `col-sm-${el["colspan"]} col-md-${el["colspan"]} col-lg-${el["colspan"]}` : "col-sm-4 col-md-4 col-lg-4"
-              
+
             return <li key={ind} className={classNames}>
                 <label className={(el.edit.indexOf("+m") >= 0 && !el.val) ? "require" : ""}>{el.label}</label>
                 {

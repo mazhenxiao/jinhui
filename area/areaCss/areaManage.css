@@ -6,22 +6,21 @@
 }
 .areaTopbtn {
   position: absolute;
-  top: 0;
+  top: 6px;
   right: 0;
   z-index: 300;
 }
-.areaStatus {
-  display: inline-block;
-}
 .areaVeSel {
   float: left;
-  padding-right: 30px;
+  padding-right: 15px;
 }
 .areaStatus {
+  display: inline-block;
   float: left;
   line-height: 28px;
   font-size: 12px;
   color: #999;
+  min-width: 79px;
 }
 .areaUnit {
   display: inline-block;
@@ -42,8 +41,101 @@
   padding: 7px 8px;
 }
 .PosRight {
-  top: 6px;
+  top: 12px;
+  z-index: 888;
+}
+.ant-tabs .ant-tabs-bar {
+  padding-top: 10px;
+}
+.jh_btn {
+  padding-right: 10px;
 }
 .PosRight .jh_btn_save {
-  padding-right: 6px;
+  padding-right: 10px;
+}
+.ant-table-bordered .ant-table-tbody > tr > td,
+.ant-table-bordered .ant-table-thead > tr > th {
+  text-align: center;
+}
+.building-format-warn {
+  color: red;
+  line-height: 26px;
+  padding-left: 26px;
+  margin-bottom: 10px;
+}
+.format-tree-parent {
+  display: block;
+  text-align: left;
+  font-weight: 700;
+  padding-left: 10px;
+  font-size: 13px;
+}
+.format-tree-child {
+  display: block;
+  text-align: left;
+  padding-left: 30px;
+  font-size: 13px;
+}
+.format-land-row {
+  padding-bottom: 10px;
+}
+.ant-tabs-nav .ant-tabs-tab {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.table-wapper .ant-table-middle .ant-table-tbody > tr > td {
+  padding: 7px 8px;
+}
+.padding-bottom-6 {
+  padding-bottom: 6px;
+}
+.building-base {
+  margin-bottom: 10px;
+  width: 560px;
+}
+.building-base .show-input {
+  width: 340px;
+  display: inline-block;
+}
+.building-base .select-button {
+  width: 120px;
+  display: inline-block;
+  position: relative;
+  left: 10px;
+  bottom: 10px;
+}
+.building-batch-select {
+  line-height: 28px;
+}
+.building-batch-select .select-all-row .select-all-title {
+  font-size: 13px;
+  font-weight: 500;
+  padding-right: 20px;
+}
+.building-title {
+  height: 30px;
+  line-height: 30px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.single-format-warpper {
+  line-height: 28px;
+}
+.single-format-warpper .single-format-name {
+  padding-left: 64px;
+}
+.single-format-warpper .single-format-name .title {
+  padding-right: 10px;
+}
+.single-format-warpper .single-format-house {
+  padding-left: 64px;
+}
+.single-format-warpper .single-format-house .title {
+  padding-right: 10px;
+}
+.empty-div {
+  text-align: center;
+  line-height: 28px;
+  margin-top: 30px;
+  color: rgba(0, 0, 0, 0.43);
 }

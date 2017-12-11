@@ -1,5 +1,4 @@
 import iss from '../js/iss';
-import appConfig from '../app.config';
 import {AreaConstants} from '../constants';
 
 const {AreaManageStep} = AreaConstants;
@@ -133,10 +132,22 @@ const getVersion = (stepInfo, dataKey, mode, dataType = "Area") => {
                 return {
                     id: item["id"],
                     name: item["versioncode"],
-                    statusName: item["statusname"]
+                    statusName: item["statusname"],
+                    statusCode: item["statusCode"],
                 };
             });
         });
+};
+
+/**
+ * 删除版本
+ */
+const deleteVersion = (versionId) => {
+    return iss.fetch({
+        url: website.concat("/AreaInfo/DeleteAreaVersion"),
+        type: "post",
+        data: versionId,
+    })
 };
 
 /**
@@ -369,9 +380,7 @@ const adjustBuildingAreaData = (record, buildIds, buildingChangeDataArray, forma
         url: website.concat("/AreaInfo/ISaveEditBuild"),
         type: "post",
         data: JSON.stringify(paramsValue),
-    }).then(res => res.rows).then(obj => {
-        return obj;
-    })
+    }).then(res => res.rows)
 };
 
 /**
@@ -409,10 +418,6 @@ const areaInfoISaveAreaPlanInfo = (versionId = "", step = "2", data = []) => {
             detaileData: JSON.stringify(data)
         }
     })
-        .then(arg => arg)
-        .catch(error => {
-            return Promise.reject(error);
-        })
 };
 
 /**
@@ -435,6 +440,7 @@ export {
     getAreaPlanQuota,
     createVersion,
     getVersion,
+    deleteVersion,
     getCreateCondition,
 
     getSearchData,

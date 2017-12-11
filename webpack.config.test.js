@@ -62,7 +62,7 @@ var config = {
             'process.env': {
                 'NODE_ENV': JSON.stringify('test')
             }
-        })
+        }),
         /*      new compress({
               output: {
                   comments: false,   // remove all comments
@@ -94,9 +94,6 @@ var config = {
             echarts:path.join(__dirname,"/source/echarts.min.js")
         } */
     },
-}
-if (process.argv.pop().indexOf("-w") >= 0) {
-    c.exec("node koa");
-}
+};
 
 module.exports = config;

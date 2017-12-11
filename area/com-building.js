@@ -13,7 +13,8 @@ class ComBuilding extends Component {
         headerData: React.PropTypes.array,
         dataSource: React.PropTypes.array,
         onBuildingClick: React.PropTypes.func,
-        approvalState: React.PropTypes.bool,//是否是审批
+        approvalStatus: React.PropTypes.bool,//是否是审批
+        versionStatus: React.PropTypes.string,//版本状态  未编制 undraft, 编制中 draft, 审批中 approvaling, 审批通过 approvaled
     };
 
     static defaultProps = {
@@ -21,7 +22,8 @@ class ComBuilding extends Component {
         dataSource: [],
         onBuildingClick: () => {
         },
-        approvalState: false,
+        approvalStatus: false,
+        versionStatus: "",
     };
 
     state = {
@@ -69,13 +71,13 @@ class ComBuilding extends Component {
     };
 
     getColumnRender = () => {
-        const {approvalState} = this.props;
-        if (approvalState) {
+        const {approvalStatus, versionStatus} = this.props;
+        if (approvalStatus || versionStatus == "approvaling" || versionStatus == "approvaled") {
             return {
                 PRODUCTNAME: (text, record) => {
                     if (record["LevelId"] === 1)
-                        return <a className="format-tree-parent">{text}</a>;
-                    return <a className="format-tree-child">{text}</a>;
+                        return <span className="format-tree-parent">{text}</span>;
+                    return <span className="format-tree-child">{text}</span>;
                 }
             };
         } else {
@@ -107,7 +109,7 @@ class ComBuilding extends Component {
      */
     getFilterDataSource = () => {
         const {dataSource} = this.props;
-        const {buildingKey, formatKey} = this.state;
+
         if (this.filterBuildingKey == "" && this.filterFormatKey == "") {
             return dataSource;
         }
@@ -137,7 +139,6 @@ class ComBuilding extends Component {
             }
             return false;
         });
-
         //根据匹配的一级楼栋进行筛选
         let filterDataSource = dataSource.filter(item => {
             return matchBuildingData.some(filterItem => {
@@ -158,9 +159,7 @@ class ComBuilding extends Component {
                 }
             });
         });
-
         return filterDataSource;
-
     };
 
     render() {

@@ -285,7 +285,6 @@ class OverviewPayment extends Component {
 
 
         return (
-            <div className="processBar">
                 <Row>
                     <Col span={24}>
                         <article>
@@ -293,7 +292,6 @@ class OverviewPayment extends Component {
                         </article>
                     </Col>
                 </Row>
-            </div>
         );
     }
    

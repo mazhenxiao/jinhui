@@ -162,6 +162,7 @@ class NewProject extends React.Component {
 
                         var da = {};
                         th.BIND_CHECKINewLand(d.rows).forEach((el, ind) => {
+                            
                             if (ind == 0) { //初次加载地块
 
                                 th.setState({
@@ -225,8 +226,16 @@ class NewProject extends React.Component {
         if (this.state.states) {
             // this.DynamicData["pid"]=iss.guid();
             let guid = iss.guid();
-
             this.state.DynamicData[guid] = { LandId: guid, FieldList: nd }; //向数据树添加一条数据
+            //先手动修改后面让后台去修改数据库
+          /*    nd.forEach((ele,ind)=>{
+                if(ele.id=="LANDCODE"){
+                    ele.regExp=`{
+                        type:"regExp",
+                        regExp:"^[A-Za-z]{1}$"
+                    }`
+                }
+            })  */
             this.setState({
                 propsDATA: nd,  //新增地块
                 pid: guid
@@ -461,7 +470,7 @@ class NewProject extends React.Component {
     //===================================================发起审批=========================
     /*发起审批*/
     EVENT_CLICK_POSTAPP() {
-        let approvalTime= approvalTime==undefined || "" || null ? "" : this.state.NewProjectCountDATA.APPROVETIME;
+        let approvalTime= this.state.NewProjectCountDATA.APPROVETIME==undefined || "" || null ? "" : this.state.NewProjectCountDATA.APPROVETIME;
         let currentTime =(new Date().getTime())/1000;//此时此刻时间戳
         if(approvalTime!=""){
             approvalTime = new Date(Date.parse(approvalTime.replace(/-/g, "/")));
@@ -566,7 +575,7 @@ class NewProject extends React.Component {
     }
     /*暂存*/
     EVENT_CLICK_SAVE(callback) {
-        let approvalTime= approvalTime==undefined || "" || null ? "" : this.state.NewProjectCountDATA.APPROVETIME;
+        let approvalTime= this.state.NewProjectCountDATA.APPROVETIME==undefined || "" || null ? "" : this.state.NewProjectCountDATA.APPROVETIME;
         let currentTime =(new Date().getTime())/1000;//此时此刻时间戳
         if(approvalTime!=""){
             approvalTime = new Date(Date.parse(approvalTime.replace(/-/g, "/")));

@@ -45,10 +45,11 @@ class StagingInformation extends React.Component {
 	        "CITYID":"",/*城市id*/
 	        "CITYNAME":"",/*城市name*/
 	        "AREAID":"",/*区域id*/
-	        "AREANAME":"",/*区域name*/
+            "AREANAME":"",/*区域name*/
         }  
 
         this.tiem="";
+        this.checkGroup=true; //判断有无未分配楼栋
         this.grupInfo=[];//组团数据  
         this.plateInfo = []//推盘数据
     }
@@ -114,6 +115,7 @@ class StagingInformation extends React.Component {
                     "AREAID":baseformInfo.AREAID,/*区域id*/
                     "AREANAME":baseformInfo.AREANAME,/*区域name*/
                     "ISINITDATA":baseformInfo.ISINITDATA,/*判断否是历史分期 返回1 为历史项目*/
+                    
 
                 },arg=>{
                     //console.log(th.state)
@@ -284,6 +286,9 @@ class StagingInformation extends React.Component {
                     deleteGroup=[],
                     newGroupNumber=[];
                 th.grupInfo.state.dataList.map((el,ind) =>{
+                    if(el.groupId == null && el.buildingId != null){
+                        th.checkGroup = false
+                    }
                     if(el.delete == 'del'){
                         if(deleteGroup.indexOf(el.groupId) == -1){
                             deleteGroup.push(el.groupId)
@@ -345,7 +350,12 @@ class StagingInformation extends React.Component {
         })
         ReactDOM.render(<GroupIframe  data={data} callback={th.GroupIframeCallback.bind(this)}  versionId = {th.state.STAGEVERSIONID} />,document.querySelector("#GroupIframeBox"));
     }
+    /**
+     * 点击
+     * @param {*} da 
+     */
     GroupIframeCallback(da){
+       // console.log("352",da)
         this.grupInfo=da;
     }
     PlateIframeCallback(da){
@@ -778,6 +788,7 @@ class StagingInformation extends React.Component {
     }//点击推盘图预览
      /*验证input*/
    evValidInput(){
+       
    	$(".stage-validatebox").each(function(index,ele){
    			var eleDom=$(ele);
    			var valideRule={
@@ -786,10 +797,16 @@ class StagingInformation extends React.Component {
         eleDom.validatebox(valideRule);
    	});
    }
-   /*验证form*/
+   /*验证form
+     新增组团校验，如果若【组团划分中存在未划分组团的楼栋，则不允许发起审批】
+   */
   evValidForm(){
   	var isValid=$("#stageInforForm").form("validate");
-  	//console.log(isValid);
+      //console.log(isValid);
+      if(!this.checkGroup){
+        iss.popover({ content: ""});
+        return
+      }
   	return isValid;
   }
     render() {
