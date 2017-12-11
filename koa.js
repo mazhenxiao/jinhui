@@ -36,11 +36,14 @@ const errorHandle = async (ctx, next) => {
 
 app.use(errorHandle);
 
+var evn = process.env.NODE_ENV || "dev";
+var loginHtml = `login-${evn}`;
+
 router.get('/', async (ctx, next) => {
-    await ctx.render("login", {layout: false})
+    await ctx.render(loginHtml, {layout: false})
 })
     .get('/login', async (ctx, next) => {
-        await ctx.render("login", {layout: false})
+        await ctx.render(loginHtml, {layout: false})
     })
     .get('/index', async (ctx, next) => {
         // this // ctx.render("index",{layout:false})
@@ -52,7 +55,7 @@ router.get('/', async (ctx, next) => {
 
 let port = appConfig["port"] || 8090;
 app.listen(port, arg => {
-     c.exec(`start http://localhost:${port}/login`);
+    c.exec(`start http://localhost:${port}/login`);
     console.log(`启动成功，请访问 http://localhost:${port}/login`);
 });
 
