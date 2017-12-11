@@ -392,7 +392,9 @@ class Index extends Component {
     handleSavePlanQuotaData = (showTip = true) => {
         const {step, versionId} = this.state;
         if (!versionId) {
-            iss.error("请先创建新版本");
+            if (showTip) {
+                iss.error("请先创建新版本");
+            }
             return;
         }
         let data = [];
@@ -830,7 +832,7 @@ class Index extends Component {
     };
 
     render() {
-        const {loading, dataKey, step, versionId, versionData,current} = this.state;
+        const {loading, dataKey, step, versionId, versionData, current} = this.state;
         if (!dataKey) {
             return this.renderEmpty();
         }
