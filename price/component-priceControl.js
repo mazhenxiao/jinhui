@@ -9,7 +9,7 @@ import ExchangeButton from "../components/tools-exchangeButton.js";
 import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
 import { Spin, Tabs, Row, Col, Button, Select, Table, Input } from 'antd';
 import { AreaConstants } from '../constants';
-import { price, AreaService,Common } from '../services';
+import { price, AreaService } from '../services';
 import { knife } from '../utils';
 import"../css/tools-processBar.less";
 import "../css/button.less";
@@ -86,17 +86,7 @@ class PriceControl extends React.Component {
        // this.Approal_RevertDataKey();
         //this.Fetch_GetPriceList();
     }
-    /**
-     * 从待审跳转的页面用（dataKey：小版本）去转换老的dataKey
-     */
-    Approal_RevertDataKey=()=>{
-        if(this.props.location.query["current"]){
-            Common.getCurrentStepService()
-                  .then(response=>{
-                      
-                  })
-        }
-    }
+
     /**
      * 当前是否是审批
      */
