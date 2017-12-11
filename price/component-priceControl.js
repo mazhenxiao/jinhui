@@ -77,12 +77,12 @@ class PriceControl extends React.Component {
             
             this.loadStep(nextDataKey, nextMode);
         }
-        this.SetisApproal();
+        this.SetisApproal(nextProps);
     }
 
     componentDidMount() {
         this.loadStep();
-        this.SetisApproal();
+      //  this.SetisApproal();
        // this.Approal_RevertDataKey();
         //this.Fetch_GetPriceList();
     }
@@ -91,12 +91,13 @@ class PriceControl extends React.Component {
      * 当前是否是审批
      */
     SetisApproal = arg => {
-        let stateData = this.props.location.query;
-        if (stateData["current"]) {
+        
+        let stateData = arg? arg.location.query:this.props.location.query;
+        
             this.setState({
-                isApproal: true
+                isApproal: Boolean(stateData["current"])
             })
-        }
+        
     }
     /** 获取
      *  stageversionid,  //项目或版本id
@@ -504,7 +505,7 @@ class PriceControl extends React.Component {
 
                     <Spin spinning={false}>
                         <div>
-                            <Table pagination={false} scroll={{ x: width, y: 400 }} loading={this.state.tableLoading} border columns={this.state.priceColumns} dataSource={this.state.priceData}></Table>
+                            <Table bordered={true} pagination={false} scroll={{ x: width, y: 400 }} loading={this.state.tableLoading} border columns={this.state.priceColumns} dataSource={this.state.priceData}></Table>
                         </div>
 
                     </Spin>
