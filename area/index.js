@@ -653,7 +653,7 @@ class Index extends Component {
     //                                 onClick={this.handleModalClick("building-format-edit", "edit")}>业态/楼栋维护
     //                         </button>
     //                 }
-                    
+
     //             {/* </div> */}
     //         </div>
     //     );
@@ -832,7 +832,6 @@ class Index extends Component {
     render() {
         const {loading, dataKey, step, versionId, versionData,current} = this.state;
         if (!dataKey) {
-
             return this.renderEmpty();
         }
         return (
@@ -846,25 +845,22 @@ class Index extends Component {
                     </Row>
                     {this.renderStepList()}
                     <Row gutter={0}>
-                        <Col span={24}>
-                            <div>
-                                <SaveVersion versionId={versionId}
-                                             current={current}
-                                             versionData={versionData}
-                                             versionStatus={this.getVersionStatus()}
-                                             approvalStatus={this.getApprovalStatus()}
-                                             step={step}
-                                             onSaveVersionData={this.handleSavePlanQuotaData}
-                                             onDeleteVersionData={this.handleDeleteVersionData}
-                                             onVersionChange={this.handleVersionChange}
-                                             onHandleCreateVersion={this.handleCreateVersion}
-                                             onHandleApproval={this.handleApproval}
-                                             onHandleBlockFormatEdit={this.handleModalClick("block-format-edit", "edit")}
-                                             onHandleBuildingFormatEdit={this.handleModalClick("building-format-edit", "edit")}
-                                />
-                            </div>
-                        </Col>
+                        <SaveVersion versionId={versionId}
+                                     current={current}
+                                     versionData={versionData}
+                                     versionStatus={this.getVersionStatus()}
+                                     approvalStatus={this.getApprovalStatus()}
+                                     step={step}
+                                     onSaveVersionData={this.handleSavePlanQuotaData}
+                                     onDeleteVersionData={this.handleDeleteVersionData}
+                                     onVersionChange={this.handleVersionChange}
+                                     onHandleCreateVersion={this.handleCreateVersion}
+                                     onHandleApproval={this.handleApproval}
+                                     onHandleBlockFormatEdit={this.handleModalClick("block-format-edit", "edit")}
+                                     onHandleBuildingFormatEdit={this.handleModalClick("building-format-edit", "edit")}
+                        />
                     </Row>
+                    {this.renderTabList()}
                     {this.renderEditOrAdjust()}
                 </Spin>
             </div>
