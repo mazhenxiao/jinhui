@@ -203,7 +203,7 @@ class PriceControl extends React.Component {
                 }
             }
             if (ind == 0) {
-                opt["fixed"] = true;
+               // opt["fixed"] = true;
                 opt["width"] = 180;
             }
             /* f(da["field"]=="AVERAGEPRICE"){

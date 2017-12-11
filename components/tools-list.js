@@ -164,9 +164,6 @@ export default class ToolsList extends React.Component {
                        onClick={this.EVENT_CLICK.bind(this, "Index", "index")}>项目列表</a>
                 </li>
                 <li>
-                    <a href={this.state.toURL} target="_blank" className={this.state.toURL? "":"hide"} >基础设置</a>
-                </li>
-                <li>
                     <a id="areaInfo" href="javascript:void(0);">信息填报</a>
                     <ol className="subMenu">
                         <li className=""><a href="javascript:void(0);"
@@ -189,6 +186,9 @@ export default class ToolsList extends React.Component {
                         <li><a href="javascript:void(0);"
                                onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "groupbuild")}>项目团队维护</a></li>
                     </ol>
+                </li>
+                <li>
+                    <a href={this.state.toURL} target="_blank" className={this.state.toURL? "":"hide"} >基础设置</a>
                 </li>
                 {/*  <li className="hide"> 
                     <a href="#">报表管理</a>
