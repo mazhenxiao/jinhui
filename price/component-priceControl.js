@@ -247,7 +247,7 @@ class PriceControl extends React.Component {
                let step = stepData.filter(params=>{
                    return params.statusCode=="draft";
                })[0];
-               step = step? step:stepData[0];
+               step = step? step:stepData[0]; 
                 let versionId = this.getDefaultVersionId(this.state.versionData);
                 this.setState({
                     versionId,
@@ -255,17 +255,17 @@ class PriceControl extends React.Component {
                     step: step,
                 });
                 if (step) {
-                    return price.GetPriceNewEdit(step,dataKey, mode, "Price") //获取价格版本id
+                    return AreaService.getVersion(step, dataKey, mode,"Price"); //获取版本
                 }
                 return Promise.reject("未获取到阶段数据！");
             })
             .then(versionData => {
-                debugger
+                
                 let versionId = this.getDefaultVersionId(versionData),
                     curVersion = versionData.filter(arg => {
                         return arg["id"] == versionId;
                     })[0]
-            
+                
                 this.setState({
                     versionData,
                     versionId,

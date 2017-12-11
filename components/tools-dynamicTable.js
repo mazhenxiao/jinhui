@@ -156,6 +156,8 @@ class DynamicTable extends React.Component {
 
             }
             return val == "" ? true : !numreg.test(val);
+        }else if(reg&&reg.type.indexOf("regExp")>=0){
+           // let paramsReg = new RegExp(reg.regExp);
         }
         return true
     }
