@@ -19,7 +19,7 @@ errorcode:"错误码"
 ----
 url:Project/ILandInfo
 ----
-
+                        
 | 名称 | 值 | 说明 |
 |:-------------:|:-------------|-----:|
 | pid | 父级id | 控件父级id比如“项目总图” |
@@ -31,7 +31,7 @@ url:Project/ILandInfo
 |unit| 单位|平米等|
 |edit| 是否只读|+w,+r,+m,只读与可写互斥以最后出现值为准|
 |exec| 公式|{id}*{id}|
-|regExp| 验证|{type:"类型string number date,到字典表里找相应正则",max:"最大值或{id}",min:"最小值||{id}" }|
+|regExp| 验证|{type:"类型string number date regExp,到字典表里找相应正则",max:"最大值或{id}",min:"最小值||{id}",regExp:"^[A-Za-z]{1}$" }|
 | data | ｛label：”“，val：”“｝ | 如果select data数据key值为txt值 val值为实际值  |
 
 ~~~ json
