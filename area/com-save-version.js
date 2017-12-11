@@ -26,7 +26,7 @@ class SaveVersion extends Component {
     static defaultProps = {
         versionData: [],
         versionId: "",
-        current:"",
+        current: "",
         onVersionChange: () => {
         },
         onSaveVersionData: () => {
@@ -35,12 +35,12 @@ class SaveVersion extends Component {
         },
         onHandleApproval: () => {
         },
-        onHandleCreateVersion: () =>{
+        onHandleCreateVersion: () => {
         },
-        onHandleBlockFormatEdit: ()=>{
+        onHandleBlockFormatEdit: () => {
 
         },
-        onHandleBuildingFormatEdit: () =>{
+        onHandleBuildingFormatEdit: () => {
 
         },
         approvalStatus: false,
@@ -60,10 +60,10 @@ class SaveVersion extends Component {
     handleCreateVersion = () => {
         this.props.onHandleCreateVersion && this.props.onHandleCreateVersion();
     }
-    handleBlockFormatEdit = () =>{
+    handleBlockFormatEdit = () => {
         this.props.onHandleBlockFormatEdit && this.props.onHandleBlockFormatEdit();
     }
-    handleBuildingFormatEdit = () =>{
+    handleBuildingFormatEdit = () => {
         this.props.onHandleBuildingFormatEdit && this.props.onHandleBuildingFormatEdit();
     }
     handleDelete = () => {
@@ -130,30 +130,26 @@ class SaveVersion extends Component {
         );
     };
     renderButtonList = () => {
-        
-                //审批状态时,不显示阶段按钮
-        const {approvalStatus, versionStatus,step} = this.props;
-        if (approvalStatus || versionStatus == "approvaling" || versionStatus == "approvaled") {
+        //审批状态时,不显示阶段按钮
+        const {approvalStatus, versionStatus, step} = this.props;
+        if (approvalStatus) {
             return null;
         }
 
         return (
             <div className="Left">
-                {/* <div className="areaTopbtn jhBtn-wrap"> */}
-                    <button type="button" className="jh_btn jh_btn28 jh_btn_add" onClick={this.handleCreateVersion}>
-                        生成新版本
-                    </button>
-                    {
-                        parseInt(step.guid) <= 2 ?
-                            <button type="button" className="jh_btn jh_btn28 jh_btn_save"
+                <button type="button" className="jh_btn jh_btn28 jh_btn_add" onClick={this.handleCreateVersion}>
+                    生成新版本
+                </button>
+                {
+                    parseInt(step.guid) <= 2 ?
+                        <button type="button" className="jh_btn jh_btn28 jh_btn_save"
                                 onClick={this.handleBlockFormatEdit}>业态维护
-                            </button> :
-                            <button type="button" className="jh_btn jh_btn28 jh_btn_save"
+                        </button> :
+                        <button type="button" className="jh_btn jh_btn28 jh_btn_save"
                                 onClick={this.handleBuildingFormatEdit}>业态/楼栋维护
-                            </button>
-                    }
-                    
-                {/* </div> */}
+                        </button>
+                }
             </div>
         );
     };
@@ -186,7 +182,7 @@ class SaveVersion extends Component {
                         <span className="areaStatus">状态: {currentVersion ? currentVersion["statusName"] : "无"}</span>
                         : null
                 }
-                
+
                 {this.renderButtonList()}
                 {this.renderSaveButton()}
                 {this.renderDeleteButton()}
