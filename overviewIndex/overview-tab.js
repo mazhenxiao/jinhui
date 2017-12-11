@@ -138,12 +138,8 @@ class OverviewTab extends React.Component {
         let dataKey  = this.props.data.dataKey;
         let iframeUrl=this.state.planUrl+dataKey;
         if(dataKey == undefined ){
-            //alert("http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=1E1CB1E95A864AFA961392C3E3644642")
-            //$(event.target).attr("src", );
             return <iframe ref="outheIframe" src={"http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=1E1CB1E95A864AFA961392C3E3644642"} scrolling="no" width="100%" height="700" style={{border: 0}}></iframe>
         }else{
-            //alert(iframeUrl)
-            //$(event.target).attr("src",iframeUrl);
             let att = <iframe ref="outheIframe" scrolling="no" width="100%" height="700" src={iframeUrl} style={{border: 0,width:"100%",height:"700px"}}></iframe>;
             return att;
         } 
@@ -204,8 +200,14 @@ class OverviewTab extends React.Component {
         this.setState({
             activeKey:key,
         });
-        let outheIframe = this.refs.outheIframe;
-        outheIframe.src = outheIframe.src;
+        //切换概览计划刷新加载
+        this.state.data.map((obj)=>{
+            if(obj.tap=="plan"){
+                let outheIframe = this.refs.outheIframe;
+                outheIframe.src = outheIframe.src;
+            }
+        })
+        
     }
 
     renderTabs = () =>{
