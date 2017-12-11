@@ -70,6 +70,7 @@ class PriceControl extends React.Component {
         if (dataKey != nextDataKey
             || mode != nextMode) {
             this.setState({
+                edit:false,
                 dataKey: nextDataKey,
                 mode: nextMode,
             }
@@ -119,6 +120,7 @@ class PriceControl extends React.Component {
                 const defaultStepId = baseInfo["step"];
 
                 this.setState({
+                    edit:false,
                     dataKey,
                     mode,
                     defaultStepId,
@@ -468,6 +470,7 @@ class PriceControl extends React.Component {
             if (newStep.code === step.code) return;
 
             this.setState({
+                edit:false,
                 loading: true,
                 step: newStep,
             });
@@ -504,6 +507,7 @@ class PriceControl extends React.Component {
     EventChangeSelectVersion = versionId => {
 
             this.setState({
+                edit:false,
               //  isNoPriceData:this.CheckNotCurrentStepAndVertionId(versionId),
                 versionId
             });
