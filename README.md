@@ -33,7 +33,7 @@ url:Project/ILandInfo
 |exec| 公式|{id}*{id}|
 |regExp| 验证|{type:"类型string number date regExp,到字典表里找相应正则",max:"最大值或{id}",min:"最小值||{id}",regExp:"^[A-Za-z]{1}$" }|
 | data | ｛label：”“，val：”“｝ | 如果select data数据key值为txt值 val值为实际值  |
-
+（正则校验如果需要\比如\d 使用#替换 #d）
 ~~~ json
 [{
     pid:"",//父id
