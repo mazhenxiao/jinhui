@@ -16,14 +16,12 @@ class ComBuildingAdjust extends Component {
     static propTypes = {
         record: React.PropTypes.object,//点击的面积数据
         onHideModal: React.PropTypes.func,//对外接口 操作完成时 关闭模态窗口
-        approvalState: React.PropTypes.bool,//审核状态, 真:是审核状态, 假:非审核状态
     };
 
     static defaultProps = {
         record: {},
         onHideModal: () => {
         },
-        approvalState: false,
     };
 
     /**
@@ -277,7 +275,7 @@ class ComBuildingAdjust extends Component {
      */
     renderBuildingOrFormat = () => {
         const {buildingHeaderData, buildingDataSource, singleFormatData} = this.state;
-        const {approvalState, modalParam} = this.props;
+        const {modalParam} = this.props;
         if (this.isFromBuilding) {
             return (
                 <div>
@@ -290,7 +288,6 @@ class ComBuildingAdjust extends Component {
                             headerData={buildingHeaderData}
                             dataSource={buildingDataSource}
                             rowKey="KEY"
-                            editState={!approvalState}
                             // fixedAble={true}
                             onDataChange={this.handleBuildingDataChange}
                         />
@@ -330,7 +327,6 @@ class ComBuildingAdjust extends Component {
      */
     renderContent = () => {
         const {loading, formatHeaderData, formatDataSource, enableBuildingData, selectBuilding} = this.state;
-        const {approvalState} = this.props;
         const displayBuilding = enableBuildingData.filter(item => selectBuilding.some(selectValue => selectValue == item.value)).map(item => item.label).join();
 
         return (
@@ -348,11 +344,7 @@ class ComBuildingAdjust extends Component {
                                           value={displayBuilding}></WrapperInput>
                         </div>
                         <div className="select-button">
-                            {
-                                !approvalState ?
-                                    <Button onClick={this.handleSelectClick}>批量选择楼栋</Button>
-                                    : null
-                            }
+                            <Button onClick={this.handleSelectClick}>批量选择楼栋</Button>
                         </div>
                     </div>
                     {this.renderBuildingOrFormat()}
@@ -366,7 +358,6 @@ class ComBuildingAdjust extends Component {
                         headerData={formatHeaderData}
                         dataSource={formatDataSource}
                         rowKey="KEY"
-                        editState={!approvalState}
                         // fixedAble={true}
                         onDataChange={this.handleFormatDataChange}
                         columnRender={this.columnRender}
@@ -377,15 +368,6 @@ class ComBuildingAdjust extends Component {
     };
 
     renderFooter = () => {
-        const {approvalState} = this.props;
-        if (approvalState) {
-            return [
-                <Button key="cancel" type="primary" size="large" onClick={this.handleCancel}>
-                    关闭
-                </Button>,
-            ];
-        }
-
         return [
             <Button key="save" type="primary" size="large" onClick={this.handleSave}>
                 保存
