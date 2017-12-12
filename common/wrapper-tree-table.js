@@ -189,6 +189,11 @@ const headerData = [
         }]
     }];
 
+const headerStyle = {
+    textAlign: 'center',
+    display: 'block'
+};
+
 class WrapperTreeTable extends Component {
 
     static propTypes = {
@@ -231,7 +236,7 @@ class WrapperTreeTable extends Component {
 
         headerData.forEach((headerItem, index) => {
             const column = {
-                title: headerItem.name || "空标题",
+                title: <span style={headerStyle}>{headerItem.name || "空标题"}</span>
             };
 
             //默认固定第一列
@@ -284,7 +289,7 @@ class WrapperTreeTable extends Component {
         item.children.forEach(childHeaderItem => {
 
             const childColumn = {
-                title: childHeaderItem.name || "空标题",
+                title: <span style={headerStyle}>{childHeaderItem.name || "空标题"}</span>
             };
 
             if (editState) {
