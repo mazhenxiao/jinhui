@@ -149,6 +149,7 @@ class OverviewTab extends React.Component {
     //切换tab菜单渲染内容
     renderSyncEele=arg=>{
          let currentPosi=this.state.currentPosi;
+         let dataKey=this.state.dataKey;
          let location = this.props.data.location;
          switch(arg){
             case "index"://项目概览
@@ -201,12 +202,12 @@ class OverviewTab extends React.Component {
         });
 
         //切换概览计划刷新加载
-        this.state.data.map((obj)=>{
-            if(obj.tap=="plan"){
-                let outheIframe = this.refs.outheIframe;
-                outheIframe.src = outheIframe.src;
-            }
-        })
+      
+        if(this.state.data.some( obj => obj.tap == "plan")){
+            let outheIframe = this.refs.outheIframe;
+            outheIframe.src = iframeUrl;
+            //document.querySelectorAll("iframe").src = iframeUrl;
+        }
         
     }
 

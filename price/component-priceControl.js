@@ -554,7 +554,7 @@ class PriceControl extends React.Component {
         }
 
         // let defaultValue = this.state.versionData.length ? [this.state.versionData[0]["id"]] : "请选择";
-        return <ul className="BTN_GROUP">
+        return <ul className="BTN_GROUP Right">
             <li className={this.state.isNoPriceData ? "hide" : ""}> {ButtonBar()}</li>
             <li className=""></li>
             <li className="">
@@ -587,7 +587,7 @@ class PriceControl extends React.Component {
                        columns={this.state.priceColumns} dataSource={this.state.priceData}></Table>
             </div>
         } else {
-            return <Tabs tabBarExtraContent={this.BIND_Button()}>
+            return <Tabs>
                 <TabPane tab="价格管理" key="plan-quota">
 
                     <Spin spinning={false}>
@@ -616,10 +616,15 @@ class PriceControl extends React.Component {
                 <header className="price">
                     <Spin size="large" spinning={false}>
                         <Row className={this.state.isApproal ? "hide" : ""}>
-                            <Col span={24}>
+                            <Col span={8}>
                                 <ul className="processBar-header">
                                     {this.renderStepLend()}
                                 </ul>
+                            </Col>
+                            <Col span={16}>
+                                <div className={this.props.location.query["dataKey"] ? "" : "none"}>
+                                    {this.BIND_Button()}
+                                </div>  
                             </Col>
                         </Row>
                         <Row gutter={0}>

@@ -66,6 +66,10 @@ class Agenty extends React.Component {
                     case iss.getEVal("teamMaintainStatus"):
                         search=`?e=${da.ENTIID}&dataKey=${da.RUNTRECORDID}&current=ProcessApprover&readOnly=readOnly&isProOrStage=2`;
                         break;
+                    case iss.getEVal("area"): //信息填报-面积
+                    case iss.getEVal("priceControl"): //信息填报-价格
+                        search = `?e=${da.ENTIID}&dataKey=${da.runtrecordid}&current=ProcessApprover`;
+                        break;
 	                default:
 	                	search="";
 	           }
