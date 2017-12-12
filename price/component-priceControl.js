@@ -558,6 +558,12 @@ class PriceControl extends React.Component {
                                                        onChange={this.EventChangeSelectVersion}
                                                        style={{width: 90}}>{list}</Select></li>
             <li className=""><span>状态：</span><span id="statusText">{this.state.curVersion}</span></li>
+            <li className="Right">
+                <button type="button" onClick={this.handleApproval}
+                        className={this.state.isNoPriceData ? "hide" : "jh_btn jh_btn22 jh_btn_apro"}>
+                    发起审批
+                </button>
+            </li>
         </ul>
     }
     isApproal = arg => {
@@ -606,18 +612,10 @@ class PriceControl extends React.Component {
                 <header className="price">
                     <Spin size="large" spinning={false}>
                         <Row className={this.state.isApproal ? "hide" : ""}>
-                            <Col span={12}>
+                            <Col span={24}>
                                 <ul className="processBar-header">
                                     {this.renderStepLend()}
                                 </ul>
-                            </Col>
-                            <Col span={12}>
-                                <div className="Right">
-                                    <button type="button" onClick={this.handleApproval}
-                                            className={this.state.isNoPriceData ? "hide" : "jh_btn jh_btn22 jh_btn_apro"}>
-                                        发起审批
-                                    </button>
-                                </div>
                             </Col>
                         </Row>
                         <Row gutter={0}>
