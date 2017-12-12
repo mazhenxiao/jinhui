@@ -846,26 +846,29 @@ class Index extends Component {
                 {this.renderApproval()}
                 <Spin size="large" spinning={loading}>
                     <Row>
-                        <Col span={24}>
+                        <Col span={8}>
                             {this.renderStepLend()}
+                        </Col>
+                        <Col span={16}>
+                            <SaveVersion versionId={versionId}
+                                        current={current}
+                                        versionData={versionData}
+                                        versionStatus={this.getVersionStatus()}
+                                        approvalStatus={this.getApprovalStatus()}
+                                        step={step}
+                                        onSaveVersionData={this.handleSavePlanQuotaData}
+                                        onDeleteVersionData={this.handleDeleteVersionData}
+                                        onVersionChange={this.handleVersionChange}
+                                        onHandleCreateVersion={this.handleCreateVersion}
+                                        onHandleApproval={this.handleApproval}
+                                        onHandleBlockFormatEdit={this.handleModalClick("block-format-edit", "edit")}
+                                        onHandleBuildingFormatEdit={this.handleModalClick("building-format-edit", "edit")}
+                            />
                         </Col>
                     </Row>
                     {this.renderStepList()}
                     <Row gutter={0}>
-                        <SaveVersion versionId={versionId}
-                                     current={current}
-                                     versionData={versionData}
-                                     versionStatus={this.getVersionStatus()}
-                                     approvalStatus={this.getApprovalStatus()}
-                                     step={step}
-                                     onSaveVersionData={this.handleSavePlanQuotaData}
-                                     onDeleteVersionData={this.handleDeleteVersionData}
-                                     onVersionChange={this.handleVersionChange}
-                                     onHandleCreateVersion={this.handleCreateVersion}
-                                     onHandleApproval={this.handleApproval}
-                                     onHandleBlockFormatEdit={this.handleModalClick("block-format-edit", "edit")}
-                                     onHandleBuildingFormatEdit={this.handleModalClick("building-format-edit", "edit")}
-                        />
+                        
                     </Row>
                     {this.renderTabList()}
                     {this.renderEditOrAdjust()}
