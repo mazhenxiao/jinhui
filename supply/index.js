@@ -3,6 +3,7 @@ import iss from "../js/iss.js";
 import React, {Component} from 'react';
 import {Spin, Tabs, Row, Col, Button, Select, Table, Modal} from 'antd';
 import {WrapperSelect, WrapperTreeTable} from '../common';
+import {SupplyService} from "../services";
 import "../css/button.less";
 import "./css/supply.less";
 
@@ -14,6 +15,68 @@ class Index extends Component {
 
     state = {
         loading: false,
+        dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
+        mode: this.props.location.query.isProOrStage == "1" ? "Project" : "Stage",//显示模式，项目或者分期
+        versionData: [],//版本数据
+    };
+
+    componentDidMount() {
+        //判断是否是审批, 真:审批状态; 假:普通状态
+        if (this.getApprovalStatus()) {
+            //this.changeVersionIdToDataKey();
+        } else {
+            this.loadVersionData();
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const {dataKey} = this.state;
+        const {location} = nextProps;
+        const nextDataKey = location.query.dataKey || "";
+        const nextMode = location.query.isProOrStage == "1" ? "Project" : "Stage";
+
+        //切换路由之后，重新获取数据
+        if (dataKey != nextDataKey) {
+            this.setState({
+                    dataKey: nextDataKey,
+                    mode: nextMode
+                }
+            );
+            this.loadVersionData(nextDataKey, nextMode);
+        }
+    }
+
+    /**
+     * 获取是否是审批状态
+     * @returns {boolean} 真:审批状态; 假:普通状态
+     */
+    getApprovalStatus = () => {
+        if (this.props.location.query["current"]) {
+            return true;
+        }
+        return false;
+    };
+
+    /**
+     * 加载版本数据
+     * @param dataKey
+     * @param mode
+     */
+    loadVersionData = (dataKey, mode) => {
+        if (dataKey === undefined) {
+            dataKey = this.state.dataKey;
+            mode = this.state.mode;
+        }
+
+        return SupplyService.getVersionData(dataKey, mode)
+            .then(versionData => {
+                this.setState({
+                    versionData
+                });
+            })
+            .catch(error => {
+                iss.error(error);
+            })
     };
 
     renderDynamicAdjust = () => {
@@ -33,6 +96,7 @@ class Index extends Component {
     };
 
     renderPlanVersion = () => {
+        const {versionData} = this.state;
         return (
             <article>
                 <Row className="bottom-header">
@@ -40,7 +104,8 @@ class Index extends Component {
                         <span className="title">计划版（面积：平方米，货值：万元）</span>
                     </Col>
                     <Col span={12} className="text-align-right">
-                        <WrapperSelect labelText="版本:" className="plan-version" dataSource={[]}></WrapperSelect>
+                        <WrapperSelect labelText="版本:" className="plan-version"
+                                       dataSource={versionData}></WrapperSelect>
                     </Col>
                 </Row>
                 <WrapperTreeTable></WrapperTreeTable>
@@ -48,8 +113,23 @@ class Index extends Component {
         );
     };
 
+    /**
+     *  渲染空页面
+     */
+    renderEmpty = () => {
+        return (
+            <div className="processBar">
+                请点击左侧树，项目/分期
+            </div>
+        );
+    };
+
     render() {
-        const {loading} = this.state;
+        const {loading, dataKey} = this.state;
+        if (!dataKey) {
+            return this.renderEmpty();
+        }
+
         return (
             <div className="supply-wrapper">
                 <Spin size="large" spinning={loading}>
