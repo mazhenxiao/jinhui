@@ -240,8 +240,11 @@ class PriceControl extends React.Component {
      * 表格输入框事件
      */
     EventChangeInput = (params, row, ev) => {
+        
         let val = ev.target.value;
-        params[row] = val;
+         params[row] = val;
+         //let priceColumns = this.state.priceColumns.map(da=>{field:da.})
+          knife.setTableExec(row,this.state.priceColumns,this.state.priceData);
         this.forceUpdate();
     }
     /**
