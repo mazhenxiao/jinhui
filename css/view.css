@@ -32,3 +32,10 @@
   height: 295px;
   border: 1px solid #dddddd;
 }
+.stageVWrap .stageVRightView {
+  float: right;
+  margin-top: 10px;
+  width: 33.3%;
+  height: 311px;
+  border: 1px solid #dddddd;
+}

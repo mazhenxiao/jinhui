@@ -226,17 +226,17 @@ class StageInforView extends React.Component {
                 <p><span>分期信息</span></p>
             </h3>
             <div className="stageVWrap">
-                <div className="stageVRight">
+                <div className="stageVRight stageVRightView">
                      {/* bootstrap 轮播图 */}
                      <div id="myCarousel" className="carousel slide carouselStyle">
-                        <div className="carousel-inner">
+                        <div className="carousel-inner carousel-innerView">
                             <div className="item active">
                                 <img className="fullScreenIcon" src="../../img/fullScreen.png" onClick={this.BIND_mapsStage.bind(this)} title="全屏" />
-                                <iframe ref="iframe1" id="iframe1" src={this.state.iframeURL1}    onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="291"></iframe>
+                                <iframe ref="iframe1" id="iframe1" src={this.state.iframeURL1}    onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="309"></iframe>
                             </div>
                             <div className="item">
                             <img className="fullScreenIcon" src="../../img/fullScreen.png" onClick={this.BIND_mapsTp.bind(this)} title="全屏"/>
-                                <iframe ref="iframe2" id="iframe2" src={this.state.iframeURL2}    onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="291"></iframe>
+                                <iframe ref="iframe2" id="iframe2" src={this.state.iframeURL2}    onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="309"></iframe>
                             </div>
                         </div>
                         {/* 轮播（Carousel）导航 */}
