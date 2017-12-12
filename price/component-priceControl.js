@@ -44,6 +44,7 @@ class PriceControl extends React.Component {
         status: "",//当前版本状态
         versionData: [],//版本数据
         versionId: "",//版本id
+        priceColumnsSource:[],//原始表个头
         priceColumns: [],//价格table表头
         priceData: [],//价格数据
         tableLoading: true,//表格加载中
@@ -141,18 +142,20 @@ class PriceControl extends React.Component {
      *  projectLevel //级别项目传1，分期前两个传2，后面传3
      */
     Fetch_GetPriceList = obj => {
-
+        let header=[],data = [];
         price.GetPriceList(obj)
             .then(ref => { //表头
                 this.Create_PriceColumns(ref.titles);
                 return ref.data;
             })
-            .then(ref => {  //表数据
-
-                this.Create_TabelData(ref);
+            .then(ref => {  //归集汇总 修改原始数据
+             let data=this.NotionalPooling(ref);//设置
+            // console.log("data",data);
+            console.log(data);
+            return data;
             })
-            .then(ref => {  //版本
-
+            .then(ref => {  //表数据
+                this.Create_TabelData(ref);
             })
             .catch(err => {
                 //console.logs(err);
@@ -160,10 +163,58 @@ class PriceControl extends React.Component {
 
     }
     /**
+     * 数据归集
+     */
+    NotionalPooling(data){
+        let pid="";
+      return  data.map(arg=>{
+            let {LEVELS,key}=arg;
+            let newArg = {...arg};
+            if(LEVELS==1){
+                newArg["parentId"]=key;
+                pid= key;
+            }else{
+                newArg["parentId"]=pid;
+            }
+            return newArg;
+        });
+    }
+    /**
+     * 所有parentId相同的数据向汇总
+     * @param {*[JSON] 纵向合并} data 
+     * @param {*String 当前父id} parentId 
+     * @param {*String 需要汇总的字段名称按逗号分隔} str 
+     */
+    Exec_ColumsCount(data,parentId,str){
+        let arrStr = str.split(",");
+        data.forEach(arg=>{
+            let parents,count={};
+            if(arg.parentId==parentId){  //找出当前parentId相同内容部分
+                if(arg.key==arg.parentId){  //找到当前 父id
+                    parents=arg; 
+                    arrStr.forEach(el=>{ //动态变量赋值
+                        count[el]=parseFloat(arg[el]);
+                    })
+                }else{
+                    arrStr.forEach(el=>{
+                        count[el]=parseFloat(count[el]||0)+parseFloat(arg[el]);
+                    })
+                }
+                if(parents){
+                    arrStr.forEach(el=>{
+                        parents[el]=parseFloat(count[el]||0)+parseFloat(parents[el]);
+                    }) 
+                }
+               
+            }
+        })
+        
+
+    }
+    /**
      * 设置表头
      */
     Create_PriceColumns = params => {
-
         let th = this;
         let priceColumns = params.map((da, ind) => {
             let opt = {
@@ -173,12 +224,12 @@ class PriceControl extends React.Component {
                 width: 80,
                 className: da["field"] == "SHOWNAME" ? "text-left" : "text-center",
                 render(text, record, index) {
-
+                
                     //console.log("da.field",da.field)
                     if (da.field == "SHOWNAME") {
                         return <span className={record.LEVELS == "2" ? "Title padL20" : "Title"}>{text}</span>
                     } else if (th.state.edit == true && da.field == "AVERAGEPRICE" && record.LEVELS != "1") {
-
+                         
                         return <Input value={text} className="text-right"
                                       onChange={th.EventChangeInput.bind(this, record, da["field"])}/>
                     } else {
@@ -221,6 +272,7 @@ class PriceControl extends React.Component {
         });
         //console.log("title",priceColumns);
         this.setState({
+            priceColumnsSource:params,
             priceColumns
         })
     }
@@ -238,14 +290,18 @@ class PriceControl extends React.Component {
     }
     /**
      * 表格输入框事件
+     *  this.forceUpdate();
      */
     EventChangeInput = (params, row, ev) => {
-        
-        let val = ev.target.value;
-         params[row] = val;
-         //let priceColumns = this.state.priceColumns.map(da=>{field:da.})
-          knife.setTableExec(row,this.state.priceColumns,this.state.priceData);
-        this.forceUpdate();
+        let val = ev.target.value,data = this.state.priceData;
+            params[row] = val;
+        //横向汇总 TOTALSALEAREA总可售*AVERAGEPRICE 均价=PRICE货值
+          knife.setTableExec(row,this.state.priceColumnsSource,[params]);
+        //纵向汇总 向parentId汇总  
+        this.Exec_ColumsCount(data,params.parentId,"PRICE");
+        this.setState({
+            priceData:data
+        })
     }
     /**
      * 非当前阶段和非当前最新版本不现实保存和编辑
@@ -268,10 +324,11 @@ class PriceControl extends React.Component {
     /**
      * 查找当前阶段
      * approvaling【审批中】 -> draft【编制中】 -> approvaled 【审批通过】-> undraft 【未编制】
+     * [{"guid":"1","name":"拿地版","code":"Vote","className":"legend-white","statusCode":"undraft"},{"guid":"2","name":"项目定位会版","code":"ProductPosition","className":"legend-white","statusCode":"undraft"},{"guid":"4","name":"启动会版","code":"Startup","className":"legend-yellow","statusCode":"approvaling"},{"guid":"5","name":"工规证版","code":"Rules","className":"legend-white","statusCode":"undraft"},{"guid":"6","name":"决策书版","code":"Decision","className":"legend-white","statusCode":"undraft"}]
      */
     FindCurrentStep = (step) => {
 
-        let da = step;//[{"guid":"1","name":"拿地版","code":"Vote","className":"legend-white","statusCode":"undraft"},{"guid":"2","name":"项目定位会版","code":"ProductPosition","className":"legend-white","statusCode":"undraft"},{"guid":"4","name":"启动会版","code":"Startup","className":"legend-yellow","statusCode":"approvaling"},{"guid":"5","name":"工规证版","code":"Rules","className":"legend-white","statusCode":"undraft"},{"guid":"6","name":"决策书版","code":"Decision","className":"legend-white","statusCode":"undraft"}]
+        let da = step;
         let state = "approvaling,draft,approvaled,undraft".split(",");
         let currentString = "";
         for (var k = 0; k < state.length; k++) {
