@@ -208,7 +208,12 @@ class PriceControl extends React.Component {
                
             }
         })
-        
+    }
+    /**
+     * 
+     * @param {*json} data 
+     */
+    Exec_ColumsJupCount(data){
 
     }
     /**
