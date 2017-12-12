@@ -152,13 +152,35 @@ class $knife {
      * @param {*数组} dataSource
      */
     setTableExec(Obj, headerData, dataSource){
-        
+        this.Count_Exec(headerData,dataSource);
     }
     /**
      * 递归计算
      */
     Count_Exec(headerData,dataSource){
+        
+        headerData.forEach((da,ind)=>{
+            let {field,exec,children,regExps}=da;
+            if(exec){
+                let regExp = exec.match(/\{.*?\}/ig),replaceText = exec; 
+                dataSource.forEach((ds)=>{
+                    regExp.forEach((arg)=>{
+                        let txt = arg.replace(/[{}]/ig,"");
+                            //type = 
+                        replaceText = replaceText.replace(arg,ds[txt]);
+                    });
+                    ds[field]="";  //可能有NaN
+                    ds[field]=eval(replaceText);
+                })
+              
+                
 
+            }else if(children&&children.length){
+            
+                this.Count_Exec(children,dataSource);
+            }
+        }) 
+       
     }
     /**
      * 数据有效性检测

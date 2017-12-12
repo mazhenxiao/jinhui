@@ -28,6 +28,12 @@ class ApproalHistory extends React.Component{
             case iss.getEVal("teamMaintainStatus"):
                 search=`?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover&readOnly=readOnly&isProOrStage=2`;
                 break;
+            case iss.getEVal("priceControl"):
+                search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover`;
+                break;//价格
+            case iss.getEVal("area"):
+                search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover`;
+                break;//面积
             default:
             	search ="";
         }
@@ -110,8 +116,6 @@ class ApproalHistory extends React.Component{
                             <th className="center">提交时间</th>
                             <th className="center">审批时间</th>
                             <th className="center">审批状态</th>
-                            
-                           
                         </tr>
                     </thead>
                     <tbody>

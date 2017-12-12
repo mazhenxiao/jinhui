@@ -161,8 +161,8 @@ class SaveVersion extends Component {
         return (
             <div className="areaVeSel">
                 <WrapperSelect dataSource={versionData} labelText="当前版本:" showDefault={false}
-                               labelSpan={10}
-                               inputSpan={14}
+                               labelSpan={11}
+                               inputSpan={13}
                                style={{width: "80px"}}
                                value={versionId}
                                onChange={this.handleChange}/>
@@ -176,17 +176,16 @@ class SaveVersion extends Component {
 
         return (
             <div className="PosRight">
+                {this.renderButtonList()}
+                {this.renderApprovalButton()}
+                {this.renderSaveButton()}
+                {this.renderDeleteButton()}
                 {this.renderVersion()}
                 {
                     !approvalStatus ?
                         <span className="areaStatus">状态: {currentVersion ? currentVersion["statusName"] : "无"}</span>
                         : null
                 }
-
-                {this.renderButtonList()}
-                {this.renderSaveButton()}
-                {this.renderDeleteButton()}
-                {this.renderApprovalButton()}
             </div>
         );
 
