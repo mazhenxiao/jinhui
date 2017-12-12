@@ -158,8 +158,26 @@ class $knife {
      * 递归计算
      */
     Count_Exec(headerData,dataSource){
-        headerData.forEach((el,ind)=>{
+        headerData.forEach((da,ind)=>{
+            let {field,exec,children,regExps}=da;
+            if(exec){
+                let regExp = exec.match(/\{.*?\}/ig),replaceText = exec; 
+                dataSource.forEach((ds)=>{
+                    regExp.forEach((arg)=>{
+                        let txt = arg.replace(/[{}]/ig,"");
+                            //type = 
+                        replaceText = replaceText.replace(arg,ds[txt]);
+                    });
+                    ds[field]="";  //可能有NaN
+                    ds[field]=eval(replaceText);
+                })
+              
+                
+
+            }else if(children&&children.length){
             
+                this.Count_Exec(children,dataSource);
+            }
         }) 
        
     }
