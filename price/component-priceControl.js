@@ -554,16 +554,17 @@ class PriceControl extends React.Component {
         return <ul className="BTN_GROUP">
             <li className={this.state.isNoPriceData ? "hide" : ""}> {ButtonBar()}</li>
             <li className=""></li>
-            <li className=""><span>当前版本：</span><Select value={this.state.versionId}
-                                                       onChange={this.EventChangeSelectVersion}
-                                                       style={{width: 90}}>{list}</Select></li>
-            <li className=""><span>状态：</span><span id="statusText">{this.state.curVersion}</span></li>
-            <li className="Right">
+            <li className="">
                 <button type="button" onClick={this.handleApproval}
                         className={this.state.isNoPriceData ? "hide" : "jh_btn jh_btn22 jh_btn_apro"}>
                     发起审批
                 </button>
             </li>
+            <li className=""><span>当前版本：</span><Select value={this.state.versionId}
+                                                       onChange={this.EventChangeSelectVersion}
+                                                       style={{width: 90}}>{list}</Select></li>
+            <li className=""><span>状态：</span><span id="statusText">{this.state.curVersion}</span></li>
+            
         </ul>
     }
     isApproal = arg => {
