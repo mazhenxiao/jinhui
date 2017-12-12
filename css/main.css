@@ -968,7 +968,7 @@ a:hover {
 }
 .JH-Content .JH-RightBox .JH-Content {
   background: #fff;
-  padding: 20px;
+  padding: 0 20px;
   min-height: 630px;
 }
 .JH-Content .JH-RightBox.active {
