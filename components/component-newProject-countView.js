@@ -159,36 +159,46 @@ class NewProjectCountView extends React.Component {
                             <tr>
                                 <td className="stageViewTitle">所属区域</td>
                                 <td className="stageViewCon" id="CompanyAreaName">{th.CompanyAreaName}</td>
+                            </tr>
+                            <tr>
                                 <td className="stageViewTitle">城市公司</td>
                                 <td className="stageViewCon">{th.CompanyCityName}</td>
                             </tr>
                             <tr>
                                 <td className="stageViewTitle">所在城市</td>
                                 <td className="stageViewCon">{th.CITY}</td>
+                            </tr>
+                            <tr>
                                 <td className="stageViewTitle">获取状态</td>
                                 <td className="stageViewCon">{th.ObtainStatusName}</td>
                             </tr>
                             <tr>
                                 <td className="stageViewTitle">项目名称</td>
                                 <td className="stageViewCon">{th.PROJECTNAME}</td>
+                            </tr>
+                            <tr>
                                 <td className="stageViewTitle">项目案名</td>
                                 <td className="stageViewCon">{th.CASENAME}</td>
                             </tr>
                             <tr>
                                 <td className="stageViewTitle">权益比例</td>
                                 <td className="stageViewCon">{th.EQUITYRATIO}</td>
+                            </tr>
+                            <tr>
                                 <td className="stageViewTitle">项目编号</td>
                                 <td className="stageViewCon">{th.PROJECTCODE}</td>
                             </tr>
                             <tr>
                                 <td className="stageViewTitle">操盘方式</td>
                                 <td className="stageViewCon">{th.TRADERMODE}</td>
+                            </tr>
+                            <tr>
                                 <td className="stageViewTitle">项目负责人</td>
                                 <td className="stageViewCon">{th.PRINCIPALNAME}</td>
                             </tr>
                             <tr>
                                 <td className="stageViewTitle">项目地址</td>
-                                <td className="stageViewCon" colSpan="3">{th.PROJECTADDRESS}</td>
+                                <td className="stageViewCon">{th.PROJECTADDRESS}</td>
                             </tr>
 
                         </tbody>

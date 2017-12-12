@@ -26,8 +26,15 @@ class index extends React.Component {
         
     }
     componentDidMount() {
-       
-     }
+        let local = this.props.location;
+        let currentPosi = local.query["currentPosi"];
+        let dataKey = local.query["dataKey"];
+        this.setState({
+            currentPosi:currentPosi,
+            dataKey:dataKey,
+            location:local,
+        });
+    }
     
      
     //渲染概览
