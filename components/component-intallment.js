@@ -266,12 +266,16 @@ class Intallment extends React.Component {
                         	if(urlPath.indexOf("dataKey")<0){
 					    		urlPath=urlPath+"&dataKey="+versionId;
 					    	}
-                        	window.location.href=urlPath;
+                        	
                             th.setState({
                                 "status":"edit",
                             });
+                            window.location.href=urlPath;
                             iss.popover({ content: "保存成功", type: 2 });
-                            window.location.reload();
+                            setTimeout(()=>{
+                                window.location.reload();
+                            },500);
+                           
                         }
                         iss.popover({content:"保存成功",type:2});
                         $(window).trigger("treeLoad");

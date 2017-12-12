@@ -86,7 +86,6 @@ class OverviewTab extends React.Component {
                         { "guid":"5","text":"计划","tap":"plan"},
                         // { "guid":"6","text":"重点事项","tap":"matter"},
                         // { "guid":"7","text":"关键指标","tap":"keyPoint"},
-                        
                     ],
                 })
             break;
@@ -200,6 +199,7 @@ class OverviewTab extends React.Component {
         this.setState({
             activeKey:key,
         });
+
         //切换概览计划刷新加载
         this.state.data.map((obj)=>{
             if(obj.tap=="plan"){
