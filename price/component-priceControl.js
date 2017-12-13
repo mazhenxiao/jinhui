@@ -325,20 +325,22 @@ class PriceControl extends React.Component {
         })
     }
     /**
-     * 非当前阶段和非当前最新版本不现实保存和编辑
+     * 非当前阶段和非当前最新版本、非状态为0 不现实保存和编辑
+     * 1、【非】当前阶段或当前阶段为draft
+     * 2、【非】当前最新版本或最新版本的状态为0
      */
     CheckNotCurrentStepAndVertionId = (id) => {
-        let currentVertionid = true, currentStep = true, versionId = id || this.state.versionId;
+        let currentVertionid = true, currentStep = true,status = true,versionId = id || this.state.versionId;
 
         currentStep = (this.state.versionData.length <= 0) || (this.state.step.statusCode != "draft")
       
         if (this.state.versionData && this.state.versionData.length) {
 
-            currentVertionid = this.state.versionData[0].id != versionId;
+            currentVertionid = (this.state.versionData[0].id != versionId)||(this.state.versionData[0].status!="0");
 
         }
 
-        return currentStep || currentVertionid
+        return (currentStep || currentVertionid)
 
 
     }
@@ -593,7 +595,7 @@ class PriceControl extends React.Component {
     EventChangeSelectVersion = versionId => {
         let cv = this.state.versionData.filter(arg=>arg.id==versionId)[0]
         this.setState({
-            edit: false,
+            edit:false,
             curVersion:cv? cv.statusName:"",
             isNoPriceData: this.CheckNotCurrentStepAndVertionId(versionId),
             versionId
