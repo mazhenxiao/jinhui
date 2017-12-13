@@ -20,6 +20,8 @@ class $tree {
             success(da){
             	
                 th.ele.tree("loadData",da);
+                var Height = $(window).height();
+                $(".treeBox").height(Height-20)
             },
             error(e){
 
@@ -31,6 +33,7 @@ class $tree {
       
     }
     bindTree(ele,callback) { //绑定数据后回调
+        
         var th = this;
         th.ele = $(ele);
         let trees = th.ele.tree({
@@ -71,6 +74,7 @@ class $tree {
         });
     }
     bindScroll() {
+        
         var th = this;
         let pa = this.ele.parent(),
             id = pa.attr("id") || "tree-" + new Date().getTime();
