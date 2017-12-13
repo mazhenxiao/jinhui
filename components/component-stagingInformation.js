@@ -169,7 +169,7 @@ class StagingInformation extends React.Component {
     BIND_OPENPlateIframe(){
         var th=this,data = this.plateInfo;
         let status = th.props.status;
-        if(status=="add" || status=="update"){
+        if(status=="add" || status=="upgrade"){
         		iss.popover({ content: "请先暂存分期信息"});
         		return false;
         }
@@ -261,13 +261,12 @@ class StagingInformation extends React.Component {
     BIND_OPENGroupIframe(){
         var th=this,data = this.grupInfo,okVal = "";
         let status = th.props.status;
-        
         if(th.grupInfo.length == 0 || th.grupInfo.state.flag){
             okVal = "保存"
         }else{
             okVal = false
         }
-        if(status=="add" || status=="update"){
+        if(status=="add" || status=="upgrade"){
         		iss.popover({ content: "请先暂存分期信息"});
         		return false;
         }

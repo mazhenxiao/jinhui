@@ -8,12 +8,17 @@ class $tree {
             url:"/Home/GetTreeInfo?Time="+new Date().getTime(),
             treeDate:[]
         }
+        this.num = 0;
         this.getAjax();
    
     }
     getAjax(){
         var th =this;
-      
+        this.num++;
+        if(this.num > 1){
+            return
+        }
+        console.log(666)
         iss.ajax({
             type:"post",
             url:th.state.url,
@@ -68,10 +73,10 @@ class $tree {
             th.bindScroll();
         });
 
-        $(window).on("treeLoad",arg=>{
-            th.getAjax();
+        // $(window).on("treeLoad",arg=>{
+        //     th.getAjax();
  
-        });
+        // });
     }
     bindScroll() {
         
