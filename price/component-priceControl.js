@@ -187,13 +187,15 @@ class PriceControl extends React.Component {
      */
     Exec_ColumsCount(data,parentId,str){
         let arrStr = str.split(",");
+        let parents;
         data.forEach(arg=>{
-            let parents,count={};
+            let count={};
             if(arg.parentId==parentId){  //找出当前parentId相同内容部分
                 if(arg.key==arg.parentId){  //找到当前 父id
                     parents=arg; 
                     arrStr.forEach(el=>{ //动态变量赋值
-                        count[el]=parseFloat(arg[el]);
+                       // count[el]=parseFloat(arg[el]);
+                       // count[el]=parseFloat(0);
                     })
                 }else{
                     arrStr.forEach(el=>{
@@ -202,7 +204,7 @@ class PriceControl extends React.Component {
                 }
                 if(parents){
                     arrStr.forEach(el=>{
-                        parents[el]=parseFloat(count[el]||0)+parseFloat(parents[el]);
+                        parents[el]=parseFloat(count[el]||0) //+parseFloat(parents[el]);
                     }) 
                 }
                
@@ -297,7 +299,6 @@ class PriceControl extends React.Component {
        
         let isNoPriceData = !Boolean(priceData.length);
         isNoPriceData = this.CheckNotCurrentStepAndVertionId();
-
         this.setState({
             isNoPriceData,
             priceData,
@@ -324,20 +325,22 @@ class PriceControl extends React.Component {
         })
     }
     /**
-     * 非当前阶段和非当前最新版本不现实保存和编辑
+     * 非当前阶段和非当前最新版本、非状态为0 不现实保存和编辑
+     * 1、【非】当前阶段或当前阶段为draft
+     * 2、【非】当前最新版本或最新版本的状态为0
      */
     CheckNotCurrentStepAndVertionId = (id) => {
-        let currentVertionid = true, currentStep = true, versionId = id || this.state.versionId;
+        let currentVertionid = true, currentStep = true,status = true,versionId = id || this.state.versionId;
 
         currentStep = (this.state.versionData.length <= 0) || (this.state.step.statusCode != "draft")
       
         if (this.state.versionData && this.state.versionData.length) {
 
-            currentVertionid = this.state.versionData[0].id != versionId;
+            currentVertionid = (this.state.versionData[0].id != versionId)||(this.state.versionData[0].status!="0");
 
         }
 
-        return currentStep || currentVertionid
+        return (currentStep || currentVertionid)
 
 
     }
@@ -590,13 +593,13 @@ class PriceControl extends React.Component {
      *  projectLevel //级别项目传1，分期前两个传2，后面传3
      */
     EventChangeSelectVersion = versionId => {
-
+        let cv = this.state.versionData.filter(arg=>arg.id==versionId)[0]
         this.setState({
-            edit: false,
+            edit:false,
+            curVersion:cv? cv.statusName:"",
             isNoPriceData: this.CheckNotCurrentStepAndVertionId(versionId),
             versionId
         });
-
 
         let {step, mode} = this.state;
         let opt = {
@@ -653,12 +656,17 @@ class PriceControl extends React.Component {
         }
 
     }
+    BindTableRowClass=(record, index)=>{
+        let {LEVELS}=record;
+        return LEVELS=="1"?  "bg-eee":"";
+        
+    }
     renderTable = () => {
         let width = knife.recursion(this.state.priceColumns, 0);
         if (this.state.isApproal) {
             return <div>
                 <Table pagination={false} scroll={{x: width, y: 400}} loading={this.state.tableLoading} border
-                       columns={this.state.priceColumns} dataSource={this.state.priceData}></Table>
+                       columns={this.state.priceColumns} dataSource={this.state.priceData} ></Table>
             </div>
         } else {
             return <Tabs>
@@ -666,9 +674,9 @@ class PriceControl extends React.Component {
 
                     <Spin spinning={false}>
                         <div>
-                            <Table bordered={true} pagination={false} scroll={{x: width, y: 400}}
+                            <Table bordered={true} pagination={false} scroll={{x: width}}
                                    loading={this.state.tableLoading} border columns={this.state.priceColumns}
-                                   dataSource={this.state.priceData}></Table>
+                                   dataSource={this.state.priceData} rowClassName={this.BindTableRowClass}></Table>
                         </div>
 
                     </Spin>

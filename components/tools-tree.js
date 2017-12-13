@@ -8,18 +8,25 @@ class $tree {
             url:"/Home/GetTreeInfo?Time="+new Date().getTime(),
             treeDate:[]
         }
+        this.num = 0;
         this.getAjax();
    
     }
     getAjax(){
         var th =this;
-      
+        this.num++;
+        if(this.num > 1){
+            return
+        }
+        console.log(666)
         iss.ajax({
             type:"post",
             url:th.state.url,
             success(da){
             	
                 th.ele.tree("loadData",da);
+                var Height = $(window).height();
+                $(".treeBox").height(Height-20)
             },
             error(e){
 
@@ -31,6 +38,7 @@ class $tree {
       
     }
     bindTree(ele,callback) { //绑定数据后回调
+        
         var th = this;
         th.ele = $(ele);
         let trees = th.ele.tree({
@@ -65,12 +73,13 @@ class $tree {
             th.bindScroll();
         });
 
-        $(window).on("treeLoad",arg=>{
-            th.getAjax();
+        // $(window).on("treeLoad",arg=>{
+        //     th.getAjax();
  
-        });
+        // });
     }
     bindScroll() {
+        
         var th = this;
         let pa = this.ele.parent(),
             id = pa.attr("id") || "tree-" + new Date().getTime();

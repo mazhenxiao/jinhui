@@ -10,6 +10,9 @@
   right: 0;
   z-index: 300;
 }
+.bg-eee {
+  background: #eee;
+}
 .areaVeSel {
   float: left;
   padding-right: 15px;

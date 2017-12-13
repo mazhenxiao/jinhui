@@ -3,14 +3,15 @@ import iss from "../js/iss.js";
 import React, {Component} from 'react';
 import {Spin, Tabs, Row, Col, Button, Select} from 'antd';
 import {WrapperTreeTable, WrapperSelect} from '../common';
-import {AreaService} from '../services';
+import {Payment} from '../services';
+import  {knife} from '../utils';
 
-require("../css/antd.min.css");
-require("../css/payment.css");
-require("../css/tools-processBar.less");
-require("../css/button.less");
-require("../area/areaCss/areaManage.less");
-import "./sign.less";
+import "../css/antd.min.css";
+import "../css/payment.css";
+import "../css/tools-processBar.less";
+import "../css/button.less";
+import "../area/areaCss/areaManage.less";
+import "./css/sign.less";
 
 const TabPane = Tabs.TabPane;
 
@@ -24,11 +25,14 @@ class SignIndex extends Component {
         versionData: [],
         editable: false,//是否可编辑
     };
-
+    antdTableScrollLock=null;//用来触发卸载原生事件
+    visible=false;
     componentDidMount() {
-
+        this.bindScrollLock();
     }
-
+    componentWillUnmount(){
+        this.antdTableScrollLock.remove();//注销双向绑定
+    }
     /**
      * 在组件接收到一个新的prop时被调用,这个方法在初始化render时不会被调用
      * param nextProps 下一阶段的props
@@ -50,6 +54,9 @@ class SignIndex extends Component {
                 }
             );
         }
+        knife.ready(".toTable .ant-table-body,.pkTable .ant-table-body",arg=>{
+            this.bindScrollLock();
+        })
     }
 
     getApprovalState = () => {
@@ -60,37 +67,42 @@ class SignIndex extends Component {
     };
 
     handleEdit = () => {
+        let editable = !this.state.editable;
         this.setState({
-            editable: !this.state.editable,
+            editable: editable,
         });
-    };
+        if(editable){ //保存
 
+        }else{  //编辑
+
+        }
+        
+    };
+    /**
+     * 绑定双向滚动
+     */
+    bindScrollLock(){
+        let toTable = document.querySelector(".toTable .ant-table-body"),
+            pkTable = document.querySelector(".pkTable .ant-table-body");
+            toTable&&pkTable&&(this.antdTableScrollLock=knife.AntdTable_ScrollLock(toTable,pkTable));
+    }
+    renderDialog=()=>{
+        <article className="Dialog">
+           {/*  <Modal
+                title="Basic Modal"
+                visible={this.state.visible}
+                onOk={this.handleOk}
+                onCancel={this.handleCancel}
+            >
+    
+            </Modal> */}
+        </article>
+    }
     renderHistoryData = () => {
         const {versionData, versionId} = this.state;
         return (
-            <article>
-                <header className="top-header-bar">
-                    <Row>
-                        <Col span={12}>
-                            <span className="header-title">签约计划版（面积：平方米，货值：万元）</span>
-                        </Col>
-                        <Col span={12} className="action-section">
-                            <WrapperSelect className="select-version" labelText="版本:"
-                                           showDefault={false}
-                                           dataSource={versionData}></WrapperSelect>
-                        </Col>
-                    </Row>
-                </header>
-                <WrapperTreeTable/>
-            </article>
-        );
-    };
-
-    renderCurrentData = () => {
-        const {editable} = this.state;
-        return (
-            <article>
-                <header className="bottom-header-bar">
+            <article className="toTable">
+               <header className="bottom-header-bar">
                     <Row>
                         <Col span={12}>
                             <span className="header-title">动态调整版（面积：平方米，货值：万元）</span>
@@ -101,6 +113,28 @@ class SignIndex extends Component {
                                         onClick={this.handleEdit}>{editable ? "保存" : "编辑"}
                                 </button>
                             </div>
+                        </Col>
+                    </Row>
+                </header>
+            
+                <WrapperTreeTable/>
+            </article>
+        );
+    };
+
+    renderCurrentData = () => {
+        const {editable} = this.state;
+        return (
+            <article className="pkTable">
+                 <header className="top-header-bar">
+                    <Row>
+                        <Col span={12}>
+                            <span className="header-title">签约计划版（面积：平方米，货值：万元）</span>
+                        </Col>
+                        <Col span={12} className="action-section">
+                            <WrapperSelect className="select-version" labelText="版本:"
+                                           showDefault={false}
+                                           dataSource={versionData}></WrapperSelect>
                         </Col>
                     </Row>
                 </header>
@@ -122,7 +156,7 @@ class SignIndex extends Component {
             </div>
         );
     };
-
+    
     render() {
         const {dataKey} = this.state;
         if (!dataKey) {

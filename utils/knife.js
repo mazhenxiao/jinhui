@@ -5,10 +5,12 @@ import React, { Component } from 'react';
 import { Modal, Button } from 'antd';
 import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";//公共类
+import { clearTimeout } from 'timers';
 require("../css/antd.min.css");
 
 class $knife {
     checked = true; //默认校验数据为真
+    setT=null; //设计定时器
     /**
   *  数据校验
   * knife.valid([接口定义好的Filed内容])
@@ -199,14 +201,81 @@ class $knife {
                 let _reg2 = /(?:\d{1}|\.{1})$/;
                 let tested = (_reg.test(val) && (_reg2.test(val)));
                 return val == "" ? true : tested;
-
             }
             return val == "" ? true : !numreg.test(val);
         }
         return true
     }
+    
+    AntdTable_ScrollLock(lock1,lock2){
+        
+        var th = this,checkToEle="";
+        let scrollTo=(params,ev)=>{
+            if(checkToEle!=""&&checkToEle!=params){ return}
+            let self = ev.target;
+            let {scrollLeft,scrollTop}=self;
+            if(params=="1"){
+                checkToEle="1";
+                lock2.scrollLeft=scrollLeft;
+                lock2.scrollTop=scrollTop;
+                checkToEle="";
+            }else{
+                checkToEle="2";
+                lock1.scrollLeft=scrollLeft;
+                lock1.scrollTop=scrollTop;
+                checkToEle="";
+            }
+        }
+         //lock1.removeEventListener("scroll",scrollTo);
+        //lock2.removeEventListener("scroll",scrollTo);
+        
+        lock1.addEventListener("scroll",scrollTo.bind(this,"1"));
+        lock2.addEventListener("scroll",scrollTo.bind(this,"2"));
+        return {
+            remove(){//手动注销元素
+                lock1.removeEventListener("scroll",scrollTo);
+                lock2.removeEventListener("scroll",scrollTo);
+            }
+        }
+    }
+
+    /**
+     * 同jqueryReady判断是否dom完成加载
+     */
+    ready(el,callback){
+        let Callback = callback,pm=[],element;
+        if(!callback){Callback=el}
+        let number=0;
+        callback&&(element=el.split(","))
+        let setTime=setInterval(arg=>{
+            if(!callback&&document.readyState=="complete"){
+                clearInterval(setTime);
+                if(number!=1){
+                    number=1;
+                    Callback();
+                }
+            }else{
+               
+                element.forEach(arg=>{
+                   let _el = document.querySelector(arg);
+                   if(_el){ pm.push(_el)}
+                })
+                if(pm.length==element.length){
+                    clearInterval(setTime);
+                    callback();
+                }
+               
+              
+            }
+        })
+    
+       
+    }
+   
 
 }
+
+
 const knife = new $knife();
 
 export { knife }

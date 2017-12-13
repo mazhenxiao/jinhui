@@ -60,7 +60,6 @@ export default class WrapperGroupTable extends Component {
         const {columnRender, editState, fixedAble} = this.props;
         let columns = [];
         columns.scrollX = 0;
-
         headerData.forEach((item, index) => {
             let column = {
                 title: item.name || "汇总名称",
@@ -134,6 +133,8 @@ export default class WrapperGroupTable extends Component {
         });
     };
 
+
+
     render() {
         const {headerData, dataSource, rowKey, defaultHeight} = this.props;
         let tableColumns = [];
@@ -143,12 +144,13 @@ export default class WrapperGroupTable extends Component {
 
         return (
             <Table
+                rowClassName={(record, index) => record.LevelId == "1" ? "bg-eee":""}
                 rowKey={rowKey}
                 columns={tableColumns}
                 dataSource={dataSource}
                 bordered={true}
                 size="middle"
-                scroll={{x: tableColumns.scrollX, y: defaultHeight}}
+                scroll={{x: tableColumns.scrollX,y: defaultHeight}}
                 pagination={false}
             />
         );
