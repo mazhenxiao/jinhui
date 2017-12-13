@@ -10,6 +10,7 @@ require("../css/antd.min.css");
 
 class $knife {
     checked = true; //默认校验数据为真
+    setT=null; //设计定时器
     /**
   *  数据校验
   * knife.valid([接口定义好的Filed内容])
@@ -225,39 +226,43 @@ class $knife {
                 checkToEle="";
             }
         }
+         //lock1.removeEventListener("scroll",scrollTo);
+        //lock2.removeEventListener("scroll",scrollTo);
         
         lock1.addEventListener("scroll",scrollTo.bind(this,"1"));
         lock2.addEventListener("scroll",scrollTo.bind(this,"2"));
         return {
-            removeListener(){
-                lock1.removeListener("scroll",scrollTo.bind(this,"1"));
-                lock2.removeListener("scroll",scrollTo.bind(this,"2"));
+            remove(){//手动注销元素
+                lock1.removeEventListener("scroll",scrollTo);
+                lock2.removeEventListener("scroll",scrollTo);
             }
         }
     }
+
     /**
      * 同jqueryReady判断是否dom完成加载
      */
-    ready(callback){
+    ready(el,callback){
+        let Callback = callback;
+        if(!callback){Callback=el}
         let number=0;
         let setTime=setInterval(arg=>{
-            if(document.readyState=="complete"){
+            if(!callback&&document.readyState=="complete"){
                 clearInterval(setTime);
                 if(number!=1){
                     number=1;
-                    callback();
+                    Callback();
                 }
+            }else{
+                
+               let it = new Key(el.split(","));
+               console.log(it);
+               debugger
+              
             }
         })
-        let _callback=(ev)=>{
-            if(number!=1){
-                callback(ev);
-                number=1;
-            }
-      
-            document.removeEventListener(DOMContentLoaded,_callback,false);
-        }
-        document.addEventListener("DOMContentLoaded",_callback,false);
+    
+       
     }
    
 

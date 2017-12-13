@@ -187,13 +187,15 @@ class PriceControl extends React.Component {
      */
     Exec_ColumsCount(data,parentId,str){
         let arrStr = str.split(",");
+        let parents;
         data.forEach(arg=>{
-            let parents,count={};
+            let count={};
             if(arg.parentId==parentId){  //找出当前parentId相同内容部分
                 if(arg.key==arg.parentId){  //找到当前 父id
                     parents=arg; 
                     arrStr.forEach(el=>{ //动态变量赋值
-                        count[el]=parseFloat(arg[el]);
+                       // count[el]=parseFloat(arg[el]);
+                       // count[el]=parseFloat(0);
                     })
                 }else{
                     arrStr.forEach(el=>{
@@ -202,7 +204,7 @@ class PriceControl extends React.Component {
                 }
                 if(parents){
                     arrStr.forEach(el=>{
-                        parents[el]=parseFloat(count[el]||0)+parseFloat(parents[el]);
+                        parents[el]=parseFloat(count[el]||0) //+parseFloat(parents[el]);
                     }) 
                 }
                
@@ -292,7 +294,6 @@ class PriceControl extends React.Component {
        
         let isNoPriceData = !Boolean(priceData.length);
         isNoPriceData = this.CheckNotCurrentStepAndVertionId();
-
         this.setState({
             isNoPriceData,
             priceData,
@@ -641,12 +642,17 @@ class PriceControl extends React.Component {
         }
 
     }
+    BindTableRowClass=(record, index)=>{
+        let {LEVELS}=record;
+        return LEVELS=="1"?  "bg-eee":"";
+        
+    }
     renderTable = () => {
         let width = knife.recursion(this.state.priceColumns, 0);
         if (this.state.isApproal) {
             return <div>
                 <Table pagination={false} scroll={{x: width, y: 400}} loading={this.state.tableLoading} border
-                       columns={this.state.priceColumns} dataSource={this.state.priceData}></Table>
+                       columns={this.state.priceColumns} dataSource={this.state.priceData} ></Table>
             </div>
         } else {
             return <Tabs tabBarExtraContent={this.BIND_Button()}>
@@ -656,7 +662,7 @@ class PriceControl extends React.Component {
                         <div>
                             <Table bordered={true} pagination={false} scroll={{x: width}}
                                    loading={this.state.tableLoading} border columns={this.state.priceColumns}
-                                   dataSource={this.state.priceData}></Table>
+                                   dataSource={this.state.priceData} rowClassName={this.BindTableRowClass}></Table>
                         </div>
 
                     </Spin>
