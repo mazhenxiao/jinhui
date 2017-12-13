@@ -27,10 +27,14 @@ class SignIndex extends Component {
     };
 
     componentDidMount() {
-      
-       this.bindScrollLock();
+       knife.ready(arg=>{
+          this.bindScrollLock();
+       })
+       
     }
-
+    componentWillUnmount(){
+        
+    }
     /**
      * 在组件接收到一个新的prop时被调用,这个方法在初始化render时不会被调用
      * param nextProps 下一阶段的props

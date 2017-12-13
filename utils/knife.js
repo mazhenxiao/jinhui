@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import { Modal, Button } from 'antd';
 import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";//公共类
+import { clearTimeout } from 'timers';
 require("../css/antd.min.css");
 
 class $knife {
@@ -206,6 +207,7 @@ class $knife {
     }
     
     AntdTable_ScrollLock(lock1,lock2){
+        
         var th = this,checkToEle="";
         let scrollTo=(params,ev)=>{
             if(checkToEle!=""&&checkToEle!=params){ return}
@@ -223,9 +225,41 @@ class $knife {
                 checkToEle="";
             }
         }
+        
         lock1.addEventListener("scroll",scrollTo.bind(this,"1"));
         lock2.addEventListener("scroll",scrollTo.bind(this,"2"));
+        return {
+            removeListener(){
+                lock1.removeListener("scroll",scrollTo.bind(this,"1"));
+                lock2.removeListener("scroll",scrollTo.bind(this,"2"));
+            }
+        }
     }
+    /**
+     * 同jqueryReady判断是否dom完成加载
+     */
+    ready(callback){
+        let number=0;
+        let setTime=setInterval(arg=>{
+            if(document.readyState=="complete"){
+                clearInterval(setTime);
+                if(number!=1){
+                    number=1;
+                    callback();
+                }
+            }
+        })
+        let _callback=(ev)=>{
+            if(number!=1){
+                callback(ev);
+                number=1;
+            }
+      
+            document.removeEventListener(DOMContentLoaded,_callback,false);
+        }
+        document.addEventListener("DOMContentLoaded",_callback,false);
+    }
+   
 
 }
 
