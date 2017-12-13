@@ -11,7 +11,7 @@ import "../css/payment.css";
 import "../css/tools-processBar.less";
 import "../css/button.less";
 import "../area/areaCss/areaManage.less";
-import "./css/sign.less";
+import "";
 
 const TabPane = Tabs.TabPane;
 
