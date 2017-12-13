@@ -591,10 +591,10 @@ class PriceControl extends React.Component {
      *  projectLevel //级别项目传1，分期前两个传2，后面传3
      */
     EventChangeSelectVersion = versionId => {
-        
+        let cv = this.state.versionData.filter(arg=>arg.id==versionId)[0]
         this.setState({
             edit: false,
-            curVersion:this.state.versionData.filter(arg=>arg.id==versionId),
+            curVersion:cv? cv.statusname:"",
             isNoPriceData: this.CheckNotCurrentStepAndVertionId(versionId),
             versionId
         });
