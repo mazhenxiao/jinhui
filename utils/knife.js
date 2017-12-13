@@ -167,7 +167,7 @@ class $knife {
                     regExp.forEach((arg)=>{
                         let txt = arg.replace(/[{}]/ig,"");
                             //type = 
-                        replaceText = replaceText.replace(arg,ds[txt]);
+                        replaceText = replaceText.replace(arg,(ds[txt]||0));
                     });
                     ds[field]="";  //可能有NaN
                     ds[field]=eval(replaceText);
