@@ -205,8 +205,14 @@ class $knife {
         }
         return true
     }
+    
+    AntdTable_ScrollLock(lock1,lock2){
+        let el1 = document.querySelector(lock1),el2 = document.querySelector(lock2);
+    }
 
 }
+
+
 const knife = new $knife();
 
 export { knife }
