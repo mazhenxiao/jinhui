@@ -210,7 +210,12 @@ class PriceControl extends React.Component {
                
             }
         })
-        
+    }
+    /**
+     * 
+     * @param {*json} data 
+     */
+    Exec_ColumsJupCount(data){
 
     }
     /**
@@ -586,10 +591,10 @@ class PriceControl extends React.Component {
      *  projectLevel //级别项目传1，分期前两个传2，后面传3
      */
     EventChangeSelectVersion = versionId => {
-        
+        let cv = this.state.versionData.filter(arg=>arg.id==versionId)[0]
         this.setState({
             edit: false,
-            curVersion:this.state.versionData.filter(arg=>arg.id==versionId),
+            curVersion:cv? cv.statusname:"",
             isNoPriceData: this.CheckNotCurrentStepAndVertionId(versionId),
             versionId
         });
@@ -624,13 +629,20 @@ class PriceControl extends React.Component {
         }
 
         // let defaultValue = this.state.versionData.length ? [this.state.versionData[0]["id"]] : "请选择";
-        return <ul className="BTN_GROUP">
+        return <ul className="BTN_GROUP Right">
             <li className={this.state.isNoPriceData ? "hide" : ""}> {ButtonBar()}</li>
             <li className=""></li>
+            <li className="">
+                <button type="button" onClick={this.handleApproval}
+                        className={this.state.isNoPriceData ? "hide" : "jh_btn jh_btn22 jh_btn_apro"}>
+                    发起审批
+                </button>
+            </li>
             <li className=""><span>当前版本：</span><Select value={this.state.versionId}
                                                        onChange={this.EventChangeSelectVersion}
                                                        style={{width: 90}}>{list}</Select></li>
             <li className=""><span>状态：</span><span id="statusText">{this.state.curVersion}</span></li>
+            
         </ul>
     }
     isApproal = arg => {
@@ -655,7 +667,7 @@ class PriceControl extends React.Component {
                        columns={this.state.priceColumns} dataSource={this.state.priceData} ></Table>
             </div>
         } else {
-            return <Tabs tabBarExtraContent={this.BIND_Button()}>
+            return <Tabs>
                 <TabPane tab="价格管理" key="plan-quota">
 
                     <Spin spinning={false}>
@@ -684,18 +696,15 @@ class PriceControl extends React.Component {
                 <header className="price">
                     <Spin size="large" spinning={false}>
                         <Row className={this.state.isApproal ? "hide" : ""}>
-                            <Col span={12}>
+                            <Col span={8}>
                                 <ul className="processBar-header">
                                     {this.renderStepLend()}
                                 </ul>
                             </Col>
-                            <Col span={12}>
-                                <div className="Right">
-                                    <button type="button" onClick={this.handleApproval}
-                                            className={this.state.isNoPriceData ? "hide" : "jh_btn jh_btn22 jh_btn_apro"}>
-                                        发起审批
-                                    </button>
-                                </div>
+                            <Col span={16}>
+                                <div className={this.props.location.query["dataKey"] ? "" : "none"}>
+                                    {this.BIND_Button()}
+                                </div>  
                             </Col>
                         </Row>
                         <Row gutter={0}>
