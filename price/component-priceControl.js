@@ -594,7 +594,7 @@ class PriceControl extends React.Component {
         let cv = this.state.versionData.filter(arg=>arg.id==versionId)[0]
         this.setState({
             edit: false,
-            curVersion:cv? cv.statusname:"",
+            curVersion:cv? cv.statusName:"",
             isNoPriceData: this.CheckNotCurrentStepAndVertionId(versionId),
             versionId
         });
