@@ -243,9 +243,10 @@ class $knife {
      * 同jqueryReady判断是否dom完成加载
      */
     ready(el,callback){
-        let Callback = callback;
+        let Callback = callback,pm=[],element;
         if(!callback){Callback=el}
         let number=0;
+        callback&&(element=el.split(","))
         let setTime=setInterval(arg=>{
             if(!callback&&document.readyState=="complete"){
                 clearInterval(setTime);
@@ -254,10 +255,16 @@ class $knife {
                     Callback();
                 }
             }else{
-                
-               let it = new Key(el.split(","));
-               console.log(it);
-               debugger
+               
+                element.forEach(arg=>{
+                   let _el = document.querySelector(arg);
+                   if(_el){ pm.push(_el)}
+                })
+                if(pm.length==element.length){
+                    clearInterval(setTime);
+                    callback();
+                }
+               
               
             }
         })

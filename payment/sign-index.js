@@ -56,8 +56,9 @@ class SignIndex extends Component {
                 }
             );
         }
-        
-        this.bindScrollLock();
+        knife.ready(".toTable .ant-table-body,.pkTable .ant-table-body",arg=>{
+            this.bindScrollLock();
+        })
     }
 
     getApprovalState = () => {

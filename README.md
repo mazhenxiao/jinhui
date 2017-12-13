@@ -117,16 +117,40 @@ iss.chooseTo({
  
 ~~~
 
-knife.AntdTable_ScrollLock(to,pk)
+knife.AntdTable_ScrollLock(to,pk);
+knife.AntdTable_ScrollLock(to,pk).remove();
 ---
 * 双向绑定滚动锁定控件（针对antd控件原生DOM层滚动监听）
+* 返回值为 remove 方法
+* let antdtable =  knife.AntdTable_ScrollLock(to,pk); antdtable.remove();
 
-|参数|说明|例子|
+|参  数 |说明 |例子 |
 |----|----|----|
 |to  |原生DOM|document.querySelector(".toTable .ant-table-body")|
 |pk  |原生DOM|document.querySelector(".toTable .ant-table-body")|
+|返回值|说明|例子|
+
+
+
+
+
 ~~~ javascript
 let toTable = document.querySelector(".toTable .ant-table-body"),
     pkTable = document.querySelector(".pkTable .ant-table-body");
     knife.AntdTable_ScrollLock(toTable,pkTable);
+~~~
+knife.ready(callback)
+knife.ready(string,callback)
+---
+* 判断是否加载完成
+* 如果没有string参数则判断是不是document加载完成
+
+|参数|说明|例子|
+|----|----|----|
+|string|需要查询元素| knife.ready(".toTable .ant-table-body,.pkTable .ant-table-body",arg=>{})|
+|callback|回掉| knife.ready(".toTable .ant-table-body,.pkTable .ant-table-body",arg=>{})|
+~~~ javascript
+ knife.ready(".toTable .ant-table-body,.pkTable .ant-table-body",arg=>{
+           
+        })
 ~~~
