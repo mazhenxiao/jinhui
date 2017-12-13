@@ -685,7 +685,7 @@ class Index extends Component {
         if (parseInt(step.guid) <= 2) {
             const blockData = areaData["blockData"] || {};
             panelArray.push(
-                <TabPane tab="产品构成--按地块" key={step.code + "com-block"}>
+                <TabPane tab="产品构成--按业态" key={step.code + "com-block"}>
                     <ComBlock
                         step={step}
                         dataKey={dataKey}
