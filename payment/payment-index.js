@@ -10,7 +10,7 @@ require("../css/payment.css");
 require("../css/tools-processBar.less");
 require("../css/button.less");
 require("../area/areaCss/areaManage.less");
-import "./sign.less";
+import "./css/sign.less";
 
 const TabPane = Tabs.TabPane;
 
