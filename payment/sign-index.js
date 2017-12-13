@@ -4,12 +4,13 @@ import React, {Component} from 'react';
 import {Spin, Tabs, Row, Col, Button, Select} from 'antd';
 import {WrapperTreeTable, WrapperSelect} from '../common';
 import {AreaService} from '../services';
+import  {knife} from '../utils';
 
-require("../css/antd.min.css");
-require("../css/payment.css");
-require("../css/tools-processBar.less");
-require("../css/button.less");
-require("../area/areaCss/areaManage.less");
+import "../css/antd.min.css";
+import "../css/payment.css";
+import "../css/tools-processBar.less";
+import "../css/button.less";
+import "../area/areaCss/areaManage.less";
 import "./sign.less";
 
 const TabPane = Tabs.TabPane;
@@ -26,7 +27,8 @@ class SignIndex extends Component {
     };
 
     componentDidMount() {
-
+      
+       this.bindScrollLock();
     }
 
     /**
@@ -64,11 +66,18 @@ class SignIndex extends Component {
             editable: !this.state.editable,
         });
     };
-
+    /**
+     * 绑定双向滚动
+     */
+    bindScrollLock(){
+        let toTable = document.querySelector(".toTable .ant-table-body"),
+            pkTable = document.querySelector(".pkTable .ant-table-body");
+            knife.AntdTable_ScrollLock(toTable,pkTable);
+    }
     renderHistoryData = () => {
         const {versionData, versionId} = this.state;
         return (
-            <article>
+            <article className="toTable">
                 <header className="top-header-bar">
                     <Row>
                         <Col span={12}>
@@ -89,7 +98,7 @@ class SignIndex extends Component {
     renderCurrentData = () => {
         const {editable} = this.state;
         return (
-            <article>
+            <article className="pkTable">
                 <header className="bottom-header-bar">
                     <Row>
                         <Col span={12}>
