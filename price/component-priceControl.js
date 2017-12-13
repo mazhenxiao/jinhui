@@ -163,7 +163,7 @@ class PriceControl extends React.Component {
 
     }
     /**
-     * 数据归集
+     * table数据归集向LEVE=1的数据归集
      */
     NotionalPooling(data){
         let pid="";
@@ -212,6 +212,20 @@ class PriceControl extends React.Component {
 
     }
     /**
+     * LEVA =1 总均价计算
+     *  的货值PRICE/总可售TOTALSALEAREA=均价AVERAGEPRICE
+     * @param {*json} data 
+     */
+    Exec_AveragePiceCount(data){
+        data.forEach(arg=>{
+            let {LEVELS,PRICE,TOTALSALEAREA}=arg;
+            if(LEVELS==1){
+                if(PRICE==0){ return}
+                arg.AVERAGEPRICE=parseFloat(PRICE*10000)/parseFloat(TOTALSALEAREA)
+            }
+        })
+    }
+    /**
      * 设置表头
      */
     Create_PriceColumns = params => {
@@ -224,20 +238,17 @@ class PriceControl extends React.Component {
                 width: 80,
                 className: da["field"] == "SHOWNAME" ? "text-left" : "text-center",
                 render(text, record, index) {
-                
-                    //console.log("da.field",da.field)
+            
                     if (da.field == "SHOWNAME") {
-                        return <span className={record.LEVELS == "2" ? "Title padL20" : "Title"}>{text}</span>
+                        return <span className={record.LEVELS == "2" ? "Title padL20" : "Title"}>
+                                {text}
+                             </span>
                     } else if (th.state.edit == true && da.field == "AVERAGEPRICE" && record.LEVELS != "1") {
                          
                         return <Input value={text} className="text-right"
                                       onChange={th.EventChangeInput.bind(this, record, da["field"])}/>
                     } else {
                         let localText = text;
-                        /*      if (da.field == "ISHAVEPROPERTY" || da.field == "ISDECORATION") {
-                                 localText = text == 1 ? "是" : "否";
-                             } */
-
                         if (th.state.step && th.state.step.guid <= 2) {  //前两阶段标准层高级 为空
                             if (da.field == "STANDARDFLOORHEIGHT") {
                                 return "";
@@ -270,7 +281,7 @@ class PriceControl extends React.Component {
             Array.isArray(da["children"]) && (opt["children"] = da["children"]);
             return opt
         });
-        //console.log("title",priceColumns);
+       
         this.setState({
             priceColumnsSource:params,
             priceColumns
@@ -278,7 +289,7 @@ class PriceControl extends React.Component {
     }
 
     Create_TabelData = priceData => {
-        // console.log("data",priceData)
+       
         let isNoPriceData = !Boolean(priceData.length);
         isNoPriceData = this.CheckNotCurrentStepAndVertionId();
 
@@ -295,10 +306,14 @@ class PriceControl extends React.Component {
     EventChangeInput = (params, row, ev) => {
         let val = ev.target.value,data = this.state.priceData;
             params[row] = val;
+        
         //横向汇总 TOTALSALEAREA总可售*AVERAGEPRICE 均价=PRICE货值
           knife.setTableExec(row,this.state.priceColumnsSource,[params]);
         //纵向汇总 向parentId汇总  
         this.Exec_ColumsCount(data,params.parentId,"PRICE");
+        //横向汇总 LEVE=1 的货值PRICE/总可售TOTALSALEAREA=均价AVERAGEPRICE
+        this.Exec_AveragePiceCount(data);
+        
         this.setState({
             priceData:data
         })
@@ -308,9 +323,9 @@ class PriceControl extends React.Component {
      */
     CheckNotCurrentStepAndVertionId = (id) => {
         let currentVertionid = true, currentStep = true, versionId = id || this.state.versionId;
-        //if((this.state.versionData.length<=0)||(this.state.step.statusCode!="draft")){
+
         currentStep = (this.state.versionData.length <= 0) || (this.state.step.statusCode != "draft")
-        //  }
+      
         if (this.state.versionData && this.state.versionData.length) {
 
             currentVertionid = this.state.versionData[0].id != versionId;
@@ -324,7 +339,6 @@ class PriceControl extends React.Component {
     /**
      * 查找当前阶段
      * approvaling【审批中】 -> draft【编制中】 -> approvaled 【审批通过】-> undraft 【未编制】
-     * [{"guid":"1","name":"拿地版","code":"Vote","className":"legend-white","statusCode":"undraft"},{"guid":"2","name":"项目定位会版","code":"ProductPosition","className":"legend-white","statusCode":"undraft"},{"guid":"4","name":"启动会版","code":"Startup","className":"legend-yellow","statusCode":"approvaling"},{"guid":"5","name":"工规证版","code":"Rules","className":"legend-white","statusCode":"undraft"},{"guid":"6","name":"决策书版","code":"Decision","className":"legend-white","statusCode":"undraft"}]
      */
     FindCurrentStep = (step) => {
 
@@ -372,17 +386,15 @@ class PriceControl extends React.Component {
          */
         AreaService.getStep(dataKey, mode, "Price")
             .then(stepData => {
-
-                // let step = stepData[0];
                 let step = stepData.filter(params => {
 
                     return params.statusCode == this.FindCurrentStep(stepData);
                 })[0];
 
                 step = step ? step : stepData[0];
-                // let versionId = this.getDefaultVersionId(this.state.versionData);
+
                 this.setState({
-                    //  versionId,
+
                     stepData,
                     step: step,
                 });
