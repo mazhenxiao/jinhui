@@ -135,16 +135,16 @@ class NewProjectCountView extends React.Component {
                 <p><span>项目信息</span></p>
             </h3>
             <div className="stageVWrap">
-                <div className="stageVRight">
+                <div className="stageVRight stageVRightView">
                     <div id="myCarousel" className="carousel slide carouselStyle">
-                        <div className="carousel-inner">
+                        <div className="carousel-inner carousel-innerView">
                             <div className="item active">
                                 <img className="fullScreenIcon" src="../img/fullScreen.png" onClick={this.BIND_mapmark.bind(this)} title="全屏" />
-                                <iframe ref="iframe1" id="iframe1" src={this.state.iframeURL1} onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="291"></iframe>
+                                <iframe ref="iframe1" id="iframe1" src={this.state.iframeURL1} onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="309"></iframe>
                             </div>
                             <div className="item">
                                 <img className="fullScreenIcon" src="../img/fullScreen.png" onClick={this.BIND_maps.bind(this)} title="全屏" />
-                                <iframe ref="iframe2" id="iframe2" src={this.state.iframeURL2} onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="291"></iframe>
+                                <iframe ref="iframe2" id="iframe2" src={this.state.iframeURL2} onError={this.xmViewError.bind(this)} frameBorder="0" marginHeight="0" marginWidth="0" scrolling="no" width="100%" height="309"></iframe>
                             </div>
                         </div>
                         <a className="carousel-control left" href="#myCarousel"
@@ -156,7 +156,7 @@ class NewProjectCountView extends React.Component {
                 <div className="stageVLeft">
                     <table className="stageVTable">
                         <tbody>
-                            <tr>
+                            <tr style={{display:"none"}}>
                                 <td className="stageViewTitle">所属区域</td>
                                 <td className="stageViewCon" id="CompanyAreaName">{th.CompanyAreaName}</td>
                             </tr>
@@ -200,7 +200,6 @@ class NewProjectCountView extends React.Component {
                                 <td className="stageViewTitle">项目地址</td>
                                 <td className="stageViewCon">{th.PROJECTADDRESS}</td>
                             </tr>
-
                         </tbody>
                     </table>
                 </div>
