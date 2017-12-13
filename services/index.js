@@ -1,6 +1,6 @@
 import * as AreaService from './area-service';
 import * as Payment from './payment-service';
-import * as Supply from './supply-service';
+import * as SupplyService from './supply-service';
 import * as PrimaryKey from './primaryKey-service';
 import * as price from './price-service.js';
 import * as Project from './project-service';
@@ -10,7 +10,7 @@ export {
     CommonService,
     AreaService,
     Payment,
-    Supply,
+    SupplyService,
     PrimaryKey,
     price,
     Project

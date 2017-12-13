@@ -40,7 +40,6 @@ class Index extends Component {
         step: {}, /*当前阶段*/
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : "Stage",//显示模式，项目或者分期
-        current: this.props.location.query["current"],
         //方案指标数据，面积数据
         areaData: {},
         //面积数据里的查询
@@ -95,11 +94,9 @@ class Index extends Component {
         const {dataKey} = this.state;
         const {location} = nextProps;
         const nextDataKey = location.query.dataKey || "";
-        let nextMode = location.query.isProOrStage || "";
-        nextMode = nextMode == "1" ? "Project" : "Stage";
+        const nextMode = location.query.isProOrStage == "1" ? "Project" : "Stage";
 
         //切换路由之后，重新获取数据
-
         if (dataKey != nextDataKey) {
             this.setState({
                     dataKey: nextDataKey,
@@ -112,7 +109,6 @@ class Index extends Component {
     }
 
     componentDidMount() {
-
         //判断是否是审批, 真:审批状态; 假:普通状态
         if (this.getApprovalStatus()) {
             this.changeVersionIdToDataKey();
@@ -837,7 +833,8 @@ class Index extends Component {
     };
 
     render() {
-        const {loading, dataKey, step, versionId, versionData, current} = this.state;
+        const {current} = this.props.location.query;
+        const {loading, dataKey, step, versionId, versionData} = this.state;
         if (!dataKey) {
             return this.renderEmpty();
         }
@@ -851,24 +848,24 @@ class Index extends Component {
                         </Col>
                         <Col span={16}>
                             <SaveVersion versionId={versionId}
-                                        current={current}
-                                        versionData={versionData}
-                                        versionStatus={this.getVersionStatus()}
-                                        approvalStatus={this.getApprovalStatus()}
-                                        step={step}
-                                        onSaveVersionData={this.handleSavePlanQuotaData}
-                                        onDeleteVersionData={this.handleDeleteVersionData}
-                                        onVersionChange={this.handleVersionChange}
-                                        onHandleCreateVersion={this.handleCreateVersion}
-                                        onHandleApproval={this.handleApproval}
-                                        onHandleBlockFormatEdit={this.handleModalClick("block-format-edit", "edit")}
-                                        onHandleBuildingFormatEdit={this.handleModalClick("building-format-edit", "edit")}
+                                         current={current}
+                                         versionData={versionData}
+                                         versionStatus={this.getVersionStatus()}
+                                         approvalStatus={this.getApprovalStatus()}
+                                         step={step}
+                                         onSaveVersionData={this.handleSavePlanQuotaData}
+                                         onDeleteVersionData={this.handleDeleteVersionData}
+                                         onVersionChange={this.handleVersionChange}
+                                         onHandleCreateVersion={this.handleCreateVersion}
+                                         onHandleApproval={this.handleApproval}
+                                         onHandleBlockFormatEdit={this.handleModalClick("block-format-edit", "edit")}
+                                         onHandleBuildingFormatEdit={this.handleModalClick("building-format-edit", "edit")}
                             />
                         </Col>
                     </Row>
                     {this.renderStepList()}
                     <Row gutter={0}>
-                        
+
                     </Row>
                     {this.renderTabList()}
                     {this.renderEditOrAdjust()}
