@@ -88,14 +88,14 @@ class SignIndex extends Component {
     }
     renderDialog=()=>{
         <article className="Dialog">
-            <Modal
+           {/*  <Modal
                 title="Basic Modal"
                 visible={this.state.visible}
                 onOk={this.handleOk}
                 onCancel={this.handleCancel}
             >
     
-            </Modal>
+            </Modal> */}
         </article>
     }
     renderHistoryData = () => {
