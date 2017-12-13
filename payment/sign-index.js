@@ -3,7 +3,7 @@ import iss from "../js/iss.js";
 import React, {Component} from 'react';
 import {Spin, Tabs, Row, Col, Button, Select} from 'antd';
 import {WrapperTreeTable, WrapperSelect} from '../common';
-import {AreaService} from '../services';
+import {Payment} from '../services';
 import  {knife} from '../utils';
 
 import "../css/antd.min.css";
@@ -26,11 +26,9 @@ class SignIndex extends Component {
         editable: false,//是否可编辑
     };
     antdTableScrollLock=null;//用来触发卸载原生事件
+    visible=false;
     componentDidMount() {
-      
-          
         this.bindScrollLock();
-       
     }
     componentWillUnmount(){
         this.antdTableScrollLock.remove();//注销双向绑定
@@ -69,9 +67,16 @@ class SignIndex extends Component {
     };
 
     handleEdit = () => {
+        let editable = !this.state.editable;
         this.setState({
-            editable: !this.state.editable,
+            editable: editable,
         });
+        if(editable){ //保存
+
+        }else{  //编辑
+
+        }
+        
     };
     /**
      * 绑定双向滚动
@@ -81,32 +86,23 @@ class SignIndex extends Component {
             pkTable = document.querySelector(".pkTable .ant-table-body");
             toTable&&pkTable&&(this.antdTableScrollLock=knife.AntdTable_ScrollLock(toTable,pkTable));
     }
+    renderDialog=()=>{
+        <article className="Dialog">
+            <Modal
+                title="Basic Modal"
+                visible={this.state.visible}
+                onOk={this.handleOk}
+                onCancel={this.handleCancel}
+            >
+    
+            </Modal>
+        </article>
+    }
     renderHistoryData = () => {
         const {versionData, versionId} = this.state;
         return (
             <article className="toTable">
-                <header className="top-header-bar">
-                    <Row>
-                        <Col span={12}>
-                            <span className="header-title">签约计划版（面积：平方米，货值：万元）</span>
-                        </Col>
-                        <Col span={12} className="action-section">
-                            <WrapperSelect className="select-version" labelText="版本:"
-                                           showDefault={false}
-                                           dataSource={versionData}></WrapperSelect>
-                        </Col>
-                    </Row>
-                </header>
-                <WrapperTreeTable/>
-            </article>
-        );
-    };
-
-    renderCurrentData = () => {
-        const {editable} = this.state;
-        return (
-            <article className="pkTable">
-                <header className="bottom-header-bar">
+               <header className="bottom-header-bar">
                     <Row>
                         <Col span={12}>
                             <span className="header-title">动态调整版（面积：平方米，货值：万元）</span>
@@ -117,6 +113,28 @@ class SignIndex extends Component {
                                         onClick={this.handleEdit}>{editable ? "保存" : "编辑"}
                                 </button>
                             </div>
+                        </Col>
+                    </Row>
+                </header>
+            
+                <WrapperTreeTable/>
+            </article>
+        );
+    };
+
+    renderCurrentData = () => {
+        const {editable} = this.state;
+        return (
+            <article className="pkTable">
+                 <header className="top-header-bar">
+                    <Row>
+                        <Col span={12}>
+                            <span className="header-title">签约计划版（面积：平方米，货值：万元）</span>
+                        </Col>
+                        <Col span={12} className="action-section">
+                            <WrapperSelect className="select-version" labelText="版本:"
+                                           showDefault={false}
+                                           dataSource={versionData}></WrapperSelect>
                         </Col>
                     </Row>
                 </header>
@@ -138,7 +156,7 @@ class SignIndex extends Component {
             </div>
         );
     };
-
+    
     render() {
         const {dataKey} = this.state;
         if (!dataKey) {

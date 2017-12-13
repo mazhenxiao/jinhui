@@ -134,6 +134,7 @@ const getVersion = (stepInfo, dataKey, mode, dataType = "Area") => {
                     name: item["versioncode"],
                     statusName: item["statusname"],
                     statusCode: item["statusCode"],
+                    status:item["status"]
                 };
             });
         });

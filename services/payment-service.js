@@ -2,7 +2,7 @@
  * 获取签约版本
  */
 const getSignVersion = () => {
-
+     
 };
 
 /**
