@@ -48,6 +48,7 @@
     "koa-ejs": "^4.1.0",
     "koa-router": "^7.3.0",
     "koa-static": "^4.0.2",
-    "koa-webpack-middleware": "^1.0.7"
+    "koa-webpack-middleware": "^1.0.7",
+    "moment": "^2.19.4"
   }
 }

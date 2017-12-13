@@ -8,6 +8,7 @@ import React, {Component} from 'react';
 import {Spin, Row, Col, Button, Table, Modal, Checkbox, DatePicker, Select, Radio} from 'antd';
 import {WrapperSelect, WrapperTreeTable} from '../common';
 import {SupplyService} from "../services";
+import moment from 'moment';
 import "../css/button.less";
 import "./css/supply.less";
 
@@ -43,6 +44,7 @@ class BuildingAdjust extends Component {
         currentYear: 2017,
         switchYear: [2017, 2018, 2019, 2020],
         supplyData: [],
+        batchDate: "",
     };
 
     componentDidMount() {
@@ -221,12 +223,28 @@ class BuildingAdjust extends Component {
     };
 
     /**
+     * 批量设置供货日期
+     */
+    handleBatchSetDate = () => {
+        //TODO 批量设置供货日期
+        this.setState({
+            batchDate: "",
+        });
+    };
+
+    /**
      * 切换年
      * @param e
      */
     handleChangeYear = (e) => {
         this.setState({
             currentYear: e.target.value
+        });
+    };
+
+    handleDateChange = (value, dateString) => {
+        this.setState({
+            batchDate: dateString,
         });
     };
 
@@ -247,9 +265,9 @@ class BuildingAdjust extends Component {
     };
 
     renderContent = () => {
+        const {batchDate} = this.state;
         const columns = this.getColumns();
         const scrollX = columns.scrollX;
-        console.log("columns.scrollX", columns.scrollX);
         return (
             <div className="building-adjust">
                 <div className="adjust-header">
@@ -260,10 +278,11 @@ class BuildingAdjust extends Component {
                         <Checkbox disabled={true} className="chk">设置考核版</Checkbox>
                     </div>
                     <div className="date-picker-wrapper">
-                        <DatePicker></DatePicker>
+                        <DatePicker onChange={this.handleDateChange}
+                                    value={batchDate ? moment(batchDate, 'YYYY-MM-DD') : null}></DatePicker>
                     </div>
                     <div className="batch-set-date">
-                        <Button>设置供货日期</Button>
+                        <Button onClick={this.handleBatchSetDate}>设置供货日期</Button>
                     </div>
                     <div className="switch-year">
                         {this.renderSwitchYear()}
