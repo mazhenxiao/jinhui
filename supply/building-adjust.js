@@ -76,6 +76,7 @@ class BuildingAdjust extends Component {
 
     handleSave = () => {
         //TODO
+        this.props.onHideModal && this.props.onHideModal();
     };
 
     handleCancel = () => {
@@ -142,7 +143,7 @@ class BuildingAdjust extends Component {
                 dataIndex: 'zutuan',
                 key: 'zutuan',
                 width: 120,
-                // fixed: 'left',
+                fixed: 'left',
             },
             {
                 title: this.getFormatHeader(),
@@ -150,7 +151,7 @@ class BuildingAdjust extends Component {
                 dataIndex: 'yetai',
                 key: 'age',
                 width: 120,
-                // fixed: 'left',
+                fixed: 'left',
             },
             {
                 title: this.getBuildHeader(),
@@ -158,25 +159,25 @@ class BuildingAdjust extends Component {
                 dataIndex: 'loudong',
                 key: 'loudong',
                 width: 120,
-                // fixed: 'left',
+                fixed: 'left',
             },
             {
                 title: this.setAlignCenter("可售面积(m²)"),
                 dataIndex: 'mianji',
                 key: 'mianji',
-                width: 120,
+                width: 100,
             },
             {
                 title: this.setAlignCenter("可售货值(万元)"),
                 dataIndex: 'huozhi',
                 key: 'huozhi',
-                width: 120,
+                width: 100,
             },
             {
                 title: this.setAlignCenter("计划预证时间"),
                 dataIndex: 'shijian',
                 key: 'shijian',
-                width: 120,
+                width: 100,
             },
             {
                 title: this.setAlignCenter("供货日期"),
@@ -189,10 +190,6 @@ class BuildingAdjust extends Component {
             }
         ];
 
-        columns.scrollX = columns.length * 120;
-        if (switchYear.length === 0) {
-            return columns;
-        }
         const index = switchYear.indexOf(currentYear) + 1;
         if (index <= 2) {
             for (let i = 1; i <= 12; i++) {
@@ -202,7 +199,6 @@ class BuildingAdjust extends Component {
                     key: `month${i}`,
                     width: 80,
                 });
-                columns.scrollX += 80;
             }
         } else {
             for (let i = 1; i <= 4; i++) {
@@ -212,9 +208,15 @@ class BuildingAdjust extends Component {
                     key: `quarter${i}`,
                     width: 100,
                 });
-                columns.scrollX += 100;
             }
         }
+
+        columns.scrollX = 0;
+        columns.forEach(column => {
+            columns.scrollX += column.width;
+        });
+
+
         return columns;
     };
 
@@ -273,7 +275,7 @@ class BuildingAdjust extends Component {
                         dataSource={dataSource}
                         columns={columns}
                         size="middle"
-                        scroll={{x: scrollX, y: defaultHeight}}
+                        scroll={{x: (scrollX), y: defaultHeight}}
                         pagination={false}
                     />
                 </div>
