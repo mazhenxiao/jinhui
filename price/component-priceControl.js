@@ -666,7 +666,7 @@ class PriceControl extends React.Component {
 
                     <Spin spinning={false}>
                         <div>
-                            <Table bordered={true} pagination={false} scroll={{x: width, y: 400}}
+                            <Table bordered={true} pagination={false} scroll={{x: width}}
                                    loading={this.state.tableLoading} border columns={this.state.priceColumns}
                                    dataSource={this.state.priceData}></Table>
                         </div>

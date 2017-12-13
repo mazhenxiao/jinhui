@@ -199,14 +199,37 @@ class $knife {
                 let _reg2 = /(?:\d{1}|\.{1})$/;
                 let tested = (_reg.test(val) && (_reg2.test(val)));
                 return val == "" ? true : tested;
-
             }
             return val == "" ? true : !numreg.test(val);
         }
         return true
     }
+    
+    AntdTable_ScrollLock(lock1,lock2){
+        var th = this,checkToEle="";
+        let scrollTo=(params,ev)=>{
+            if(checkToEle!=""&&checkToEle!=params){ return}
+            let self = ev.target;
+            let {scrollLeft,scrollTop}=self;
+            if(params=="1"){
+                checkToEle="1";
+                lock2.scrollLeft=scrollLeft;
+                lock2.scrollTop=scrollTop;
+                checkToEle="";
+            }else{
+                checkToEle="2";
+                lock1.scrollLeft=scrollLeft;
+                lock1.scrollTop=scrollTop;
+                checkToEle="";
+            }
+        }
+        lock1.addEventListener("scroll",scrollTo.bind(this,"1"));
+        lock2.addEventListener("scroll",scrollTo.bind(this,"2"));
+    }
 
 }
+
+
 const knife = new $knife();
 
 export { knife }
