@@ -150,7 +150,7 @@ export default class WrapperGroupTable extends Component {
                 dataSource={dataSource}
                 bordered={true}
                 size="middle"
-                scroll={{x: tableColumns.scrollX}}
+                scroll={{x: tableColumns.scrollX,y: defaultHeight}}
                 pagination={false}
             />
         );
