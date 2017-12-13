@@ -116,3 +116,17 @@ iss.chooseTo({
   isProOrStage 【项目1 分期2】信息填报所需
  
 ~~~
+
+knife.AntdTable_ScrollLock(to,pk)
+---
+* 双向绑定滚动锁定控件（针对antd控件原生DOM层滚动监听）
+
+|参数|说明|例子|
+|----|----|----|
+|to  |原生DOM|document.querySelector(".toTable .ant-table-body")|
+|pk  |原生DOM|document.querySelector(".toTable .ant-table-body")|
+~~~ javascript
+let toTable = document.querySelector(".toTable .ant-table-body"),
+    pkTable = document.querySelector(".pkTable .ant-table-body");
+    knife.AntdTable_ScrollLock(toTable,pkTable);
+~~~
