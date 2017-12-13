@@ -104,7 +104,7 @@ class BuildingAdjust extends Component {
         });
 
         return (
-            <Select defaultValue="" style={{width: 120}}>
+            <Select defaultValue="" style={{width: 100}}>
                 {options}
             </Select>
         );
@@ -118,7 +118,7 @@ class BuildingAdjust extends Component {
         });
 
         return (
-            <Select defaultValue="" style={{width: 120}}>
+            <Select defaultValue="" style={{width: 100}}>
                 {options}
             </Select>
         );
@@ -182,9 +182,9 @@ class BuildingAdjust extends Component {
                 title: this.setAlignCenter("供货日期"),
                 dataIndex: 'riqi',
                 key: 'riqi',
-                // render: (text, record) => {
-                //     return <DatePicker></DatePicker>;
-                // },
+                render: (text, record) => {
+                    return <DatePicker></DatePicker>;
+                },
                 width: 120,
             }
         ];
@@ -200,6 +200,7 @@ class BuildingAdjust extends Component {
                     title: this.setAlignCenter(`${i}月`),
                     dataIndex: `month${i}`,
                     key: `month${i}`,
+                    width: 80,
                 });
                 columns.scrollX += 80;
             }
@@ -209,6 +210,7 @@ class BuildingAdjust extends Component {
                     title: this.setAlignCenter(`第${i}季度`),
                     dataIndex: `quarter${i}`,
                     key: `quarter${i}`,
+                    width: 100,
                 });
                 columns.scrollX += 100;
             }
@@ -245,6 +247,7 @@ class BuildingAdjust extends Component {
     renderContent = () => {
         const columns = this.getColumns();
         const scrollX = columns.scrollX;
+        console.log("columns.scrollX", columns.scrollX);
         return (
             <div className="building-adjust">
                 <div className="adjust-header">
@@ -279,7 +282,7 @@ class BuildingAdjust extends Component {
     };
 
     render() {
-        console.log("render...");
+
         const {loading} = this.state;
         return (
             <Modal
