@@ -1,6 +1,8 @@
 import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";
 import React, {Component} from 'react';
+import BuildingAdjust from './building-adjust';
+import PercentAdjust from './percent-adjust';
 import {Spin, Tabs, Row, Col, Button, Select, Table, Modal} from 'antd';
 import {WrapperSelect, WrapperTreeTable} from '../common';
 import {SupplyService} from "../services";
@@ -9,7 +11,6 @@ import "./css/supply.less";
 
 
 const TabPane = Tabs.TabPane;
-const Option = Select.Option;
 
 class Index extends Component {
 
@@ -26,6 +27,7 @@ class Index extends Component {
         versionData: [],//版本数据
         planData: {},//计划版数据
         adjustData: {},//动态调整板数据
+        modalKey: "",//弹窗的key
     };
 
     componentDidMount() {
@@ -126,6 +128,7 @@ class Index extends Component {
     handleVersionChange = (versionId) => {
         this.setState({
             loading: true,
+            versionId,
         });
         SupplyService.getPlanData(versionId)
             .then(planData => {
@@ -142,6 +145,32 @@ class Index extends Component {
             })
     };
 
+    /**
+     * 处理
+     */
+    handleEditClick = () => {
+        //supplyType 供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货
+        const {supplyType} = this.state;
+        if (supplyType === "Building") {
+            this.setState({
+                modalKey: "building-adjust",
+            });
+        } else {
+            this.setState({
+                modalKey: "percent-adjust",
+            });
+        }
+    };
+
+    handleHideModal = (param) => {
+        this.setState({
+            modalKey: "",
+        });
+        if (param == "reload") {
+
+        }
+    };
+
     renderDynamicAdjust = () => {
         return (
             <article>
@@ -150,7 +179,7 @@ class Index extends Component {
                         <span className="title">动态调整版（面积：平方米，货值：万元）</span>
                     </Col>
                     <Col span={12} className="text-align-right">
-                        <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEdit}>编辑供货</button>
+                        <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick}>编辑供货</button>
                     </Col>
                 </Row>
                 <WrapperTreeTable></WrapperTreeTable>
@@ -159,7 +188,7 @@ class Index extends Component {
     };
 
     renderPlanVersion = () => {
-        const {versionData} = this.state;
+        const {versionId, versionData} = this.state;
         return (
             <article>
                 <Row className="bottom-header">
@@ -168,12 +197,31 @@ class Index extends Component {
                     </Col>
                     <Col span={12} className="text-align-right">
                         <WrapperSelect labelText="版本:" className="plan-version"
-                                       dataSource={versionData}></WrapperSelect>
+                                       showDefault={false}
+                                       value={versionId}
+                                       dataSource={versionData}
+                                       onChange={this.handleVersionChange}
+                        ></WrapperSelect>
                     </Col>
                 </Row>
                 <WrapperTreeTable></WrapperTreeTable>
             </article>
         );
+    };
+
+    /**
+     *  显示调整窗口
+     */
+    renderAdjustModal = () => {
+        const {modalKey} = this.state;
+        switch (modalKey) {
+            case "building-adjust":
+                return <BuildingAdjust onHideModal={this.handleHideModal}/>;
+            case "percent-adjust":
+                return <PercentAdjust onHideModal={this.handleHideModal}/>;
+            default:
+                return null;
+        }
     };
 
     /**
@@ -202,6 +250,7 @@ class Index extends Component {
                             {this.renderPlanVersion()}
                         </TabPane>
                     </Tabs>
+                    {this.renderAdjustModal()}
                 </Spin>
             </div>
         );

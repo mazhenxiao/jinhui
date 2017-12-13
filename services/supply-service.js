@@ -43,10 +43,31 @@ export const getPlanData = (versionId) => {
 };
 
 /**
- * 根据项目id/分期id
+ * 根据项目id/分期id, 获取动态调整数据
  */
 export const getDynamicAdjustData = (dynamicId) => {
     return Promise.resolve({});
 };
+
+/**
+ *  获取 楼栋供货 的数据
+ */
+export const getBuildingSupplyData = () => {
+    return Promise.resolve({
+        currentYear: 2017,
+        switchYear: [2017, 2018, 2019, 2020],
+        supplyData: [],
+    });
+};
+
+/**
+ *  获取 项目比例供货/分期比例供货 的数据
+ */
+export const getPercentSupplyData = () => {
+
+};
+
+
+
 
 
