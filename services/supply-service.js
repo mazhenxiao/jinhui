@@ -11,19 +11,20 @@ export const getBaseData = (dataKey, mode) => {
         supplyType: "Building",
         //权限: Show:只允许查看, Add:新增, Edit:编辑, Upgrade:版本升级
         permission: "Edit",
+        dynamicId: "",//动态调整板Id
         versionData: [
             {
-                id: "001",
-                name: "1月动态调整板",
+                id: "003",
+                name: "3月动态调整板",
             },
             {
                 id: "002",
                 name: "2月动态调整板",
             },
             {
-                id: "003",
-                name: "3月动态调整板",
-            }
+                id: "001",
+                name: "1月动态调整板",
+            },
         ],
     });
 
@@ -44,7 +45,7 @@ export const getPlanData = (versionId) => {
 /**
  * 根据项目id/分期id
  */
-export const getDynamicAdjustData = (id) => {
+export const getDynamicAdjustData = (dynamicId) => {
     return Promise.resolve({});
 };
 

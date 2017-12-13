@@ -631,39 +631,6 @@ class Index extends Component {
     };
 
     /**
-     * 渲染button
-     */
-    // renderButtonList = () => {
-
-    //     //审批状态时,不显示阶段按钮
-    //     if (this.getApprovalStatus()) {
-    //         return null;
-    //     }
-
-    //     const {step} = this.state;
-    //     return (
-    //         <div>
-    //             {/* <div className="areaTopbtn jhBtn-wrap"> */}
-    //                 <button type="button" className="jh_btn jh_btn28 jh_btn_add" onClick={this.handleCreateVersion}>
-    //                     生成新版本
-    //                 </button>
-    //                 {
-    //                     parseInt(step.guid) <= 2 ?
-    //                         <button type="button" className="jh_btn jh_btn28 jh_btn_save"
-    //                                 onClick={this.handleModalClick("block-format-edit", "edit")}>业态维护
-    //                         </button> :
-    //                         <button type="button" className="jh_btn jh_btn28 jh_btn_save"
-    //                                 onClick={this.handleModalClick("building-format-edit", "edit")}>业态/楼栋维护
-    //                         </button>
-    //                 }
-
-    //             {/* </div> */}
-    //         </div>
-    //     );
-    // };
-
-
-    /**
      * 渲染Tab 保存按钮显示部分
      */
     renderTabList = () => {

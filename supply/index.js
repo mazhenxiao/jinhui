@@ -21,6 +21,7 @@ class Index extends Component {
         supplyType: "Building",//TODO 删除默认值
         //权限: Show:只允许查看, Add:新增, Edit:编辑, Upgrade:版本升级
         permission: "Edit",// TODO 删除默认值
+        dynamicId: "",//动态调整版本Id
         versionId: [],//当前选中的计划版本
         versionData: [],//版本数据
         planData: {},//计划版数据
@@ -76,12 +77,12 @@ class Index extends Component {
             mode = this.state.mode;
         }
 
-        // this.setState({
-        //     loading: true,
-        // });
+        this.setState({
+            loading: true,
+        });
 
         return SupplyService.getBaseData(dataKey, mode)
-            .then(({supplyType, permission, versionData}) => {
+            .then(({supplyType, permission, dynamicId, versionData}) => {
                 let versionId = "";
                 const defaultVersion = versionData[0];
                 if (defaultVersion) {
@@ -90,16 +91,29 @@ class Index extends Component {
                 this.setState({
                     supplyType,
                     permission,
+                    dynamicId,
                     versionId,
                     versionData
                 });
 
                 return {
                     versionId,
+                    dynamicId,
                 };
             })
-            .then(({versionId}) => {
-
+            .then(({versionId, dynamicId}) => {
+                const allPromise = [
+                    SupplyService.getPlanData(versionId),
+                    SupplyService.getDynamicAdjustData(dynamicId),
+                ];
+                return Promise.all(allPromise);
+            })
+            .then(([planData, adjustData]) => {
+                this.setState({
+                    loading: false,
+                    planData,
+                    adjustData,
+                });
             })
             .catch(error => {
                 this.setState({
