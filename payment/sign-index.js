@@ -25,12 +25,16 @@ class SignIndex extends Component {
         versionData: [],
         editable: false,//是否可编辑
     };
-
+    antdTableScrollLock=null;//用来触发卸载原生事件
     componentDidMount() {
       
-       this.bindScrollLock();
+          
+        this.bindScrollLock();
+       
     }
-
+    componentWillUnmount(){
+        this.antdTableScrollLock.remove();//注销双向绑定
+    }
     /**
      * 在组件接收到一个新的prop时被调用,这个方法在初始化render时不会被调用
      * param nextProps 下一阶段的props
@@ -52,6 +56,9 @@ class SignIndex extends Component {
                 }
             );
         }
+        knife.ready(".toTable .ant-table-body,.pkTable .ant-table-body",arg=>{
+            this.bindScrollLock();
+        })
     }
 
     getApprovalState = () => {
@@ -72,7 +79,7 @@ class SignIndex extends Component {
     bindScrollLock(){
         let toTable = document.querySelector(".toTable .ant-table-body"),
             pkTable = document.querySelector(".pkTable .ant-table-body");
-            knife.AntdTable_ScrollLock(toTable,pkTable);
+            toTable&&pkTable&&(this.antdTableScrollLock=knife.AntdTable_ScrollLock(toTable,pkTable));
     }
     renderHistoryData = () => {
         const {versionData, versionId} = this.state;
