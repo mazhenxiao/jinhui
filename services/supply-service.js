@@ -12,6 +12,7 @@ export const getBaseData = (dataKey, mode) => {
         //权限: Show:只允许查看, Add:新增, Edit:编辑, Upgrade:版本升级
         permission: "Edit",
         dynamicId: "",//动态调整板Id
+        versionId: "003",
         versionData: [
             {
                 id: "003",
@@ -26,6 +27,12 @@ export const getBaseData = (dataKey, mode) => {
                 name: "1月动态调整板",
             },
         ],
+        baseInfo: {
+            currentMonth: "201711",
+            switchMonth: [{id: "201711", name: "2017年11月"}, {id: "201712", name: "2017年12月"}],
+            currentYear: 2017,
+            switchYear: [2017, 2018, 2019, 2020],
+        }
     });
 
     // return iss.fetch({
@@ -54,9 +61,17 @@ export const getDynamicAdjustData = (dynamicId) => {
  */
 export const getBuildingSupplyData = () => {
     return Promise.resolve({
-        currentYear: 2017,
-        switchYear: [2017, 2018, 2019, 2020],
-        supplyData: [],
+        supplyData: [{
+            key: '1',
+            zutuan: '胡彦斌',
+            age: 32,
+            address: '西湖区湖底公园1号'
+        }, {
+            key: '2',
+            zutuan: '胡彦祖',
+            age: 42,
+            address: '西湖区湖底公园1号'
+        }],
     });
 };
 
