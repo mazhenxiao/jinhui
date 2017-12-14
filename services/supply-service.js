@@ -100,20 +100,35 @@ export const getDynamicAdjustData = (dynamicId) => {
 /**
  *  获取 楼栋供货 的数据
  */
-export const getBuildingSupplyData = () => {
-    return Promise.resolve({
-        supplyData: [{
-            key: '1',
-            zutuan: '胡彦斌',
-            age: 32,
-            address: '西湖区湖底公园1号'
-        }, {
-            key: '2',
-            zutuan: '胡彦祖',
-            age: 42,
-            address: '西湖区湖底公园1号'
-        }],
-    });
+export const getBuildingSupplyData = (dataKey, mode) => {
+    return iss.fetch({
+        url: "Supply/IApprovedView",
+        type: "get",
+        data: {
+            id: dataKey,
+            datalevel: mode,
+        },
+    })
+        .then(res => res.rows)
+        .then(data => {
+            return {
+                supplyData: [],
+            };
+        });
+
+    // return Promise.resolve({
+    //     supplyData: [{
+    //         key: '1',
+    //         zutuan: '胡彦斌',
+    //         age: 32,
+    //         address: '西湖区湖底公园1号'
+    //     }, {
+    //         key: '2',
+    //         zutuan: '胡彦祖',
+    //         age: 42,
+    //         address: '西湖区湖底公园1号'
+    //     }],
+    // });
 };
 
 /**

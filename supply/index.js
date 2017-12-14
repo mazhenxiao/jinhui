@@ -80,6 +80,10 @@ class Index extends Component {
             mode = this.state.mode;
         }
 
+        if (!dataKey) {
+            return;
+        }
+
         this.setState({
             loading: true,
         });
@@ -199,7 +203,8 @@ class Index extends Component {
                         <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick()}>编辑比例供货</button>
                     </Col>
                 </Row>
-                <WrapperTreeTable ></WrapperTreeTable>
+                <WrapperTreeTable rowKey="ID" dataSource={adjustData.dataSource}
+                                  headerData={adjustData.headerData}></WrapperTreeTable>
             </article>
         );
     };
