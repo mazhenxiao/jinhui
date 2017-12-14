@@ -214,7 +214,6 @@ class Intallment extends React.Component {
     }
     /*暂存*/
     EVENT_CLICK_SAVE(callback){
-        
         let th=this;
         let status=th.state.status;
         var SumbitType;
@@ -222,6 +221,7 @@ class Intallment extends React.Component {
         var dta=th.state.StagingInformationDATA;
         var maxCode=th.state.maxCode;
         var versionId=th.state.versionId;
+        var newId = th.state.versionNewId;
         var projectId=th.state.projectId;
         
         maxCode=maxCode?maxCode:"";
@@ -239,8 +239,8 @@ class Intallment extends React.Component {
             dta.SEQNUM=Number(maxCode.replace("Q",""))*10;
         }else if(status=="upgrade"){  //升级版本是
             SumbitType="Upgrade";
-            dta.STAGEVERSIONIDOLD=versionId;
-            dta.STAGEVERSIONID=th.state.versionNewId;;
+            dta.STAGEVERSIONID=versionId;
+            dta.STAGEVERSIONID=th.state.versionNewId;
             dta.STAGEID=this.state.STAGEID_guid;
             dta.ID=this.state.ID_guid;
         }
@@ -257,13 +257,14 @@ class Intallment extends React.Component {
                     EditType:"Save"
                 },
                 success:function (data) {
+                    debugger
                     if (typeof callback == "function") { callback() };
                     let results=data;
                     if(results.message=="成功"){
-                        if(status=="add" || status=="upgrade"){  //生版暂存修改状态
+                        if(status=="add"){  //生版暂存修改状态
                             th.getAjaxStageEcode();
                         	let localUrl=window.location.href;
-                        	let urlPath=localUrl.replace("status=add","status=edit","status=upgrade");
+                        	let urlPath=localUrl.replace("status=add","status=edit");
                         	if(urlPath.indexOf("dataKey")<0){
 					    		urlPath=urlPath+"&dataKey="+versionId;
 					    	}
@@ -275,7 +276,21 @@ class Intallment extends React.Component {
                             iss.popover({ content: "保存成功", type: 2 });
                             
                            
+                        }else if(status=="upgrade"){
+                            th.getAjaxStageEcode();
+                        	let localUrl=window.location.href;
+                        	let urlPath=localUrl.replace("status=upgrade","status=edit");
+                        	if(urlPath.indexOf("dataKey")<0){
+					    		urlPath=urlPath+"&dataKey="+newId;
+					    	}
+                        	
+                            th.setState({
+                                "status":"edit",
+                            });
+                            window.location.href=urlPath;
+                            iss.popover({ content: "保存成功", type: 2 });
                         }
+
                         iss.popover({content:"保存成功",type:2});
                         $(window).trigger("treeLoad");
                         
