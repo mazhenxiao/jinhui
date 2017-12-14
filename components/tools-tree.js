@@ -31,6 +31,13 @@ class $tree {
        
       
     }
+ /**
+  * 根据dataKey定位显示展开当前树
+  * @param {*string} dataKey 
+  */
+    show(dataKey){
+        
+    }
     bindTree(ele,callback) { //绑定数据后回调
         
         var th = this;

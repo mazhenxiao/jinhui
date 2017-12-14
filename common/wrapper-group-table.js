@@ -51,6 +51,7 @@ export default class WrapperGroupTable extends Component {
             }
             record[key] = value;
             knife.setTableExec(column, headerData, dataSource);
+            knife.setTableRowExec(column, headerData, dataSource);
             this.props.onDataChange && this.props.onDataChange(record.KEY, key, value);
             this.forceUpdate();
         };
