@@ -21,7 +21,7 @@ class OverviewTab extends React.Component {
         super(arg);
         
         this.state={
-            data:[
+            dataTabHeader:[
                 // { "guid":"1","text":"项目概览","tap":"index"},
                 //{ "guid":"2","text":"项目身份证","tap":"identity"},
                 { "guid":"2","text":"供货","tap":"supply"},
@@ -41,10 +41,13 @@ class OverviewTab extends React.Component {
     componentWillReceiveProps(nextProps){
         let allSearchArg = nextProps.data;
         let currentPosi = nextProps.currentPosi;//获取左侧树当前级别
-        let dataKey = nextProps.dataKey;//获取左侧树当前id
+        let dataKey = nextProps.data.dataKey;//获取左侧树当前id
+        let parentid = iss.id.parentid;
         this.setState({
+            loading:false,
             currentPosi:currentPosi,
             activeKey:"0",
+            parentid:parentid,
             
         },()=>{
             this.renderRightTab();
@@ -54,7 +57,8 @@ class OverviewTab extends React.Component {
     }
 
     componentDidMount(){
-
+        this.renderRightTab();
+        this.renderTabs();
     }
    //
     //左侧树变更切换右侧数据内容
@@ -63,7 +67,8 @@ class OverviewTab extends React.Component {
         switch(currentPosi){
             case "group"://集团
                 this.setState({
-                    data:[
+                    loading:false,
+                    dataTabHeader:[
                         // { "guid":"1","text":"项目概览","tap":"index"},
                         // { "guid":"2","text":"项目身份证","tap":"identity"},
                         { "guid":"2","text":"供货","tap":"supply"},
@@ -77,7 +82,8 @@ class OverviewTab extends React.Component {
             break;
             case "area"://区域
                 this.setState({
-                    data:[
+                    loading:false,
+                    dataTabHeader:[
                         // { "guid":"1","text":"项目概览","tap":"index"},
                         // { "guid":"2","text":"项目身份证","tap":"identity"},
                         { "guid":"2","text":"供货","tap":"supply"},
@@ -91,7 +97,8 @@ class OverviewTab extends React.Component {
             break;
             case "branchOffice"://分公司
                 this.setState({
-                    data:[
+                    loading:false,
+                    dataTabHeader:[
                         // { "guid":"1","text":"项目概览","tap":"index"},
                         // { "guid":"2","text":"项目身份证","tap":"identity"},
                         { "guid":"2","text":"供货","tap":"supply"},
@@ -105,9 +112,10 @@ class OverviewTab extends React.Component {
             break;
             case "project"://项目
                 this.setState({
-                    data:[
+                    loading:false,
+                    dataTabHeader:[
                         //{ "guid":"1","text":"项目概览","tap":"index"},
-                        { "guid":"2","text":"项目身份证","tap":"identity"},
+                        { "guid":"2","text":"项目身份证","tap":"identityProject"},
                         { "guid":"3","text":"供货","tap":"supply"},
                         { "guid":"4","text":"签约","tap":"sign"},
                         { "guid":"5","text":"回款","tap":"payment"},
@@ -119,9 +127,10 @@ class OverviewTab extends React.Component {
             break;
             case "intallment"://分期
                 this.setState({
-                    data:[
+                    loading:false,
+                    dataTabHeader:[
                         //{ "guid":"1","text":"项目概览","tap":"index"},
-                        { "guid":"2","text":"分期身份证","tap":"identity"},
+                        { "guid":"2","text":"分期身份证","tap":"identityIntallment"},
                         { "guid":"3","text":"供货","tap":"supply"},
                         { "guid":"4","text":"签约","tap":"sign"},
                         { "guid":"5","text":"回款","tap":"payment"},
@@ -155,15 +164,12 @@ class OverviewTab extends React.Component {
             case "index"://项目概览
                 return <OverviewIndex />
             break;
-            case "identity"://项目身份证
-                if(currentPosi=="project"){
-                    return <OverviewProject location={location} />          
-                }else if (currentPosi =="intallment"){
-                    return <OverviewIntallment location={location} />
-                }else{
-                    return 
-                }
+            case "identityProject"://项目身份证
+                 return <OverviewProject location={location} />       
                 
+            break;
+            case "identityIntallment"://分期身份证
+                    return <OverviewIntallment location={location} parentid={this.state.parentid} />
             break;
             case "supply"://供货
                 return <OverviewSupply />
@@ -189,7 +195,7 @@ class OverviewTab extends React.Component {
 
     }
     renderTabMenu1 = () =>{
-             return  this.state.data.map((da,ind)=>{
+             return  this.state.dataTabHeader.map((da,ind)=>{
                 return <TabPane tab={da.text} key={ind}>{this.renderSyncEele(da.tap)}</TabPane>
              });
     }
@@ -198,14 +204,18 @@ class OverviewTab extends React.Component {
         let dataKey  = this.props.data.dataKey;
         let iframeUrl=this.state.planUrl+dataKey;
         this.setState({
+            loading:false,
             activeKey:key,
         });
 
         //切换概览计划刷新加载
       
-        if(this.state.data.some( obj => obj.tap == "plan")){
+        if(this.state.dataTabHeader.some( obj => obj.tap == "plan")){
             let outheIframe = this.refs.outheIframe;
-            outheIframe.src = iframeUrl;
+            if(outheIframe != undefined){
+                outheIframe.src = iframeUrl;
+            }
+            
             //document.querySelectorAll("iframe").src = iframeUrl;
         }
         
@@ -223,13 +233,15 @@ class OverviewTab extends React.Component {
     
 
     render() {
+        const {loading} = this.state;
         return(<div>
+             <Spin size="large" spinning={loading}>
                 <Row>
                     <Col span={24}>
                         {this.renderTabs()}
                     </Col>
                 </Row>
-                    
+            </Spin>
             </div>
         );
     }

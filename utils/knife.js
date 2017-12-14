@@ -6,7 +6,7 @@ import { Modal, Button } from 'antd';
 import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";//公共类
 import { clearTimeout } from 'timers';
-require("../css/antd.min.css");
+import "../css/antd.min.css";
 
 class $knife {
     checked = true; //默认校验数据为真
@@ -163,6 +163,9 @@ class $knife {
         
         headerData.forEach((da,ind)=>{
             let {field,exec,children,regExps}=da;
+            let _regExps = regExps? eval(`(${regExps})`) :"";
+            
+            
             if(exec){
                 let regExp = exec.match(/\{.*?\}/ig),replaceText = exec; 
                 dataSource.forEach((ds)=>{
@@ -172,7 +175,14 @@ class $knife {
                         replaceText = replaceText.replace(arg,(ds[txt]||0));
                     });
                     ds[field]="";  //可能有NaN
-                    ds[field]=eval(replaceText);
+                    let num="";
+                    if(_regExps&&_regExps["type"]&&_regExps.type.indexOf("number")>=0){
+                            let _num = (/\d+/ig).exec(_regExps.type);
+                            num = _num? _num[0]:"";
+                    }
+                    let number = eval(replaceText);
+                        number = number=="Infinity"? 0:number;
+                        ds[field]= num==""? number:number.toFixed(num);
                 })
               
                 

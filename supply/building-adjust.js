@@ -93,7 +93,7 @@ class BuildingAdjust extends Component {
         });
 
         return (
-            <Select defaultValue="" style={{width: 100}}>
+            <Select defaultValue="" style={{width: 120}}>
                 {options}
             </Select>
         );
@@ -107,7 +107,7 @@ class BuildingAdjust extends Component {
         });
 
         return (
-            <Select defaultValue="" style={{width: 100}}>
+            <Select defaultValue="" style={{width: 120}}>
                 {options}
             </Select>
         );
@@ -121,7 +121,7 @@ class BuildingAdjust extends Component {
         });
 
         return (
-            <Select defaultValue="" style={{width: 100}}>
+            <Select defaultValue="" style={{width: 120}}>
                 {options}
             </Select>
         );
@@ -144,7 +144,7 @@ class BuildingAdjust extends Component {
                 // title: "zutuan",
                 dataIndex: 'zutuan',
                 key: 'zutuan',
-                width: 120,
+                width: 140,
                 fixed: 'left',
             },
             {
@@ -152,7 +152,7 @@ class BuildingAdjust extends Component {
                 // title: "yetai",
                 dataIndex: 'yetai',
                 key: 'age',
-                width: 120,
+                width: 140,
                 fixed: 'left',
             },
             {
@@ -160,33 +160,33 @@ class BuildingAdjust extends Component {
                 // title: "loudong",
                 dataIndex: 'loudong',
                 key: 'loudong',
-                width: 120,
+                width: 140,
                 fixed: 'left',
             },
             {
                 title: this.setAlignCenter("可售面积(m²)"),
                 dataIndex: 'mianji',
                 key: 'mianji',
-                width: 100,
+                width: 120,
             },
             {
                 title: this.setAlignCenter("可售货值(万元)"),
                 dataIndex: 'huozhi',
                 key: 'huozhi',
-                width: 100,
+                width: 120,
             },
             {
                 title: this.setAlignCenter("计划预证时间"),
                 dataIndex: 'shijian',
                 key: 'shijian',
-                width: 100,
+                width: 120,
             },
             {
                 title: this.setAlignCenter("供货日期"),
                 dataIndex: 'riqi',
                 key: 'riqi',
                 render: (text, record) => {
-                    return <DatePicker></DatePicker>;
+                    return <DatePicker allowClear={false}></DatePicker>;
                 },
                 width: 120,
             }
@@ -199,7 +199,7 @@ class BuildingAdjust extends Component {
                     title: this.setAlignCenter(`${i}月`),
                     dataIndex: `month${i}`,
                     key: `month${i}`,
-                    width: 80,
+                    width: 120,
                 });
             }
         } else {
@@ -208,7 +208,7 @@ class BuildingAdjust extends Component {
                     title: this.setAlignCenter(`第${i}季度`),
                     dataIndex: `quarter${i}`,
                     key: `quarter${i}`,
-                    width: 100,
+                    width: 120,
                 });
             }
         }
@@ -275,10 +275,10 @@ class BuildingAdjust extends Component {
                         <WrapperSelect labelText="调整月份:" showDefault={false}></WrapperSelect>
                     </div>
                     <div className="chk-wrapper">
-                        <Checkbox disabled={true} className="chk">设置考核版</Checkbox>
+                        <Checkbox disabled={true} className="chk">考核版</Checkbox>
                     </div>
                     <div className="date-picker-wrapper">
-                        <DatePicker onChange={this.handleDateChange}
+                        <DatePicker onChange={this.handleDateChange} allowClear={false}
                                     value={batchDate ? moment(batchDate, 'YYYY-MM-DD') : null}></DatePicker>
                     </div>
                     <div className="batch-set-date">
@@ -307,7 +307,7 @@ class BuildingAdjust extends Component {
         const {loading} = this.state;
         return (
             <Modal
-                title={"供货计划动态调整"}
+                title={"供货计划动态调整--按楼栋"}
                 visible={true}
                 onCancel={this.handleCancel}
                 maskClosable={false}

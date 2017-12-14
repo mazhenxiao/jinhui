@@ -17,7 +17,7 @@ class NewProjectCount extends React.Component {
             "TRADERMODE": "",
             "PROJECTTYPE": "",
             "EQUITYRATIO": "",
-            "PROJECTCODE": "", //案号
+            "PROJECTCODE":"", //案号
             "PRINCIPALNAME": "",
             "PRINCIPAL": "",
             "ID":this.props.projectId,/*项目Id*/
@@ -35,7 +35,16 @@ class NewProjectCount extends React.Component {
         this.editProjectOldName="";//在编辑状态下获取编辑前名称
       
     }
-
+    componentWillReceiveProps(nextProps){
+       
+            let projectCode=nextProps.projectCode;
+        if(projectCode != undefined){
+            this.setState({
+                "PROJECTCODE": projectCode, //案号
+            })
+        }
+        
+    }
     getAjax(callback) {
         //if (iss.id == "") { return };
         var th = this;

@@ -20,8 +20,11 @@ class OverviewProject extends React.Component {
             //allSearchArg:this.props.location.query,/*地址栏所有参数*/
         }
     }
-    componentWillReceiveProps(){
-        this.BIIND_FIST_LAND();
+    componentWillReceiveProps(nextProps){
+        if(nextProps.location.query["currentPosi"]=="priject"){
+            this.BIIND_FIST_LAND();
+        }
+        
     }
     componentWillMount(){
       this.BIIND_FIST_LAND();

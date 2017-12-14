@@ -261,6 +261,7 @@ class Intallment extends React.Component {
                     let results=data;
                     if(results.message=="成功"){
                         if(status=="add"){
+                            th.getAjaxStageEcode();
                         	let localUrl=window.location.href;
                         	let urlPath=localUrl.replace("status=add","status=edit");
                         	if(urlPath.indexOf("dataKey")<0){
@@ -272,9 +273,7 @@ class Intallment extends React.Component {
                             });
                             window.location.href=urlPath;
                             iss.popover({ content: "保存成功", type: 2 });
-                            setTimeout(()=>{
-                                window.location.reload();
-                            },500);
+                            
                            
                         }
                         iss.popover({content:"保存成功",type:2});
@@ -293,7 +292,28 @@ class Intallment extends React.Component {
         
         
     }
-	
+	getAjaxStageEcode(){
+        let th = this;
+        let versionId = th.state.versionId;;
+        iss.ajax({
+            type: "post",
+            //url:"/Project/IProjectInfo",  
+            url: "/Stage/IGetInitInfo", 
+            data: {
+                Id:versionId,
+                reqtype:"Edit",
+            },
+            //获取分期编码
+            success(res) {
+                let statedb = th.state.StagingInformationDATA;
+                let STAGECODE=res.rows.BaseFormInfo.STAGECODE;
+                statedb.STAGECODE=STAGECODE;
+                th.setState({
+                    STAGECODE:STAGECODE,
+                })
+            }
+        })
+    }
     /*
      *
      * 根据项目，获取项目编码和最大编码

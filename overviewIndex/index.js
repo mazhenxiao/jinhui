@@ -9,6 +9,8 @@ class index extends React.Component {
     constructor(arg) {
         super(arg);
         this.state = {
+            
+            loading:false,
             activeKey:"0",
         }
         this.handleChildChangeTab = this.handleChildChangeTab.bind(this);
@@ -18,22 +20,37 @@ class index extends React.Component {
         let local = nextProps.location;
         let currentPosi = local.query["currentPosi"];
         let dataKey = local.query["dataKey"];
-        this.setState({
-            currentPosi:currentPosi,
-            dataKey:dataKey,
-            location:nextProps.location,
-        });
+        let parentid = iss.id.parentid;
+        if(currentPosi==undefined){
+            this.setState({
+                loading:false,
+                currentPosi:"group",
+                dataKey:"1E1CB1E95A864AFA961392C3E3644642",
+            });
+        }else{
+            this.setState({
+                loading:false,
+                currentPosi:currentPosi,
+                dataKey:dataKey,
+                location:nextProps.location,
+            });
+        }
+        
         
     }
     componentDidMount() {
         let local = this.props.location;
         let currentPosi = local.query["currentPosi"];
         let dataKey = local.query["dataKey"];
-        this.setState({
-            currentPosi:currentPosi,
-            dataKey:dataKey,
-            location:local,
-        });
+        if(currentPosi=="project"){
+            this.setState({
+                loading:false,
+                currentPosi:currentPosi,
+                dataKey:dataKey,
+                location:local,
+            });
+        }
+        
     }
     
      
