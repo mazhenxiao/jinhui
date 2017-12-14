@@ -5,11 +5,11 @@ import {Spin, Tabs, Row, Col, Button, Select} from 'antd';
 import {WrapperTreeTable, WrapperSelect} from '../common';
 import {AreaService} from '../services';
 
-require("../css/antd.min.css");
-require("../css/payment.css");
-require("../css/tools-processBar.less");
-require("../css/button.less");
-require("../area/areaCss/areaManage.less");
+import "../css/antd.min.css";
+import "../css/payment.css";
+import "../css/tools-processBar.less";
+import "../css/button.less";
+import "../area/areaCss/areaManage.less";
 import "./css/sign.less";
 
 const TabPane = Tabs.TabPane;
