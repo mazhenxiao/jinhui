@@ -187,15 +187,15 @@ class PriceControl extends React.Component {
      */
     Exec_ColumsCount(data,parentId,str){
         let arrStr = str.split(",");
-        let parents;
+        let parents,count={};
         data.forEach(arg=>{
-            let count={};
+            
             if(arg.parentId==parentId){  //找出当前parentId相同内容部分
                 if(arg.key==arg.parentId){  //找到当前 父id
                     parents=arg; 
                     arrStr.forEach(el=>{ //动态变量赋值
                        // count[el]=parseFloat(arg[el]);
-                       // count[el]=parseFloat(0);
+                        count[el]=parseFloat(0);
                     })
                 }else{
                     arrStr.forEach(el=>{
