@@ -261,10 +261,10 @@ class StagingInformation extends React.Component {
             cancel(){}
         })
         let checkid="";
-        if(this.props.location.query["status"]=="eidt"){
-            checkid = this.state.STAGEVERSIONID
+        if(this.props.location.query["dataKey"]){
+            checkid=this.props.location.query["dataKey"];
         }else{
-            checkid=this.props.versionNewId
+            checkid = this.state.STAGEVERSIONID
         }
         ReactDOM.render(<PlateIframe  data={data} callback={th.PlateIframeCallback.bind(this)} 
          versionId = {checkid} />,document.querySelector("#PlateIframeBox"));
@@ -362,10 +362,10 @@ class StagingInformation extends React.Component {
             }
         })
         let checkid="";
-        if(this.props.location.query["status"]=="eidt"){
-            checkid = this.state.STAGEVERSIONID
+        if(this.props.location.query["dataKey"]){
+            checkid=this.props.location.query["dataKey"];
         }else{
-            checkid=this.props.versionNewId
+            checkid = this.state.STAGEVERSIONID
         }
         ReactDOM.render(<GroupIframe  data={data} callback={th.GroupIframeCallback.bind(this)}  
         versionId = {checkid} />,document.querySelector("#GroupIframeBox"));
