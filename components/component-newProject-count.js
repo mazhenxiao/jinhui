@@ -36,8 +36,9 @@ class NewProjectCount extends React.Component {
       
     }
     componentWillReceiveProps(nextProps){
-        if(nextProps.status=="add"){
+       
             let projectCode=nextProps.projectCode;
+        if(projectCode != undefined){
             this.setState({
                 "PROJECTCODE": projectCode, //案号
             })
