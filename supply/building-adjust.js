@@ -12,6 +12,8 @@ import moment from 'moment';
 import "../css/button.less";
 import "./css/supply.less";
 
+const Option = Select.Option;
+
 const defaultHeight = 400;
 
 class BuildingAdjust extends Component {
@@ -124,6 +126,48 @@ class BuildingAdjust extends Component {
         return <span className="header-center">{name}</span>;
     };
 
+    fillMonthColor = (year, month) => {
+        return (text, record) => {
+            const strDate = record["riqi"];
+            if (strDate) {
+                const date = new Date(strDate);
+                if (date.getFullYear() == year && (date.getMonth() + 1) == month) {
+                    return <span className="select-block"></span>;
+                }
+            }
+
+            return <span className="no-select-block"></span>;
+        };
+    };
+
+    fillQuarterColor = (year, quarter) => {
+        return (text, record) => {
+            const strDate = record["riqi"];
+            if (strDate) {
+                const date = new Date(strDate);
+                const month = date.getMonth() + 1;
+                if (date.getFullYear() == year) {
+                    if (month > (quarter - 1) * 3 && month <= quarter * 3)
+                        return <span className="select-block"></span>;
+                }
+            }
+            return <span className="no-select-block"></span>;
+        };
+    };
+
+    fillYearColor = (year) => {
+        return (text, record) => {
+            const strDate = record["riqi"];
+            if (strDate) {
+                const date = new Date(strDate);
+                if (date.getFullYear() == year) {
+                    return <span className="select-block"></span>;
+                }
+            }
+            return <span className="no-select-block"></span>;
+        };
+    };
+
     /**
      * 动态获取列信息
      */
@@ -184,30 +228,33 @@ class BuildingAdjust extends Component {
             }
         ];
 
-        const index = switchYear.indexOf(currentYear) + 1;
-        if (index <= 2) {
+        const index = switchYear.indexOf(currentYear);
+        if (index < 2) {
             for (let i = 1; i <= 12; i++) {
                 columns.push({
                     title: this.setAlignCenter(`${i}月`),
-                    dataIndex: `month${i}`,
-                    key: `month${i}`,
-                    width: 120,
+                    dataIndex: `${currentYear}-${i}`,
+                    key: `${currentYear}-${i}`,
+                    width: 60,
+                    render: this.fillMonthColor(currentYear, i),
                 });
             }
-        } else if (index === 3) {
+        } else if (index === 2) {
             for (let i = 1; i <= 4; i++) {
                 columns.push({
                     title: this.setAlignCenter(`第${i}季度`),
-                    dataIndex: `quarter${i}`,
-                    key: `quarter${i}`,
-                    width: 120,
+                    dataIndex: `${currentYear}-quarter-${i}`,
+                    key: `${currentYear}-quarter-${i}`,
+                    width: 100,
+                    render: this.fillQuarterColor(currentYear, i),
                 });
             }
         } else {
             columns.push({
                 title: this.setAlignCenter(`${currentYear}年及以后`),
-                dataIndex: `future`,
-                key: `future`,
+                dataIndex: `future-year`,
+                key: `future-year`,
+                render: this.fillYearColor(currentYear),
             });
         }
 

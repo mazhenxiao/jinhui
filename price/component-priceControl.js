@@ -315,6 +315,8 @@ class PriceControl extends React.Component {
      */
     EventChangeInput = (params, row, ev) => {
         let val = ev.target.value,data = this.state.priceData;
+          if(!knife.checkType(val,"number(2)")){return};
+            
             params[row] = val;
         
         //横向汇总 TOTALSALEAREA总可售*AVERAGEPRICE 均价=PRICE货值

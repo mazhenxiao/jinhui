@@ -253,7 +253,7 @@ class StageInforView extends React.Component {
                         <tbody>
                             <tr>
                                 <td className="stageViewTitle">项目名称</td>
-                                <td className="stageViewCon" style={{minWidth:"100px"}}>{th.PROJECTNAME}</td>
+                                <td className="stageViewCon" style={{minWidth:"160px"}}>{th.PROJECTNAME}</td>
                                 <td className="stageViewTitle">分期名称</td>
                                 <td className="stageViewCon">{th.STAGENAME}</td>
                             </tr>

@@ -154,3 +154,19 @@ knife.ready(string,callback)
            
         })
 ~~~
+
+数据有效性校验
+---
+knife.checkType(val,type)
+---
+* knife.checkType(20.12,"number(2)")
+
+|参数|说明|
+|---|---|
+|val|传入数据，可以是随时输入的数据|
+|type|"number(2)",按既定方针办 2为小数位|
+
+~~~ javascript
+knife.checkType(20.12,"number(2)") //4位小数
+knife.checkType(20.12,"number(6)") //6位小数
+~~~
