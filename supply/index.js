@@ -25,6 +25,7 @@ class Index extends Component {
         dynamicId: "",//动态调整版本Id
         versionId: [],//当前选中的计划版本
         versionData: [],//版本数据
+        baseInfo: null,//基础数据, 包括 调整月份, 切换年份
         planData: {},//计划版数据
         adjustData: {},//动态调整板数据
         modalKey: "",//弹窗的key
@@ -84,18 +85,14 @@ class Index extends Component {
         });
 
         return SupplyService.getBaseData(dataKey, mode)
-            .then(({supplyType, permission, dynamicId, versionData}) => {
-                let versionId = "";
-                const defaultVersion = versionData[0];
-                if (defaultVersion) {
-                    versionId = defaultVersion.id;
-                }
+            .then(({supplyType, permission, dynamicId, versionId, versionData, baseInfo}) => {
                 this.setState({
                     supplyType,
                     permission,
                     dynamicId,
                     versionId,
-                    versionData
+                    versionData,
+                    baseInfo,
                 });
 
                 return {
@@ -232,12 +229,12 @@ class Index extends Component {
      *  显示调整窗口
      */
     renderAdjustModal = () => {
-        const {modalKey} = this.state;
+        const {modalKey, baseInfo} = this.state;
         switch (modalKey) {
             case "building-adjust":
-                return <BuildingAdjust onHideModal={this.handleHideModal}/>;
+                return <BuildingAdjust onHideModal={this.handleHideModal} baseInfo={baseInfo}/>;
             case "percent-adjust":
-                return <PercentAdjust onHideModal={this.handleHideModal}/>;
+                return <PercentAdjust onHideModal={this.handleHideModal} baseInfo={baseInfo}/>;
             default:
                 return null;
         }

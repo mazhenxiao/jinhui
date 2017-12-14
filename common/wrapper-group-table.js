@@ -129,10 +129,8 @@ export default class WrapperGroupTable extends Component {
                         return text;
                     }
 
-                    //是否是停车场
-                    const isPark = record.ISPARK == "1" ? true : false;
-                    return <Input placeholder={isPark ? tipMessage : ""}
-                                  onChange={this.handleInputChange(record, childItem.field)} value={text}/>;
+
+                    return <Input onChange={this.handleInputChange(record, childItem.field)} value={text}/>;
                 };
             }
 

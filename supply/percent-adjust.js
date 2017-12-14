@@ -12,8 +12,6 @@ import moment from 'moment';
 import "../css/button.less";
 import "./css/supply.less";
 
-const Option = Select.Option;
-
 const dataSource = [{
     key: '1',
     zutuan: '胡彦斌',
@@ -41,14 +39,23 @@ class PercentAdjust extends Component {
 
     state = {
         loading: false,
-        currentYear: 2017,
-        switchYear: [2017, 2018, 2019, 2020],
+        currentMonth: "",
+        currentYear: 0,
         supplyData: [],
-        batchDate: "",
+        batchDate: "",//批量设置的日期
     };
 
+    componentWillMount() {
+        const {currentMonth, currentYear} = this.props.baseInfo;
+        this.setState({
+            currentMonth,
+            currentYear,
+        });
+    };
+
+
     componentDidMount() {
-        // this.loadData();
+        this.loadData();
     }
 
     loadData = () => {
@@ -56,11 +63,9 @@ class PercentAdjust extends Component {
             loading: true,
         });
         SupplyService.getBuildingSupplyData()
-            .then(({currentYear, switchYear, supplyData}) => {
+            .then(({supplyData}) => {
                 this.setState({
                     loading: false,
-                    currentYear,
-                    switchYear,
                     supplyData,
                 });
             })
@@ -138,7 +143,7 @@ class PercentAdjust extends Component {
                 render: (text, record) => {
                     return <DatePicker></DatePicker>;
                 },
-                width: 100,
+                width: 120,
             }
         ];
 
@@ -155,59 +160,43 @@ class PercentAdjust extends Component {
         });
     };
 
-    /**
-     * 切换年
-     * @param e
-     */
-    handleChangeYear = (e) => {
-        this.setState({
-            currentYear: e.target.value
-        });
-    };
-
     handleDateChange = (value, dateString) => {
         this.setState({
             batchDate: dateString,
         });
     };
 
-    renderSwitchYear = () => {
-        const {currentYear, switchYear} = this.state;
-        if (!currentYear) {
-            return null;
-        }
-        return (
-            <Radio.Group value={currentYear} onChange={this.handleChangeYear}>
-                {
-                    switchYear.map(year => {
-                        return <Radio.Button key={year} value={year}>{year}</Radio.Button>;
-                    })
-                }
-            </Radio.Group>
-        );
+    handleSelectChange = (key) => {
+        return (value) => {
+            this.setState({
+                [key]: value
+            });
+        };
     };
 
     renderContent = () => {
-        const {batchDate} = this.state;
+        const {batchDate, currentMonth, currentYear} = this.state;
+        const {switchMonth, switchYear} = this.props.baseInfo;
+        const lastYear = switchYear.indexOf(currentYear) === 3 ? true : false;
         const columns = this.getColumns();
+        const scrollX = columns.scrollX;
         return (
             <div className="building-adjust">
                 <div className="adjust-header">
                     <div className="select-month">
-                        <WrapperSelect labelText="调整月份:" showDefault={false}></WrapperSelect>
+                        <WrapperSelect labelText="调整月份:" onChange={this.handleSelectChange("currentMonth")}
+                                       showDefault={false} dataSource={switchMonth}
+                                       value={currentMonth}></WrapperSelect>
                     </div>
                     <div className="chk-wrapper">
                         <Checkbox disabled={true} className="chk">考核版</Checkbox>
                     </div>
                     <div className="date-picker-wrapper">
-                        <DatePicker onChange={this.handleDateChange}
+                        <DatePicker onChange={this.handleDateChange} allowClear={false}
                                     value={batchDate ? moment(batchDate, 'YYYY-MM-DD') : null}></DatePicker>
                     </div>
                     <div className="batch-set-date">
                         <Button onClick={this.handleBatchSetDate}>设置供货日期</Button>
-                    </div>
-                    <div className="switch-year">
-                        {this.renderSwitchYear()}
                     </div>
                 </div>
                 <div className="adjust-table">
@@ -216,6 +205,7 @@ class PercentAdjust extends Component {
                         dataSource={dataSource}
                         columns={columns}
                         size="middle"
+                        scroll={!lastYear ? {x: (scrollX), y: defaultHeight} : {}}
                         pagination={false}
                     />
                 </div>
@@ -228,7 +218,7 @@ class PercentAdjust extends Component {
         const {loading} = this.state;
         return (
             <Modal
-                title={"供货计划动态调整--按比例"}
+                title={"供货计划动态调整--按楼栋"}
                 visible={true}
                 onCancel={this.handleCancel}
                 maskClosable={false}
