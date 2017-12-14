@@ -44,7 +44,7 @@ class Intallment extends React.Component {
         
     	/*如果没有传递分期版本id,dataKey是分期版本id*/
     	if(!dataKey){
-    		dataKey=(status=="edit"||status=="upgrade")?iss.id.id:iss.guid().toString();
+    		dataKey=(status=="edit")?iss.id.id:iss.guid().toString();
     		versionOldId=status=="upgrade"?iss.id.id:"";
     	}
     	/*如果是新建分期*/
@@ -57,6 +57,8 @@ class Intallment extends React.Component {
             versionOldId:versionOldId,
             projectId:projectId
         });
+        console.log("datakey",dataKey);
+        console.log("this.stage",this.state);
     }
     componentDidMount(){
     }
@@ -222,7 +224,7 @@ class Intallment extends React.Component {
         var maxCode=th.state.maxCode;
         var versionId=th.state.versionId;
         var newId = th.state.versionNewId;
-        var projectId=th.state.projectId;
+        var projectId=th.state.projectId; 
         
         maxCode=maxCode?maxCode:"";
         dta.LandList=th.state.landList;
@@ -233,14 +235,14 @@ class Intallment extends React.Component {
             SumbitType="Add";
             landCode=th.state.landCode;//有地块编码显示地块编码，多个选择最大地块编码，为空
             dta.STAGEVERSIONID=versionId; //版本id直接生成
-            dta.STAGEID=this.state.STAGEID_guid;  //分期id
-            dta.ID=this.state.ID_guid; //表单id
+            dta.STAGEID=this.state.STAGEID_guid;  //分期idy
+            dta.ID=this.state.ID_guid; //表单i
             //dta.STAGECODE=th.state.pCodeAndLXCode;//分期编码
             dta.SEQNUM=Number(maxCode.replace("Q",""))*10;
         }else if(status=="upgrade"){  //升级版本是
             SumbitType="Upgrade";
             dta.STAGEVERSIONID=versionId;
-            dta.STAGEVERSIONID=th.state.versionNewId;
+            //dta.STAGEVERSIONID=th.state.versionNewId;
             dta.STAGEID=this.state.STAGEID_guid;
             dta.ID=this.state.ID_guid;
         }
@@ -257,7 +259,7 @@ class Intallment extends React.Component {
                     EditType:"Save"
                 },
                 success:function (data) {
-                    debugger
+
                     if (typeof callback == "function") { callback() };
                     let results=data;
                     if(results.message=="成功"){
