@@ -260,10 +260,10 @@ class Intallment extends React.Component {
                     if (typeof callback == "function") { callback() };
                     let results=data;
                     if(results.message=="成功"){
-                        if(status=="add"){
+                        if(status=="add" || status=="upgrade"){  //生版暂存修改状态
                             th.getAjaxStageEcode();
                         	let localUrl=window.location.href;
-                        	let urlPath=localUrl.replace("status=add","status=edit");
+                        	let urlPath=localUrl.replace("status=add","status=edit","status=upgrade");
                         	if(urlPath.indexOf("dataKey")<0){
 					    		urlPath=urlPath+"&dataKey="+versionId;
 					    	}
