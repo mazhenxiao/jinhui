@@ -101,7 +101,7 @@ class SignIndex extends Component {
                 visible={this.state.ModalVisible}
                 onCancel={this.clickModalCancel}
             >
-    
+                
             </Modal>
         </article>
     }
