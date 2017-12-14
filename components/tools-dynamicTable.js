@@ -199,7 +199,7 @@ class DynamicTable extends React.Component {
                     let paramsReg = new RegExp(reg.regExp.replace(/#/ig,"\\"));
                     let bools = paramsReg.test(val);
                     el.test["check"] = bools;
-                    el.test["val"] = bools? "":"输入不合法";
+                    el.test["val"] = bools? "":"请输入A-Z(仅一位)";
                     th.props.CallBack(el, ev);
                 } catch (e) {
                    // return false;

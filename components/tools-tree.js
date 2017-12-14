@@ -18,7 +18,6 @@ class $tree {
         if(this.num > 1){
             return
         }
-        console.log(666)
         iss.ajax({
             type:"post",
             url:th.state.url,
