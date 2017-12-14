@@ -10,6 +10,7 @@ class GroupIframe extends React.Component{
         this.state = {
             dataList: [],//总数据
             versionId:this.props.versionId,
+
             index:0,  //当前组团
             _group:[],
             checked:'',

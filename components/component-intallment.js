@@ -385,7 +385,7 @@ class Intallment extends React.Component {
 			</h3>
         </div> 
         
-        <StagingInformation STAGECODE={this.state.STAGECODE} location={th.props.location} versionId={th.state.versionId} landCode={th.state.landCode} versionOldId={th.state.versionOldId} projectId={th.state.projectId}  status={th.state.status}  equityTxt={th.state.equityRatio} save={th.EVENT_CLICK_SAVE.bind(th)} baseCallBack={th.getBasicInforTodo.bind(th)} StagingInformationDATA={th.BIND_StagingInformationDATA.bind(th)} />
+        <StagingInformation versionNewId={this.state.versionNewId} STAGECODE={this.state.STAGECODE} location={th.props.location} versionId={th.state.versionId} landCode={th.state.landCode} versionOldId={th.state.versionOldId} projectId={th.state.projectId}  status={th.state.status}  equityTxt={th.state.equityRatio} save={th.EVENT_CLICK_SAVE.bind(th)} baseCallBack={th.getBasicInforTodo.bind(th)} StagingInformationDATA={th.BIND_StagingInformationDATA.bind(th)} />
         <div>
             <h3 className="boxGroupTit">
                 <p>
