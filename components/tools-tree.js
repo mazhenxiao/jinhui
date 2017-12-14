@@ -13,10 +13,6 @@ class $tree {
     }
     getAjax(){
         var th =this;
-<<<<<<< HEAD
-=======
-     
->>>>>>> mazhenxiao
         iss.ajax({
             type:"post",
             url:th.state.url,
