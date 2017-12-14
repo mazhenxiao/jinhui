@@ -10,6 +10,7 @@ class GroupIframe extends React.Component{
         this.state = {
             dataList: [],//总数据
             versionId:this.props.versionId,
+
             index:0,  //当前组团
             _group:[],
             checked:'',
@@ -353,7 +354,7 @@ class GroupIframe extends React.Component{
                         <li className={(this.state.index== 0)? "active":""} onClick={this.EVENT_CLICK_LI.bind(this,0)}>未分配楼栋</li>
                         <li className={(this.state.index== 1)? "active":""} onClick={this.EVENT_CLICK_LI.bind(this,1)}>1组团<span onClick={this.delGroup.bind(this,1)}></span></li>
                         {this.groupName()}
-                        <li className={(this.state.index== "n")? "active":""} onClick={this.EVENT_CLICK_LI.bind(this,"n")}>未分配车位</li>
+                        {/* <li className={(this.state.index== "n")? "active":""} onClick={this.EVENT_CLICK_LI.bind(this,"n")}>未分配车位</li> */}
                     </ul>
                 </div>
                 <div className='groupFloor'>
