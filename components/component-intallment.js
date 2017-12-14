@@ -152,69 +152,78 @@ class Intallment extends React.Component {
     }
     /*发起审批*/
     EVENT_CLICK_POSTAPP(){
+        
     	let isvalide=$("#stageInforForm").form("validate");
-    	
         if(!isvalide) return false;
         let th=this;
-        let status=th.state.status;
-        var maxCode=th.state.maxCode;
-        maxCode=maxCode?maxCode:"";
-        
-        var SumbitType;
-        let landCode;
-        var dta=th.state.StagingInformationDATA;
-        
-        var versionId=th.state.versionId;/*版本id*/
-        var projectId=dta.PROJECTID;/*项目id*/
-        var areaId=dta.AREAID;/*区域id*/
-        var areaName=dta.AREANAME;/*区域名字*/
-        var final_versionId=versionId;/*最后发起审批 需要传递的id*/
+        this.EVENT_CLICK_SAVE(arg=>{
+             
+            let status=th.state.status;
+            var maxCode=th.state.maxCode;
+            maxCode=maxCode?maxCode:"";
+            
+            var SumbitType;
+            let landCode;
+            var dta=th.state.StagingInformationDATA;
+            
+            var versionId=th.state.versionId;/*版本id*/
+            var projectId=dta.PROJECTID;/*项目id*/
+            var areaId=dta.AREAID;/*区域id*/
+            var areaName=dta.AREANAME;/*区域名字*/
+            var final_versionId=versionId;/*最后发起审批 需要传递的id*/
+    
+           
+            
+            var intallmentStatus=iss.getEVal("intallmentStatus");
+            dta.LandList=th.state.landList;
+            if(dta.LandList.length==0){
+                iss.popover({content:"请选择分期占用土地"});
+                return false;
+            }
+            if(arg){status="upgrade"}
+            if(status=="edit"){
+                
+                SumbitType="Edit";
+                //dta.STAGECODE=th.state.pCodeAndLXCode;
+            }else if(status=="add"){
+                SumbitType="Add";
+                landCode=th.state.landCode;//有地块编码显示地块编码，多个选择最大地块编码，为空
+                dta.STAGEVERSIONID=versionId;  //版本id
+                dta.STAGEID=this.state.STAGEID_guid; //分期id
+                dta.ID=this.state.ID_guid; //表单id
+                //dta.STAGECODE=th.state.pCodeAndLXCode;
+                dta.SEQNUM=Number(maxCode.replace("Q",""))*10;
+                
+            }else if(status=="upgrade"){
+                
+                SumbitType="Upgrade";
+                dta.STAGEVERSIONIDOLD=versionId;
+                dta.STAGEVERSIONID=th.state.versionNewId;
+                dta.STAGEID=this.state.STAGEID_guid;
+                dta.ID=this.state.ID_guid;
+                final_versionId=th.state.versionNewId;
+            }
+            
+            iss.ajax({
+                type:"POST",
+                url:"/Stage/IToCreate",
+                data:{
+                    data:JSON.stringify(dta),
+                    SumbitType:SumbitType,
+                    landCode:landCode,
+                    EditType:"Submit", 
+                },
+                success:function (data) {
+                    iss.hashHistory.push({
+                        pathname: "/ProcessApproval",
+                        search:'?e='+intallmentStatus+'&dataKey='+final_versionId+'&current=ProcessApproval&areaId='+areaId+'&areaName='+areaName
+                    });
+                    
+                }
+            });
+        })
 
        
-        
-        var intallmentStatus=iss.getEVal("intallmentStatus");
-        dta.LandList=th.state.landList;
-        if(dta.LandList.length==0){
-        	iss.popover({content:"请选择分期占用土地"});
-        	return false;
-        }
-        if(status=="edit"){
-            SumbitType="Edit";
-            //dta.STAGECODE=th.state.pCodeAndLXCode;
-        }else if(status=="add"){
-            SumbitType="Add";
-            landCode=th.state.landCode;//有地块编码显示地块编码，多个选择最大地块编码，为空
-            dta.STAGEVERSIONID=versionId;  //版本id
-            dta.STAGEID=this.state.STAGEID_guid; //分期id
-            dta.ID=this.state.ID_guid; //表单id
-            //dta.STAGECODE=th.state.pCodeAndLXCode;
-            dta.SEQNUM=Number(maxCode.replace("Q",""))*10;
-            
-        }else if(status=="upgrade"){
-            SumbitType="Upgrade";
-            dta.STAGEVERSIONIDOLD=versionId;
-            dta.STAGEVERSIONID=th.state.versionNewId;
-            dta.STAGEID=this.state.STAGEID_guid;
-            dta.ID=this.state.ID_guid;
-            final_versionId=th.state.versionNewId;
-        }
-        iss.ajax({
-            type:"POST",
-            url:"/Stage/IToCreate",
-            data:{
-                data:JSON.stringify(dta),
-                SumbitType:SumbitType,
-                landCode:landCode,
-                EditType:"Submit", 
-            },
-            success:function (data) {
-				iss.hashHistory.push({
-					pathname: "/ProcessApproval",
-					search:'?e='+intallmentStatus+'&dataKey='+final_versionId+'&current=ProcessApproval&areaId='+areaId+'&areaName='+areaName
-				});
-				
-            }
-        });
     }
     /*暂存*/
     EVENT_CLICK_SAVE(callback){
@@ -262,7 +271,7 @@ class Intallment extends React.Component {
                 },
                 success:function (data) {
 
-                    if (typeof callback == "function") { callback() };
+                  
                     let results=data;
                     if(results.message=="成功"){
                         if(status=="add"){  //生版暂存修改状态
@@ -294,8 +303,9 @@ class Intallment extends React.Component {
                             window.location.href=urlPath;
                             iss.popover({ content: "保存成功", type: 2 });
                         }
-
+                         
                         iss.popover({content:"保存成功",type:2});
+                        if (typeof callback == "function") {  callback(newId) };
                         $(window).trigger("treeLoad");
                         
                     }else{
@@ -389,7 +399,7 @@ class Intallment extends React.Component {
 			</h3>
         </div> 
         
-        <StagingInformation versionNewId={this.state.versionNewId} STAGECODE={this.state.STAGECODE} location={th.props.location} versionId={th.state.versionId} landCode={th.state.landCode} versionOldId={th.state.versionOldId} projectId={th.state.projectId}  status={th.state.status}  equityTxt={th.state.equityRatio} save={th.EVENT_CLICK_SAVE.bind(th)} baseCallBack={th.getBasicInforTodo.bind(th)} StagingInformationDATA={th.BIND_StagingInformationDATA.bind(th)} />
+        <StagingInformation  versionNewId={this.state.versionNewId} STAGECODE={this.state.STAGECODE} location={th.props.location} versionId={th.state.versionId} landCode={th.state.landCode} versionOldId={th.state.versionOldId} projectId={th.state.projectId}  status={th.state.status}  equityTxt={th.state.equityRatio} save={th.EVENT_CLICK_SAVE.bind(th)} baseCallBack={th.getBasicInforTodo.bind(th)} StagingInformationDATA={th.BIND_StagingInformationDATA.bind(th)} />
         <div>
             <h3 className="boxGroupTit">
                 <p>
