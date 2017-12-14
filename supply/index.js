@@ -80,6 +80,10 @@ class Index extends Component {
             mode = this.state.mode;
         }
 
+        if (!dataKey) {
+            return;
+        }
+
         this.setState({
             loading: true,
         });

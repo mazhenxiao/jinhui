@@ -11,6 +11,8 @@ import iss from '../js/iss';
 
 const CheckboxGroup = Checkbox.Group;
 
+const numberReg = /^\d{1,10}(?:\.\d{0,2})?$/;
+
 class ComBuildingAdjust extends Component {
 
     static propTypes = {
@@ -214,10 +216,14 @@ class ComBuildingAdjust extends Component {
     };
 
     handleInputChange = (e) => {
+        let value = e.target.value;
+        if (!numberReg.test(value)) {
+            value = "";
+        }
         this.setState({
             singleFormatData: {
                 ...this.state.singleFormatData,
-                singleProductTypeValue: e.target.value,
+                singleProductTypeValue: value,
             }
         });
     };
