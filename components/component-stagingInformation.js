@@ -260,7 +260,14 @@ class StagingInformation extends React.Component {
             },
             cancel(){}
         })
-        ReactDOM.render(<PlateIframe  data={data} callback={th.PlateIframeCallback.bind(this)}  versionId = {this.props.versionNewId||this.state.STAGEVERSIONID} />,document.querySelector("#PlateIframeBox"));
+        let checkid="";
+        if(this.props.location.query["status"]=="eidt"){
+            checkid = this.state.STAGEVERSIONID
+        }else{
+            checkid=this.props.versionNewId
+        }
+        ReactDOM.render(<PlateIframe  data={data} callback={th.PlateIframeCallback.bind(this)} 
+         versionId = {checkid} />,document.querySelector("#PlateIframeBox"));
     }
     
     //组团划分
@@ -354,8 +361,14 @@ class StagingInformation extends React.Component {
 
             }
         })
-        
-        ReactDOM.render(<GroupIframe  data={data} callback={th.GroupIframeCallback.bind(this)}  versionId = {this.props.versionNewId||this.state.STAGEVERSIONID} />,document.querySelector("#GroupIframeBox"));
+        let checkid="";
+        if(this.props.location.query["status"]=="eidt"){
+            checkid = this.state.STAGEVERSIONID
+        }else{
+            checkid=this.props.versionNewId
+        }
+        ReactDOM.render(<GroupIframe  data={data} callback={th.GroupIframeCallback.bind(this)}  
+        versionId = {checkid} />,document.querySelector("#GroupIframeBox"));
     }
     /**
      * 点击
