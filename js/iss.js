@@ -120,7 +120,7 @@ class $iss {
 
     ajax(opt) {
         let th = this;
-        let $o = JSON.parse(JSON.stringify(opt));
+        let $o ={...opt}; //JSON.parse(JSON.stringify(opt));
         $o["success"] && delete $o["success"];
         $o["error"] && delete $o["error"];
         let token = this.token;
