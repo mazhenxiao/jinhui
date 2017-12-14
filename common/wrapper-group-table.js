@@ -61,11 +61,14 @@ export default class WrapperGroupTable extends Component {
         let columns = [];
         columns.scrollX = 0;
         headerData.forEach((item, index) => {
-            let column = {
+            const column = {
                 title: item.name || "汇总名称",
                 dataIndex: item.field,
                 key: item.field,
             };
+
+            //提示信息
+            const tipMessage = item.tig;
 
             //默认固定第一列
             if (fixedAble && index === 0) {
@@ -82,8 +85,10 @@ export default class WrapperGroupTable extends Component {
                     if (item.edit !== "+w") {
                         return text;
                     }
-
-                    return <Input onChange={this.handleInputChange(record, item.field, item)} value={text}/>;
+                    //是否是停车场
+                    const isPark = record.ISPARK == "1" ? true : false;
+                    return <Input placeholder={isPark ? tipMessage : ""}
+                                  onChange={this.handleInputChange(record, item.field, item)} value={text}/>;
                 };
             }
             if (item.children && Array.isArray(item.children) && item.children.length > 0) {
@@ -115,13 +120,19 @@ export default class WrapperGroupTable extends Component {
                 width: defaultWidth,
             };
 
+            //提示信息
+            const tipMessage = childItem.tig;
+
             if (editState) {
                 childColumn.render = (text, record) => {
                     if (childItem.edit !== "+w") {
                         return text;
                     }
 
-                    return <Input onChange={this.handleInputChange(record, childItem.field)} value={text}/>;
+                    //是否是停车场
+                    const isPark = record.ISPARK == "1" ? true : false;
+                    return <Input placeholder={isPark ? tipMessage : ""}
+                                  onChange={this.handleInputChange(record, childItem.field)} value={text}/>;
                 };
             }
 
@@ -134,7 +145,6 @@ export default class WrapperGroupTable extends Component {
     };
 
 
-
     render() {
         const {headerData, dataSource, rowKey, defaultHeight} = this.props;
         let tableColumns = [];
@@ -144,13 +154,13 @@ export default class WrapperGroupTable extends Component {
 
         return (
             <Table
-                rowClassName={(record, index) => record.LevelId == "1" ? "bg-eee":""}
+                rowClassName={(record, index) => record.LevelId == "1" ? "bg-eee" : ""}
                 rowKey={rowKey}
                 columns={tableColumns}
                 dataSource={dataSource}
                 bordered={true}
                 size="middle"
-                scroll={{x: tableColumns.scrollX,y: defaultHeight}}
+                scroll={{x: tableColumns.scrollX, y: defaultHeight}}
                 pagination={false}
             />
         );
