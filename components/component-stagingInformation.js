@@ -139,6 +139,12 @@ class StagingInformation extends React.Component {
             }
         });
     }
+    componentWillReceiveProps(nextProps){
+        let stageCode=nextProps.stageCode;
+        this.setState({
+            "STAGECODE": stageCode, //分期编码
+        })
+    }
     componentDidMount() {  
             let th=this;
             let id=th.state.STAGEVERSIONID;

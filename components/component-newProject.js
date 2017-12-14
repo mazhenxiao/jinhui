@@ -631,7 +631,7 @@ class NewProject extends React.Component {
                         if (results.message == "成功") {
                             
                             if (status == "add") {
-                                
+                                th.getAjaxPerjectcode();
                                 let localUrl = window.location.href;
                                 let urlPath = localUrl.replace("status=add", "status=edit");
                                 if (urlPath.indexOf("dataKey") < 0) {
@@ -643,9 +643,7 @@ class NewProject extends React.Component {
                                 });
                                 window.location.href = urlPath;
                                 iss.popover({ content: "保存成功", type: 2 });
-                                setTimeout(()=>{
-                                    window.location.reload();
-                                },500);
+                                
                                 
 
                                 
@@ -673,6 +671,24 @@ class NewProject extends React.Component {
 
 
 
+    }
+    getAjaxPerjectcode(){
+        let th = this;
+        let projectId = th.state.projectId;
+        iss.ajax({
+            type: "post",
+            //url:"/Project/IProjectInfo",  
+            url: "/Project/IProjectInfo",
+            data: {
+                projectId:projectId
+            },
+            //获取项目编码
+            success(res) {
+                th.setState({
+                    projectCode:res.rows.BaseFormInfo.Project.PROJECTCODE
+                })
+            }
+        })
     }
     BIND_ApprovalControlNode(self) {  //流程绑定回调
         this.NewProjectCount = self;
@@ -760,7 +776,7 @@ class NewProject extends React.Component {
                         <a className="approvalIcon" onClick={this.BIND_ROUTERCHANGE.bind(this)} href="javascript:;">发起审批 <NewProjectTime endTiming={this.handleEndTiming.bind(this)} approvalTime={this.state.NewProjectCountDATA.APPROVETIME || ""} /></a>
                     </span> 
                 </h3>
-                <NewProjectCount ref="NewProjectCount" checkName={this.checkName} local={th.props.location} NewProjectCountDATA={th.BIND_NewProjectCountDATA.bind(th)} save={th.EVENT_CLICK_SAVE.bind(this)} status={th.state.status} projectId={th.state.projectId} point={th.BIND_NewProjectCount.bind(this)} />
+                <NewProjectCount ref="NewProjectCount" projectCode={this.state.projectCode} checkName={this.checkName} local={th.props.location} NewProjectCountDATA={th.BIND_NewProjectCountDATA.bind(th)} save={th.EVENT_CLICK_SAVE.bind(this)} status={th.state.status} projectId={th.state.projectId} point={th.BIND_NewProjectCount.bind(this)} />
             </section>
 
             <section>
