@@ -248,6 +248,11 @@ class WrapperTreeTable extends Component {
             if (columnRender && columnRender[headerItem.field]) {
                 column.render = columnRender[headerItem.field];
             }
+            else {
+                column.render = (text, record) => {
+                    return <span className="text-center">{text}</span>
+                };
+            }
 
             if (editState && !column.render) {
                 column.render = (text, record) => {
@@ -290,6 +295,10 @@ class WrapperTreeTable extends Component {
 
             const childColumn = {
                 title: <span style={headerStyle}>{childHeaderItem.name || "空标题"}</span>
+            };
+
+            childColumn.render = (text, record) => {
+                return <span className="text-center">{text}</span>
             };
 
             if (editState) {
