@@ -229,6 +229,24 @@ class $knife {
     }
     /**
      * 数据有效性检测
+     * @param {*string} val 
+     * @param {*string number(0)} type 
+     */
+    checkType(val,type){
+        
+        let d = /\d+/,r = d.exec(type||""),num=r?r[0]:"";
+       
+        if(type.indexOf("number")>=0){
+            if(num){
+                let reg1 = new RegExp(`^\\\d*(?:\\\.?\\\d{0,${num||0}}?$)`,"ig");
+                return reg1.test(val);
+            }
+            
+        }
+        return true;
+    }
+    /**
+     * 数据有效性检测
      * @param {*} da   当前数据
      * {"pid":"","id":"","label":"","text":"","val":"","type":"input","unit":"万元","edit":"+w","exec":null,"regExp":"{\r\n  \"type\": \"number(2)\",\r\n  \"max\": \"1000\",\r\n  \"min\": \"0\"\r\n}","colspan":0,"data":null,"valuetype":"number","valueId":null,"test":null}
      * @param {*} val  input输入值
