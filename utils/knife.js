@@ -195,6 +195,57 @@ class $knife {
        
     }
     /**
+     * 第3种计算 当前行计算
+     * @param {*Object} row 
+     */
+    setTableRowExec(column, headerData, dataSource){
+        dataSource.forEach(arg=>{
+            let _execStr = arg["exec"],count=0,fixed="";
+            if(_execStr){
+                let _e = _execStr.split("=")[0],
+                    _c = _execStr.split("=")[1],
+                    _r = /\{.*?\}/ig,
+                    _rep = /[\{\}]/ig;
+                    _e.match(_r).forEach(el=>{
+                    _e=_e.replace(el,arg[el.replace(_rep,"")]||0)
+                })
+                let _fd =headerData.filter(f=>f["field"]==_c.replace(_rep,""))[0];
+                if(_fd){
+                   let _regExps_ = eval(`(${_fd["regExps"]})`),
+                          _type_ = _regExps_["type"],
+                          _num_  = (/\d+/ig).exec(_type_)[0];
+                          fixed = _num_==null? "":_num_;
+                }
+                count = eval(_e);
+                count = Number.isNaN(count)? 0:count=="Infinity"? 0:count;
+                
+                if(fixed!=""){
+                    count = count.toFixed(fixed);
+                }
+                arg[_c.replace(_rep,"")]=count;
+            }
+ 
+        })
+    }
+    /**
+     * 数据有效性检测
+     * @param {*string} val 
+     * @param {*string number(0)} type 
+     */
+    checkType(val,type){
+        
+        let d = /\d+/,r = d.exec(type||""),num=r?r[0]:"";
+       
+        if(type.indexOf("number")>=0){
+            if(num){
+                let reg1 = new RegExp(`^\\\d*(?:\\\.?\\\d{0,${num||0}}?$)`,"ig");
+                return reg1.test(val);
+            }
+            
+        }
+        return true;
+    }
+    /**
      * 数据有效性检测
      * @param {*} da   当前数据
      * {"pid":"","id":"","label":"","text":"","val":"","type":"input","unit":"万元","edit":"+w","exec":null,"regExp":"{\r\n  \"type\": \"number(2)\",\r\n  \"max\": \"1000\",\r\n  \"min\": \"0\"\r\n}","colspan":0,"data":null,"valuetype":"number","valueId":null,"test":null}
@@ -280,6 +331,25 @@ class $knife {
         })
     
        
+    }
+    /**
+     * URL转对象
+     * ?a=1  替换为 {'a':'1'}
+     * @param {*string} arg 
+     */
+    parseURL(arg){
+        return eval("({'"+arg.replace(/^\?/ig,"").replace(/\&/ig,"','").replace(/\=/ig,"':'")+"'})");
+    }
+    /**
+     * 路由跳转通用定义
+     * @param {*Object} arg
+     * @param {*String} dataKey 
+     * @param {*String} edit 
+     */
+    router(arg,dataKey,edit){
+        arg["key"]=dataKey;
+        iss.hashHistory.replace(arg);
+        iss.tree.edit(dataKey,edit)
     }
    
 

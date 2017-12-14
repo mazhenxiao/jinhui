@@ -24,11 +24,13 @@ class SignIndex extends Component {
         versionId: "",
         versionData: [],
         editable: false,//是否可编辑
+        ModalVisible:false,
     };
     antdTableScrollLock=null;//用来触发卸载原生事件
     visible=false;
     componentDidMount() {
         this.bindScrollLock();
+        this.renderDialog();//弹出
     }
     componentWillUnmount(){
         this.antdTableScrollLock.remove();//注销双向绑定
@@ -86,20 +88,25 @@ class SignIndex extends Component {
             pkTable = document.querySelector(".pkTable .ant-table-body");
             toTable&&pkTable&&(this.antdTableScrollLock=knife.AntdTable_ScrollLock(toTable,pkTable));
     }
+    /**
+     * 点击取消
+     */
+    clickModalCancel=()=>{
+
+    }
     renderDialog=()=>{
         <article className="Dialog">
-           {/*  <Modal
-                title="Basic Modal"
-                visible={this.state.visible}
-                onOk={this.handleOk}
-                onCancel={this.handleCancel}
+           <Modal
+                title={this.state.ModalTile}
+                visible={this.state.ModalVisible}
+                onCancel={this.clickModalCancel}
             >
-    
-            </Modal> */}
+                
+            </Modal>
         </article>
     }
     renderHistoryData = () => {
-        const {versionData, versionId} = this.state;
+        const {versionData, versionId,editable} = this.state;
         return (
             <article className="toTable">
                <header className="bottom-header-bar">
@@ -123,7 +130,7 @@ class SignIndex extends Component {
     };
 
     renderCurrentData = () => {
-        const {editable} = this.state;
+        const {editable,versionData} = this.state;
         return (
             <article className="pkTable">
                  <header className="top-header-bar">
