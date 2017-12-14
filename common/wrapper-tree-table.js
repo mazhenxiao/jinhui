@@ -252,8 +252,41 @@ const headerData = [
                 },
                 {
                     name: '套数',
-                    field: 'monthSetNumber9',
-                }]
+                    field: 'monthSetNumber91',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber92',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber93',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber94',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber95',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber96',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber97',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber98',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber99',
+                },
+            ]
         }]
     }
 ];
@@ -277,8 +310,8 @@ class WrapperTreeTable extends Component {
     };
 
     static defaultProps = {
-        headerData: headerData,
-        dataSource: dataSource,
+        headerData: [],
+        dataSource: [],
         rowKey: "key",
         defaultHeight: 400,
         columnRender: null,
@@ -407,6 +440,12 @@ class WrapperTreeTable extends Component {
         let tableColumns = [];
         if (dataSource && dataSource.length > 0) {
             tableColumns = this.getColumns(headerData);
+        }
+
+        if (!dataSource || dataSource.length == 0) {
+            return (
+                <div className="empty-div">暂无数据</div>
+            );
         }
 
         return (
