@@ -7,9 +7,7 @@ import StageMasView from "../components/component-stageMas-view.js";  /*分期�
 
 
 class OverviewIntallment extends React.Component {
-    constructor(arg) {
-        super(arg);
-        this.state={
+    state={
             allSearchArg:this.props.location.query,/*地址栏所有参数*/
             versionId:this.props.location.query["dataKey"],/*版本id*/
             projectid:"",/*项目id*/
@@ -17,8 +15,18 @@ class OverviewIntallment extends React.Component {
             equityTxt:"",/*权益比例*/
             landList:[],/*地块信息*/
         }
-    }
-    getLandlist(da){
+    // componentWillReceiveProps(nextProps){
+    //     //分期
+    //     let allSearchArg=nextProps.location.query;
+    //     let versionId=nextProps.location.query["dataKey"];
+    //     this.setState({
+    //         allSearchArg:allSearchArg,
+    //         versionId:versionId,
+    //     })
+        
+    // }
+    
+    getLandlist = (da) =>{
     	var th=this;
         var equityTxt="";
         var landFirstCode="";
@@ -35,7 +43,7 @@ class OverviewIntallment extends React.Component {
         });
     }
     /*获取基本信息*/
-    getBasicInfor(basicInfor){
+    getBasicInfor = (basicInfor) =>{
     	let th=this;
     	var projectId=basicInfor.PROJECTID;   	
     	th.setState({
@@ -43,12 +51,20 @@ class OverviewIntallment extends React.Component {
         });
         $(document).triggerHandler("landFirstLoad",[projectId]);
     }
-    render() {
+
+    renderIntallmentContent = () =>{
         let th=this;
         let stateData=th.state;
         return (<div>
             <StageInforView versionId={stateData.versionId} status={stateData.status} equityTxt={stateData.equityTxt} basicCallBack={th.getBasicInfor.bind(th)}/>
             <StageMasView versionId={stateData.versionId} callback={th.getLandlist.bind(th)}/>
+        </div>);
+    }
+    
+    render() {
+        
+        return (<div>
+            {this.renderIntallmentContent()}
         </div>);
     }
 }
