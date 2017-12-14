@@ -188,7 +188,14 @@ class StagingInformation extends React.Component {
             cancel:"取消",
             ok(da){
                 //console.log(th.plateInfo.state.dataList)
-                var stageversionid = th.state.STAGEVERSIONID,
+                let checkid="";
+                if(th.props.location.query["dataKey"]){
+                    checkid=th.props.location.query["dataKey"];
+                }else{
+                    checkid = th.state.STAGEVERSIONID
+                }
+               // var stageversionid = th.state.STAGEVERSIONID,
+               var stageversionid=checkid,
                     newPushPlate = [],
                     buildingPushPlateMapping = [],
                     valueNumber=[],
@@ -292,7 +299,14 @@ class StagingInformation extends React.Component {
             okVal:okVal,
             cancel:"取消",
             ok(da){
-                var stageversionid = th.state.STAGEVERSIONID,
+                let checkid="";
+                if(th.props.location.query["dataKey"]){
+                    checkid=th.props.location.query["dataKey"];
+                }else{
+                    checkid = th.state.STAGEVERSIONID
+                }
+                //var stageversionid = th.state.STAGEVERSIONID,
+                var stageversionid = checkid,
                     newGroup = [],
                     buildingGroupMapping = [],
                     valueNumber=[],
