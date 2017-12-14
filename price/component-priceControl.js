@@ -151,7 +151,7 @@ class PriceControl extends React.Component {
             .then(ref => {  //归集汇总 修改原始数据
              let data=this.NotionalPooling(ref);//设置
             // console.log("data",data);
-            console.log(data);
+           // console.log(data);
             return data;
             })
             .then(ref => {  //表数据
@@ -223,12 +223,16 @@ class PriceControl extends React.Component {
      *  的货值PRICE/总可售TOTALSALEAREA=均价AVERAGEPRICE
      * @param {*json} data 
      */
-    Exec_AveragePiceCount(data){
+    Exec_AveragePiceCount(data,fixed){
         data.forEach(arg=>{
             let {LEVELS,PRICE,TOTALSALEAREA}=arg;
             if(LEVELS==1){
                 if(PRICE==0){ return}
                 arg.AVERAGEPRICE=parseFloat(PRICE*10000)/parseFloat(TOTALSALEAREA)
+                if(fixed!="undefined"&&fixed!=""){
+                    arg.AVERAGEPRICE=arg.AVERAGEPRICE.toFixed(fixed)
+                }
+              
             }
         })
     }
@@ -315,10 +319,16 @@ class PriceControl extends React.Component {
         
         //横向汇总 TOTALSALEAREA总可售*AVERAGEPRICE 均价=PRICE货值
           knife.setTableExec(row,this.state.priceColumnsSource,[params]);
-        //纵向汇总 向parentId汇总  
-        this.Exec_ColumsCount(data,params.parentId,"PRICE");
+        //纵向汇总 向parentId汇总
+        this.Exec_ColumsCount(data,params.parentId,"PRICE",);
         //横向汇总 LEVE=1 的货值PRICE/总可售TOTALSALEAREA=均价AVERAGEPRICE
-        this.Exec_AveragePiceCount(data);
+        let _fixed = "",_filter = this.state.priceColumnsSource.filter(arg=>arg.field=="AVERAGEPRICE")[0],_reg;
+        if(_filter){ 
+                _reg = _filter.regExps? eval(`(${_filter.regExps})`):"";
+                _reg = _reg["type"]? (/\d+/ig).exec(_reg["type"]):"";
+                _reg = _reg!=""? _reg[0]:"";
+        }
+        this.Exec_AveragePiceCount(data,_reg);
         
         this.setState({
             priceData:data
