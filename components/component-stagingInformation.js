@@ -260,7 +260,7 @@ class StagingInformation extends React.Component {
             },
             cancel(){}
         })
-        ReactDOM.render(<PlateIframe  data={data} callback={th.PlateIframeCallback.bind(this)}  versionId = {this.props.versionId||this.state.STAGEVERSIONID} />,document.querySelector("#PlateIframeBox"));
+        ReactDOM.render(<PlateIframe  data={data} callback={th.PlateIframeCallback.bind(this)}  versionId = {this.props.versionNewId||this.state.STAGEVERSIONID} />,document.querySelector("#PlateIframeBox"));
     }
     
     //组团划分
@@ -354,8 +354,8 @@ class StagingInformation extends React.Component {
 
             }
         })
-        debugger
-        ReactDOM.render(<GroupIframe  data={data} callback={th.GroupIframeCallback.bind(this)}  versionId = {this.props.versionId||this.state.STAGEVERSIONID} />,document.querySelector("#GroupIframeBox"));
+        
+        ReactDOM.render(<GroupIframe  data={data} callback={th.GroupIframeCallback.bind(this)}  versionId = {this.props.versionNewId||this.state.STAGEVERSIONID} />,document.querySelector("#GroupIframeBox"));
     }
     /**
      * 点击

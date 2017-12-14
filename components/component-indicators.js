@@ -38,6 +38,7 @@ class Indicators extends React.Component {
         
         /*新建分期则不用请求*/
         if(status!="add"){
+            debugger
             iss.ajax({
                 url: "/Stage/IGetLandQuotaByVersionId",
                 type: "get",
@@ -46,7 +47,7 @@ class Indicators extends React.Component {
                     projectid:projectId
                 },
                 success(d) {
-                    
+                    debugger
                     allListArr=d.rows;
                     if(!allListArr){return false;}
                     allListArr.forEach((obj,index)=>{

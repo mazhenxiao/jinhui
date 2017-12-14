@@ -42,11 +42,13 @@ class Intallment extends React.Component {
         let dataKey=location.query["dataKey"];
         
         
-    	/*如果没有传递分期版本id,dataKey是分期版本id*/
+        /*如果没有传递分期版本id,dataKey是分期版本id*/
+        console.log("datakey初始化",iss.id.id);
     	if(!dataKey){
-    		dataKey=(status=="edit")?iss.id.id:iss.guid().toString();
+    		dataKey=(status=="edit"||status=="upgrade")?iss.id.id:iss.guid().toString();
     		versionOldId=status=="upgrade"?iss.id.id:"";
-    	}
+        }
+        console.log("versionId初始化",dataKey)
     	/*如果是新建分期*/
     	if(status=="add"){
     		projectId=iss.id.id;
@@ -241,8 +243,8 @@ class Intallment extends React.Component {
             dta.SEQNUM=Number(maxCode.replace("Q",""))*10;
         }else if(status=="upgrade"){  //升级版本是
             SumbitType="Upgrade";
-            dta.STAGEVERSIONID=versionId;
-            //dta.STAGEVERSIONID=th.state.versionNewId;
+           // dta.STAGEVERSIONID=versionId;
+            dta.STAGEVERSIONID=th.state.versionNewId;
             dta.STAGEID=this.state.STAGEID_guid;
             dta.ID=this.state.ID_guid;
         }
