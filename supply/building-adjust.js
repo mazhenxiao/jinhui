@@ -186,7 +186,7 @@ class BuildingAdjust extends Component {
                 dataIndex: 'riqi',
                 key: 'riqi',
                 render: (text, record) => {
-                    return <DatePicker></DatePicker>;
+                    return <DatePicker allowClear={false}></DatePicker>;
                 },
                 width: 120,
             }
@@ -275,10 +275,10 @@ class BuildingAdjust extends Component {
                         <WrapperSelect labelText="调整月份:" showDefault={false}></WrapperSelect>
                     </div>
                     <div className="chk-wrapper">
-                        <Checkbox disabled={true} className="chk">设置考核版</Checkbox>
+                        <Checkbox disabled={true} className="chk">考核版</Checkbox>
                     </div>
                     <div className="date-picker-wrapper">
-                        <DatePicker onChange={this.handleDateChange}
+                        <DatePicker onChange={this.handleDateChange} allowClear={false}
                                     value={batchDate ? moment(batchDate, 'YYYY-MM-DD') : null}></DatePicker>
                     </div>
                     <div className="batch-set-date">
@@ -307,7 +307,7 @@ class BuildingAdjust extends Component {
         const {loading} = this.state;
         return (
             <Modal
-                title={"供货计划动态调整"}
+                title={"供货计划动态调整--按楼栋"}
                 visible={true}
                 onCancel={this.handleCancel}
                 maskClosable={false}

@@ -245,13 +245,14 @@ class WrapperTreeTable extends Component {
             }
 
             //render
-            if (columnRender && columnRender[headerItem.field]) {
-                column.render = columnRender[headerItem.field];
-            }
-            else {
+            if(index !=0){
                 column.render = (text, record) => {
                     return <span className="text-center">{text}</span>
                 };
+            }
+
+            if (columnRender && columnRender[headerItem.field]) {
+                column.render = columnRender[headerItem.field];
             }
 
             if (editState && !column.render) {

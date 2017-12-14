@@ -19,7 +19,7 @@ class Index extends Component {
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : "Stage",//显示模式，项目或者分期
         //供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货
-        supplyType: "Building",//TODO 删除默认值
+        supplyType: "Land",//TODO 删除默认值
         //权限: Show:只允许查看, Add:新增, Edit:编辑, Upgrade:版本升级
         permission: "Edit",// TODO 删除默认值
         dynamicId: "",//动态调整版本Id
@@ -145,13 +145,29 @@ class Index extends Component {
             })
     };
 
+    // /**
+    //  * 处理
+    //  */
+    // handleEditClick = (key) => () => {
+    //     //supplyType 供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货
+    //     const {supplyType} = this.state;
+    //     if (supplyType === "Building") {
+    //         this.setState({
+    //             modalKey: "building-adjust",
+    //         });
+    //     } else {
+    //         this.setState({
+    //             modalKey: "percent-adjust",
+    //         });
+    //     }
+    // };
+
     /**
      * 处理
      */
-    handleEditClick = () => {
+    handleEditClick = (key) => () => {
         //supplyType 供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货
-        const {supplyType} = this.state;
-        if (supplyType === "Building") {
+        if (key === "Building") {
             this.setState({
                 modalKey: "building-adjust",
             });
@@ -179,7 +195,10 @@ class Index extends Component {
                         <span className="title">动态调整版（面积：平方米，货值：万元）</span>
                     </Col>
                     <Col span={12} className="text-align-right">
-                        <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick}>编辑供货</button>
+                        <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick("Building")}>
+                            编辑楼栋供货
+                        </button>
+                        <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick()}>编辑比例供货</button>
                     </Col>
                 </Row>
                 <WrapperTreeTable></WrapperTreeTable>
