@@ -281,6 +281,25 @@ class $knife {
     
        
     }
+    /**
+     * URL转对象
+     * ?a=1  替换为 {'a':'1'}
+     * @param {*string} arg 
+     */
+    parseURL(arg){
+        return eval("({'"+arg.replace(/^\?/ig,"").replace(/\&/ig,"','").replace(/\=/ig,"':'")+"'})");
+    }
+    /**
+     * 路由跳转通用定义
+     * @param {*Object} arg
+     * @param {*String} dataKey 
+     * @param {*String} edit 
+     */
+    router(arg,dataKey,edit){
+        arg["key"]=dataKey;
+        iss.hashHistory.replace(arg);
+        iss.tree.edit(dataKey,edit)
+    }
    
 
 }

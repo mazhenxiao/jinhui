@@ -14,11 +14,7 @@ class $tree {
     }
     getAjax(){
         var th =this;
-        this.num++;
-        if(this.num > 1){
-            return
-        }
-        console.log(666)
+     
         iss.ajax({
             type:"post",
             url:th.state.url,
@@ -36,6 +32,13 @@ class $tree {
     togo(node){ //跳转
        
       
+    }
+ /**
+  * 根据dataKey定位显示展开当前树
+  * @param {*string} dataKey 
+  */
+    show(dataKey){
+        
     }
     bindTree(ele,callback) { //绑定数据后回调
         
