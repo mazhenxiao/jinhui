@@ -93,7 +93,7 @@ class BuildingAdjust extends Component {
         });
 
         return (
-            <Select defaultValue="" style={{width: 100}}>
+            <Select defaultValue="" style={{width: 120}}>
                 {options}
             </Select>
         );
@@ -107,7 +107,7 @@ class BuildingAdjust extends Component {
         });
 
         return (
-            <Select defaultValue="" style={{width: 100}}>
+            <Select defaultValue="" style={{width: 120}}>
                 {options}
             </Select>
         );
@@ -121,7 +121,7 @@ class BuildingAdjust extends Component {
         });
 
         return (
-            <Select defaultValue="" style={{width: 100}}>
+            <Select defaultValue="" style={{width: 120}}>
                 {options}
             </Select>
         );
@@ -144,7 +144,7 @@ class BuildingAdjust extends Component {
                 // title: "zutuan",
                 dataIndex: 'zutuan',
                 key: 'zutuan',
-                width: 120,
+                width: 140,
                 fixed: 'left',
             },
             {
@@ -152,7 +152,7 @@ class BuildingAdjust extends Component {
                 // title: "yetai",
                 dataIndex: 'yetai',
                 key: 'age',
-                width: 120,
+                width: 140,
                 fixed: 'left',
             },
             {
@@ -160,26 +160,26 @@ class BuildingAdjust extends Component {
                 // title: "loudong",
                 dataIndex: 'loudong',
                 key: 'loudong',
-                width: 120,
+                width: 140,
                 fixed: 'left',
             },
             {
                 title: this.setAlignCenter("可售面积(m²)"),
                 dataIndex: 'mianji',
                 key: 'mianji',
-                width: 100,
+                width: 120,
             },
             {
                 title: this.setAlignCenter("可售货值(万元)"),
                 dataIndex: 'huozhi',
                 key: 'huozhi',
-                width: 100,
+                width: 120,
             },
             {
                 title: this.setAlignCenter("计划预证时间"),
                 dataIndex: 'shijian',
                 key: 'shijian',
-                width: 100,
+                width: 120,
             },
             {
                 title: this.setAlignCenter("供货日期"),
@@ -199,7 +199,7 @@ class BuildingAdjust extends Component {
                     title: this.setAlignCenter(`${i}月`),
                     dataIndex: `month${i}`,
                     key: `month${i}`,
-                    width: 80,
+                    width: 120,
                 });
             }
         } else {
@@ -208,7 +208,7 @@ class BuildingAdjust extends Component {
                     title: this.setAlignCenter(`第${i}季度`),
                     dataIndex: `quarter${i}`,
                     key: `quarter${i}`,
-                    width: 100,
+                    width: 120,
                 });
             }
         }
