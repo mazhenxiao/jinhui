@@ -12,20 +12,6 @@ import moment from 'moment';
 import "../css/button.less";
 import "./css/supply.less";
 
-const Option = Select.Option;
-
-const dataSource = [{
-    key: '1',
-    zutuan: '胡彦斌',
-    age: 32,
-    address: '西湖区湖底公园1号'
-}, {
-    key: '2',
-    zutuan: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号'
-}];
-
 const defaultHeight = 400;
 
 class BuildingAdjust extends Component {
@@ -41,14 +27,23 @@ class BuildingAdjust extends Component {
 
     state = {
         loading: false,
-        currentYear: 2017,
-        switchYear: [2017, 2018, 2019, 2020],
+        currentMonth: "",
+        currentYear: 0,
         supplyData: [],
-        batchDate: "",
+        batchDate: "",//批量设置的日期
     };
 
+    componentWillMount() {
+        const {currentMonth, currentYear} = this.props.baseInfo;
+        this.setState({
+            currentMonth,
+            currentYear,
+        });
+    };
+
+
     componentDidMount() {
-        // this.loadData();
+        this.loadData();
     }
 
     loadData = () => {
@@ -56,11 +51,9 @@ class BuildingAdjust extends Component {
             loading: true,
         });
         SupplyService.getBuildingSupplyData()
-            .then(({currentYear, switchYear, supplyData}) => {
+            .then(({supplyData}) => {
                 this.setState({
                     loading: false,
-                    currentYear,
-                    switchYear,
                     supplyData,
                 });
             })
@@ -135,33 +128,31 @@ class BuildingAdjust extends Component {
      * 动态获取列信息
      */
     getColumns = () => {
-
-        const {currentYear, switchYear} = this.state;
+        const {switchYear} = this.props.baseInfo;
+        const {currentYear} = this.state;
+        const lastYear = switchYear.indexOf(currentYear) === 3 ? true : false;
 
         const columns = [
             {
                 title: this.getGroupHeader(),
-                // title: "zutuan",
                 dataIndex: 'zutuan',
                 key: 'zutuan',
                 width: 140,
-                fixed: 'left',
+                fixed: !lastYear ? 'left' : false,
             },
             {
                 title: this.getFormatHeader(),
-                // title: "yetai",
                 dataIndex: 'yetai',
                 key: 'age',
                 width: 140,
-                fixed: 'left',
+                fixed: !lastYear ? 'left' : false,
             },
             {
                 title: this.getBuildHeader(),
-                // title: "loudong",
                 dataIndex: 'loudong',
                 key: 'loudong',
                 width: 140,
-                fixed: 'left',
+                fixed: !lastYear ? 'left' : false,
             },
             {
                 title: this.setAlignCenter("可售面积(m²)"),
@@ -186,7 +177,8 @@ class BuildingAdjust extends Component {
                 dataIndex: 'riqi',
                 key: 'riqi',
                 render: (text, record) => {
-                    return <DatePicker allowClear={false}></DatePicker>;
+                    return <DatePicker allowClear={false} onChange={this.handleRowDataChange(record)}
+                                       value={text ? moment(text, 'YYYY-MM-DD') : null}></DatePicker>;
                 },
                 width: 120,
             }
@@ -202,7 +194,7 @@ class BuildingAdjust extends Component {
                     width: 120,
                 });
             }
-        } else {
+        } else if (index === 3) {
             for (let i = 1; i <= 4; i++) {
                 columns.push({
                     title: this.setAlignCenter(`第${i}季度`),
@@ -211,6 +203,12 @@ class BuildingAdjust extends Component {
                     width: 120,
                 });
             }
+        } else {
+            columns.push({
+                title: this.setAlignCenter(`${currentYear}年及以后`),
+                dataIndex: `future`,
+                key: `future`,
+            });
         }
 
         columns.scrollX = 0;
@@ -226,6 +224,17 @@ class BuildingAdjust extends Component {
      * 批量设置供货日期
      */
     handleBatchSetDate = () => {
+        const {batchDate, supplyData} = this.state;
+
+        if (!batchDate) {
+            iss.error("请先选择日期!");
+            return;
+        }
+
+        supplyData.forEach(row => {
+            row["riqi"] = batchDate;
+        });
+
         //TODO 批量设置供货日期
         this.setState({
             batchDate: "",
@@ -248,8 +257,24 @@ class BuildingAdjust extends Component {
         });
     };
 
+    handleRowDataChange = (row) => {
+        return (value, dateString) => {
+            row["riqi"] = dateString;
+            this.forceUpdate();
+        };
+    };
+
+    handleSelectChange = (key) => {
+        return (value) => {
+            this.setState({
+                [key]: value
+            });
+        };
+    };
+
     renderSwitchYear = () => {
-        const {currentYear, switchYear} = this.state;
+        const {switchYear} = this.props.baseInfo;
+        const {currentYear} = this.state;
         if (!currentYear) {
             return null;
         }
@@ -265,14 +290,18 @@ class BuildingAdjust extends Component {
     };
 
     renderContent = () => {
-        const {batchDate} = this.state;
+        const {batchDate, currentMonth, currentYear, supplyData} = this.state;
+        const {switchMonth, switchYear} = this.props.baseInfo;
+        const lastYear = switchYear.indexOf(currentYear) === 3 ? true : false;
         const columns = this.getColumns();
         const scrollX = columns.scrollX;
         return (
             <div className="building-adjust">
                 <div className="adjust-header">
                     <div className="select-month">
-                        <WrapperSelect labelText="调整月份:" showDefault={false}></WrapperSelect>
+                        <WrapperSelect labelText="调整月份:" onChange={this.handleSelectChange("currentMonth")}
+                                       showDefault={false} dataSource={switchMonth}
+                                       value={currentMonth}></WrapperSelect>
                     </div>
                     <div className="chk-wrapper">
                         <Checkbox disabled={true} className="chk">考核版</Checkbox>
@@ -291,10 +320,10 @@ class BuildingAdjust extends Component {
                 <div className="adjust-table">
                     <Table
                         bordered={true}
-                        dataSource={dataSource}
+                        dataSource={supplyData}
                         columns={columns}
                         size="middle"
-                        scroll={{x: (scrollX), y: defaultHeight}}
+                        scroll={!lastYear ? {x: (scrollX), y: defaultHeight} : {}}
                         pagination={false}
                     />
                 </div>
