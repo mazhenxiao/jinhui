@@ -9,8 +9,8 @@ import "../css/intallment.less";
 class Intallment extends React.Component {
     constructor(arg) {
         super(arg);
-        let STAGEID_guid=iss.guid().toString(),
-        ID_guid=iss.guid().toString();
+        this.STAGEID_guid=iss.guid().toString(),
+        this.ID_guid=iss.guid().toString();
 
         this.state={
             StagingInformationDATA:{}, /*分期信息*/
@@ -21,8 +21,8 @@ class Intallment extends React.Component {
             versionOldId:"",/*老版本ID*/
            	versionNewId:iss.guid().toString(),/*如果是升级，就会生成一个新的versionId,用于暂存和发起审批*/
             projectId:"",/*项目iD*/
-            STAGEID_guid:STAGEID_guid,
-            ID_guid:ID_guid,
+            STAGEID_guid:this.STAGEID_guid,
+            ID_guid:this.ID_guid,
             landCode:"",/*地块编码*/
             projectCode:"",/*项目编码*/
             //maxCode:"",/*最大编码*/
@@ -203,20 +203,24 @@ class Intallment extends React.Component {
         
         if(status=="edit"){  //发起审批为编辑状态时
             SumbitType="Edit";
+            let _url = "({'"+window.location.hash.split("?")[1].replace(/\=/ig,"':'").replace(/\&/ig,"','")+"'})";
+                _url = eval(_url);
+                dta.ID = dta.ID? dta.ID:_url.ID;
+                dta.STAGEID=dta.STAGEID? dta.STAGEID:_url.STAGEID;
         }else if(status=="add"){ //新增时
             SumbitType="Add";
             landCode=th.state.landCode;//有地块编码显示地块编码，多个选择最大地块编码，为空
             dta.STAGEVERSIONID=versionId; //版本id直接生成
-            dta.STAGEID=this.state.STAGEID_guid;  //分期idy
-            dta.ID=this.state.ID_guid; //表单i
+            dta.STAGEID=this.STAGEID_guid;  //分期idy
+            dta.ID=this.ID_guid; //表单i
             //dta.STAGECODE=th.state.pCodeAndLXCode;//分期编码
             dta.SEQNUM=Number(maxCode.replace("Q",""))*10;
         }else if(status=="upgrade"){  //升级版本是
             SumbitType="Upgrade";
            // dta.STAGEVERSIONID=versionId;
             dta.STAGEVERSIONID=th.state.versionNewId;
-            dta.STAGEID=this.state.STAGEID_guid;
-            dta.ID=this.state.ID_guid;
+            dta.STAGEID=this.STAGEID_guid;
+            dta.ID=this.ID_guid;
         }
         
         if ($.trim(th.state.StagingInformationDATA.STAGENAME)) {
@@ -235,13 +239,13 @@ class Intallment extends React.Component {
                   
                     let results=data,id="";
                     if(results.message=="成功"){
-                        debugger
+                        
                         if(status=="add"){  //生版暂存修改状态
                             th.getAjaxStageEcode();
                         	let localUrl=window.location.href;
                         	let urlPath=localUrl.replace("status=add","status=edit");
                         	if(urlPath.indexOf("dataKey")<0){
-                                urlPath=urlPath+"&dataKey="+versionId;
+                                urlPath=urlPath+"&dataKey="+versionId+"&ID="+th.ID_guid+"&STAGEID="+th.STAGEID_guid;
                                 id=versionId;
 					    	}
                         	
@@ -257,7 +261,7 @@ class Intallment extends React.Component {
                         	let localUrl=window.location.href;
                         	let urlPath=localUrl.replace("status=upgrade","status=edit");
                         	if(urlPath.indexOf("dataKey")<0){
-                                urlPath=urlPath+"&dataKey="+newId;
+                                urlPath=urlPath+"&dataKey="+newId+"&ID="+th.ID_guid+"&STAGEID="+th.STAGEID_guid;
                                 id=newId;
 					    	}
                         	
