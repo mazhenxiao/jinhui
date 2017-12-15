@@ -161,7 +161,7 @@ export default class ToolsList extends React.Component {
             <ul>
                 <li>
                     <a id="projectList" href="javascript:void(0);"
-                       onClick={this.EVENT_CLICK.bind(this, "Index", "index")}>项目列表</a>
+                       onClick={this.EVENT_CLICK.bind(this, "Index", "index")}>项目信息</a>
                 </li>
                 <li>
                     <a id="areaInfo" href="javascript:void(0);">信息填报</a>
@@ -184,11 +184,17 @@ export default class ToolsList extends React.Component {
                                             {/*onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "primarykey")}>关键指标</a>*/}
                         {/*</li>*/}
                         <li><a href="javascript:void(0);"
-                               onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "groupbuild")}>项目团队维护</a></li>
+                               onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "groupbuild")}>项目团队维护</a>
+                             
+                        </li>
                     </ol>
                 </li>
                 <li>
-                    <a href={this.state.toURL} target="_blank" className={this.state.toURL? "":"hide"} >基础设置</a>
+                    <a href="javascript:void(0);">基础设置</a>
+                    <ol className="subMenu">
+                        <li className=""><a href={this.state.toURL} target="_blank" className={this.state.toURL? "":"hide"} >标准角色授权</a>
+                                </li>
+                    </ol>
                 </li>
                 {/*  <li className="hide"> 
                     <a href="#">报表管理</a>
