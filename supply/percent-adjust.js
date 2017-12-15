@@ -12,17 +12,7 @@ import moment from 'moment';
 import "../css/button.less";
 import "./css/supply.less";
 
-const dataSource = [{
-    key: '1',
-    zutuan: '胡彦斌',
-    age: 32,
-    address: '西湖区湖底公园1号'
-}, {
-    key: '2',
-    zutuan: '胡彦祖',
-    age: 42,
-    address: '西湖区湖底公园1号'
-}];
+const Option = Select.Option;
 
 const defaultHeight = 400;
 
@@ -141,7 +131,8 @@ class PercentAdjust extends Component {
                 dataIndex: 'riqi',
                 key: 'riqi',
                 render: (text, record) => {
-                    return <DatePicker></DatePicker>;
+                    return <DatePicker allowClear={false} onChange={this.handleRowDataChange(record)}
+                                       value={text ? moment(text, 'YYYY-MM-DD') : null}></DatePicker>;
                 },
                 width: 120,
             }
@@ -154,16 +145,39 @@ class PercentAdjust extends Component {
      * 批量设置供货日期
      */
     handleBatchSetDate = () => {
+        const {batchDate, supplyData} = this.state;
+
+        if (!batchDate) {
+            iss.error("请先选择日期!");
+            return;
+        }
+
+        if (supplyData.length === 0) {
+            iss.error("暂无数据!");
+            return;
+        }
+
+        supplyData.forEach(row => {
+            row["riqi"] = batchDate;
+        });
+
         //TODO 批量设置供货日期
         this.setState({
             batchDate: "",
         });
     };
 
-    handleDateChange = (value, dateString) => {
+    handleBatchDateChange = (value, dateString) => {
         this.setState({
             batchDate: dateString,
         });
+    };
+
+    handleRowDataChange = (row) => {
+        return (value, dateString) => {
+            row["riqi"] = dateString;
+            this.forceUpdate();
+        };
     };
 
     handleSelectChange = (key) => {
@@ -175,7 +189,7 @@ class PercentAdjust extends Component {
     };
 
     renderContent = () => {
-        const {batchDate, currentMonth, currentYear} = this.state;
+        const {batchDate, currentMonth, currentYear, supplyData} = this.state;
         const {switchMonth, switchYear} = this.props.baseInfo;
         const lastYear = switchYear.indexOf(currentYear) === 3 ? true : false;
         const columns = this.getColumns();
@@ -192,7 +206,7 @@ class PercentAdjust extends Component {
                         <Checkbox disabled={true} className="chk">考核版</Checkbox>
                     </div>
                     <div className="date-picker-wrapper">
-                        <DatePicker onChange={this.handleDateChange} allowClear={false}
+                        <DatePicker onChange={this.handleBatchDateChange} allowClear={false}
                                     value={batchDate ? moment(batchDate, 'YYYY-MM-DD') : null}></DatePicker>
                     </div>
                     <div className="batch-set-date">
@@ -202,7 +216,7 @@ class PercentAdjust extends Component {
                 <div className="adjust-table">
                     <Table
                         bordered={true}
-                        dataSource={dataSource}
+                        dataSource={supplyData}
                         columns={columns}
                         size="middle"
                         scroll={!lastYear ? {x: (scrollX), y: defaultHeight} : {}}
@@ -218,7 +232,7 @@ class PercentAdjust extends Component {
         const {loading} = this.state;
         return (
             <Modal
-                title={"供货计划动态调整--按楼栋"}
+                title={"供货计划动态调整--按比例"}
                 visible={true}
                 onCancel={this.handleCancel}
                 maskClosable={false}
