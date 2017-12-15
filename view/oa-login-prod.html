@@ -36,7 +36,7 @@
         var fdLoginName = GetQueryString("fdLoginName");
         var fdPassword = GetQueryString("fdPassword");
         $.ajax({
-            url: home + "/Account/OALogin",
+            url: home + "/Account/OASSOLogin",
             data: {"fdLoginName": fdLoginName, "fdPassword": fdPassword},
             type: "POST",
             dataType: "JSON",
