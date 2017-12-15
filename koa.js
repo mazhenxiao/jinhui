@@ -38,10 +38,14 @@ app.use(errorHandle);
 
 var evn = process.env.NODE_ENV || "dev";
 var loginHtml = `login-${evn}`;
+var oaLoginHtml = `oa-login-${evn}`;
 
 router.get('/', async (ctx, next) => {
     await ctx.render(loginHtml, {layout: false})
 })
+    .get('/Account/OALogin', async (ctx, next) => {
+        await ctx.render(oaLoginHtml, {layout: false})
+    })
     .get('/login', async (ctx, next) => {
         await ctx.render(loginHtml, {layout: false})
     })
