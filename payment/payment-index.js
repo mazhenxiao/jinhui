@@ -24,7 +24,6 @@ class PaymentIndex extends Component {
         versionData: [],
         editable: false,//是否可编辑
     };
-
     componentDidMount() {
 
     }

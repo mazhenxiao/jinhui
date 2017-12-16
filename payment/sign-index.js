@@ -30,9 +30,11 @@ class SignIndex extends Component {
             dynamicEdit:false, //动态调整是否可编辑
             dynamicEditButtonShow:false
         },
-        planTable:{
+        planTable:{ //同上
             planHeaderData:[],
             planDataSource:[],
+            planEdit:false,
+            planEditSelectShow:false
         },
         dialog:{ //弹窗
             ModalVisible:false,
@@ -41,6 +43,7 @@ class SignIndex extends Component {
   
         
     };
+    //protected 数据
     dynamicTable={ //动态表格私有仓储
         number:0,//死循环记录
         dynamicRender:{}, //动态编辑表格
@@ -210,6 +213,9 @@ class SignIndex extends Component {
             </Modal>
         </article>
     }
+    /**
+     * 动态调整table
+     */
     renderHistoryData = () => {
         const {versionData, versionId,editable,dynamicTable} = this.state;
         const {dynamicHeaderData,dynamicDataSource,dynamicEdit,dynamicEditButtonShow}=dynamicTable;
@@ -231,14 +237,20 @@ class SignIndex extends Component {
                         </Col>
                     </Row>
                 </header>
-                {/* columnRender={this.dynamicTable.dynamicRender} */}
-                <WrapperTreeTable headerData={dynamicHeaderData} editState={dynamicEdit} dataSource={dynamicDataSource}  />
+                <WrapperTreeTable 
+                    headerData={dynamicHeaderData} 
+                    editState={dynamicEdit} 
+                    dataSource={dynamicDataSource}  />
             </article>
         );
     };
-
+  /**
+   * 比对table
+   */
     renderCurrentData = () => {
-        const {editable,versionData} = this.state;
+        const {versionData, versionId,editable,planTable,dynamicTable} = this.state;
+        const {planHeaderData,planDataSource,planEditButtonShow}=planTable;
+        const {dynamicHeaderData,dynamicDataSource,dynamicEdit,dynamicEditButtonShow}=dynamicTable;
         return (
             <article className="pkTable mgT10">
                  <header className="top-header-bar">
@@ -247,16 +259,17 @@ class SignIndex extends Component {
                             <span className="header-title">签约计划版（面积：平方米，货值：万元）</span>
                         </Col>
                         <Col span={12} className="action-section">
-                            <WrapperSelect className="select-version" labelText="版本:"
+                            
+                            <WrapperSelect className={planEditButtonShow? "select-version":"hide" } labelText="版本:"
                                            showDefault={false}
                                            dataSource={versionData}></WrapperSelect>
                         </Col>
                     </Row>
                 </header>
                 <WrapperTreeTable
-                    rowKey="key"
-                    editState={editable}
-                />
+                    headerData={dynamicHeaderData} 
+                    editState={dynamicEdit} 
+                    dataSource={dynamicDataSource}  />
             </article>
         );
     };
