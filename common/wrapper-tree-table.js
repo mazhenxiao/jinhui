@@ -18,88 +18,23 @@ const dataSource = [
     {
         key: 1,
         payment: '项目1—分期1-地块1',
-        totalArea: '1',
-        saleableArea: '22',
-        money: '3',
-        setNumber: '4',
-        beginPeriodArea: '5',
-        beginPeriodValue: '6',
-        overArea: '7',
-        monthSaleableArea1: '8',
-        monthMoney1: '9',
-        monthSetNumber1: '10',
-        monthSaleableArea2: '11',
-        monthMoney2: '12',
-        monthSetNumber2: '10',
         children: [
             {
                 key: 11,
                 payment: '1组团1组团1组团',
-                totalArea: '1',
-                saleableArea: '2',
-                money: '3',
-                setNumber: '4',
-                beginPeriodArea: '5',
-                beginPeriodValue: '6',
-                overArea: '7',
-                monthSaleableArea1: '8',
-                monthMoney1: '9',
-                monthSetNumber1: '10',
-                monthSaleableArea2: '11',
-                monthMoney2: '12',
-                monthSetNumber2: '10',
                 children: [
                     {
                         key: 111,
                         payment: '叠拼别墅',
-                        totalArea: '1',
-                        saleableArea: '2',
-                        money: '3',
-                        setNumber: '4',
-                        beginPeriodArea: '5',
-                        beginPeriodValue: '6',
-                        overArea: '7',
-                        monthSaleableArea1: '8',
-                        monthMoney1: '9',
-                        monthSetNumber1: '10',
-                        monthSaleableArea2: '11',
-                        monthMoney2: '12',
-                        monthSetNumber2: '10',
                     }],
             },
             {
                 key: 12,
                 payment: '未分配车位',
-                totalArea: '1',
-                saleableArea: '2',
-                money: '3',
-                setNumber: '4',
-                beginPeriodArea: '5',
-                beginPeriodValue: '6',
-                overArea: '7',
-                monthSaleableArea1: '8',
-                monthMoney1: '9',
-                monthSetNumber1: '10',
-                monthSaleableArea2: '11',
-                monthMoney2: '12',
-                monthSetNumber2: '10',
                 children: [
                     {
                         key: 112,
                         payment: '可售楼栋',
-                        totalArea: '1',
-                        saleableArea: '2',
-                        money: '3',
-                        setNumber: '4',
-                        beginPeriodArea: '5',
-                        beginPeriodValue: '6',
-                        overArea: '7',
-                        monthSaleableArea1: '8',
-                        monthMoney1: '9',
-                        monthSetNumber1: '10',
-                        monthSaleableArea2: '11',
-                        monthMoney2: '12',
-                        monthSetNumber2: '10',
                     }],
             }],
     }];
@@ -187,7 +122,174 @@ const headerData = [
                     field: 'monthSetNumber2',
                 }]
         }]
-    }];
+    },
+    {
+        name: '当年-2月',
+        children: [{
+            name: '2月可售面积和金额',
+            children: [
+                {
+                    name: '可售面积',
+                    field: 'monthSaleableArea3',
+                },
+                {
+                    name: '金额',
+                    field: 'monthMoney3',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber3',
+                }]
+        }]
+    },
+    {
+        name: '当年-2月',
+        children: [{
+            name: '2月可售面积和金额',
+            children: [
+                {
+                    name: '可售面积',
+                    field: 'monthSaleableArea4',
+                },
+                {
+                    name: '金额',
+                    field: 'monthMoney4',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber4',
+                }]
+        }]
+    },
+    {
+        name: '当年-2月',
+        children: [{
+            name: '2月可售面积和金额',
+            children: [
+                {
+                    name: '可售面积',
+                    field: 'monthSaleableArea5',
+                },
+                {
+                    name: '金额',
+                    field: 'monthMoney5',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber5',
+                }]
+        }]
+    },
+    {
+        name: '当年-2月',
+        children: [{
+            name: '2月可售面积和金额',
+            children: [
+                {
+                    name: '可售面积',
+                    field: 'monthSaleableArea6',
+                },
+                {
+                    name: '金额',
+                    field: 'monthMoney6',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber6',
+                }]
+        }]
+    },
+    {
+        name: '当年-2月',
+        children: [{
+            name: '2月可售面积和金额',
+            children: [
+                {
+                    name: '可售面积',
+                    field: 'monthSaleableArea7',
+                },
+                {
+                    name: '金额',
+                    field: 'monthMoney7',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber7',
+                }]
+        }]
+    },
+    {
+        name: '当年-2月',
+        children: [{
+            name: '2月可售面积和金额',
+            children: [
+                {
+                    name: '可售面积',
+                    field: 'monthSaleableArea8',
+                },
+                {
+                    name: '金额',
+                    field: 'monthMoney8',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber8',
+                }]
+        }]
+    },
+    {
+        name: '当年-2月',
+        children: [{
+            name: '2月可售面积和金额',
+            children: [
+                {
+                    name: '可售面积',
+                    field: 'monthSaleableArea9',
+                },
+                {
+                    name: '金额',
+                    field: 'monthMoney9',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber91',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber92',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber93',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber94',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber95',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber96',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber97',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber98',
+                },
+                {
+                    name: '套数',
+                    field: 'monthSetNumber99',
+                },
+            ]
+        }]
+    }
+];
 
 const headerStyle = {
     textAlign: 'center',
@@ -208,8 +310,8 @@ class WrapperTreeTable extends Component {
     };
 
     static defaultProps = {
-        headerData: headerData,
-        dataSource: dataSource,
+        headerData: [],
+        dataSource: [],
         rowKey: "key",
         defaultHeight: 400,
         columnRender: null,
@@ -245,7 +347,7 @@ class WrapperTreeTable extends Component {
             }
 
             //render
-            if(index !=0){
+            if (index != 0) {
                 column.render = (text, record) => {
                     return <span className="text-center">{text}</span>
                 };
@@ -338,6 +440,12 @@ class WrapperTreeTable extends Component {
         let tableColumns = [];
         if (dataSource && dataSource.length > 0) {
             tableColumns = this.getColumns(headerData);
+        }
+
+        if (!dataSource || dataSource.length == 0) {
+            return (
+                <div className="empty-div">暂无数据</div>
+            );
         }
 
         return (

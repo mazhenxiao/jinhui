@@ -180,7 +180,6 @@ class ApprovalControlNode extends React.Component {
                 DataKey: this.newId || dataKey // 业务ID======================================
             }
         };
-        console.log(th.state.allSearchArg)
         var turnOut = true;
 
         iss.ajax({

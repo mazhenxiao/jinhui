@@ -19,9 +19,9 @@ class Index extends Component {
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : "Stage",//显示模式，项目或者分期
         //供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货
-        supplyType: "Land",//TODO 删除默认值
+        supplyType: "",//TODO 删除默认值
         //权限: Show:只允许查看, Add:新增, Edit:编辑, Upgrade:版本升级
-        permission: "Edit",// TODO 删除默认值
+        permission: "",// TODO 删除默认值
         dynamicId: "",//动态调整版本Id
         versionId: [],//当前选中的计划版本
         versionData: [],//版本数据
@@ -78,6 +78,10 @@ class Index extends Component {
         if (dataKey === undefined) {
             dataKey = this.state.dataKey;
             mode = this.state.mode;
+        }
+
+        if (!dataKey) {
+            return;
         }
 
         this.setState({
@@ -185,6 +189,7 @@ class Index extends Component {
     };
 
     renderDynamicAdjust = () => {
+        const {adjustData} = this.state;
         return (
             <article>
                 <Row className="top-header">
@@ -198,7 +203,8 @@ class Index extends Component {
                         <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick()}>编辑比例供货</button>
                     </Col>
                 </Row>
-                <WrapperTreeTable></WrapperTreeTable>
+                <WrapperTreeTable rowKey="ID" dataSource={adjustData.dataSource}
+                                  headerData={adjustData.headerData}></WrapperTreeTable>
             </article>
         );
     };
@@ -252,8 +258,8 @@ class Index extends Component {
     };
 
     render() {
-        const {loading, dataKey} = this.state;
-        if (!dataKey) {
+        const {loading, dataKey, dynamicId} = this.state;
+        if (!dynamicId) {
             return this.renderEmpty();
         }
 

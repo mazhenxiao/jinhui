@@ -38,6 +38,7 @@ class Indicators extends React.Component {
         
         /*新建分期则不用请求*/
         if(status!="add"){
+            
             iss.ajax({
                 url: "/Stage/IGetLandQuotaByVersionId",
                 type: "get",

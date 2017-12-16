@@ -21,5 +21,5 @@ const config = {
     },
 };
 
-const appConfig = config[process.env.NODE_ENV || "dev"];
+const appConfig = config[process.env.NODE_ENV || "test"];
 module.exports = appConfig;

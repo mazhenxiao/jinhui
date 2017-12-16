@@ -12,6 +12,8 @@ import moment from 'moment';
 import "../css/button.less";
 import "./css/supply.less";
 
+const Option = Select.Option;
+
 const defaultHeight = 400;
 
 class BuildingAdjust extends Component {
