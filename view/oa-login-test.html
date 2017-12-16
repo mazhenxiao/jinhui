@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="pragma" content="no-cache"/>
+    <title>OA单点登录</title>
+    <style>
+        .logining {
+            padding: 30px 0;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .error {
+            color: red;
+        }
+
+    </style>
+</head>
+<body>
+<div class="logining">正在跳转, 请稍等...</div>
+<script src="/source/js/all0.0.1-min.js"></script><!--jquery bootstrap esayui-->
+<script>
+    $(function () {
+        var home = "http://192.168.10.164:8000";//dev
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        }
+
+        var fdLoginName = GetQueryString("fdLoginName");
+        var fdPassword = GetQueryString("fdPassword");
+        $.ajax({
+            url: home + "/Account/OASSOLogin",
+            data: {"fdLoginName": fdLoginName, "fdPassword": fdPassword},
+            type: "POST",
+            dataType: "JSON",
+            success: function (result) {
+                console.log("result", result);
+                if (result.errorcode == 200) {
+                    if (result.token) {
+                        localStorage.setItem("token", result.token);
+                        window.location.href = "/index/#/agenty?login=" + fdLoginName;
+                    } else {
+                        $(".logining").addClass("error").html("登录失败! 错误原因: " + result.message);
+                    }
+                } else {
+                    $(".logining").addClass("error").html("登录失败! 错误原因: " + result.message);
+                }
+            },
+        });
+    });
+</script>
+</body>
+</html>

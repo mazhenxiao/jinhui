@@ -90,6 +90,7 @@ class Index extends Component {
 
         return SupplyService.getBaseData(dataKey, mode)
             .then(({supplyType, permission, dynamicId, versionId, versionData, baseInfo}) => {
+                console.log("supplyType", supplyType);
                 this.setState({
                     supplyType,
                     permission,
@@ -146,29 +147,13 @@ class Index extends Component {
             })
     };
 
-    // /**
-    //  * 处理
-    //  */
-    // handleEditClick = (key) => () => {
-    //     //supplyType 供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货
-    //     const {supplyType} = this.state;
-    //     if (supplyType === "Building") {
-    //         this.setState({
-    //             modalKey: "building-adjust",
-    //         });
-    //     } else {
-    //         this.setState({
-    //             modalKey: "percent-adjust",
-    //         });
-    //     }
-    // };
-
     /**
      * 处理
      */
-    handleEditClick = (key) => () => {
+    handleEditClick = () => {
         //supplyType 供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货
-        if (key === "Building") {
+        const {supplyType} = this.state;
+        if (supplyType === "Building") {
             this.setState({
                 modalKey: "building-adjust",
             });
@@ -178,6 +163,22 @@ class Index extends Component {
             });
         }
     };
+
+    // /**
+    //  * 处理  TODO 测试代码
+    //  */
+    // handleEditClick = (key) => () => {
+    //     //supplyType 供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货
+    //     if (key === "Building") {
+    //         this.setState({
+    //             modalKey: "building-adjust",
+    //         });
+    //     } else {
+    //         this.setState({
+    //             modalKey: "percent-adjust",
+    //         });
+    //     }
+    // };
 
     handleHideModal = (param) => {
         this.setState({
@@ -197,10 +198,9 @@ class Index extends Component {
                         <span className="title">动态调整版（面积：平方米，货值：万元）</span>
                     </Col>
                     <Col span={12} className="text-align-right">
-                        <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick("Building")}>
-                            编辑楼栋供货
+                        <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick}>
+                            编辑供货
                         </button>
-                        <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick()}>编辑比例供货</button>
                     </Col>
                 </Row>
                 <WrapperTreeTable rowKey="ID" dataSource={adjustData.dataSource}

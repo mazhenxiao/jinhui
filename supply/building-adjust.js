@@ -278,6 +278,11 @@ class BuildingAdjust extends Component {
             return;
         }
 
+        if (supplyData.length === 0) {
+            iss.error("暂无数据!");
+            return;
+        }
+
         supplyData.forEach(row => {
             row["riqi"] = batchDate;
         });
