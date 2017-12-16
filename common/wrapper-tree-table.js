@@ -358,6 +358,7 @@ class WrapperTreeTable extends Component {
             }
 
             if (editState && !column.render) {
+                
                 column.render = (text, record) => {
                     if (headerItem.edit !== "+w") {
                         return text;

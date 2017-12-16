@@ -124,8 +124,8 @@ class PaymentIndex extends Component {
     };
 
     render() {
-        const {dataKey} = this.state;
-        if (!dataKey) {
+        const {mode} = this.state;
+        if (mode!="Stage") {
             return this.renderEmpty();
         }
 

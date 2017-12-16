@@ -1,4 +1,5 @@
 import iss from '../js/iss'
+import { locale } from 'moment';
 /**
  * 获取签约版本
  */
@@ -17,7 +18,11 @@ export const IGetSignAContractData = (dataKey) => {
             "stageVersionId":dataKey //"884dd5a6-ff48-4628-f4fa-294472d49b37"//dataKey
         }
     }).then(response=>{
-        return response.rows
+        if(response.rows){
+            localStorage.setItem("IGetSignAContractData",JSON.stringify(response.rows))
+        }
+        
+        return response.rows?response.rows:JSON.parse(localStorage.getItem("IGetSignAContractData"));
     }).catch(e=>{ 
         console.log(`/SignAContract/IGetSignAContractData 请求未拿到数据`);
         return e;
@@ -32,7 +37,7 @@ export const IGetSignAContractTableTitle = (dataKey) => {
     return iss.fetch({
         url:"/SignAContract/IGetSignAContractTableTitle",
         data:{
-            "stageVersionId":dataKey//"884dd5a6-ff48-4628-f4fa-294472d49b37"//dataKey
+            "versionId":dataKey//"884dd5a6-ff48-4628-f4fa-294472d49b37"//dataKey
         }
     }).then(response=>{
         return response.rows

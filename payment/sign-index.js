@@ -1,6 +1,6 @@
 import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";
-import React, {Component} from 'react';
+import React, {Component, Children} from 'react';
 import {Spin, Tabs, Row, Col, Button, Select,Modal} from 'antd';
 import {WrapperTreeTable, WrapperSelect} from '../common';
 import {Payment} from '../services';
@@ -24,20 +24,33 @@ class SignIndex extends Component {
         versionId: "",
         versionData: [],
         editable: false,//是否可编辑
-        ModalVisible:false,
-        dynamicHeaderData:[],//动态调整版头部
-        dynamicDataSource:[],//动态调整版数据
-        planHeaderData:[],
-        planDataSource:[],
-
+        dynamicTable:{
+            dynamicHeaderData:[],//动态调整版头部
+            dynamicDataSource:[],//动态调整版数据
+            dynamicEdit:false, //动态调整是否可编辑
+            dynamicEditButtonShow:false
+        },
+        planTable:{
+            planHeaderData:[],
+            planDataSource:[],
+        },
+        dialog:{ //弹窗
+            ModalVisible:false,
+            dialogContent:[],//弹出窗口content
+        }
+  
         
     };
+    dynamicTable={ //动态表格私有仓储
+        number:0,//死循环记录
+        dynamicRender:{}, //动态编辑表格
+    }
+
     antdTableScrollLock=null;//用来触发卸载原生事件
     visible=false;
     bindLockArray = [];//promise
     componentDidMount() {
         this.getFetData();//拉去数据
-        this.renderDialog();//弹出
     }
     componentWillUnmount(){
        // this.antdTableScrollLock.remove();//注销双向绑定
@@ -64,18 +77,13 @@ class SignIndex extends Component {
             );
         }
         this.getFetData();
-    /*     knife.ready(".toTable .ant-table-body,.pkTable .ant-table-body",arg=>{
-            this.bindScrollLock();
-        }) */
+      
     }
     /**
      * 获取动态数据，获取签约计划数据，获取版本数据
      */
     getFetData=()=>{
-     
             let dynamicTable = this.getDynamicData(); //获取动态调整表格数据
-     //   this.bindLockArray.push(dynamicData);
-      //  this.bindScrollLock(bindLockArray);  //锁定滚动
     }
     getApprovalState = () => {
         if (this.props.location.query["current"] == "ProcessApproval") {
@@ -84,13 +92,26 @@ class SignIndex extends Component {
         return false;
     };
     /**
+     * 绑定锁定
+     */
+    bindLockTable(){
+      knife.ready(".toTable .ant-table-body,.pkTable .ant-table-body",arg=>{
+            this.bindScrollLock();
+        }) 
+    }
+    /**
      * 获取动态调整版数据 
      */
     getDynamicData=()=>{
         let {dataKey}=this.props.location.query;
+        let {dynamicTable}=this.state;
              dataKey = "884dd5a6-ff48-4628-f4fa-294472d49b37";
              //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let title = Payment.IGetSignAContractTableTitle(dataKey)
+                           .then(dynamicColum=>{
+                           // this.setDynamicRender(dynamicColum);//创建编辑表格
+                               return dynamicColum;
+                           })
                            .catch(e=>{
                             return e                               
                            })
@@ -100,27 +121,46 @@ class SignIndex extends Component {
                           });
       return Promise.all([title,data])
                     .then(arg=>{
-                        let [dynamicHeaderData,dynamicDataSource]=arg;
-                        console.log("dynamicHeaderData,dynamicDataSource",dynamicHeaderData,dynamicDataSource)
-                        this.setState({
-                            dynamicHeaderData,
-                            dynamicDataSource
-                        })
+                        let [dynamicHeaderData,dynamicDataSource]=arg,
+                            newData ={ 
+                                dynamicHeaderData,
+                                dynamicDataSource,
+                                dynamicEditButtonShow:Boolean(dynamicDataSource&&dynamicDataSource.length)
+                            },
+                            dynamicTable={...this.state.dynamicTable,...newData};
+                        this.setState({dynamicTable});
                         
                     })
                     .catch(arg=>{
                         console.log("动态调整版未拿到数据")
                     })
     }
+    /**
+     * 是否编辑行
+     * 递归查询此处如果数据有问题容易出现bug
+     */
+    setDynamicRender=(dynamicColum)=>{
+          if(this.dynamicTable.number+=1,this.dynamicTable.number>1000){ console.log("强制判断如果列数据大于1000或死循环强制推出防止如果后台数据有误造成的死循环"); return}
+          
+          dynamicColum.forEach(arg=>{
+                if(arg.children){
+                    this.setDynamicRender(arg.children);
+                }else if(arg.edit&&arg.edit.indexOf("+w")>=0){
+                    
+                   this.dynamicTable.dynamicRender[arg.field]=this.renderContent;
+                }
+        })
+        
+    }
 
     handleEdit = () => {
-        let editable = !this.state.editable;
+        let {dynamicTable}=this.state;
+        let dynamicEdit = !dynamicTable.dynamicEdit;
+        dynamicTable={...dynamicTable,...{dynamicEdit}}
         this.setState({
-            editable: editable,
+            dynamicTable
         });
-        if(editable){ //保存
-
-        }else{  //编辑
+        if(dynamicEdit){ //保存
 
         }
         
@@ -138,29 +178,42 @@ class SignIndex extends Component {
        
     }
     /**
-     * 点击取消
+     * 弹出点击取消
      */
     clickModalCancel=()=>{
-
+        let  dialog = {...this.state.dialog,...{ModalVisible:false}}
+        this.setState({dialog})
     }
-    
-    
-    renderContent=()=>{
-
+    /**
+     * 弹出确定
+     */
+    clickModalOk=()=>{
+        let  dialog = {...this.state.dialog,...{ModalVisible:false}}
+        this.setState({dialog})
     }
+    renderContent=(arg)=>{
+        debugger
+    }
+    /**
+     * 弹出窗口
+     */
     renderDialog=()=>{
-        <article className="Dialog">
+        
+      return  <article className="Dialog">
            <Modal
-                title={this.state.ModalTile}
-                visible={this.state.ModalVisible}
+                title={this.state.dialog.ModalTile}
+                visible={this.state.dialog.ModalVisible}
                 onCancel={this.clickModalCancel}
+                onOk={this.clickModalOk}
             >
-                
+                {this.state.dialogContent}
             </Modal>
         </article>
     }
     renderHistoryData = () => {
-        const {versionData, versionId,editable,dynamicHeaderData,dynamicDataSource} = this.state;
+        const {versionData, versionId,editable,dynamicTable} = this.state;
+        const {dynamicHeaderData,dynamicDataSource,dynamicEdit,dynamicEditButtonShow}=dynamicTable;
+        
         return (
             <article className="toTable">
                <header className="bottom-header-bar">
@@ -169,16 +222,17 @@ class SignIndex extends Component {
                             <span className="header-title">动态调整版（面积：平方米，货值：万元）</span>
                         </Col>
                         <Col span={12}>
-                            <div className="RT">
+                            <div className={dynamicEditButtonShow? "RT":"hidden"}>
                                 <button className="jh_btn jh_btn22 jh_btn_edit"
-                                        onClick={this.handleEdit}>{editable ? "保存" : "编辑"}
+                                        onClick={this.handleEdit}>{dynamicEdit ? "保存" : "编辑"}
 
                                 </button>
                             </div>
                         </Col>
                     </Row>
                 </header>
-                <WrapperTreeTable headerData={dynamicHeaderData} dataSource={dynamicDataSource} />
+                {/* columnRender={this.dynamicTable.dynamicRender} */}
+                <WrapperTreeTable headerData={dynamicHeaderData} editState={dynamicEdit} dataSource={dynamicDataSource}  />
             </article>
         );
     };
@@ -236,6 +290,7 @@ class SignIndex extends Component {
                         </Tabs>
                     </article>
                 </Spin>
+                {this.renderDialog()}
             </div>
         );
     }
