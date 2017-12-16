@@ -10,18 +10,37 @@ export const getSignVersion = () => {
  * 获取签约动态数据
  * /SignAContract/IGetSignAContractData?stageVersionId=884dd5a6-ff48-4628-f4fa-294472d49b37&token=xxx
  */
-export const getSignDynamicData = (dataKey) => {
+export const IGetSignAContractData = (dataKey) => {
     return iss.fetch({
         url:"/SignAContract/IGetSignAContractData",
         data:{
-            "stageVersionId":"884dd5a6-ff48-4628-f4fa-294472d49b37"//dataKey
+            "stageVersionId":dataKey //"884dd5a6-ff48-4628-f4fa-294472d49b37"//dataKey
         }
     }).then(response=>{
-        debugger
-        console.log(response)
+        return response.rows
+    }).catch(e=>{ 
+        console.log(`/SignAContract/IGetSignAContractData 请求未拿到数据`);
+        return e;
     })
 };
-
+/**
+ * 获取动态数据头部
+ * /SignAContract/IGetSignAContractTableTitle?versionid=884dd5a6-ff48-4628-f4fa-294472d49b37
+ * @param {*} dataKey 
+ */
+export const IGetSignAContractTableTitle = (dataKey) => {
+    return iss.fetch({
+        url:"/SignAContract/IGetSignAContractTableTitle",
+        data:{
+            "stageVersionId":dataKey//"884dd5a6-ff48-4628-f4fa-294472d49b37"//dataKey
+        }
+    }).then(response=>{
+        return response.rows
+    }).catch(e=>{ 
+        console.log(`/SignAContract/IGetSignAContractTableTitle 请求未拿到数据`);
+        return e;
+    })
+};
 /**
  * 保存签约数据
  */

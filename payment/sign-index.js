@@ -29,7 +29,7 @@ class SignIndex extends Component {
         dynamicDataSource:[],//动态调整版数据
         planHeaderData:[],
         planDataSource:[],
-        activeView:false //在没有拉去到数据时显示
+
         
     };
     antdTableScrollLock=null;//用来触发卸载原生事件
@@ -72,7 +72,8 @@ class SignIndex extends Component {
      * 获取动态数据，获取签约计划数据，获取版本数据
      */
     getFetData=()=>{
-        let dynamicData = this.getDynamicData();  //拉取
+     
+            let dynamicTable = this.getDynamicData(); //获取动态调整表格数据
      //   this.bindLockArray.push(dynamicData);
       //  this.bindScrollLock(bindLockArray);  //锁定滚动
     }
@@ -83,12 +84,35 @@ class SignIndex extends Component {
         return false;
     };
     /**
-     * 获取动态数据 
+     * 获取动态调整版数据 
      */
-    getDynamicData=arg=>{
+    getDynamicData=()=>{
         let {dataKey}=this.props.location.query;
-       return Payment.getSignDynamicData(dataKey)
+             dataKey = "884dd5a6-ff48-4628-f4fa-294472d49b37";
+             //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
+        let title = Payment.IGetSignAContractTableTitle(dataKey)
+                           .catch(e=>{
+                            return e                               
+                           })
+        let data = Payment.IGetSignAContractData(dataKey)
+                          .catch(e=>{
+                            return e
+                          });
+      return Promise.all([title,data])
+                    .then(arg=>{
+                        let [dynamicHeaderData,dynamicDataSource]=arg;
+                        console.log("dynamicHeaderData,dynamicDataSource",dynamicHeaderData,dynamicDataSource)
+                        this.setState({
+                            dynamicHeaderData,
+                            dynamicDataSource
+                        })
+                        
+                    })
+                    .catch(arg=>{
+                        console.log("动态调整版未拿到数据")
+                    })
     }
+
     handleEdit = () => {
         let editable = !this.state.editable;
         this.setState({
@@ -136,7 +160,7 @@ class SignIndex extends Component {
         </article>
     }
     renderHistoryData = () => {
-        const {versionData, versionId,editable} = this.state;
+        const {versionData, versionId,editable,dynamicHeaderData,dynamicDataSource} = this.state;
         return (
             <article className="toTable">
                <header className="bottom-header-bar">
@@ -148,13 +172,13 @@ class SignIndex extends Component {
                             <div className="RT">
                                 <button className="jh_btn jh_btn22 jh_btn_edit"
                                         onClick={this.handleEdit}>{editable ? "保存" : "编辑"}
+
                                 </button>
                             </div>
                         </Col>
                     </Row>
                 </header>
-            
-                <WrapperTreeTable/>
+                <WrapperTreeTable headerData={dynamicHeaderData} dataSource={dynamicDataSource} />
             </article>
         );
     };
@@ -189,7 +213,7 @@ class SignIndex extends Component {
     renderEmpty = () => {
         return (
             <div className="processBar">
-                请点击左侧树，项目/分期
+                请点击左侧树，分期
             </div>
         );
     };
@@ -203,7 +227,7 @@ class SignIndex extends Component {
         return (
             <div className="sign-wrapper">
                 <Spin size="large" spinning={this.state.loading} >
-                    <article className={this.activeView? "":"hide"}>
+                    <article>
                         <Tabs defaultActiveKey="sign">
                             <TabPane tab="签约" key="sign">
                                 {this.renderHistoryData()}
@@ -212,9 +236,6 @@ class SignIndex extends Component {
                         </Tabs>
                     </article>
                 </Spin>
-                <article className={this.activeView? "hide":""}>
-                    无数据请点击左侧分期
-                </article>
             </div>
         );
     }
