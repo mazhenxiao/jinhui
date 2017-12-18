@@ -392,7 +392,7 @@ class WrapperTreeTable extends Component {
      * @returns {Array}
      */
     getChildColumns = (columnArray, item) => {
-        const {editState} = this.props;
+        const {editState, columnRender} = this.props;
         const children = [];
         item.children.forEach(childHeaderItem => {
 
@@ -403,6 +403,10 @@ class WrapperTreeTable extends Component {
             childColumn.render = (text, record) => {
                 return <span className="text-center">{text}</span>
             };
+
+            if (columnRender && columnRender[childHeaderItem.field]) {
+                childColumn.render = columnRender[childHeaderItem.field];
+            }
 
             if (editState) {
                 childColumn.render = (text, record) => {
