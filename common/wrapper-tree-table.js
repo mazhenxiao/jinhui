@@ -442,12 +442,6 @@ class WrapperTreeTable extends Component {
             tableColumns = this.getColumns(headerData);
         }
 
-        if (!dataSource || dataSource.length == 0) {
-            return (
-                <div className="empty-div">暂无数据</div>
-            );
-        }
-
         return (
             <Table
                 rowKey={rowKey}
