@@ -23,14 +23,36 @@ class OverviewIntallment extends React.Component {
             versionId:versionId,
             projectid:projectid,
         },()=>{
+            this.getlandData();
             this.getBasicInfor();
             this.getLandlist();
 
         });
     }
     
-    getLandlist = (da) =>{
-    	var th=this;
+    getlandData = () =>{
+        let th=this;
+        var projectId=this.props.parentid;
+        var versionId=this.props.versionId;     
+        iss.ajax({
+            url: "/Stage/IGetLandQuotaByVersionId",
+            type: "get",
+            data:{
+                versionId:th.state.versionId,
+                projectid:projectId
+            },
+            success(d) {
+                var landArr=d.rows;
+                th.setState({
+                    landList:landArr
+                });
+            }
+        });
+    }
+    
+    getLandlist = () =>{
+        var th=this;
+        let da = th.state.landList;
         var equityTxt="";
         var landFirstCode="";
         var landArrLen=da.length-1;
