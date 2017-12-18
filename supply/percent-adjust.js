@@ -230,7 +230,7 @@ class PercentAdjust extends Component {
         //同名称的业态
         const formatGroup = supplyData.filter(item => item["PRODUCTTYPENAME"].trim() === record["PRODUCTTYPENAME"]);
         if (formatGroup.length === 1) {
-            iss.error(`业态 [${record["PRODUCTTYPENAME"]}] 只剩下最后一条, 不能删除`);
+            iss.error(`业态 [${record["PRODUCTTYPENAME"]}] 只剩下最后一条, 不能删除!`);
             return;
         }
 
