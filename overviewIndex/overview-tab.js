@@ -171,10 +171,10 @@ class OverviewTab extends React.Component {
                     
             break;
             case "supply"://供货
-                return <OverviewSupply />
+                return <OverviewSupply location={location} />
             break;
             case "sign"://签约
-                return <OverviewSign />
+                return <OverviewSign location={location} />
             break;  
             case "payment"://回款
                 return <OverviewPayment />
