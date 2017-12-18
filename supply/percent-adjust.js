@@ -80,7 +80,7 @@ class PercentAdjust extends Component {
             return;
         }
 
-        invalidData = supplyData.filter(item => item.SourceNumber === 0);
+        invalidData = supplyData.filter(item => item.Proportion === 0);
         if (invalidData.length > 0) {
             iss.error("供货比例不能为0 !");
             return;
@@ -89,9 +89,9 @@ class PercentAdjust extends Component {
         const percentData = {};
         supplyData.forEach(row => {
             if (percentData[row["PRODUCTTYPENAME"]]) {
-                percentData[row["PRODUCTTYPENAME"]] += parseFloat(row["SourceNumber"]);
+                percentData[row["PRODUCTTYPENAME"]] += parseFloat(row["Proportion"]);
             } else {
-                percentData[row["PRODUCTTYPENAME"]] = parseFloat(row["SourceNumber"]);
+                percentData[row["PRODUCTTYPENAME"]] = parseFloat(row["Proportion"]);
             }
         });
 
@@ -119,7 +119,7 @@ class PercentAdjust extends Component {
                 PRODUCTTYPEID: row["PRODUCTTYPEID"],
                 SourceSaleArea: row["SourceSaleArea"],
                 SourceMonery: row["SourceMonery"],
-                SourceNumber: row["SourceNumber"],
+                Proportion: row["Proportion"],
             });
         });
 
@@ -174,8 +174,8 @@ class PercentAdjust extends Component {
             },
             {
                 title: this.setAlignCenter("供货比例(%)"),
-                dataIndex: 'SourceNumber',
-                key: 'SourceNumber',
+                dataIndex: 'Proportion',
+                key: 'Proportion',
                 width: 120,
                 render: (text, record, index) => {
                     return <InputNumber min={0} max={100} value={text}
@@ -241,7 +241,7 @@ class PercentAdjust extends Component {
             if (record.ID === row.ID) {
                 sumPercent += parseFloat(nextValue);
             } else {
-                sumPercent += parseFloat(row.SourceNumber) || 0;
+                sumPercent += parseFloat(row.Proportion) || 0;
             }
         });
         if (sumPercent > 100) {
@@ -256,7 +256,7 @@ class PercentAdjust extends Component {
 
         record["SaleArea"] = saleArea.toFixed(2);
         record["Monery"] = monery.toFixed(2);
-        record["SourceNumber"] = nextValue;
+        record["Proportion"] = nextValue;
         this.forceUpdate();
     };
 
@@ -265,7 +265,7 @@ class PercentAdjust extends Component {
         const nextSupplyData = [...supplyData];
         const newRow = {
             ...record,
-            SourceNumber: 0,
+            Proportion: 0,
             ID: iss.guid(),
         };
         nextSupplyData.splice(index + 1, 0, newRow);
