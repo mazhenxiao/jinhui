@@ -35,12 +35,6 @@ class PercentAdjust extends Component {
         batchDate: "",//批量设置的日期
     };
 
-    /**
-     * 修改的数据
-     * @type {Array}
-     */
-    changeDataArray = [];
-
     componentWillMount() {
         const {currentMonth, currentYear} = this.props.baseInfo;
         this.setState({
@@ -78,11 +72,58 @@ class PercentAdjust extends Component {
     handleSave = () => {
         const {supplyId, currentMonth, supplyData} = this.state;
         const {dataKey, mode} = this.props;
+
+        let invalidData = supplyData.filter(item => !item.SupplyDate);
+        console.log("supplyData", supplyData);
+        if (invalidData.length > 0) {
+            iss.error("供货日期不能为空 !");
+            return;
+        }
+
+        invalidData = supplyData.filter(item => item.SourceNumber === 0);
+        if (invalidData.length > 0) {
+            iss.error("供货比例不能为0 !");
+            return;
+        }
+
+        const percentData = {};
+        supplyData.forEach(row => {
+            if (percentData[row["PRODUCTTYPENAME"]]) {
+                percentData[row["PRODUCTTYPENAME"]] += parseFloat(row["SourceNumber"]);
+            } else {
+                percentData[row["PRODUCTTYPENAME"]] = parseFloat(row["SourceNumber"]);
+            }
+        });
+
+        const keys = Object.keys(percentData);
+        for (let i = 0; i < keys.length; i++) {
+            if (percentData[keys[i]] != 100) {
+                iss.error(`业态 [${keys[i]}] 的供货比例不等于100%`);
+                return;
+            }
+        }
+
         this.setState({
             loading: true,
         });
 
-        SupplyService.saveSupplyData(dataKey, mode, supplyId, currentMonth, this.changeDataArray)
+        const changeDataArray = [];
+        supplyData.forEach(row => {
+            if (!row["SupplyDate"]) {
+                return;
+            }
+            changeDataArray.push({
+                PRODUCTTYPEREFID: row["PRODUCTTYPEREFID"],
+                SupplyDate: row["SupplyDate"],
+                BUILDID: row["BUILDID"],
+                PRODUCTTYPEID: row["PRODUCTTYPEID"],
+                SourceSaleArea: row["SourceSaleArea"],
+                SourceMonery: row["SourceMonery"],
+                SourceNumber: row["SourceNumber"],
+            });
+        });
+
+        SupplyService.saveSupplyData(dataKey, mode, supplyId, currentMonth, changeDataArray)
             .then(res => {
                 if (res.message === "成功") {
                     iss.info("保存成功!");
@@ -140,6 +181,7 @@ class PercentAdjust extends Component {
                     return <InputNumber min={0} max={100} value={text}
                                         formatter={value => `${value}%`}
                                         parser={value => value.replace('%', '')}
+                                        step={0.01}
                                         onChange={this.handlePercentChange.bind(this, record)}/>
                 },
             },
@@ -197,15 +239,23 @@ class PercentAdjust extends Component {
         let sumPercent = 0;
         formatGroup.forEach(row => {
             if (record.ID === row.ID) {
-                sumPercent += parseInt(nextValue);
+                sumPercent += parseFloat(nextValue);
             } else {
-                sumPercent += parseInt(row.SourceNumber) || 0;
+                sumPercent += parseFloat(row.SourceNumber) || 0;
             }
         });
         if (sumPercent > 100) {
             iss.error(`业态 [${record["PRODUCTTYPENAME"]}] 供货比例不能超过100%!`);
             return;
         }
+
+        //可售面积, 可售货值
+        const {SourceSaleArea, SourceMonery} = record;
+        const saleArea = parseFloat(SourceSaleArea) * parseFloat(nextValue) * 0.01;
+        const monery = parseFloat(SourceMonery) * parseFloat(nextValue) * 0.01;
+
+        record["SaleArea"] = saleArea.toFixed(2);
+        record["Monery"] = monery.toFixed(2);
         record["SourceNumber"] = nextValue;
         this.forceUpdate();
     };
@@ -265,18 +315,6 @@ class PercentAdjust extends Component {
 
         supplyData.forEach(row => {
             row["SupplyDate"] = batchDate;
-            const changeData = this.changeDataArray.filter(item => item["PRODUCTTYPEREFID"] === row["PRODUCTTYPEREFID"])[0];
-            //保存变更的供货日期
-            if (changeData) {
-                changeData.SupplyDate = batchDate;
-            } else {
-                this.changeDataArray.push({
-                    PRODUCTTYPEREFID: row["PRODUCTTYPEREFID"],
-                    SupplyDate: batchDate,
-                    BUILDID: row["BUILDID"],
-                    PRODUCTTYPEID: row["PRODUCTTYPEID"],
-                });
-            }
         });
 
         iss.info("批量设置供货日期成功!");
@@ -290,20 +328,6 @@ class PercentAdjust extends Component {
         console.log("row", row, dateString);
         //修改源数据
         row["SupplyDate"] = dateString;
-        //记录要修改的数据, 保存时使用
-        const changeData = this.changeDataArray.filter(item => item["PRODUCTTYPEREFID"] === row["PRODUCTTYPEREFID"])[0];
-        //保存变更的供货日期
-        if (changeData) {
-            changeData.SupplyDate = dateString;
-        } else {
-            this.changeDataArray.push({
-                PRODUCTTYPEREFID: row["PRODUCTTYPEREFID"],
-                SupplyDate: dateString,
-                BUILDID: row["BUILDID"],
-                PRODUCTTYPEID: row["PRODUCTTYPEID"],
-            });
-        }
-        console.log("row", row);
         this.forceUpdate();
     };
 

@@ -195,6 +195,7 @@ class Index extends Component {
 
     renderDynamicAdjust = () => {
         const {adjustData, dataKey} = this.state;
+
         return (
             <article>
                 <Row className="top-header">
@@ -208,9 +209,10 @@ class Index extends Component {
                     </Col>
                 </Row>
                 <WrapperTreeTable key={dataKey + "-dynamic"} rowKey="ID" dataSource={adjustData.dataSource}
+                                  fixedAble={false}
                                   headerData={adjustData.headerData}></WrapperTreeTable>
             </article>
-        );
+        )
     };
 
     renderPlanVersion = () => {
@@ -231,6 +233,7 @@ class Index extends Component {
                     </Col>
                 </Row>
                 <WrapperTreeTable key={dataKey + "-plan"} rowKey="ID" dataSource={planData.dataSource}
+                                  fixedAble={false}
                                   headerData={planData.headerData}></WrapperTreeTable>
             </article>
         );
