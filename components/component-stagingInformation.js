@@ -187,7 +187,7 @@ class StagingInformation extends React.Component {
             okVal:"保存",
             cancel:"取消",
             ok(da){
-                //console.log(th.plateInfo.state.dataList)
+                
                 let checkid="";
                 if(th.props.location.query["dataKey"]){
                     checkid=th.props.location.query["dataKey"];
@@ -201,25 +201,37 @@ class StagingInformation extends React.Component {
                     valueNumber=[],
                     deletePushPlate=[],
                     newPushPlateNumber=[];
-                th.plateInfo.state.dataList.map((el,ind) =>{
-                    if(el.delete == 'del'){
-                        if(deletePushPlate.indexOf(el.pushPlateId) == -1 && el.pushPlateId != null){
-                            deletePushPlate.push(el.pushPlateId)
-                            el.pushPlateId = null;
+                    deletePushPlate=th.plateInfo.delete;
+                th.plateInfo.state.dataList.forEach((el,ind) =>{
+                    // if(el.delete == 'del'){
+                    //     if(deletePushPlate.indexOf(el.pushPlateId) == -1 && el.pushPlateId != null){
+                    //         deletePushPlate.push(el.pushPlateId)
+                    //         console.log(el.pushPlateId)
+                    //         el.pushPlateId = null;
+                    //         console.log(el.pushPlateId)
+                    //     }
+                    // }
+                    if((el.pushPlateId != null && el.pushPlateNumber !=0) || (el.newPush == "newPush" && el.pushPlateNumber !=0)){
+                        if(el.del == null){
+                            var nGn = {
+                                "key":el.pushPlateId,
+                                "value":el.pushPlateNumber
+                            }
+                            newPushPlateNumber.push(nGn)
                         }
-                    }
-                    if(el.pushPlateId != null && el.pushPlateNumber !=0 && el.buildingId !=null || el.newPush == "newPush"){
-                        var nGn = {
-                            "key":el.pushPlateId,
-                            "value":el.pushPlateNumber
-                        }
-                        newPushPlateNumber.push(nGn)
+                        
                     }
                     
-                    if(el.delete == null || el.delete == ""){
+                    if((el.delete == null || el.delete == "") && el.del == null){
                         var oldG = {
                             "key": el.buildingId,
                             "value": el.pushPlateId
+                        }
+                        buildingPushPlateMapping.push(oldG)
+                    }else if(el.delete == 'del' && el.buildingId != null && el.del ==null){
+                        var oldG = {
+                            "key": el.buildingId,
+                            "value": null
                         }
                         buildingPushPlateMapping.push(oldG)
                     }
@@ -252,7 +264,6 @@ class StagingInformation extends React.Component {
                     "newPushPlateNumber":newPushPlateNumber
                 }
                 console.log(json)
-               //console.log(json)
                 iss.ajax({
                     url: "/Stage/ISavePushPlateMapping",
                     data:json,
@@ -280,7 +291,6 @@ class StagingInformation extends React.Component {
     
     //组团划分
     BIND_OPENGroupIframe(){
-        console.log(this.props.versionNewId||this.state.STAGEVERSIONID)
         var th=this,data = this.grupInfo,okVal = "";
         let status = th.props.status;
         if(th.grupInfo.length == 0 || th.grupInfo.state.flag){

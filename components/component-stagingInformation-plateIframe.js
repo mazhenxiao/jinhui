@@ -19,6 +19,8 @@ class PlateIframe extends React.Component{
         this.nameList = [];
         this._group = [];
         this._nData = [];
+        this.numArr = [];
+        this.delete = [];
     }
     //?stageversionid=2dd2fa0b-9f45-16a8-463b-a973a5aa5ab1
     componentWillMount() {
@@ -65,6 +67,7 @@ class PlateIframe extends React.Component{
                         index:data.rows[0]["pushPlateNumber"],
                         _group:th._group
                     });
+                    //console.log(data.rows)
                 }
                 th.props.callback(th);
             },
@@ -94,6 +97,7 @@ class PlateIframe extends React.Component{
                     el.pushPlateNumber = 0;
                     el.delete = "del";
                     el.Mdel = "Mdel";
+                    th.delete.push(el.pushPlateId)
                 }
             }
             
@@ -156,51 +160,58 @@ class PlateIframe extends React.Component{
             th._nData.forEach((el,ind) => {
                 if(n==el.pushPlateNumber){
                     idN = el.pushPlateId
-                    //console.log(el)
                 }
             })
-            //console.log(th._nData)
             if(domType){
-                //console.log(brr)
+                
                 brr.forEach((el,ind) =>{
                     if(el.buildingName == text){
-                        el.pushPlateName = "推盘",
-                        el.pushPlateNumber = n,
-                        el.pushPlateId = idN,
-                        el.delete = ""
-                    }
+                        if(this.numArr.indexOf(n) != -1){
+                                el.pushPlateName = "推盘",
+                                el.pushPlateNumber = n,
+                                el.pushPlateId = idN,
+                                el.delete = "",
+                                el.current="new"
+                            
+                        }else{
+                                el.pushPlateName = "推盘",
+                                el.pushPlateNumber = n,
+                                el.pushPlateId = idN,
+                                el.delete = ""
+                            
+                        }
+                } 
                 })
-                //console.log(brr)
                 brr.forEach((el,ind) =>{
-                    if(el.pushPlateNumber == n && el.buildingId == null && el.buildingName == null){
+                    if(el.pushPlateNumber == n && el.buildingId == null && el.buildingName == null ){
                         brr.splice(ind,1);
                     }
                 })
-               //console.log(brr)
+
                 brr.forEach((el,ind) =>{
                     newBr.push(el.pushPlateNumber)
                 })
-                //console.log(newBr)
-                // if(newBr.indexOf(0) == -1){
-                //     var BrObj = {
-                //         "pushPlateId": null,
-                //         "pushPlateName": "nomapping",
-                //         "pushPlateNumber": 0,
-                //         "buildingId": null,
-                //         "buildingName": null
-                //     }
-                //     brr.push(BrObj)
-                // }
+
                 th.setState({
                     dataList:brr
                 })
             }else{
+                
                 brr.forEach((el,ind) =>{
                     if(el.buildingName == text){
-                        el.pushPlateName = "nomapping",
-                        el.pushPlateNumber = 0,
-                        el.pushPlateId = null;
+                        if(this.numArr.indexOf(n) != -1){
+                                el.pushPlateName = "nomapping",
+                                el.pushPlateNumber = 0,
+                                el.pushPlateId = null,
+                                el.current="new"
+                            
+                        }else{
+                                el.pushPlateName = "nomapping",
+                                el.pushPlateNumber = 0,
+                                el.pushPlateId = null;
+                        }
                     }
+                    
                 })
                 brr.forEach((el,ind) =>{
                     newBr.push(el.pushPlateNumber)
@@ -214,13 +225,26 @@ class PlateIframe extends React.Component{
                             kongId = el.pushPlateId
                         }
                     })
-                    var BrObj = {
-                        "pushPlateId": kongId,
-                        "pushPlateName": "推盘",
-                        "pushPlateNumber": n,
-                        "buildingId": null,
-                        "buildingName": null
+                    if(this.numArr.indexOf(n) != -1){
+                        var BrObj = {
+                            "pushPlateId": kongId,
+                            "pushPlateName": "推盘",
+                            "pushPlateNumber": n,
+                            "buildingId": null,
+                            "buildingName": null,
+                            "current":"new"
+                        }
+                        
+                    }else{
+                        var BrObj = {
+                            "pushPlateId": kongId,
+                            "pushPlateName": "推盘",
+                            "pushPlateNumber": n,
+                            "buildingId": null,
+                            "buildingName": null,
+                        }
                     }
+                    
                     brr.push(BrObj)
                 }
                 th.setState({
@@ -234,6 +258,7 @@ class PlateIframe extends React.Component{
         if(th.state.dataList.length != 0){ 
             return th.state.dataList.map((el, ind) => {
                 let id = el.pushPlateNumber; 
+            if(el.del==null && el.del != "del"){
             if(el.delete == null|| el.delete == "" || el.Mdel == "Mdel"){
                 if(id == th.state.index && null!=el.buildingName && id != 0){
                     
@@ -264,7 +289,7 @@ class PlateIframe extends React.Component{
                     
                 }
             }
-                
+        }
             })
         }
         
@@ -272,6 +297,7 @@ class PlateIframe extends React.Component{
 
     //增加推盘
     addGroup(){
+        debugger
         var th=this;
         var crr = th.state.dataList;
         var addObj = {},len = 1,
@@ -287,18 +313,20 @@ class PlateIframe extends React.Component{
             len = Math.max.apply(null, newAr)+1;
         }
         
-            addObj = {
-                "pushPlateId": newId,
-                "pushPlateName": "推盘",
-                "pushPlateNumber": len,
-                "buildingId": null,
-                "buildingName": null,
-                "current": "new"
-            }
-            crr.push(addObj)
-            th.setState({
-                dataList:crr
-            })
+        addObj = {
+            "pushPlateId": newId,
+            "pushPlateName": "推盘",
+            "pushPlateNumber": len,
+            "buildingId": null,
+            "buildingName": null,
+            "current": "new"
+        }
+        this.numArr.push(len)
+        crr.push(addObj)
+        th.setState({
+            dataList:crr
+        })
+            console.log(crr)
     }
 
     GroupDivide(){
@@ -307,7 +335,9 @@ class PlateIframe extends React.Component{
         delArr.forEach((el,ind)=>{
             el.delete = "del",
             el.pushPlateName = "nomapping";
+            el.del = "del",
             el.pushPlateNumber = 0;
+            th.delete.push(el.pushPlateId)
         })
         iss.ajax({
             url: this.url2+"?stageversionid="+ th.state.checked,
@@ -320,6 +350,7 @@ class PlateIframe extends React.Component{
                     data.rows.forEach((el,ind) => {
                         arr.push(el.pushPlateNumber)
                         el.current = "new";
+                        th.numArr.push(el.pushPlateNumber)
                     })
                     if(arr.indexOf(1) == -1){
                        
