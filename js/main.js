@@ -43,6 +43,7 @@ class Main extends Component {
     }
 
     TransHeight() {
+        return
         let JH_Nav = document.querySelector(".JH-Nav"), JH_Content = document.querySelector(".JH-Content"), h = 640;
         let rh = JH_Content.offsetHeight, lh = JH_Nav.offsetHeight,
             $wh = Math.max(document.body.clientHeight, document.documentElement.clientHeight) - 60;

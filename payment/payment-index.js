@@ -19,7 +19,7 @@ class PaymentIndex extends Component {
     state = {
         loading: false,
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
-        mode: this.props.location.query.isProOrStage == "1" ? "Project" : "Stage",//显示模式，项目或者分期
+        mode: this.props.location.query.isProOrStage == "1" ? "Project" : this.props.location.query.isProOrStage == "2"?"Stage":"",//显示模式，项目或者分期
         versionId: "",
         versionData: [],
         editable: false,//是否可编辑
@@ -37,7 +37,7 @@ class PaymentIndex extends Component {
         const {location} = nextProps;
         const nextDataKey = location.query.dataKey || "";
         let nextMode = location.query.isProOrStage || "";
-        nextMode = nextMode == "1" ? "Project" : "Stage";
+        nextMode = nextMode == "1" ? "Project" : nextMode == "2"?"Stage":"";
 
         //切换路由之后，重新获取数据
 
@@ -71,7 +71,7 @@ class PaymentIndex extends Component {
                 <header className="top-header-bar">
                     <Row>
                         <Col span={12}>
-                            <span className="header-title">回款计划版（面积：平方米，货值：万元）</span>
+                            <span className="header-title">回款计划动态调整版（面积：平方米，货值：万元）</span>
                         </Col>
                         <Col span={12} className="action-section">
                             <WrapperSelect className="select-version" labelText="版本:"
@@ -92,7 +92,7 @@ class PaymentIndex extends Component {
                 <header className="bottom-header-bar">
                     <Row>
                         <Col span={12}>
-                            <span className="header-title">动态调整版（面积：平方米，货值：万元）</span>
+                            <span className="header-title">回款计划考核版（面积：平方米，货值：万元）</span>
                         </Col>
                         <Col span={12}>
                             <div className="RT">

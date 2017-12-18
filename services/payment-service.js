@@ -2,10 +2,52 @@ import iss from '../js/iss'
 import { locale } from 'moment';
 /**
  * 获取签约版本
- * 
+ * /SignAContract/IGenerateBudgetVersion?adjustmentVersionId=f8a6f4a8-ff9b-731b-0c54-53ca93df980a
  */
-export const getSignVersion = () => {
-     
+export const IGenerateBudgetVersion = (dataKey) => {
+     let  adjustmentVersionId = "f8a6f4a8-ff9b-731b-0c54-53ca93df980a";
+     let versionData={
+        "message": "成功",
+        "errorcode": 200,
+        "stackTrace": "",
+        "rows": [
+        {
+        "id": "1E281021816741C7B1EA6A5421645C59",
+        "versioncode": "2",
+        "step": 4,
+        "parentid": "3a111ca8-029d-79d6-a6ac-4044cce00eab",
+        "status": 99,
+        "statusname": "审批通过",
+        "statusCode": "approvaled"
+        },
+        {
+        "id": "0A9B3AA0B0DD449AB94F7E2C134022E1",
+        "versioncode": "1",
+        "step": 4,
+        "parentid": "df644014-c818-3ce3-62a0-ff8cc22283a0",
+        "status": 99,
+        "statusname": "审批通过",
+        "statusCode": "approvaled"
+        }
+        ],
+        "total": 0,
+        "token": ""
+        };
+        iss.fetch({
+            url:"/SignAContract/IGenerateBudgetVersion",
+            data:{
+                "adjustmentVersionId":adjustmentVersionId||dataKey
+            }
+        }).then(arg=>{
+            
+        })
+        let _data = versionData["rows"].map(arg=>{
+            return {
+                id:arg.id,
+                name:arg.versioncode
+            }
+        })
+        return Promise.resolve(_data)
 };
 
 /**

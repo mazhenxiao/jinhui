@@ -287,15 +287,16 @@ class $knife {
                 checkToEle="";
             }
         }
-         //lock1.removeEventListener("scroll",scrollTo);
-        //lock2.removeEventListener("scroll",scrollTo);
-        
-        lock1.addEventListener("scroll",scrollTo.bind(this,"1"));
-        lock2.addEventListener("scroll",scrollTo.bind(this,"2"));
+        if(lock1&&lock2){
+            lock1.addEventListener("scroll",scrollTo.bind(this,"1"));
+            lock2.addEventListener("scroll",scrollTo.bind(this,"2"));
+        }
         return {
             remove(){//手动注销元素
-                lock1.removeEventListener("scroll",scrollTo);
-                lock2.removeEventListener("scroll",scrollTo);
+                if(lock1&&lock2){
+                    lock1.removeEventListener("scroll",scrollTo);
+                    lock2.removeEventListener("scroll",scrollTo);
+                }
             }
         }
     }
