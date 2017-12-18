@@ -1,6 +1,115 @@
 .HeaderBar {
   padding: 10px;
-  /* min-height:30px;
- 
-    background:@bg;*/
+}
+.supply-wrapper {
+  margin-bottom: 20px;
+}
+.supply-wrapper .title {
+  font-size: 13px;
+  font-weight: 600;
+}
+.supply-wrapper .text-align-right {
+  text-align: right;
+  padding-bottom: 2px;
+}
+.supply-wrapper .plan-version {
+  display: inline-block;
+  width: 210px;
+}
+.supply-wrapper .top-header {
+  padding-bottom: 5px;
+}
+.supply-wrapper .bottom-header {
+  padding-top: 20px;
+  padding-bottom: 0px;
+}
+.building-adjust .ant-radio-button-wrapper-checked {
+  background: #108ee9;
+  color: white;
+}
+.building-adjust .ant-btn {
+  line-height: 26px;
+}
+.building-adjust .ant-calendar-picker-input {
+  display: inline-block;
+}
+.building-adjust .ant-table-tbody > tr > td {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  text-align: center;
+}
+.building-adjust .adjust-header {
+  position: relative;
+  bottom: 10px;
+  line-height: 30px;
+}
+.building-adjust .adjust-header .select-month {
+  position: relative;
+  top: 10px;
+  display: inline-block;
+  width: 200px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.building-adjust .adjust-header .chk-wrapper {
+  display: inline-block;
+  width: 120px;
+}
+.building-adjust .adjust-header .chk-wrapper .chk {
+  left: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.building-adjust .adjust-header .date-picker-wrapper {
+  display: inline-block;
+  width: 100px;
+}
+.building-adjust .adjust-header .batch-set-date {
+  display: inline-block;
+  width: 100px;
+  padding-left: 10px;
+}
+.building-adjust .adjust-header .switch-year {
+  display: inline-block;
+  width: 300px;
+  padding-left: 50px;
+}
+.building-adjust .adjust-table {
+  margin-top: 10px;
+}
+.building-adjust .format-operation a {
+  display: inline-block;
+  padding-left: 5px;
+  padding-right: 5px;
+  text-decoration: none;
+}
+.building-adjust .format-operation a:hover {
+  text-decoration: none;
+}
+.text-center {
+  display: block;
+  text-align: center;
+}
+.header-center {
+  text-align: center;
+  display: block;
+}
+.select-block {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #bababa;
+  background-color: limegreen;
+}
+.no-select-block {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border: 1px solid #bababa;
+}
+.empty-div {
+  text-align: center;
+  line-height: 28px;
+  margin-top: 10px;
+  color: rgba(0, 0, 0, 0.43);
 }
