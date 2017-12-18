@@ -33,22 +33,50 @@ export const IGenerateBudgetVersion = (dataKey) => {
         "total": 0,
         "token": ""
         };
-        iss.fetch({
+        return iss.fetch({
             url:"/SignAContract/IGenerateBudgetVersion",
             data:{
                 "adjustmentVersionId":adjustmentVersionId||dataKey
             }
         }).then(arg=>{
-            
+             if(arg.rows&&typeof arg.rows=="object"){
+                 return arg.rows
+             }
+             return versionData["rows"].map(arg=>{
+                return {
+                    id:arg.id,
+                    name:arg.versioncode
+                }
+            })
         })
-        let _data = versionData["rows"].map(arg=>{
-            return {
-                id:arg.id,
-                name:arg.versioncode
-            }
-        })
-        return Promise.resolve(_data)
+  
 };
+/**
+ * 返回弹窗供货头部
+ */
+export const IGetSupplyVersionTitle=key=>{
+    let _da=[{
+        title: '日期',
+        dataIndex:"showName",
+        key:"showName"
+    },
+    {
+        title: '可售面积（㎡）',
+        dataIndex:"area",
+        key:"area"
+    },
+    {
+        title: '货值（万元）',
+        dataIndex:"housecount",
+        key:"housecount"
+    },
+    {
+        title: '套数（套）',
+        dataIndex:"value",
+        key:"value"
+    }];
+    return Promise.resolve(_da);
+}
 /**
  * 获取弹出供货及校验
  * /SignAContract/IGetSupplyVersionData?signAContractVersionId=签约ID
@@ -88,8 +116,11 @@ export const IGetSignAContractData = (dataKey) => {
     }).then(response=>{
         if(response.rows.length){
             localStorage.setItem("IGetSignAContractData",JSON.stringify(response.rows))
+            return response.rows
+        }else{
+            return  JSON.parse(localStorage.getItem("IGetSignAContractData"));
         }
-        return response.rows?response.rows:JSON.parse(localStorage.getItem("IGetSignAContractData"));
+       
     }).catch(e=>{ 
         console.log(`/SignAContract/IGetSignAContractData 请求未拿到数据`);
         return e;

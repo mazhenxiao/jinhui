@@ -1,7 +1,7 @@
 import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";
 import React, {Component, Children} from 'react';
-import {Spin, Tabs, Row, Col, Button, Select,Modal} from 'antd';
+import {Spin, Tabs, Row, Col, Button, Select,Modal,Table} from 'antd';
 import {WrapperTreeTable, WrapperSelect} from '../common';
 import {Payment} from '../services';
 import  {knife} from '../utils';
@@ -44,6 +44,8 @@ class SignIndex extends Component {
             dialog:{ //弹窗
                 ModalVisible:false,
                 dialogContent:[],//弹出窗口content
+                dataSource:[], //数据
+                columns:[] //表头
             }
             
             
@@ -52,7 +54,6 @@ class SignIndex extends Component {
         //protected 数据
        dynamicTable={ //动态表格私有仓储
             number:0,//死循环记录
-            dynamicDialogData:[],//动态弹出窗口数据,校验数据
             dynamicRender:{
                 "FullBuilding":(text,ind,row)=>this.setDynamicRender(text,ind,row)
                 
@@ -102,12 +103,36 @@ class SignIndex extends Component {
      */
     getFetData=(first)=>{
             let dynamicTable = this.getDynamicData(); //获取动态调整表格数据
-            let planTable = this.getPlanData();//获取比对版数据
-                            this.getDynamicDialogData();//获取弹窗及校验数据
-            if(first){ //第一次加载绑定锁定
-              return Promise.all([dynamicTable,planTable])
-              this.bindScrollLock();        
-            }
+            let planTable = this.getPlanData();//获取比对版数据        
+              return Promise.all([dynamicTable,planTable]).then(arg=>{
+                  //获取弹窗数据如果需要，因为张权说要给一个获取的id不知道依赖在哪里，先放到这,估计需要从动态表获取
+                this.getFetDialogData();
+
+                  if(first){ //第一次加载绑定锁定
+                    this.bindScrollLock();        
+                  }
+              })
+            
+    }
+    /**
+     * 获取弹窗数据
+     */
+    getFetDialogData(key){//获取弹窗及校验数据
+        let title = this.getDynamicTitle(key);
+        let data= this.getDynamicDialogData(key);
+        let {dialog}=this.state;
+        Promise.all([title,data])
+               .then(([title,data])=>{
+                    let newData={
+                        columns:title||[],
+                        dataSource:data||[],
+                        ModalVisible:false
+                    };
+                    dialog = {...dialog,...newData};
+                    this.setState({
+                        dialog
+                    })
+               })
     }
     getApprovalState = () => {
         if (this.props.location.query["current"] == "ProcessApproval") {
@@ -125,14 +150,18 @@ class SignIndex extends Component {
         }) 
     }
     /**
-     * 获取弹窗及校验数据
+     * 获取弹窗头部数据
+     * 分开写防止万一数据需要二次编辑
      */
-    getDynamicDialogData(){
-        
-       Payment.IGetSupplyVersionData()
-              .then(arg=>{
-                 this.dynamicTable.dynamicDialogData=arg;
-              })
+    getDynamicTitle(key){
+        return Payment.IGetSupplyVersionTitle(key)
+    }
+    /**
+     * 获取弹窗及校验数据
+     * 分开写防止万一数据需要二次编辑
+     */
+    getDynamicDialogData(key){
+        return Payment.IGetSupplyVersionData(key)
     }
     /**
      * 获取动态调整版数据 
@@ -290,8 +319,8 @@ class SignIndex extends Component {
         this.setState({dialog})
     }
     renderContent=(arg)=>{
-        
-       
+        let {dialogContent}=this.state.dialog;
+            
     }
     clickOpenDialog(text,row,index){
         
@@ -302,7 +331,10 @@ class SignIndex extends Component {
             dialogContent,
             ModalVisible:true
          }
-         this.setState()
+         dialog={...dialog,...newData};
+         this.setState({
+             dialog
+         })
         // Payment.getOpen()
         //        .then(data=>{
 
@@ -336,15 +368,15 @@ class SignIndex extends Component {
      * 弹出窗口
      */
     renderDialog=()=>{
-        
+        let {dataSource,columns,ModalTile,ModalVisible}=this.state.dialog;
       return  <article className="Dialog">
            <Modal
-                title={this.state.dialog.ModalTile}
-                visible={this.state.dialog.ModalVisible}
+                title={ModalTile}
+                visible={ModalVisible}
                 onCancel={this.clickModalCancel}
                 onOk={this.clickModalOk}
             >
-                {this.renderContent()}
+                <Table dataSource={dataSource} columns={columns} />
             </Modal>
         </article>
     }
