@@ -1,0 +1,217 @@
+@import "publick.less";
+.JH-Header{
+    background:@bg url(../img/index_01.png);
+    border-bottom:@border; 
+    width:100%;
+    height: 60px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 777;
+    &:after{ 
+        position: absolute;
+        content:"";
+        clear: both;
+    }
+    article{
+        background: url(../img/logo.png) no-repeat 10px center;
+    }
+  
+    h1{ 
+        float: left; 
+        padding:0;margin:0;
+        height: 60px;
+        line-height: 60px;
+        color: #EFD4A5;
+        font-size: 18px ;
+        margin-left:160px;
+    }
+
+    ul{
+        margin-left:380px;
+        &:after{content: "\0020";
+            display: block;
+            height: 0;
+            clear: both;
+        }
+        li {
+            height: 60px;
+            line-height: 62px;
+            padding: 0 20px;
+            float: left;
+            position: relative;
+            a {
+                display: inline-block;
+                color: #ffffff;
+                font-size: 16px;
+                height: 59px;
+            }
+            a.active,a:hover{
+                color: #EFD4A5;
+            }
+            .subMenu{
+                display: none;
+                position: absolute;
+                top: 57px;
+                z-index: 11;
+                height: 40px;
+                min-width: 150px;
+                background: #0b4082;
+                li{
+                    padding: 0;
+                    display: block;
+                    width: 100%;
+                    line-height: 40px;
+                    &:hover{
+                        background: #1a315a;
+                    }
+                    a{
+                        width: 100%;
+                        padding: 0 30px;
+                        line-height: 40px;
+                        height: 40px;
+                        border-bottom:1px solid #092060;
+                         &:hover{
+                             border: 0;
+                         }
+                         &:active{
+                            color: #EFD4A5;
+                         }
+                    }
+                    
+                }
+            }
+             &:hover{
+                .subMenu{
+                    display: block;
+                }
+             }
+        }    
+    }
+
+    /* 登陆 */
+    .userLogin{
+        position: relative;
+        float:right;
+        text-align:right;
+        width:160px;
+        line-height: 62px;
+        height: 60px;
+        padding-right: 40px;
+       
+       .userTancen{
+            display: none;
+            position: absolute;
+            bottom: -137px;
+            right: 0;
+            height: 137px;
+            width: 340px;
+            z-index: 999;
+            background: #0b4082;
+            padding: 10px;
+            li{
+                 height: 40px;
+                 line-height: 40px;
+                 float: left;
+                 width: 50%;
+                 text-align: left;
+				 font-size:16px;
+                i{
+                    font-style:normal;
+                    color:@bar
+                }
+               a{
+                     height:auto;
+                     color: #ffffff;
+                     padding-left:20px; 
+                     background-image:url(../img/userPending-icon.png) ;
+                     background-repeat:no-repeat;
+                     background-position:left center;  
+                     font-size: 12px;
+                     &:hover{
+                         color:#EFD4A5;
+                         background-image:url(../img/userPending-icon-hover.png) ;
+                     }
+                     .redFont{
+                           color: #e53935;
+                     }
+                     .redFont::before{
+                           content: " "
+                     }
+                }
+                .userApply{
+                      background-image:url(../img/userApply-icon.png) ;
+                      &:hover{
+                          background-image:url(../img/userApply-icon-hover.png) ;
+                      }
+                 }  
+               .userDraft{
+                      background-image:url(../img/userDraft-icon.png) ;
+                      &:hover{
+                          background-image:url(../img/userDraft-icon-hover.png) ;
+                      }
+                }  
+                .userHistory{
+                      background-image:url(../img/userHistory-icon.png) ;
+                      &:hover{
+                          background-image:url(../img/userHistory-icon-hover.png) ;
+                      }
+                }
+                .userExit{
+                      background-image:url(../img/userExit-icon.png) ;
+                      &:hover{
+                          background-image:url(../img/userExit-icon-hover.png) ;
+                      }
+                }    
+   
+             
+            }
+         
+        }
+        &:hover{
+             .userTancen{
+                 display: block;
+             }
+        }
+        &>b{
+           color:#ffffff;
+           cursor: pointer;
+           display:none;
+        }
+       .userName{
+           position: relative;
+           display:inline-block;
+           font-size: @f14;
+           padding-left: 20px;
+           background-image:url(../img/userName.png);
+           background-repeat:no-repeat ;
+           background-position:left center;
+        }
+       .userName.doing{
+           &:before{
+               position: absolute;
+               top:18px;
+               left:-4px;
+               content:"";
+               width:6px;
+               height:6px;
+               background-color: red;
+               border-radius: 50%;
+               /*width: 18px;
+               height: 18px;
+               background-image:url(../img/msg.png);
+               background-repeat:no-repeat ;
+               background-size: 100% auto;
+               background-position:left top;*/
+            }
+        }
+       
+       img{
+           display: inline-block;
+           margin-right: 10px;
+           width: 30px; 
+       }
+       
+   }
+    
+}

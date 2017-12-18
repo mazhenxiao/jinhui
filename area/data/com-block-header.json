@@ -1,0 +1,46 @@
+[
+  {
+    "name": "区块/业态",
+    "field": "name",
+    "width": 200
+  },
+  {
+    "name": "产权属性",
+    "field": "Name2",
+    "width": 200
+  },
+  {
+    "name": "总建筑面积（㎡/个）",
+    "children": [
+      {
+        "name": "总面积",
+        "field": "TotalArea",
+        "width": 400
+      },
+      {
+        "name": "地上",
+        "field": "OverGround",
+        "width": 400
+      },
+      {
+        "name": "地下",
+        "field": "UnderGround"
+      },
+      {
+        "name": "地下2",
+        "field": "UnderGround2",
+        "width": 200
+      },
+      {
+        "name": "地下3",
+        "field": "UnderGround3",
+        "width": 100
+      },
+      {
+        "name": "地下4",
+        "field": "UnderGround4",
+        "width": 100
+      }
+    ]
+  }
+]

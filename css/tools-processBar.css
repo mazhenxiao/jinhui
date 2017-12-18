@@ -1,0 +1,111 @@
+.processBar .processBar-header li {
+  display: inline-block;
+  margin-right: 20px;
+  height: 25px;
+  line-height: 25px;
+  color: #333;
+}
+.processBar .processBar-header li:before {
+  width: 15px;
+  height: 15px;
+  border: #ccc solid 1px;
+  content: "";
+  display: inline-block;
+  border-radius: 50%;
+  vertical-align: top;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+.processBar .processBar-header li.legend-white:before {
+  background: #fff;
+}
+.processBar .processBar-header li.legend-blue:before {
+  background: #2979ff;
+}
+.processBar .processBar-header li.legend-green:before {
+  background: #00e676;
+}
+.processBar .processBar-header li.legend-red:before {
+  background: #e53935;
+}
+.processBar .processBar-List {
+  margin-top: 10px;
+}
+.processBar .processBar-List li {
+  position: relative;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  margin-left: 5px;
+  color: #333;
+  margin-right: 0;
+  height: 30px;
+  min-width: 95px;
+  text-align: left;
+  padding-left: 20px;
+  padding-right: 10px;
+  line-height: 30px;
+  color: #fff;
+  font-size: 12px;
+  background: #4c72a4;
+}
+.processBar .processBar-List li:first-child {
+  padding-left: 10px;
+  margin-left: 0;
+}
+.processBar .processBar-List li:nth-child(n+2):before {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  z-index: 20;
+  content: "";
+  border-left: #fff solid 15px;
+  border-bottom: transparent solid 15px;
+  border-top: transparent solid 15px;
+}
+.processBar .processBar-List li:nth-child(n):after {
+  position: absolute;
+  top: 0;
+  right: -14px;
+  z-index: 20;
+  content: "";
+  border-left: #4c72a4 solid 15px;
+  border-bottom: transparent solid 15px;
+  border-top: transparent solid 15px;
+}
+.processBar .processBar-List li span {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border: #ccc solid 1px;
+  border-radius: 50%;
+  margin-right: 5px;
+  vertical-align: middle;
+  margin-top: -4px;
+}
+.processBar .processBar-List li span.legend-white {
+  background: #fff;
+}
+.processBar .processBar-List li span.legend-blue {
+  background: #2979ff;
+}
+.processBar .processBar-List li span.legend-green {
+  background: #00e676;
+}
+.processBar .processBar-List li span.legend-red {
+  background: #e53935;
+}
+.processBar .processBar-List li:hover,
+.processBar .processBar-List li.active {
+  background: #f1a118;
+  cursor: pointer;
+}
+.processBar .processBar-List li:hover::after,
+.processBar .processBar-List li.active::after {
+  border-left-color: #f1a118;
+}
+.PosRight {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

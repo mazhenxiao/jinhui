@@ -1,0 +1,20 @@
+/*
+    tools.less 新增通用控件
+*/
+@blur:#4c72a4;
+.triangleL(@w,@color:@blur){ /* 三角形继承 */
+    border-left:@color solid @w;
+    border-top:transparent solid @w;
+    border-bottom:transparent solid @w;
+}
+.iss-stepBar{
+    position: relative;top:0;left:0;
+    a{ display:inline-block;position: relative;top:0;left:0;
+        min-width:90px;height:30px;line-height:30px;background:@blur;color:#fff; padding:0 40px 0 40px;
+        &::before,&::after{ content:"";position:absolute;
+        }
+        &::before{
+            .triangleL(15px,#fff);left:0;top:0;
+        }
+    }
+}

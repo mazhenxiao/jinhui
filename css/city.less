@@ -1,0 +1,27 @@
+/* 在city.js引入，城市控件 */
+.postion{ position: relative;top:0;left:0;}
+.ToolsCity{
+	position: absolute;top:0;left:0;z-index:100;background:rgba(255,255,255,0.8);border:#ccc solid 1px;
+	.tc-header{
+			background:#f1f1f1;border-bottom:#ccc solid 1px; height:29px;
+			li{ display:inline-block; cursor: pointer;padding:2px 10px;height:26px;border:transparent solid 1px;margin-top:3px;color:#989898}
+			li:first-child{ margin-left:20px}
+			li.active,li:hover{
+				border:#ccc solid 1px;border-bottom:none;background:#fff;color:#5b5b5b;
+			}
+		
+	}
+	.tc-body{
+		width:350px;height:200px;overflow:hidden;overflow-y:scroll;padding:5px; 
+		ul{
+			li{ margin:3px 0;
+				span{ display: block;float:left;padding:0 5px;color:#00a5cc}
+				ol{ vertical-align: top;
+					margin-left:25px;
+					li{ display:inline-block;margin-right:10px; cursor: pointer;}
+					li:hover{ color:#f3a515} 
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,54 @@
+@gay:#ccc solid 1px;
+@blue:#2979ff;
+@green:#00e676;
+@red:#e53935;
+@yellow:#FFFF00;
+@f333:#333;
+@bblue:#4c72a4;
+@byelow:#f1a118;
+@f12:12px;
+.processBar{
+    .processBar-header{
+        li{ display:inline-block;margin-right:20px; height:25px;line-height:25px;color:@f333;
+            &:before{
+                width:15px;height:15px;border:@gay;content:""; display:inline-block;border-radius:50%;vertical-align:top;margin-top:5px;margin-right:5px;
+            }
+            &.legend-white:before{ background:#fff; }
+            &.legend-blue:before{background:@blue}
+            &.legend-green:before{background:@green}
+            &.legend-red:before{background:@red}
+            &.legend-yellow:before{background:@yellow}
+        }
+    }
+    .processBar-List{
+        margin-top:10px;
+        li{ 
+            position: relative;top:0;left:0;display:inline-block;margin-left:5px; color:@f333;
+            margin-right:0;height:30px;min-width:95px;;text-align:left;padding-left:20px;padding-right:10px;line-height:30px;color:#fff;font-size:@f12;background:@bblue;
+            &:first-child{ padding-left:10px;margin-left:0;}
+            &:nth-child(n+2):before{
+                position: absolute;top:0;left:0px;z-index:20;content:"";border-left:#fff solid 15px;border-bottom:transparent solid 15px;border-top:transparent solid 15px;
+            }
+            &:nth-child(n):after{
+                position: absolute;top:0;right:-14px;z-index:20;content:"";border-left:@bblue solid 15px;border-bottom:transparent solid 15px;border-top:transparent solid 15px;
+            }
+              
+            span{display:inline-block;width:15px;height:15px;border:@gay;border-radius:50%;margin-right:5px;vertical-align:middle;margin-top:-4px;
+                &.legend-white{ background:#fff; }
+                &.legend-blue{background:@blue}
+                &.legend-green{background:@green}
+                &.legend-red{background:@red}
+                &.legend-yellow{background:@yellow}
+            }
+        }
+        li:hover,li.active{
+            background:@byelow;cursor: pointer;
+            &::after{ border-left-color:@byelow;}
+        }
+    }
+}
+.PosRight{
+    position: absolute;
+    top: 0;
+    right: 0;
+}

@@ -1,0 +1,210 @@
+/*公共button*/
+button,
+label {
+  border: none;
+  outline: none;
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  color: #999;
+}
+.jhBtn-wrap .jh_btn:last-child {
+  padding-right: 0;
+}
+.jh_btn {
+  display: inline-block;
+  padding-left: 20px;
+  padding-right: 20px;
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-color: transparent;
+}
+.jh_btn:hover {
+  color: #666;
+}
+.jh_btn40 {
+  height: 40px;
+  line-height: 40px;
+}
+.jh_btn33 {
+  height: 33px;
+  line-height: 33px;
+}
+.jh_btn28 {
+  height: 28px;
+  line-height: 28px;
+}
+.jh_btn22 {
+  height: 22px;
+  line-height: 22px;
+}
+/*发起审批*/
+.jh_btn_apro {
+  background-image: url("../img/approval-icon.png");
+}
+.jh_btn_apro:hover {
+  background-image: url("../img/approval-icon-hover.png");
+}
+/*添加*/
+.jh_btn_edit {
+  background-image: url("../img/editor-icon.png");
+}
+.jh_btn_edit:hover {
+  background-image: url("../img/editor-icon-hover.png");
+}
+/*库存*/
+.jh_btn_repertory {
+  background-image: url("../img/inventory-icon.png");
+}
+.jh_btn_repertory:hover {
+  background-image: url("../img/inventory-icon-hover.png");
+}
+/*编辑*/
+.jh_btn_add {
+  background-image: url("../img/addDik-icon.png");
+}
+.jh_btn_add:hover {
+  background-image: url("../img/addDik-icon-hover.png");
+}
+/*保存*/
+.jh_btn_save {
+  background-image: url("../img/save-icon.png");
+}
+.jh_btn_save:hover {
+  background-image: url("../img/save-icon-hover.png");
+}
+/*删除*/
+.jh_btn_delete {
+  background-image: url("../img/btn-delete.png");
+}
+.jh_btn_delete:hover {
+  background-image: url("../img/btn-delete-hover.png");
+}
+.ipt120 {
+  width: 120px;
+}
+.CM {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+.LM {
+  text-align: left !important;
+  vertical-align: middle !important;
+}
+.RM {
+  text-align: right !important;
+  vertical-align: middle !important;
+}
+.BM {
+  text-align: bottom !important;
+  vertical-align: middle !important;
+}
+.CT {
+  text-align: center !important;
+  vertical-align: top !important;
+}
+.LT {
+  text-align: left !important;
+  vertical-align: top !important;
+}
+.RT {
+  text-align: right !important;
+  vertical-align: top !important;
+}
+.BT {
+  text-align: bottom !important;
+  vertical-align: top !important;
+}
+.CB {
+  text-align: center !important;
+  vertical-align: bottom !important;
+}
+.LB {
+  text-align: left !important;
+  vertical-align: bottom !important;
+}
+.RB {
+  text-align: right !important;
+  vertical-align: bottom !important;
+}
+.BB {
+  text-align: bottom !important;
+  vertical-align: bottom !important;
+}
+.mgT10 {
+  margin-top: 10px;
+}
+.mgT20 {
+  margin-top: 20px;
+}
+.mgT30 {
+  margin-top: 30px;
+}
+.mgT40 {
+  margin-top: 40px;
+}
+.mgR10 {
+  margin-right: 10px;
+}
+.mgR20 {
+  margin-right: 20px;
+}
+.mgR30 {
+  margin-right: 30px;
+}
+.mgR40 {
+  margin-right: 40px;
+}
+.mgB10 {
+  margin-bottom: 10px;
+}
+.mgB20 {
+  margin-bottom: 20px;
+}
+.mgB30 {
+  margin-bottom: 30px;
+}
+.mgB40 {
+  margin-bottom: 40px;
+}
+.padL10 {
+  padding-left: 10px;
+}
+.padL20 {
+  padding-left: 20px;
+}
+.padL40 {
+  padding-left: 40px;
+}
+.padB10 {
+  padding-bottom: 10px;
+}
+.padB20 {
+  padding-bottom: 20px;
+}
+.padB40 {
+  padding-bottom: 40px;
+}
+.ipt40 {
+  width: 40px;
+}
+.ipt60 {
+  width: 60px;
+}
+.ipt90 {
+  width: 90px;
+}
+.ipt120 {
+  width: 120px;
+}
+.ipt150 {
+  width: 150px;
+}
+.ipt200 {
+  width: 200px;
+}
+.ant-table-tbody > tr > td,
+.ant-table-thead > tr > th {
+  padding: 10px 8px;
+}
