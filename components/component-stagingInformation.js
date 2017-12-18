@@ -115,6 +115,7 @@ class StagingInformation extends React.Component {
                     "AREAID":baseformInfo.AREAID,/*区域id*/
                     "AREANAME":baseformInfo.AREANAME,/*区域name*/
                     "ISINITDATA":baseformInfo.ISINITDATA,/*判断否是历史分期 返回1 为历史项目*/
+                    STAGENAMEReadOnly:baseformInfo.STAGENAME,
                     
 
                 },arg=>{
@@ -734,16 +735,19 @@ class StagingInformation extends React.Component {
             iss.ajax({
                 type:"POST",
                 url:"/Stage/ICheckStageName",
-                data:{
+                data:{  
+
                     projectid:projectid,
                     name:name,
                 },
                 success:function (data) {
-                    if(data["rows"]==false){
-                    	  th.setState({
-								            STAGENAME:""
-								        });
-                        iss.popover({ content: "该分期名称已存在，请重新输入" });
+                    if(th.state.STAGENAMEReadOnly != name){ 
+                        if(data["rows"]==false){
+                            th.setState({
+                                STAGENAME:""
+                            });
+                            iss.popover({ content: "该分期名称已存在，请重新输入" });
+                        }
                     }
                     th.BIND_CHANGE_DATA(th.state);
                 },
@@ -751,7 +755,6 @@ class StagingInformation extends React.Component {
                 }
             });
         //},500);
-       
     }
     xmViewError(event){
         // this.attr("src","../img/xmViewError.png")

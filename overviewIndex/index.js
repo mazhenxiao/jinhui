@@ -9,40 +9,26 @@ class index extends React.Component {
     constructor(arg) {
         super(arg);
         this.state = {
-            
-            loading:false,
+            location:this.props.location,
+            dataKey:this.props.location.query["dataKey"],//左侧树当前级id
+            parentid:iss.id.parentid,//左侧树当前父id
+            currentPosi:this.props.location.query["currentPosi"],//左侧树当前区域位置
             activeKey:"0",
         }
-        this.handleChildChangeTab = this.handleChildChangeTab.bind(this);
     }
-    
     componentWillReceiveProps(nextProps){
-        let local = nextProps.location;
-        let currentPosi = local.query["currentPosi"];
-        let dataKey = local.query["dataKey"];
-        let parentid = iss.id.parentid;
-        if(currentPosi==undefined){
-            this.setState({
-                loading:false,
-                currentPosi:"group",
-                dataKey:"1E1CB1E95A864AFA961392C3E3644642",
-            });
-        }else{
-            this.setState({
-                loading:false,
-                currentPosi:currentPosi,
-                dataKey:dataKey,
-                location:nextProps.location,
-            });
-        }
-        
-        
+        this.setState({
+            location:nextProps.location,
+            dataKey:nextProps.location.query["dataKey"],//左侧树当前级id
+            parentid:iss.id.parentid,//左侧树当前父id
+            currentPosi:nextProps.location.query["currentPosi"],//左侧树当前区域位置
+        })
     }
     componentDidMount() {
         let local = this.props.location;
         let currentPosi = local.query["currentPosi"];
         let dataKey = local.query["dataKey"];
-        if(currentPosi=="project"){
+        if(currentPosi=="project" || currentPosi=="intallment"){
             this.setState({
                 loading:false,
                 currentPosi:currentPosi,
@@ -52,24 +38,13 @@ class index extends React.Component {
         }
         
     }
-    
-     
-    //渲染概览
-    
-    handleChildChangeTab = (newTabContentKey) => { //处理子函数传回来的state,改变自身的state
-        if(newTabContentKey){
-            this.setState(newTabContentKey);
-        }
-       
-    }
-    
     render() {
         return(<section>
             <Row>
                 <Col span={24}>
-                        <OverviewTab 
-                            onChangeTab={this.handleChildChangeTab}
-                            data = {this.state}
+                        <OverviewTab
+                            dataKey={this.state.dataKey}
+                            parentid={this.state.parentid}
                             currentPosi={this.state.currentPosi}
                             location={this.state.location}
                         />
