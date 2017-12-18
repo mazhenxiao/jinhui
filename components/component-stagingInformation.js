@@ -744,7 +744,7 @@ class StagingInformation extends React.Component {
                     if(th.state.STAGENAMEReadOnly != name){ 
                         if(data["rows"]==false){
                             th.setState({
-                                     STAGENAME:""
+                                STAGENAME:""
                             });
                             iss.popover({ content: "该分期名称已存在，请重新输入" });
                         }
@@ -755,7 +755,6 @@ class StagingInformation extends React.Component {
                 }
             });
         //},500);
-       
     }
     xmViewError(event){
         // this.attr("src","../img/xmViewError.png")
