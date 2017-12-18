@@ -20,7 +20,7 @@ class OverviewIndex extends React.Component {
 
     }
     Event_fullMap(){ //项目总图
-        this.bind_bigmap();
+        this.bind_bigmap(); 
     }
     Event_fullMapPartition(){//分区总图
         this.bind_bigmap();

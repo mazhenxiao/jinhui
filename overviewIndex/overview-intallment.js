@@ -6,28 +6,53 @@ import StageInforView from "../components/component-stageInfor-view.js";  /*分�
 import StageMasView from "../components/component-stageMas-view.js";  /*分期规划条件指标和分期占用土地*/
 
 
+
 class OverviewIntallment extends React.Component {
     state={
-            allSearchArg:this.props.location.query,/*地址栏所有参数*/
-            versionId:this.props.location.query["dataKey"],/*版本id*/
+            versionId:"",/*版本id*/
             projectid:"",/*项目id*/
             status:"edit",/*请求类型*/
             equityTxt:"",/*权益比例*/
             landList:[],/*地块信息*/
         }
-    // componentWillReceiveProps(nextProps){
-    //     //分期
-    //     let allSearchArg=nextProps.location.query;
-    //     let versionId=nextProps.location.query["dataKey"];
-    //     this.setState({
-    //         allSearchArg:allSearchArg,
-    //         versionId:versionId,
-    //     })
-        
-    // }
+    componentWillReceiveProps(nextProps){
+        //分期
+        let versionId=nextProps.dataKey;
+        let projectid=nextProps.parentid;
+        this.setState({
+            versionId:versionId,
+            projectid:projectid,
+        },()=>{
+            this.getlandData();
+            this.getBasicInfor();
+            this.getLandlist();
+
+        });
+    }
     
-    getLandlist = (da) =>{
-    	var th=this;
+    getlandData = () =>{
+        let th=this;
+        var projectId=this.props.parentid;
+        var versionId=this.props.versionId;     
+        iss.ajax({
+            url: "/Stage/IGetLandQuotaByVersionId",
+            type: "get",
+            data:{
+                versionId:th.state.versionId,
+                projectid:projectId
+            },
+            success(d) {
+                var landArr=d.rows;
+                th.setState({
+                    landList:landArr
+                });
+            }
+        });
+    }
+    
+    getLandlist = () =>{
+        var th=this;
+        let da = th.state.landList;
         var equityTxt="";
         var landFirstCode="";
         var landArrLen=da.length-1;
@@ -43,28 +68,46 @@ class OverviewIntallment extends React.Component {
         });
     }
     /*获取基本信息*/
-    getBasicInfor = (basicInfor) =>{
+    getBasicInfor = () =>{
     	let th=this;
-    	var projectId=basicInfor.PROJECTID;   	
+    	var projectId=this.props.parentid;   	
     	th.setState({
         	projectId:projectId
         });
         $(document).triggerHandler("landFirstLoad",[projectId]);
     }
+    /**
+     * 获取详情页面信息
+     */
+    getStageInfoView=arg=>{
+        let th = this;
+        let {status} = this.state;
+        let json = {
+            Id:th.props.dataKey,
+            reqtype:status=="edit"? "Edit":status=="upgrade"? "Upgrade":""
+        }
+        iss.ajax({  //获取数据
+            type: "post",
+            url:"/Stage/IGetInitInfo",
+            data:json,
+            success(res) {
+                th.getBasicInfor(res.rows.BaseFormInfo)
+            },
+            error(e) {
 
-    renderIntallmentContent = () =>{
-        let th=this;
-        let stateData=th.state;
-        return (<div>
-            <StageInforView versionId={stateData.versionId} status={stateData.status} equityTxt={stateData.equityTxt} basicCallBack={th.getBasicInfor.bind(th)}/>
-            <StageMasView versionId={stateData.versionId} callback={th.getLandlist.bind(th)}/>
-        </div>);
+            }
+        });
+
     }
     
     render() {
         
+        let th=this;
+        const {status,equityTxt}=th.state;
+        const versionId = th.props.dataKey;
         return (<div>
-            {this.renderIntallmentContent()}
+            <StageInforView versionId={versionId} status={status} equityTxt={equityTxt} basicCallBack={th.getBasicInfor.bind(th)}/>
+            <StageMasView versionId={versionId} callback={th.getLandlist.bind(th)}/>
         </div>);
     }
 }

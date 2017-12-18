@@ -32,42 +32,37 @@ class OverviewTab extends React.Component {
                 // { "guid":"7","text":"关键指标","tap":"keyPoint"},
             ],
             planUrl:"http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=",
-            iframeUrl:"http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=1E1CB1E95A864AFA961392C3E3644642",
-            ...this.state,
-            ...this.props.data,
         
         };//通过props初始化tab菜单子组件的state
     }
     componentWillReceiveProps(nextProps){
-        let allSearchArg = nextProps.data;
-        let currentPosi = nextProps.currentPosi;//获取左侧树当前级别
-        let dataKey = nextProps.data.dataKey;//获取左侧树当前id
-        let parentid = iss.id.parentid;
         this.setState({
-            loading:false,
-            currentPosi:currentPosi,
+            currentPosi:nextProps.currentPosi,//获取左侧树当前级别,
             activeKey:"0",
-            parentid:parentid,
-            
+            dataKey:nextProps.dataKey,//获取左侧树当前id
+            parentid:nextProps.parentid,
+            location:nextProps.location,
         },()=>{
-            this.renderRightTab();
+            this.renderLeftTab();
             this.renderTabs();
             
         })
     }
 
     componentDidMount(){
-        this.renderRightTab();
+        this.renderLeftTab();
         this.renderTabs();
     }
    //
     //左侧树变更切换右侧数据内容
-    renderRightTab = () => {
+    renderLeftTab = () => {
         let currentPosi = this.state.currentPosi;//当前级别
+        if(currentPosi == undefined){
+            currentPosi = "group";
+        }
         switch(currentPosi){
             case "group"://集团
                 this.setState({
-                    loading:false,
                     dataTabHeader:[
                         // { "guid":"1","text":"项目概览","tap":"index"},
                         // { "guid":"2","text":"项目身份证","tap":"identity"},
@@ -82,7 +77,6 @@ class OverviewTab extends React.Component {
             break;
             case "area"://区域
                 this.setState({
-                    loading:false,
                     dataTabHeader:[
                         // { "guid":"1","text":"项目概览","tap":"index"},
                         // { "guid":"2","text":"项目身份证","tap":"identity"},
@@ -97,7 +91,6 @@ class OverviewTab extends React.Component {
             break;
             case "branchOffice"://分公司
                 this.setState({
-                    loading:false,
                     dataTabHeader:[
                         // { "guid":"1","text":"项目概览","tap":"index"},
                         // { "guid":"2","text":"项目身份证","tap":"identity"},
@@ -112,7 +105,6 @@ class OverviewTab extends React.Component {
             break;
             case "project"://项目
                 this.setState({
-                    loading:false,
                     dataTabHeader:[
                         //{ "guid":"1","text":"项目概览","tap":"index"},
                         { "guid":"2","text":"项目身份证","tap":"identityProject"},
@@ -127,7 +119,6 @@ class OverviewTab extends React.Component {
             break;
             case "intallment"://分期
                 this.setState({
-                    loading:false,
                     dataTabHeader:[
                         //{ "guid":"1","text":"项目概览","tap":"index"},
                         { "guid":"2","text":"分期身份证","tap":"identityIntallment"},
@@ -143,7 +134,7 @@ class OverviewTab extends React.Component {
         }
     }
     iframeLoad = () =>{
-        let dataKey  = this.props.data.dataKey;
+        const {dataKey}  = this.state;
         let iframeUrl=this.state.planUrl+dataKey;
         if(dataKey == undefined ){
             return <iframe ref="outheIframe" src={"http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=1E1CB1E95A864AFA961392C3E3644642"} scrolling="no" width="100%" height="700" style={{border: 0}}></iframe>
@@ -157,25 +148,33 @@ class OverviewTab extends React.Component {
    
     //切换tab菜单渲染内容
     renderSyncEele=arg=>{
-         let currentPosi=this.state.currentPosi;
-         let dataKey=this.state.dataKey;
-         let location = this.props.data.location;
+         const {currentPosi, dataKey,location,parentid} = this.props;
          switch(arg){
             case "index"://项目概览
                 return <OverviewIndex />
             break;
             case "identityProject"://项目身份证
-                 return <OverviewProject location={location} />       
+                 if(currentPosi=="project"){
+                    return <OverviewProject 
+                        location={location}
+                        dataKey={dataKey}  
+                    />  
+                 }
                 
             break;
             case "identityIntallment"://分期身份证
-                    return <OverviewIntallment location={location} parentid={this.state.parentid} />
+                if(currentPosi=="intallment"){
+                    return <div>
+                            <OverviewIntallment dataKey={dataKey} parentid={this.state.parentid} />
+                    </div>
+                }
+                    
             break;
             case "supply"://供货
-                return <OverviewSupply />
+                return <OverviewSupply location={location} />
             break;
             case "sign"://签约
-                return <OverviewSign />
+                return <OverviewSign location={location} />
             break;  
             case "payment"://回款
                 return <OverviewPayment />
@@ -195,16 +194,16 @@ class OverviewTab extends React.Component {
 
     }
     renderTabMenu1 = () =>{
-             return  this.state.dataTabHeader.map((da,ind)=>{
+            const {dataTabHeader} = this.state;
+             return  dataTabHeader.map((da,ind)=>{
                 return <TabPane tab={da.text} key={ind}>{this.renderSyncEele(da.tap)}</TabPane>
              });
     }
     
     callback = (key) => {
-        let dataKey  = this.props.data.dataKey;
+        const {dataKey}  = this.state;
         let iframeUrl=this.state.planUrl+dataKey;
         this.setState({
-            loading:false,
             activeKey:key,
         });
 
@@ -215,15 +214,11 @@ class OverviewTab extends React.Component {
             if(outheIframe != undefined){
                 outheIframe.src = iframeUrl;
             }
-            
-            //document.querySelectorAll("iframe").src = iframeUrl;
         }
         
     }
 
     renderTabs = () =>{
-        
-        let currentPosi=this.state.currentPosi;
         return(
             <Tabs onChange={this.callback} defaultActiveKey="0" activeKey={this.state.activeKey} type="card">
                 {this.renderTabMenu1()}
@@ -233,15 +228,12 @@ class OverviewTab extends React.Component {
     
 
     render() {
-        const {loading} = this.state;
         return(<div>
-             <Spin size="large" spinning={loading}>
                 <Row>
                     <Col span={24}>
                         {this.renderTabs()}
                     </Col>
                 </Row>
-            </Spin>
             </div>
         );
     }

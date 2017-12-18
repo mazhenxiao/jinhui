@@ -15,29 +15,36 @@ class OverviewProject extends React.Component {
         super(arg);
         this.state = {
             CountData: [],//地块统计数据
-            pid:this.props.location.query["dataKey"],//地块id
+            pid:"",//地块id
             propsDATA:[],//地块数据
             //allSearchArg:this.props.location.query,/*地址栏所有参数*/
         }
     }
     componentWillReceiveProps(nextProps){
-        if(nextProps.location.query["currentPosi"]=="priject"){
-            this.BIIND_FIST_LAND();
-        }
-        
+        let dataKey=nextProps.dataKey;
+        this.setState({
+            pid:dataKey
+        },()=>{
+            if(nextProps.location.query["currentPosi"]=="project"){
+                this.BIIND_FIST_LAND();
+            }
+        })
+        this.BIIND_FIST_LAND();
     }
     componentWillMount(){
       this.BIIND_FIST_LAND();
+      this.BIND_COUNT_GETMAP();
     }
     
     BIIND_FIST_LAND() {  //获取已有地块
         let THIS = this;
-        let id = this.props.location.query["dataKey"]; //iss.id.id;
+        let id = this.props.dataKey; //iss.id.id;
         iss.ajax({  //获取已有地块
             url: "/Project/IProjectLandsInfo",
             data: { projectId: id },
             success(d) {
                 if (d.rows) {
+                    
                     var da = {};
                     d.rows.forEach((el, ind) => {
                         if (ind == 0) { //初次加载地块
@@ -48,7 +55,11 @@ class OverviewProject extends React.Component {
                         }
                         da[el.LandId] = el;
                     });
-
+                    if(d.rows.length == 0){
+                        THIS.setState({
+                            propsDATA: []
+                        })
+                    }
                     THIS.setState({
                         DynamicData: da
                     });

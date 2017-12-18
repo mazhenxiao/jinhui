@@ -98,9 +98,6 @@ class BuildingAdjust extends Component {
             });
         });
 
-        if (changeDataArray.length === 0) {
-        }
-
         SupplyService.saveSupplyData(dataKey, mode, supplyId, currentMonth, changeDataArray)
             .then(res => {
                 if (res.message === "成功") {
@@ -238,7 +235,6 @@ class BuildingAdjust extends Component {
     getColumns = () => {
         const {switchYear} = this.props.baseInfo;
         const {currentYear} = this.state;
-        const lastYear = switchYear.indexOf(currentYear) === 3 ? true : false;
 
         const columns = [
             {
@@ -246,21 +242,18 @@ class BuildingAdjust extends Component {
                 dataIndex: 'GROUPNAME',
                 key: 'GROUPNAME',
                 width: 140,
-                fixed: !lastYear ? 'left' : false,
             },
             {
                 title: this.getFormatHeader(),
                 dataIndex: 'PRODUCTTYPENAME',
                 key: 'PRODUCTTYPENAME',
                 width: 140,
-                fixed: !lastYear ? 'left' : false,
             },
             {
                 title: this.getBuildHeader(),
                 dataIndex: 'BUILDNAME',
                 key: 'BUILDNAME',
                 width: 140,
-                fixed: !lastYear ? 'left' : false,
             },
             {
                 title: this.setAlignCenter("可售面积(m²)"),
