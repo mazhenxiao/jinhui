@@ -735,7 +735,8 @@ class StagingInformation extends React.Component {
             iss.ajax({
                 type:"POST",
                 url:"/Stage/ICheckStageName",
-                data:{
+                data:{  
+                    
                     projectid:projectid,
                     name:name,
                 },
