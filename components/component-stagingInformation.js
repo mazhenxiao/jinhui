@@ -736,7 +736,7 @@ class StagingInformation extends React.Component {
                 type:"POST",
                 url:"/Stage/ICheckStageName",
                 data:{  
-                    
+
                     projectid:projectid,
                     name:name,
                 },
@@ -744,8 +744,8 @@ class StagingInformation extends React.Component {
                     if(th.state.STAGENAMEReadOnly != name){
                         if(data["rows"]==false){
                             th.setState({
-                                              STAGENAME:""
-                                          });
+                                     STAGENAME:""
+                            });
                             iss.popover({ content: "该分期名称已存在，请重新输入" });
                         }
                     }
