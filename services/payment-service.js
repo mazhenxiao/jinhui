@@ -49,10 +49,26 @@ export const IGenerateBudgetVersion = (dataKey) => {
         })
         return Promise.resolve(_data)
 };
-export const getOpen=key=>{
-    let _data = {
+/**
+ * 获取弹出供货及校验
+ * /SignAContract/IGetSupplyVersionData?signAContractVersionId=签约ID
+ * @param {*} key 
+ */
+export const IGetSupplyVersionData=key=>{
+    
+    let _data = [{
+        "showId":"f8a6f4a8-ff9b-731b-0c54-53ca93df980a",
+        "showName":"地下平层",
+        "value":[
+            {
+                "showName":"2017年1月",
+                "area":0,
+                "housecount":0,
+                "value":0
+            }
+        ]
 
-    }
+    }]
     return Promise.resolve(_data)
 }
 
@@ -70,7 +86,7 @@ export const IGetSignAContractData = (dataKey) => {
             "stageVersionId":dataKey //"884dd5a6-ff48-4628-f4fa-294472d49b37"//dataKey
         }
     }).then(response=>{
-        if(response.rows){
+        if(response.rows.length){
             localStorage.setItem("IGetSignAContractData",JSON.stringify(response.rows))
         }
         return response.rows?response.rows:JSON.parse(localStorage.getItem("IGetSignAContractData"));

@@ -16,43 +16,49 @@ import "./css/sign.less";
 const TabPane = Tabs.TabPane;
 
 class SignIndex extends Component {
-   
-    state = {
-        loading: false,
-        dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
-        mode: this.props.location.query.isProOrStage == "1" ? "Project" : this.props.location.query.isProOrStage == "2"?"Stage":"",//显示模式，项目或者分期
-        versionId: "",
-        versionData: [],
-        editable: false,//是否可编辑
-        dynamicTable:{
-            dynamicHeaderData:[],//动态调整版头部
-            dynamicDataSource:[],//动态调整版数据
-            dynamicEdit:false, //动态调整是否可编辑
-            dynamicEditButtonShow:false
-        },
-        planTable:{ //同上
-            planHeaderData:[],
-            planDataSource:[],
-            planEdit:false,
-           
-        },
-        version:{ //版本
-            currentVersion:"",//当前版本
-            versionData:[], //版本数据
-            versionShow:false //是否显示版本
-        },
-        dialog:{ //弹窗
-            ModalVisible:false,
-            dialogContent:[],//弹出窗口content
+    
+        state = {
+            loading: false,
+            dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
+            mode: this.props.location.query.isProOrStage == "1" ? "Project" : this.props.location.query.isProOrStage == "2"?"Stage":"",//显示模式，项目或者分期
+            versionId: "",
+            versionData: [],
+            editable: false,//是否可编辑
+            dynamicTable:{
+                dynamicHeaderData:[],//动态调整版头部
+                dynamicDataSource:[],//动态调整版数据
+                dynamicEdit:false, //动态调整是否可编辑
+                dynamicEditButtonShow:false
+            },
+            planTable:{ //同上
+                planHeaderData:[],
+                planDataSource:[],
+                planEdit:false,
+               
+            },
+            version:{ //版本
+                currentVersion:"",//当前版本
+                versionData:[], //版本数据
+                versionShow:false //是否显示版本
+            },
+            dialog:{ //弹窗
+                ModalVisible:false,
+                dialogContent:[],//弹出窗口content
+            }
+            
+            
+        };
+    
+        //protected 数据
+       dynamicTable={ //动态表格私有仓储
+            number:0,//死循环记录
+            dynamicDialogData:[],//动态弹出窗口数据,校验数据
+            dynamicRender:{
+                "FullBuilding":(text,ind,row)=>this.setDynamicRender(text,ind,row)
+                
+            } //动态编辑表格
         }
-  
-        
-    };
-    //protected 数据
-    dynamicTable={ //动态表格私有仓储
-        number:0,//死循环记录
-        dynamicRender:{}, //动态编辑表格
-    }
+    
 
     antdTableScrollLock=null;//用来触发卸载原生事件
     visible=false;
@@ -97,6 +103,7 @@ class SignIndex extends Component {
     getFetData=(first)=>{
             let dynamicTable = this.getDynamicData(); //获取动态调整表格数据
             let planTable = this.getPlanData();//获取比对版数据
+                            this.getDynamicDialogData();//获取弹窗及校验数据
             if(first){ //第一次加载绑定锁定
               return Promise.all([dynamicTable,planTable])
               this.bindScrollLock();        
@@ -108,6 +115,7 @@ class SignIndex extends Component {
         }
         return false;
     };
+
     /**
      * 绑定锁定
      */
@@ -117,17 +125,27 @@ class SignIndex extends Component {
         }) 
     }
     /**
+     * 获取弹窗及校验数据
+     */
+    getDynamicDialogData(){
+        
+       Payment.IGetSupplyVersionData()
+              .then(arg=>{
+                 this.dynamicTable.dynamicDialogData=arg;
+              })
+    }
+    /**
      * 获取动态调整版数据 
      * return promise
      */
     getDynamicData=()=>{
         let {dataKey}=this.props.location.query;
         let {dynamicTable}=this.state;
-             dataKey = "f8a6f4a8-ff9b-731b-0c54-53ca93df980a";
+             dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
              //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let title = Payment.IGetSignAContractTableTitle(dataKey)
                            .then(dynamicColum=>{
-                            this.setDynamicRender(dynamicColum);//创建编辑表格
+                            //this.setDynamicRender(dynamicColum);//创建编辑表格
                                return dynamicColum;
                            })
                            .catch(e=>{
@@ -181,7 +199,8 @@ class SignIndex extends Component {
     getPlanData=()=>{
         let {dataKey}=this.props.location.query;
         let {planTable,version}=this.state;
-             dataKey = "f8a6f4a8-ff9b-731b-0c54-53ca93df980a";
+             dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
+             
              //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let currentVersion = "",versionData;
         
@@ -218,17 +237,19 @@ class SignIndex extends Component {
      * 是否编辑行
      * 递归查询此处如果数据有问题容易出现bug目前先不用
      */
-    setDynamicRender=(dynamicColum)=>{
-          if(this.dynamicTable.number+=1,this.dynamicTable.number>1000){ console.log("强制判断如果列数据大于1000或死循环强制推出防止如果后台数据有误造成的死循环"); return}
+    setDynamicRender(text,record,index){
+        
+        return <a href="javascript:;" onClick={this.clickOpenDialog.bind(this,text,record,index)}>{text}</a>
+        /*   if(this.dynamicTable.number+=1,this.dynamicTable.number>1000){ console.log("强制判断如果列数据大于1000或死循环强制推出防止如果后台数据有误造成的死循环"); return}
           
           dynamicColum.forEach(arg=>{
                 if(arg.children){
                     this.setDynamicRender(arg.children);
-                }else if(arg.field=="1"){
+                }else if(arg.field=="FullBuilding"){
                     
                    this.dynamicTable.dynamicRender[arg.field]=this.renderContent;
                 }
-        })
+        }) */
         
     }
 
@@ -269,13 +290,23 @@ class SignIndex extends Component {
         this.setState({dialog})
     }
     renderContent=(arg)=>{
-        return <a href="javascript:;" onClick={this.clickOpenDialog.bind(this,arg)}>arg.name</a>
+        
+       
     }
-    clickOpenDialog=key=>{
-        Payment.getOpen()
-               .then(data=>{
+    clickOpenDialog(text,row,index){
+        
+         let {showId}=row;
+         let {dialog}=this.state;
+         let dialogContent = this.dynamicTable.dynamicDialogData.filter(arg=>arg.showId==showId);
+         let newData={
+            dialogContent,
+            ModalVisible:true
+         }
+         this.setState()
+        // Payment.getOpen()
+        //        .then(data=>{
 
-               })
+        //        })
     }
     /**
      * 版本下拉菜单事件
@@ -313,7 +344,7 @@ class SignIndex extends Component {
                 onCancel={this.clickModalCancel}
                 onOk={this.clickModalOk}
             >
-                {this.state.dialogContent}
+                {this.renderContent()}
             </Modal>
         </article>
     }
@@ -344,7 +375,9 @@ class SignIndex extends Component {
                 <WrapperTreeTable 
                     headerData={dynamicHeaderData} 
                     editState={dynamicEdit} 
-                    dataSource={dynamicDataSource}  />
+                    dataSource={dynamicDataSource}
+                    columnRender={this.dynamicTable.dynamicRender}
+                      />
             </article>
         );
     };
