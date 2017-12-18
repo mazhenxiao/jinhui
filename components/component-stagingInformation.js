@@ -742,6 +742,7 @@ class StagingInformation extends React.Component {
                 },
                 success:function (data) {
                     if(th.state.STAGENAMEReadOnly != name){
+                        
                         if(data["rows"]==false){
                             th.setState({
                                      STAGENAME:""
