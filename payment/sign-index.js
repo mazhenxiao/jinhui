@@ -249,7 +249,7 @@ class SignIndex extends Component {
             .then(Adata => { //获取版本
                 currentVersion = this.getCurrentVertion(Adata);
                 versionData = Adata;
-                return Payment.IGetSignAContractData(currentVersion)
+                return Payment.IGetSignAContractData(dataKey||currentVersion)
             })
             .then((planDataSource) => {
 
