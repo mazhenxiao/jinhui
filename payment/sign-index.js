@@ -119,7 +119,8 @@ class SignIndex extends Component {
 
         })
             .catch(err => {
-                iss.error("getFetData获取数据失败")
+                iss.error(err);
+                // iss.error("getFetData获取数据失败")
             })
 
     }
@@ -145,7 +146,8 @@ class SignIndex extends Component {
                 })
             })
             .catch(err => {
-                iss.error("getFetDialogData获取数据失败")
+                iss.error(err);
+                // iss.error("getFetDialogData获取数据失败")
             })
     }
 
