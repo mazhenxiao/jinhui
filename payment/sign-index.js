@@ -561,7 +561,7 @@ class SignIndex extends Component {
         const {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow} = dynamicTable;
 
         return (
-            <article className="toTable">
+            <article className="toTable signPage">
                 <header className="bottom-header-bar">
                     <Row>
                         <Col span={12}>

@@ -22,3 +22,7 @@
   display: inline-block;
   width: 150px;
 }
+.signPage .ant-table-bordered .ant-table-fixed-left .ant-table-tbody > tr > td {
+  text-align: left;
+  padding-left: 10px;
+}
