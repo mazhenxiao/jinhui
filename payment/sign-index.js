@@ -124,10 +124,6 @@ class SignIndex extends Component {
             this.bindScrollLock();
 
         })
-            .catch(err => {
-                iss.error(err);
-                // iss.error("getFetData获取数据失败")
-            })
 
     }
 
@@ -169,9 +165,9 @@ class SignIndex extends Component {
      * 绑定锁定
      */
     bindLockTable() {
-        knife.ready(".toTable .ant-table-body,.pkTable .ant-table-body", arg => {
+       // knife.ready(".toTable .ant-table-body,.pkTable .ant-table-body", arg => {
             this.bindScrollLock();
-        })
+      //  })
     }
 
     /**
@@ -448,7 +444,7 @@ class SignIndex extends Component {
         }
 
         if (dialogContent.length <= 0) {
-            iss.info("暂无数据");
+           // iss.info("暂无数据");
             return
         }
         let newData = {
@@ -512,15 +508,19 @@ class SignIndex extends Component {
      * 驳回
      */
     handleCancel=()=>{
-        let {signAContractVersionId}=this.dynamicTable;
-     
+        const {dynamicTable} = this.state;
+        let {signAContractVersionId,dynamicEdit}=this.dynamicTable;
+         let newData={...dynamicTable,dynamicEditButtonShow:false,dynamicEdit:false};
+
                 Payment.ISubmitSignAContractData(signAContractVersionId)
                 .then(arg=>{
                     iss.tip({
                         type:"success",
                         description:"驳回成功"
                     });
-
+                    this.setState({
+                        dynamicTable:newData
+                    })
                 })
                 .catch(err=>{
                     iss.error("驳回失败！")

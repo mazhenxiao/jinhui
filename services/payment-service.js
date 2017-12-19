@@ -14,7 +14,7 @@ export const IGenerateBudgetVersion = (dataKey) => {
                 "adjustmentVersionId":dataKey
             }
         }).then(arg=>{
-            debugger
+            
              if(arg.rows&&typeof arg.rows=="object"){
                  return arg.rows
              }
@@ -94,7 +94,7 @@ export const IGetSignAContractData = (dataKey) => {
             //localStorage.setItem("IGetSignAContractData",JSON.stringify(response.rows))
             return response.rows
         }else{
-            iss.error("动态表格没拿到数据")
+           // iss.error("动态表格没拿到数据")
           //  return  JSON.parse(localStorage.getItem("IGetSignAContractData"));
         }
        
