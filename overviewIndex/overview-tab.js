@@ -137,8 +137,10 @@ class OverviewTab extends React.Component {
     iframeLoad = () =>{
         const {dataKey}  = this.state;
         let iframeUrl=this.state.planUrl+dataKey;
+        let groupId = iss.id.id;
+        groupId = this.state.planUrl+groupId;
         if(dataKey == undefined ){
-            return <iframe ref="outheIframe" src={"http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=1E1CB1E95A864AFA961392C3E3644642"} scrolling="no" width="100%" height="600" style={{border: 0}}></iframe>
+            return <iframe ref="outheIframe" src={groupId} scrolling="no" width="100%" height="600" style={{border: 0}}></iframe>
         }else{
             let att = <iframe ref="outheIframe" scrolling="no" width="100%" height="600" src={iframeUrl} style={{border: 0,width:"100%",height:"700px"}}></iframe>;
             return att;
