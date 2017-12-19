@@ -33,26 +33,70 @@ export const IGenerateBudgetVersion = (dataKey) => {
         "total": 0,
         "token": ""
         };
-        iss.fetch({
+        return iss.fetch({
             url:"/SignAContract/IGenerateBudgetVersion",
             data:{
                 "adjustmentVersionId":adjustmentVersionId||dataKey
             }
         }).then(arg=>{
-            
+             if(arg.rows&&typeof arg.rows=="object"){
+                 return arg.rows
+             }
+             return versionData["rows"].map(arg=>{
+                return {
+                    id:arg.id,
+                    name:arg.versioncode
+                }
+            })
         })
-        let _data = versionData["rows"].map(arg=>{
-            return {
-                id:arg.id,
-                name:arg.versioncode
-            }
-        })
-        return Promise.resolve(_data)
+  
 };
-export const getOpen=key=>{
-    let _data = {
+/**
+ * 返回弹窗供货头部
+ */
+export const IGetSupplyVersionTitle=key=>{
+    let _da=[{
+        title: '日期',
+        dataIndex:"showName",
+        key:"showName"
+    },
+    {
+        title: '可售面积（㎡）',
+        dataIndex:"area",
+        key:"area"
+    },
+    {
+        title: '货值（万元）',
+        dataIndex:"housecount",
+        key:"housecount"
+    },
+    {
+        title: '套数（套）',
+        dataIndex:"value",
+        key:"value"
+    }];
+    return Promise.resolve(_da);
+}
+/**
+ * 获取弹出供货及校验
+ * /SignAContract/IGetSupplyVersionData?signAContractVersionId=签约ID
+ * @param {*} key 
+ */
+export const IGetSupplyVersionData=key=>{
+    
+    let _data = [{
+        "showId":"f8a6f4a8-ff9b-731b-0c54-53ca93df980a",
+        "showName":"地下平层",
+        "value":[
+            {
+                "showName":"2017年1月",
+                "area":0,
+                "housecount":0,
+                "value":0
+            }
+        ]
 
-    }
+    }]
     return Promise.resolve(_data)
 }
 
@@ -70,10 +114,13 @@ export const IGetSignAContractData = (dataKey) => {
             "stageVersionId":dataKey //"884dd5a6-ff48-4628-f4fa-294472d49b37"//dataKey
         }
     }).then(response=>{
-        if(response.rows){
+        if(response.rows.length){
             localStorage.setItem("IGetSignAContractData",JSON.stringify(response.rows))
+            return response.rows
+        }else{
+            return  JSON.parse(localStorage.getItem("IGetSignAContractData"));
         }
-        return response.rows?response.rows:JSON.parse(localStorage.getItem("IGetSignAContractData"));
+       
     }).catch(e=>{ 
         console.log(`/SignAContract/IGetSignAContractData 请求未拿到数据`);
         return e;

@@ -29,7 +29,11 @@ class OverviewIntallment extends React.Component {
 
         });
     }
-    
+    componentDidMount(){
+        this.getlandData();
+        this.getBasicInfor();
+        this.getLandlist();
+    }
     getlandData = () =>{
         let th=this;
         var projectId=this.props.parentid;
