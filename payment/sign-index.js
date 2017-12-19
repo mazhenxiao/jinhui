@@ -87,7 +87,7 @@ class SignIndex extends Component {
         const nextDataKey = location.query.dataKey || "";
         let nextMode = location.query.isProOrStage || "";
         nextMode = nextMode == "1" ? "Project" : nextMode == "2" ? "Stage" : "";
-
+        
         //切换路由之后，重新获取数据
 
         if (dataKey != nextDataKey) {
@@ -95,11 +95,13 @@ class SignIndex extends Component {
                     dataKey: nextDataKey,
                     mode: nextMode,
                     activeTapKey: "plan-quota",
+                },arg=>{
+                    this.getFetData();
                 }
             );
         }
        // console.log("componentWillReceiveProps");
-        this.getFetData();
+        
 
     }
 
@@ -191,8 +193,7 @@ class SignIndex extends Component {
      * return promise
      */
     getDynamicData = () => {
-        let {dataKey} = this.props.location.query;
-        let {dynamicTable} = this.state;
+        let {dynamicTable,dataKey} = this.state;
         //dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
   
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
@@ -258,8 +259,8 @@ class SignIndex extends Component {
      * return promise 884dd5a6-ff48-4628-f4fa-294472d49b37
      */
     getPlanData = () => {
-        let {dataKey} = this.props.location.query;
-        let {planTable, version,dynamicTable} = this.state;
+
+        let {planTable, version,dynamicTable,dataKey} = this.state;
         let {dynamicHeaderData} =dynamicTable 
        // dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
@@ -507,6 +508,18 @@ class SignIndex extends Component {
         }
 
     }
+    /**
+     * 提交
+     */
+    handleSubmit=arg=>{
+        
+    }
+    /**
+     * 驳回
+     */
+    handleCancel=arg=>{
+
+    }
 
     /**
      * 弹出窗口
@@ -549,10 +562,18 @@ class SignIndex extends Component {
                         </Col>
                         <Col span={12}>
                             <div className={dynamicEditButtonShow ? "RT" : "hidden"}>
-                                <button className="jh_btn jh_btn22 jh_btn_edit"
+                            <button className="jh_btn jh_btn22 jh_btn_submit mgR20"
+                                        onClick={this.handleSubmit}>提交
+
+                            </button>
+                            <button className="jh_btn jh_btn22 jh_btn_cancel mgR20"
+                                        onClick={this.handleCancel}>驳回
+
+                            </button>
+                            <button className="jh_btn jh_btn22 jh_btn_edit"
                                         onClick={this.handleEdit}>{dynamicEdit ? "保存" : "编辑"}
 
-                                </button>
+                            </button>
                             </div>
                         </Col>
                     </Row>
