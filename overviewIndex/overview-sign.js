@@ -399,12 +399,8 @@ class OverviewSign extends Component {
             <div className="sign-wrapper">
                 <Spin size="large" spinning={this.state.loading} >
                     <article>
-                        <Tabs defaultActiveKey="sign">
-                            <TabPane tab="签约" key="sign">
                                 {this.renderHistoryData()}
                                 {this.renderCurrentData()}
-                            </TabPane>
-                        </Tabs>
                     </article>
                 </Spin>
                 {this.renderDialog()}

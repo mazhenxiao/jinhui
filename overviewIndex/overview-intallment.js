@@ -30,10 +30,11 @@ class OverviewIntallment extends React.Component {
         });
     }
     componentDidMount(){
-        this.getlandData();
-        this.getBasicInfor();
-        this.getLandlist();
     }
+
+    /**
+     * 加载地块信息
+     */
     getlandData = () =>{
         let th=this;
         var projectId=this.props.parentid;
@@ -54,6 +55,9 @@ class OverviewIntallment extends React.Component {
         });
     }
     
+    /**
+     * 获取权益比例
+     */
     getLandlist = () =>{
         var th=this;
         let da = th.state.landList;
@@ -83,26 +87,26 @@ class OverviewIntallment extends React.Component {
     /**
      * 获取详情页面信息
      */
-    getStageInfoView=arg=>{
-        let th = this;
-        let {status} = this.state;
-        let json = {
-            Id:th.props.dataKey,
-            reqtype:status=="edit"? "Edit":status=="upgrade"? "Upgrade":""
-        }
-        iss.ajax({  //获取数据
-            type: "post",
-            url:"/Stage/IGetInitInfo",
-            data:json,
-            success(res) {
-                th.getBasicInfor(res.rows.BaseFormInfo)
-            },
-            error(e) {
+    // getStageInfoView=arg=>{
+    //     let th = this;
+    //     let {status} = this.state;
+    //     let json = {
+    //         Id:th.props.dataKey,
+    //         reqtype:status=="edit"? "Edit":status=="upgrade"? "Upgrade":""
+    //     }
+    //     iss.ajax({  //获取数据
+    //         type: "post",
+    //         url:"/Stage/IGetInitInfo",
+    //         data:json,
+    //         success(res) {
+    //             th.getBasicInfor(res.rows.BaseFormInfo)
+    //         },
+    //         error(e) {
 
-            }
-        });
+    //         }
+    //     });
 
-    }
+    // }
     
     render() {
         

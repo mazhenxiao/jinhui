@@ -35,6 +35,11 @@ class index extends React.Component {
                 dataKey:dataKey,
                 location:local,
             });
+        }else if(currentPosi == undefined){
+            this.setState({
+                currentPosi:"group",
+                dataKey:"1E1CB1E95A864AFA961392C3E3644642",
+            })                          
         }
         
     }
