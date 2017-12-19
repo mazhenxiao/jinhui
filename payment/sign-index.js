@@ -59,6 +59,7 @@ class SignIndex extends Component {
                 
             } //动态编辑表格
         }
+        
     
 
     antdTableScrollLock=null;//用来触发卸载原生事件
@@ -105,12 +106,13 @@ class SignIndex extends Component {
             let dynamicTable = this.getDynamicData(); //获取动态调整表格数据
             let planTable = this.getPlanData();//获取比对版数据        
               return Promise.all([dynamicTable,planTable]).then(arg=>{
+                  
                   //获取弹窗数据如果需要，因为张权说要给一个获取的id不知道依赖在哪里，先放到这,估计需要从动态表获取
                 this.getFetDialogData();
 
-                  if(first){ //第一次加载绑定锁定
+                  //if(first){ //第一次加载绑定锁定
                     this.bindScrollLock();        
-                  }
+                 // }
               })
             
     }
@@ -129,6 +131,7 @@ class SignIndex extends Component {
                         ModalVisible:false
                     };
                     dialog = {...dialog,...newData};
+                    
                     this.setState({
                         dialog
                     })
@@ -235,6 +238,7 @@ class SignIndex extends Component {
         
          return  Payment.IGenerateBudgetVersion(dataKey)
                    .then(Adata=>{
+                       
                     currentVersion = this.getCurrentVertion(Adata);
                     versionData = Adata;
                     
@@ -326,7 +330,20 @@ class SignIndex extends Component {
         
          let {showId}=row;
          let {dialog}=this.state;
-         let dialogContent = this.dynamicTable.dynamicDialogData.filter(arg=>arg.showId==showId);
+         let dialogContent = dialog.dataSource.filter(arg=>{
+             
+             if(arg.showId==showId){
+                 return arg.value;
+             }
+         });
+         for(var i =0;i<50;i++){
+            dialogContent.push(dialog.dataSource[0]["value"]);//有真实数据后删除
+         }
+         
+         if(dialogContent.length<=0){
+             iss.info("暂无数据");
+             return
+         }
          let newData={
             dialogContent,
             ModalVisible:true
@@ -344,11 +361,14 @@ class SignIndex extends Component {
      * 版本下拉菜单事件
      */
     selectChangeVersion=params=>{
-        let _da= this.getCurrentVertion(params);
-        let versionId = _da.length? _da[0].id:"";
+       // let _da= this.getCurrentVertion(params);
+        let versionId = params; // _da.length? _da[0].id:"";
+        let {version}=this.state;
+            version = {...version,currentVersion:params}
         if(versionId){
             this.getCurrentVersionPlanData(versionId)
                 .then(([planHeaderData,planDataSource])=>{
+                    
                     let {planTable}=this.state;
                     let newData={
                         planHeaderData,
@@ -356,7 +376,8 @@ class SignIndex extends Component {
                     }
                     planTable={...planTable,...newData};
                     this.setState({
-                        planTable
+                        planTable,
+                        version
                     })
                    
                 })
@@ -368,17 +389,25 @@ class SignIndex extends Component {
      * 弹出窗口
      */
     renderDialog=()=>{
-        let {dataSource,columns,ModalTile,ModalVisible}=this.state.dialog;
-      return  <article className="Dialog">
-           <Modal
+        let {dialogContent,columns,ModalTile,ModalVisible}=this.state.dialog;
+        
+      return <Modal
                 title={ModalTile}
                 visible={ModalVisible}
                 onCancel={this.clickModalCancel}
                 onOk={this.clickModalOk}
+                footer={false}
             >
-                <Table dataSource={dataSource} columns={columns} />
+                
+                
+                 <Table
+                    rowKey="key"
+                    bordered={true}
+                    dataSource={dialogContent} 
+                    columns={columns} /> 
+                
             </Modal>
-        </article>
+       
     }
     /**
      * 动态调整table
@@ -419,7 +448,7 @@ class SignIndex extends Component {
     renderCurrentData = () => {
         const {planTable,dynamicTable,version} = this.state;
         const {planHeaderData,planDataSource}=planTable;
-        const {versionData,versionShow,versionId}=version;
+        const {versionData,versionShow,versionId,currentVersion}=version;
         const {dynamicHeaderData,dynamicDataSource,dynamicEdit,dynamicEditButtonShow}=dynamicTable;
         return (
             <article className="pkTable mgT10">
@@ -431,7 +460,9 @@ class SignIndex extends Component {
                         <Col span={12} className="action-section">
                             
                             <WrapperSelect className={versionShow? "select-version":"hide" } labelText="版本:"
-                                           dataSource={versionData} onChange={this.selectChangeVersion}></WrapperSelect>
+                                           dataSource={versionData}
+                                           value={currentVersion}
+                                           onChange={this.selectChangeVersion}></WrapperSelect>
                         </Col>
                     </Row>
                 </header>
