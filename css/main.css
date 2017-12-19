@@ -767,6 +767,12 @@ a:hover {
   background: #ddd;
 }
 /*h3标题*/
+.refresh-icon {
+  background-image: url(../img/refresh-icon.png);
+}
+.refresh-icon:hover {
+  background-image: url(../img/refresh-icon-hover.png);
+}
 .boxGroupTit {
   height: 40px;
   margin-bottom: 5px;
