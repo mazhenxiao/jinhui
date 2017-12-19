@@ -20,8 +20,7 @@ class Index extends Component {
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : "Stage",//显示模式，项目或者分期
         //供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货
         supplyType: "",//TODO 删除默认值
-        //权限: Show:只允许查看, Add:新增, Edit:编辑, Upgrade:版本升级
-        permission: "",// TODO 删除默认值
+        permission: "Show",//权限: Show:只允许查看, Add:新增, Edit:编辑, Upgrade:版本升级
         dynamicId: "",//动态调整版本Id
         versionId: "",//当前选中的计划版本
         versionData: [],//版本数据
@@ -152,8 +151,23 @@ class Index extends Component {
             })
     };
 
+    handleSubmitClick = () => {
+        const {dataKey, mode} = this.state;
+        SupplyService.submitSupplyData(dataKey, mode)
+            .then(() => {
+                iss.info("提交成功!");
+                this.loadBaseData(dataKey, mode);
+            })
+            .catch(error => {
+                this.setState({
+                    loading: false,
+                });
+                iss.error(error);
+            });
+    };
+
     /**
-     * 处理
+     * 处理编辑
      */
     handleEditClick = () => {
         //supplyType 供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货
@@ -194,9 +208,15 @@ class Index extends Component {
                     <Col span={12} className="text-align-right">
                         {
                             permission != "Show" ?
-                                <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick}>
-                                    编辑供货
-                                </button> : null
+                                <div>
+                                    <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick}>
+                                        编辑供货
+                                    </button>
+                                    <button className="jh_btn jh_btn22 jh_btn_save" onClick={this.handleSubmitClick}>
+                                        提交
+                                    </button>
+                                </div>
+                                : null
                         }
 
                     </Col>
