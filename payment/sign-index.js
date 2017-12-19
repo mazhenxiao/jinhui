@@ -28,13 +28,14 @@ class SignIndex extends Component {
                 dynamicHeaderData:[],//动态调整版头部
                 dynamicDataSource:[],//动态调整版数据
                 dynamicEdit:false, //动态调整是否可编辑
-                dynamicEditButtonShow:false
+                dynamicEditButtonShow:false,
+                loading:true
             },
             planTable:{ //同上
                 planHeaderData:[],
                 planDataSource:[],
                 planEdit:false,
-               
+                loading:true
             },
             version:{ //版本
                 currentVersion:"",//当前版本
@@ -200,6 +201,7 @@ class SignIndex extends Component {
                             newData ={ 
                                 dynamicHeaderData,
                                 dynamicDataSource,
+                                dynamicEdit:false,
                                 dynamicEditButtonShow:Boolean(dynamicDataSource&&dynamicDataSource.length)
                             },
                         dynamicTable={...this.state.dynamicTable,...newData};
@@ -319,6 +321,8 @@ class SignIndex extends Component {
       
                 let toTable = document.querySelector(".toTable .ant-table-body"),
                     pkTable = document.querySelector(".pkTable .ant-table-body");
+                    toTable.scrollTop=toTable.scrollLeft=0;
+                    pkTable.scrollTop=pkTable.scrollLeft=0;
                     toTable&&pkTable&&(this.antdTableScrollLock=knife.AntdTable_ScrollLock(toTable,pkTable));
                
     }
@@ -417,6 +421,7 @@ class SignIndex extends Component {
                  <Table
                     rowKey="key"
                     bordered={true}
+                    size="small"
                     dataSource={dialogContent} 
                     columns={columns} /> 
                 
@@ -427,7 +432,7 @@ class SignIndex extends Component {
      * 动态调整table
      */
     renderHistoryData = () => {
-        const {versionData, versionId,editable,dynamicTable} = this.state;
+        const {versionData, versionId,editable,dynamicTable,loading} = this.state;
         const {dynamicHeaderData,dynamicDataSource,dynamicEdit,dynamicEditButtonShow}=dynamicTable;
         
         return (
@@ -448,6 +453,8 @@ class SignIndex extends Component {
                     </Row>
                 </header>
                 <WrapperTreeTable 
+                    loading={loading}
+                    size="small"
                     headerData={dynamicHeaderData} 
                     editState={dynamicEdit} 
                     dataSource={dynamicDataSource}
@@ -463,7 +470,7 @@ class SignIndex extends Component {
         const {planTable,dynamicTable,version} = this.state;
         const {planHeaderData,planDataSource}=planTable;
         const {versionData,versionShow,versionId,currentVersion}=version;
-        const {dynamicHeaderData,dynamicDataSource,dynamicEdit,dynamicEditButtonShow}=dynamicTable;
+        const {dynamicHeaderData,dynamicDataSource,dynamicEdit,dynamicEditButtonShow,loading}=dynamicTable;
         return (
             <article className="pkTable mgT10">
                  <header className="top-header-bar">
@@ -481,6 +488,7 @@ class SignIndex extends Component {
                     </Row>
                 </header>
                 <WrapperTreeTable
+                    loading={loading}
                     headerData={dynamicHeaderData} 
                     dataSource={dynamicDataSource}  />
             </article>
