@@ -39,7 +39,7 @@ export const getBaseData = (dataKey, mode) => {
                         };
                     }),
                     currentYear: data.StartYear,
-                    switchYear: [data.StartYear, data.StartYear + 1, data.StartYear + 2, data.StartYear + 3],
+                    switchYear: [data.StartYear, data.StartYear + 1, data.StartYear + 2, (data.StartYear + 3)],
                 }
             };
             return obj;
@@ -116,6 +116,17 @@ export const saveSupplyData = (dataKey, mode, SupplyID, currentMonth, DataSource
     })
 };
 
+export const submitSupplyData = (dataKey, mode) => {
+    const paramsValue = {
+        id: dataKey,
+        datalevel: mode,
+    };
+    return iss.fetch({
+        url: "Supply/ISaveInfo",
+        type: "post",
+        data: JSON.stringify(paramsValue),
+    })
+};
 
 
 
