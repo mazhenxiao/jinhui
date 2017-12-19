@@ -7,6 +7,7 @@ import rootRout from "./router";//路由
 import ToolsList from "../components/tools-list.js";//头部
 import ToolsTree from "../components/tools-leftTree.js";//左侧树形
 import appConfig from '../app.config';
+import { setTimeout } from "timers";
 
 iss.use({Router, Route, hashHistory});
 
@@ -56,13 +57,15 @@ class Main extends Component {
         window.onscroll = ev => {
             let top = win.scrollTop(), left = win.scrollLeft(), icons = $(".icon-bar");
 
-            if (top >= 60) {
-                /*如果左侧树，处于隐藏状态，则不固定*/
-                //  if(JHNav.hasClass("active")) return false;
-                JHNav.addClass("fixed");
-            } else {
-                JHNav.removeClass("fixed");
-            }
+            setTimeout(arg=>{
+                if (top >= 60) {
+                    /*如果左侧树，处于隐藏状态，则不固定*/
+                    //  if(JHNav.hasClass("active")) return false;
+                    JHNav.addClass("fixed");
+                } else {
+                    JHNav.removeClass("fixed");
+                }
+            })
 
         }
     }
