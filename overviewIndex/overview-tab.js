@@ -160,7 +160,6 @@ class OverviewTab extends React.Component {
                         dataKey={dataKey}  
                     />  
                  }
-                
             break;
             case "identityIntallment"://分期身份证
                 if(currentPosi=="intallment"){
