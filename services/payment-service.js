@@ -1,12 +1,10 @@
 import iss from '../js/iss'
 import { locale } from 'moment';
 /**
- * 获取签约版本
- * /SignAContract/IGenerateBudgetVersion?adjustmentVersionId=f8a6f4a8-ff9b-731b-0c54-53ca93df980a
+ * /SignAContract/IGetExamineVersion?versionId=
  */
-export const IGenerateBudgetVersion = (dataKey) => {
-     let  adjustmentVersionId = "f8a6f4a8-ff9b-731b-0c54-53ca93df980a";
-     let versionData={
+export const IGetExamineVersion=(versionId)=>{
+    let versionData={
         "message": "成功",
         "errorcode": 200,
         "stackTrace": "",
@@ -33,6 +31,30 @@ export const IGenerateBudgetVersion = (dataKey) => {
         "total": 0,
         "token": ""
         };
+    return iss.fetch({
+        url:"/SignAContract/IGetExamineVersion",
+        data:{
+            versionId
+        }
+    }).then(arg=>{
+        let rows = arg.rows;
+        rows=rows.length? rows:versionData.rows;
+         return rows.map(arg=>{
+            return {
+                id:arg.id,
+                name:arg.versioncode
+            }
+        })
+    })
+}
+/**
+ * 获取签约版本
+ * 
+ * /SignAContract/IGenerateBudgetVersion?adjustmentVersionId=f8a6f4a8-ff9b-731b-0c54-53ca93df980a
+ */
+export const IGenerateBudgetVersion = (dataKey) => {
+     let  adjustmentVersionId = "f8a6f4a8-ff9b-731b-0c54-53ca93df980a";
+   
         return iss.fetch({
             url:"/SignAContract/IGenerateBudgetVersion",
             data:{

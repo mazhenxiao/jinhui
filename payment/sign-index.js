@@ -63,8 +63,7 @@ class SignIndex extends Component {
     
 
     antdTableScrollLock=null;//用来触发卸载原生事件
-    visible=false;
-    bindLockArray = [];//promise
+
     componentDidMount() {
         this.getFetData(true);
     }
@@ -95,6 +94,7 @@ class SignIndex extends Component {
                 }
             );
         }
+        console.log("componentWillReceiveProps");
         this.getFetData();
       
     }
@@ -103,16 +103,20 @@ class SignIndex extends Component {
      * first 判断是否第一次加载dom,如果第一次加载返回promise
      */
     getFetData=(first)=>{
-            let dynamicTable = this.getDynamicData(); //获取动态调整表格数据
-            let planTable = this.getPlanData();//获取比对版数据        
+        //获取动态调整表格数据
+            let dynamicTable = this.getDynamicData();                
+        //获取比对版数据   
+            let planTable = this.getPlanData();
+                            
               return Promise.all([dynamicTable,planTable]).then(arg=>{
                   
                   //获取弹窗数据如果需要，因为张权说要给一个获取的id不知道依赖在哪里，先放到这,估计需要从动态表获取
-                this.getFetDialogData();
-
-                  //if(first){ //第一次加载绑定锁定
+                    this.getFetDialogData();
                     this.bindScrollLock();        
-                 // }
+             
+              })
+              .catch(err=>{
+                  iss.error("getFetData获取数据失败")
               })
             
     }
@@ -135,6 +139,9 @@ class SignIndex extends Component {
                     this.setState({
                         dialog
                     })
+               })
+               .catch(err=>{
+                   iss.error("getFetDialogData获取数据失败")
                })
     }
     getApprovalState = () => {
@@ -177,7 +184,7 @@ class SignIndex extends Component {
              //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let title = Payment.IGetSignAContractTableTitle(dataKey)
                            .then(dynamicColum=>{
-                            //this.setDynamicRender(dynamicColum);//创建编辑表格
+                            //this.setDynamicRender(dynamicColum);//创建编辑表
                                return dynamicColum;
                            })
                            .catch(e=>{
@@ -236,9 +243,8 @@ class SignIndex extends Component {
              //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let currentVersion = "",versionData;
         
-         return  Payment.IGenerateBudgetVersion(dataKey)
+         return  Payment.IGetExamineVersion(dataKey)
                    .then(Adata=>{
-                       
                     currentVersion = this.getCurrentVertion(Adata);
                     versionData = Adata;
                     
@@ -293,11 +299,19 @@ class SignIndex extends Component {
         this.setState({
             dynamicTable
         });
-        if(dynamicEdit){ //保存
-
+        if(!dynamicEdit){ //保存
+            this.saveDynamicTableData();
         }
         
     };
+    /**
+     * 保存数据
+     */
+    saveDynamicTableData(){
+        let _data = this.state.dynamicTable.dynamicDataSource.filter(arg=>{
+            
+        })
+    }
     /**
      * 绑定双向滚动
      */
