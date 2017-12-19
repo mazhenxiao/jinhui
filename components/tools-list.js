@@ -193,7 +193,7 @@ export default class ToolsList extends React.Component {
                 </li>
                 <li>
                     <a href="javascript:void(0);">报表管理</a>
-                    <ol className="subMenu"  style={{minWidth:"237px"}}>
+                    <ol className="subMenu"  style={{minWidth:"260px"}}>
                         <li className=""><a href="javascript:void(0);">年度供销存计划汇总(建设中)</a></li>
                         <li className=""><a href="javascript:void(0);">三年销售目标汇总(建设中)</a></li>
                         <li className=""><a href="javascript:void(0);">三年投资计划汇总(建设中)</a></li>
@@ -204,7 +204,7 @@ export default class ToolsList extends React.Component {
 
                 <li>
                     <a href="javascript:void(0);">基础设置</a>
-                    <ol className="subMenu" style={{minWidth:"195px"}}>
+                    <ol className="subMenu" style={{minWidth:"225px"}}>
                         <li className=""><a href={this.state.toURL} target="_blank"
                                             className={this.state.toURL ? "" : "hide"}>标准角色授权</a>
                         </li>
