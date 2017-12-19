@@ -195,8 +195,8 @@ export default class ToolsList extends React.Component {
                     <a href="javascript:void(0);">报表管理</a>
                     <ol className="subMenu"  style={{minWidth:"237px"}}>
                         <li className=""><a href="javascript:void(0);">年度供销存计划汇总(建设中)</a></li>
-                        <li className=""><a href="javascript:void(0);">三年投资计划汇总(建设中)</a></li>
                         <li className=""><a href="javascript:void(0);">三年销售目标汇总(建设中)</a></li>
+                        <li className=""><a href="javascript:void(0);">三年投资计划汇总(建设中)</a></li>
                         <li className=""><a href="javascript:void(0);">集团项目清单(建设中)</a></li>
                         <li className=""><a href="javascript:void(0);">数据巡检(建设中)</a></li>
                     </ol>
