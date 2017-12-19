@@ -295,9 +295,9 @@ class SignIndex extends Component {
     /**
      * 动态编辑数据
      */
-    setDynamicColumns(field,value,index){
-        let arg=field;
+    setDynamicColumns(text,value,index){
         debugger
+        return  text;
     }
 
     handleEdit = () => {
