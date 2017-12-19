@@ -440,6 +440,7 @@ class BuildingAdjust extends Component {
                     if (record["mode"] === "Summary")
                         return text;
                     return <DatePicker allowClear={false} onChange={this.handleRowDataChange.bind(this, record)}
+                                       disabledDate={this.disabledDate}
                                        value={text ? moment(text, 'YYYY-MM-DD') : null}></DatePicker>;
                 },
                 width: 120,
@@ -570,6 +571,9 @@ class BuildingAdjust extends Component {
         });
     };
 
+    disabledDate = (current) => {
+        return current && current.valueOf() < (Date.now() - 24 * 60 * 60 * 1000);
+    };
 
     renderColumnContent = (value, row, index) => {
         const obj = {
@@ -624,6 +628,7 @@ class BuildingAdjust extends Component {
                     </div>
                     <div className="date-picker-wrapper">
                         <DatePicker onChange={this.handleDateChange} allowClear={false}
+                                    disabledDate={this.disabledDate}
                                     value={batchDate ? moment(batchDate, 'YYYY-MM-DD') : null}></DatePicker>
                     </div>
                     <div className="batch-set-date">

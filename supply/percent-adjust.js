@@ -213,6 +213,7 @@ class PercentAdjust extends Component {
                 key: 'SupplyDate',
                 render: (text, record) => {
                     return <DatePicker allowClear={false} onChange={this.handleRowDataChange.bind(this, record)}
+                                       disabledDate={this.disabledDate}
                                        value={text ? moment(text, 'YYYY-MM-DD') : null}></DatePicker>;
                 },
                 width: 120,
@@ -366,6 +367,10 @@ class PercentAdjust extends Component {
         });
     };
 
+    disabledDate = (current) => {
+        return current && current.valueOf() < (Date.now() - 24 * 60 * 60 * 1000);
+    };
+
     renderContent = () => {
         const {batchDate, currentMonth, currentYear, supplyData, summarySaleArea, summaryMonery} = this.state;
         const {switchMonth, switchYear, isCheck} = this.props.baseInfo;
@@ -386,6 +391,7 @@ class PercentAdjust extends Component {
                     </div>
                     <div className="date-picker-wrapper">
                         <DatePicker onChange={this.handleDateChange} allowClear={false}
+                                    disabledDate={this.disabledDate}
                                     value={batchDate ? moment(batchDate, 'YYYY-MM-DD') : null}></DatePicker>
                     </div>
                     <div className="batch-set-date">
