@@ -306,6 +306,7 @@ class WrapperTreeTable extends Component {
         columnRender: React.PropTypes.object,//自定义render
         onDataChange: React.PropTypes.func,//文本框数据修改
         editState: React.PropTypes.bool,//单元格是否可编辑
+        editMode: React.PropTypes.string,//编辑模式 eq: LastLevel:末级可编辑
         fixedAble: React.PropTypes.bool,//固定列是否可用
         firstColumnWidth: React.PropTypes.number,//第一列的宽度
     };
@@ -317,6 +318,7 @@ class WrapperTreeTable extends Component {
         defaultHeight: 400,
         columnRender: null,
         editState: false,
+        editMode: "",
         fixedAble: true,
         firstColumnWidth: 0,
     };
@@ -334,7 +336,7 @@ class WrapperTreeTable extends Component {
     };
 
     getColumns = (headerData) => {
-        const {columnRender, editState, fixedAble, firstColumnWidth} = this.props;
+        const {columnRender, editState, fixedAble, firstColumnWidth, editMode} = this.props;
         let columnArray = [];
         columnArray.scrollX = 0;
 
@@ -359,16 +361,19 @@ class WrapperTreeTable extends Component {
                 column.render = columnRender[headerItem.field];
             }
 
-            if (editState && !column.render) {
-                column.render = (text, record) => {
-                    if (headerItem.edit !== "+w") {
-                        return text;
-                    }
+            // column.render = (text, record) => {
+            //     if (headerItem.edit !== "+w") {
+            //         return text;
+            //     }
+            //
+            //     if (editMode) {
+            //         editMode === "LastLevel"
+            //     }
+            //
+            //     return <Input onChange={this.handleInputChange(record, headerItem.field, headerItem)}
+            //                   value={text}/>;
+            // };
 
-                    return <Input onChange={this.handleInputChange(record, headerItem.field, headerItem)}
-                                  value={text}/>;
-                };
-            }
             if (headerItem.children && Array.isArray(headerItem.children) && headerItem.children.length > 0) {
                 column.children = this.getChildColumns(columnArray, headerItem);
             }
@@ -399,7 +404,7 @@ class WrapperTreeTable extends Component {
      * @returns {Array}
      */
     getChildColumns = (columnArray, item) => {
-        const {editState, columnRender} = this.props;
+        const {editState, columnRender, editMode} = this.props;
         const children = [];
         item.children.forEach(childHeaderItem => {
 
@@ -419,6 +424,16 @@ class WrapperTreeTable extends Component {
                 childColumn.render = (text, record) => {
                     if (childHeaderItem.edit !== "+w") {
                         return text;
+                    }
+
+                    //如果是末级编辑模式
+                    if (editMode && editMode === "LastLevel") {
+                        if (!record.children) {
+                            return <Input onChange={this.handleInputChange(record, childHeaderItem.field)}
+                                          value={text}/>;
+                        } else {
+                            return text;
+                        }
                     }
 
                     return <Input onChange={this.handleInputChange(record, childHeaderItem.field)} value={text}/>;
