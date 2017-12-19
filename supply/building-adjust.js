@@ -89,7 +89,7 @@ class BuildingAdjust extends Component {
 
         const changeDataArray = [];
         supplyData.forEach(row => {
-            if (!row["SupplyDate"]) {
+            if (!row["SupplyDate"] || row["mode"] == "Summary") {
                 return;
             }
             changeDataArray.push({
@@ -393,7 +393,7 @@ class BuildingAdjust extends Component {
                         return text;
                     }
                     return {
-                        children: <div className="summary">{text}</div>,
+                        children: <div className="summary"><span>{text}</span></div>,
                         props: {
                             colSpan: 6,
                         },
