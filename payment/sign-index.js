@@ -198,16 +198,12 @@ class SignIndex extends Component {
         let title = Payment.IGetSignAContractTableTitle(dataKey)
             .then((dynamicColum) => {
                 
-                this.setDynamicRender(dynamicColum);//创建编辑表
+                //this.setDynamicRender(dynamicColum);//创建编辑表
                 return dynamicColum;
             })
-            .catch(e => {
-                return e
-            })
+         
         let data = Payment.IGetSignAContractData(dataKey)
-            .catch(e => {
-                return e
-            });
+
         let IGetStartYear = Payment.IGetSignAContractBaseInfo(dataKey)
                                    .then(arg=>{
                                         let {signAContractVersionId,startYear}=arg;
