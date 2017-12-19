@@ -26,10 +26,10 @@ class Main extends Component {
 
     componentDidMount() {
         (!iss.userInfo) && this.getUser(); //如果用户从没登陆过则ajax获取用户信息
-        this.TransHeight();
-        this.bindScroll();
-        this.bingBar();
-        window.onresize = this.TransHeight;
+        this.TransHeight();  //页面大小初始化
+        this.bindScroll(); //绑定左侧树滚动
+        this.bingBar();     //  绑定左侧点击收起
+        window.onresize = this.TransHeight;  //窗口判断
     }
 
     getUser() {  //获取登陆信息
@@ -45,11 +45,18 @@ class Main extends Component {
 
     TransHeight() {
         let JH_Nav = document.querySelector(".JH-Nav"), JH_Content = document.querySelector(".JH-Content"), h = 640;
-        let rh = JH_Content.offsetHeight, lh = JH_Nav.offsetHeight,
-            $wh = Math.max(document.body.clientHeight, document.documentElement.clientHeight) - 60;
+        let rh = JH_Content.offsetHeight, lh = JH_Nav.offsetHeight;
+        let JHRightBox = document.querySelector(".JH-RightBox .JH-Content");
+        let treeBox  = document.querySelector(".JH-Nav .treeBox");
+          /*   $wh = Math.max(document.body.clientHeight, document.documentElement.clientHeight) - 60;
         let $h = Math.max(rh, lh, $wh, 640);
         JH_Nav.style.minHeight = $h + "px";
-        JH_Content.style.minHeight = $h - 10 + "px";
+        JH_Content.style.minHeight = $h - 10 + "px"; */
+        //新增判断杨敏在这里修改
+        let {height} = document.body.getBoundingClientRect();
+        let countY=0,_h = height-60+"px"
+        treeBox.style.height=_h;
+        JHRightBox.style.height=_h;
     }
 
     bindScroll() {

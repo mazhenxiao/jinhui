@@ -314,6 +314,10 @@ class SignIndex extends Component {
             
         })
     }
+
+    onDataChangeDynamic(recordKEY, key, value){
+        debugger
+    }
     /**
      * 绑定双向滚动
      */
@@ -455,6 +459,7 @@ class SignIndex extends Component {
                 <WrapperTreeTable 
                     loading={loading}
                     size="small"
+                    onDataChange={this.onDataChangeDynamic}
                     headerData={dynamicHeaderData} 
                     editState={dynamicEdit} 
                     dataSource={dynamicDataSource}

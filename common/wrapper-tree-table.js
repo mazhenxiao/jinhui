@@ -460,7 +460,7 @@ class WrapperTreeTable extends Component {
                 dataSource={dataSource}
                 defaultExpandAllRows={true}
                 bordered={true}
-                size="middle"
+                size="small"
                 scroll={{x: tableColumns.scrollX, y: defaultHeight}}
                 pagination={false}
             />
