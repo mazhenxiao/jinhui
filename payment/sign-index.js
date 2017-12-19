@@ -57,7 +57,6 @@ class SignIndex extends Component {
         number: 0,//死循环记录
         dynamicRender: {
                "showName":(text,record)=><a href="javascript:;" onClick={this.clickOpenDialog.bind(this,text,record)}>{text}</a> 
-             
 
         }, //动态编辑表格
         startYear:"",
@@ -251,9 +250,8 @@ class SignIndex extends Component {
      * currentVersion 当前版本 返回Promise
      */
     getCurrentVersionPlanData = currentVersion => {
-        let title = Payment.IGetSignAContractTableTitle(currentVersion);//获取表头
-        let data = Payment.IGetSignAContractData(currentVersion); //获取数据
-        return Promise.all([title, data]);
+        return Payment.IGetBudgetList(currentVersion); //获取数据
+      
     }
     /**
      * 获取计划版数据
@@ -261,27 +259,27 @@ class SignIndex extends Component {
      */
     getPlanData = () => {
         let {dataKey} = this.props.location.query;
-        let {planTable, version} = this.state;
+        let {planTable, version,dynamicTable} = this.state;
+        let {dynamicHeaderData} =dynamicTable 
         dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
 
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let currentVersion = "", versionData;
-
-        return Payment.IGetExamineVersion(dataKey)
-            .then(Adata => {
-                currentVersion = this.getCurrentVertion(Adata);
-                versionData = Adata;
-
-                //假数据后台数据玩成后取消dataKey
-                return this.getCurrentVersionPlanData(dataKey || currentVersion);
-            })
-            .then(([planHeaderData, planDataSource]) => {
-                let newData = {
-                        planHeaderData,
+        
+          return Payment.IGetBudgetList(dataKey)
+                .then(Adata=>{ //获取版本
+                    currentVersion = this.getCurrentVertion(Adata);
+                    versionData = Adata;
+                   return Payment.IGetSignAContractData(currentVersion)
+                })
+                .then((planDataSource) => {
+                
+                let newData = { //table数据
+                        dynamicHeaderData,
                         planDataSource,
                         // planEditButtonShow:Boolean(planDataSource&&planDataSource.length)
                     },
-                    newVersion = {
+                    newVersion = { //版本数据
                         currentVersion,
                         versionData,
                         versionShow: true
@@ -355,11 +353,17 @@ class SignIndex extends Component {
             versionId:dataKey,
             signAContractSaveData:_da
         }
-        Payment.SignAContractSaveData(postData)
+        Payment.ISaveSignAContractData(postData)
                .then(arg=>{
-                    
+                    iss.tip({
+                        type:"success",
+                        description:"保存成功"
+                    })
                }).catch(err=>{
-                    
+                iss.tip({
+                    type:"error",
+                    description:"保存失败请重试！"
+                })
                })
     
     }
@@ -486,14 +490,15 @@ class SignIndex extends Component {
         // let _da= this.getCurrentVertion(params);
         let versionId = params; // _da.length? _da[0].id:"";
         let {version} = this.state;
+        let {dynamicHeaderData}=this.state.dynamicTable
         version = {...version, currentVersion: params}
         if (versionId) {
             this.getCurrentVersionPlanData(versionId)
-                .then(([planHeaderData, planDataSource]) => {
+                .then((planDataSource) => {
 
                     let {planTable} = this.state;
                     let newData = {
-                        planHeaderData,
+                        dynamicHeaderData,
                         planDataSource
                     }
                     planTable = {...planTable, ...newData};

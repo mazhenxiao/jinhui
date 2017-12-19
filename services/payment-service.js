@@ -38,7 +38,7 @@ export const IGetExamineVersion=(versionId)=>{
         }
     }).then(arg=>{
         let rows = arg.rows;
-        rows=rows.length? rows:versionData.rows;
+       // rows=rows.length? rows:versionData.rows;
          return rows.map(arg=>{
             return {
                 id:arg.id,
@@ -53,14 +53,14 @@ export const IGetExamineVersion=(versionId)=>{
  * /SignAContract/IGenerateBudgetVersion?adjustmentVersionId=f8a6f4a8-ff9b-731b-0c54-53ca93df980a
  */
 export const IGenerateBudgetVersion = (dataKey) => {
-     let  adjustmentVersionId = "f8a6f4a8-ff9b-731b-0c54-53ca93df980a";
-   
+     
         return iss.fetch({
             url:"/SignAContract/IGenerateBudgetVersion",
             data:{
-                "adjustmentVersionId":adjustmentVersionId||dataKey
+                "adjustmentVersionId":dataKey
             }
         }).then(arg=>{
+            debugger
              if(arg.rows&&typeof arg.rows=="object"){
                  return arg.rows
              }
@@ -137,10 +137,11 @@ export const IGetSignAContractData = (dataKey) => {
         }
     }).then(response=>{
         if(response.rows.length){
-            localStorage.setItem("IGetSignAContractData",JSON.stringify(response.rows))
+            //localStorage.setItem("IGetSignAContractData",JSON.stringify(response.rows))
             return response.rows
         }else{
-            return  JSON.parse(localStorage.getItem("IGetSignAContractData"));
+            iss.error("动态表格没拿到数据")
+          //  return  JSON.parse(localStorage.getItem("IGetSignAContractData"));
         }
        
     }).catch(e=>{ 
@@ -184,14 +185,36 @@ export const IGetSignAContractTableTitle = (dataKey) => {
         return e;
     })
 };
-//export const 
+/**
+ * 获取考核版数据
+ * @param {*} arg 
+ */
+export const IGetBudgetList=versionId=>{
+    return iss.fetch({
+        url:"/SignAContract/IGetBudgetList",
+        data:{
+            versionId 
+        }
+    })
+    .then(arg=>{
+        return arg.rows.map(key=>{
+          return {
+            id:key.ID,
+            name:key.versioncode
+          }
+        })
+    })
+    .catch(err=>{
+        console.log("IGetBudgetList获取考核版数据失败",err)
+    })
+}
 /**
  * 保存签约数据
  */
-export const  SignAContractSaveData = (data) => {
+export const  ISaveSignAContractData = (data) => {
     
     return  iss.fetch({
-           url:"/SignAContract/SignAContractSaveData",
+           url:"/SignAContract/ISaveSignAContractData",
            data
        })
        .then(arg=>{
