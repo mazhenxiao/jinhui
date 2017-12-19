@@ -14,7 +14,7 @@ export const IGenerateBudgetVersion = (dataKey) => {
                 "adjustmentVersionId":dataKey
             }
         }).then(arg=>{
-            debugger
+            
              if(arg.rows&&typeof arg.rows=="object"){
                  return arg.rows
              }
@@ -94,7 +94,7 @@ export const IGetSignAContractData = (dataKey) => {
             //localStorage.setItem("IGetSignAContractData",JSON.stringify(response.rows))
             return response.rows
         }else{
-            iss.error("动态表格没拿到数据")
+           // iss.error("动态表格没拿到数据")
           //  return  JSON.parse(localStorage.getItem("IGetSignAContractData"));
         }
        
@@ -179,8 +179,26 @@ export const  ISaveSignAContractData = (data) => {
            console.log("SignAContractSaveData保存失败",err)
        })
 };
-
-
+/**
+ * 提交动态签约数据
+ * @param {*} signAContractVersionId 
+ */
+export const ISubmitSignAContractData=(signAContractVersionId)=>{
+    return iss.fetch({
+        url:"/SignAContract/ISubmitSignAContractData",
+        data:{
+            signAContractVersionId
+        }
+    })
+    
+}
+/**
+ * 驳回
+ * @param {*} arg 
+ */
+export const ISendBackSignAContractData=signAContractVersionId=>{
+    
+}
 
 /**
  * 获取回款版本
