@@ -259,19 +259,19 @@ class BuildingAdjust extends Component {
                 title: this.setAlignCenter("可售面积(m²)"),
                 dataIndex: 'SourceSaleArea',
                 key: 'SourceSaleArea',
-                width: 120,
+                width: 100,
             },
             {
                 title: this.setAlignCenter("可售货值(万元)"),
                 dataIndex: 'SourceMonery',
                 key: 'SourceMonery',
-                width: 120,
+                width: 100,
             },
             {
                 title: this.setAlignCenter("计划预证时间"),
                 dataIndex: 'PlanSaleDate',
                 key: 'PlanSaleDate',
-                width: 120,
+                width: 100,
             },
             {
                 title: this.setAlignCenter("供货日期"),
@@ -302,7 +302,7 @@ class BuildingAdjust extends Component {
                     title: this.setAlignCenter(`第${i}季度`),
                     dataIndex: `${currentYear}-quarter-${i}`,
                     key: `${currentYear}-quarter-${i}`,
-                    width: 100,
+                    width: 90,
                     render: this.fillQuarterColor(currentYear, i),
                 });
             }

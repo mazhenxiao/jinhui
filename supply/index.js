@@ -126,7 +126,6 @@ class Index extends Component {
             .catch(error => {
                 this.setState({
                     loading: false,
-                    ...nextState,
                 });
                 iss.error(error);
             })
