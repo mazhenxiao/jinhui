@@ -296,7 +296,7 @@ class SignIndex extends Component {
      * 动态编辑数据
      */
     setDynamicColumns(text,value,index){
-        debugger
+        
         return  text;
     }
 
@@ -322,7 +322,7 @@ class SignIndex extends Component {
     }
 
     onDataChangeDynamic(recordKEY, key, value){
-        debugger
+        
     }
     /**
      * 绑定双向滚动
