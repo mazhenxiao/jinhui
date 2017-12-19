@@ -137,13 +137,9 @@ class PercentAdjust extends Component {
         });
 
         SupplyService.saveSupplyData(dataKey, mode, supplyId, currentMonth, changeDataArray)
-            .then(res => {
-                if (res.message === "成功") {
-                    iss.info("保存成功!");
-                    this.props.onHideModal && this.props.onHideModal("reload");
-                } else {
-                    return Promise.reject("保存失败");
-                }
+            .then(() => {
+                iss.info("保存成功!");
+                this.props.onHideModal && this.props.onHideModal("reload");
             })
             .catch(error => {
                 this.setState({
