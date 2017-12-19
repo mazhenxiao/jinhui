@@ -1,4 +1,4 @@
-//签约
+//供货
 import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";
 import React, {Component} from 'react';
@@ -264,7 +264,6 @@ class OverviewSupply extends Component {
        
     }
     componentDidMount(){
-        this.tableScroll();
     }
 
     //设置宽度
@@ -300,18 +299,6 @@ class OverviewSupply extends Component {
             </div>
 
         );
-    }
-    
-    
-    tableScroll = () =>{
-        $("#tablePlan .ant-table-scroll").scroll((event)=>{
-            alert(2);
-            $('#tableAdjust .ant-table-scroll').offset().left = event.offset().left;
-        });
-        $("#tableAdjust .ant-table-scroll").scroll((event)=>{
-            alert(3);
-            $('#tablePlan .ant-table-scroll').offset().left = event.offset().left;
-        });
     }
     
 

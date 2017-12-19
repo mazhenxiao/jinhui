@@ -192,11 +192,23 @@ export default class ToolsList extends React.Component {
                     </ol>
                 </li>
                 <li>
+                    <a href="javascript:void(0);">报表管理</a>
+                    <ol className="subMenu"  style={{minWidth:"186px"}}>
+                        <li className=""><a href="javascript:void(0);">年度供销存计划汇总</a></li>
+                        <li className=""><a href="javascript:void(0);">三年投资计划汇总</a></li>
+                        <li className=""><a href="javascript:void(0);">三年销售目标汇总</a></li>
+                        <li className=""><a href="javascript:void(0);">集团项目清单</a></li>
+                    </ol>
+                </li>
+                <li>
                     <a href="javascript:void(0);">基础设置</a>
                     <ol className="subMenu">
                         <li className=""><a href={this.state.toURL} target="_blank"
                                             className={this.state.toURL ? "" : "hide"}>标准角色授权</a>
                         </li>
+                        <li className=""><a href="javascript:void(0);">考核版本设置</a></li>
+                        <li className=""><a href="javascript:void(0);">组织架构维护</a></li>
+                        <li className=""><a href="javascript:void(0);">字典维护</a></li>
                     </ol>
                 </li>
                 {/*  <li className="hide"> 
