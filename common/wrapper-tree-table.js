@@ -330,7 +330,7 @@ class WrapperTreeTable extends Component {
                 value = "";
             }
             record[key] = value;
-            this.props.onDataChange && this.props.onDataChange(record.KEY, key, value);
+            this.props.onDataChange && this.props.onDataChange(record.KEY, key, value, record, column);
             this.forceUpdate();
         };
     };
@@ -429,14 +429,16 @@ class WrapperTreeTable extends Component {
                     //如果是末级编辑模式
                     if (editMode && editMode === "LastLevel") {
                         if (!record.children) {
-                            return <Input onChange={this.handleInputChange(record, childHeaderItem.field)}
-                                          value={text}/>;
+                            return <Input
+                                onChange={this.handleInputChange(record, childHeaderItem.field, childHeaderItem)}
+                                value={text}/>;
                         } else {
                             return text;
                         }
                     }
 
-                    return <Input onChange={this.handleInputChange(record, childHeaderItem.field)} value={text}/>;
+                    return <Input onChange={this.handleInputChange(record, childHeaderItem.field, childHeaderItem)}
+                                  value={text}/>;
                 };
             }
 
