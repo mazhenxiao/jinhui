@@ -133,7 +133,7 @@ export const IGetBudgetList = versionId => {
             return arg.rows.map(key => {
                 return {
                     id: key.ID,
-                    name: key.versioncode
+                    name: key.showname
                 }
             })
         })

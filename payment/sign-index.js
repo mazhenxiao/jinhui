@@ -559,7 +559,6 @@ class SignIndex extends Component {
                                 </Popconfirm>
                                 <button className="jh_btn jh_btn22 jh_btn_edit"
                                         onClick={this.handleEdit}>{dynamicEdit ? "保存" : "编辑"}
-
                                 </button>
                             </div>
                         </Col>
@@ -595,7 +594,6 @@ class SignIndex extends Component {
                             <span className="header-title">签约计划考核版（面积：平方米，货值：万元）</span>
                         </Col>
                         <Col span={12} className="action-section">
-
                             <WrapperSelect className={versionShow ? "select-version" : "hide"} labelText="版本:"
                                            dataSource={versionData}
                                            value={currentVersion}
