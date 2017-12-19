@@ -179,8 +179,26 @@ export const  ISaveSignAContractData = (data) => {
            console.log("SignAContractSaveData保存失败",err)
        })
 };
-
-
+/**
+ * 提交动态签约数据
+ * @param {*} signAContractVersionId 
+ */
+export const ISubmitSignAContractData=(signAContractVersionId)=>{
+    return iss.fetch({
+        url:"/SignAContract/ISubmitSignAContractData",
+        data:{
+            signAContractVersionId
+        }
+    })
+    
+}
+/**
+ * 驳回
+ * @param {*} arg 
+ */
+export const ISendBackSignAContractData=signAContractVersionId=>{
+    
+}
 
 /**
  * 获取回款版本

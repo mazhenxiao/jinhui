@@ -1,7 +1,7 @@
 import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";
 import React, {Component, Children} from 'react';
-import {Spin, Tabs, Row, Col, Button, Select, Modal, Table} from 'antd';
+import {Spin, Tabs, Row, Col, Button, Select, Modal, Table,Popconfirm, message} from 'antd';
 import {WrapperTreeTable, WrapperSelect} from '../common';
 import {Payment} from '../services';
 import {knife} from '../utils';
@@ -59,7 +59,8 @@ class SignIndex extends Component {
                "showName":(text,record)=><a href="javascript:;" onClick={this.clickOpenDialog.bind(this,text,record)}>{text}</a> 
 
         }, //动态编辑表格
-        startYear:"",
+        startYear:"",//起始年
+        signAContractVersionId:"",//调整版本id
         saveData:{}//保存数据临时存储
     }
 
@@ -157,6 +158,7 @@ class SignIndex extends Component {
     }
 
     getApprovalState = () => {
+        
         if (this.props.location.query["current"] == "ProcessApproval") {
             return true;
         }
@@ -212,7 +214,9 @@ class SignIndex extends Component {
             });
         let IGetStartYear = Payment.IGetSignAContractBaseInfo(dataKey)
                                    .then(arg=>{
-                                       this.dynamicTable.startYear=arg
+                                        let {signAContractVersionId,startYear}=arg;
+                                       this.dynamicTable.signAContractVersionId =signAContractVersionId;
+                                       this.dynamicTable.startYear=startYear;
                                    })
      
         return Promise.all([title, data])
@@ -343,22 +347,22 @@ class SignIndex extends Component {
      */
     saveDynamicTableData() {
         this.dynamicTable.saveData={};//清场
-        let {dataKey} = this.props.location.query;
-        let {dynamicDataSource}=this.state.dynamicTable;
-        this.filterSaveData(dynamicDataSource);//递归赋值
-        let {saveData} = this.dynamicTable;
-    
+        let {dataKey,dynamicTable} = this.state;
+        let {dynamicDataSource,}=dynamicTable;
+        let {saveData}=this.dynamicTable;//非stage存储保存数据
+        this.filterSaveData(dynamicDataSource);//递归赋值    
         let _da =JSON.stringify(Object.values(saveData));
         let postData = {
             versionId:dataKey,
             signAContractSaveData:_da
         }
-        Payment.ISaveSignAContractData(postData)
+       return Payment.ISaveSignAContractData(postData)
                .then(arg=>{
                     iss.tip({
                         type:"success",
                         description:"保存成功"
-                    })
+                    });
+                    return _da;
                }).catch(err=>{
                 iss.tip({
                     type:"error",
@@ -377,9 +381,9 @@ class SignIndex extends Component {
             }else{
                 for(let key in arg){
                   let reg = /^Y\d{3}/ig;
-                  if(reg.test(key)&&arg[key]){
+                  if(reg.test(key)&&arg[key]!==""){
                     let {startYear}=this.dynamicTable;
-                    startYear = startYear? startYear.split("-")[0]:"";
+                    startYear = eval(startYear-key.substr(1,1))
                     let _da = {
                         dataType:key.substr(4),
                         titlename:`${startYear}-${key.substr(2,2)}-01`,
@@ -390,34 +394,12 @@ class SignIndex extends Component {
                     this.dynamicTable.saveData[_da.titlename+"-"+key+"-"+arg.key]=_da;
                   }
                 }
-                /* let _da = {
-                    dataType:key.substr(4),
-                    titlename:`${startYear}-${key.substr(2,2)}-01`,
-                    productTypeID:record["showId"]||"",
-                    GROUPID:record["GROUPID"],
-                    val:value
-                } */
+           
             }
         })
     }
 
-    onDataChangeDynamic=(recordKEY,  key, value, record, column)=>{
-        //debugger
-        let {saveData,startYear}=this.dynamicTable;
-            startYear = startYear? startYear.split("-")[0]:"";
-            
-        let _da = {
-            dataType:key.substr(4),
-            titlename:`${startYear}-${key.substr(2,2)}-01`,
-            productTypeID:record["showId"]||"",
-            GROUPID:record["GROUPID"],
-            val:value
-        }
-        //let fild = saveData.some(arg=>(arg.productTypeID==_da.productTypeID&&arg.dataType==_da.dataType))
-       // console.log(key+"-"+_da.productTypeID)
-        this.dynamicTable.saveData[_da.titlename+"-"+key+"-"+record.key]=_da;
-        //console.log(this.dynamicTable.saveData)
-    }
+
 
     /**
      * 绑定双向滚动
@@ -490,6 +472,7 @@ class SignIndex extends Component {
         let {dynamicHeaderData}=this.state.dynamicTable
         version = {...version, currentVersion: params}
         if (versionId) {
+            
             this.getCurrentVersionPlanData(versionId)
                 .then((planDataSource) => {
 
@@ -512,13 +495,37 @@ class SignIndex extends Component {
      * 提交
      */
     handleSubmit=arg=>{
-        
+        let {signAContractVersionId}=this.dynamicTable;
+        this.saveDynamicTableData()
+            .then(da=>{
+                
+               return Payment.ISubmitSignAContractData(signAContractVersionId);
+            })
+            .then(arg=>{
+                
+            })
+            .catch(err=>{
+                iss.error("提交失败")
+            })
     }
     /**
      * 驳回
      */
-    handleCancel=arg=>{
+    handleCancel=()=>{
+        let {signAContractVersionId}=this.dynamicTable;
+     
+                Payment.ISubmitSignAContractData(signAContractVersionId)
+                .then(arg=>{
+                    iss.tip({
+                        type:"success",
+                        description:"驳回成功"
+                    });
 
+                })
+                .catch(err=>{
+                    iss.error("驳回失败！")
+                })
+       
     }
 
     /**
@@ -562,14 +569,12 @@ class SignIndex extends Component {
                         </Col>
                         <Col span={12}>
                             <div className={dynamicEditButtonShow ? "RT" : "hidden"}>
-                            <button className="jh_btn jh_btn22 jh_btn_apro mgR20"
-                                        onClick={this.handleSubmit}>提交
-
-                            </button>
-                            <button className="jh_btn jh_btn22 jh_btn_cancel mgR20"
-                                        onClick={this.handleCancel}>驳回
-
-                            </button>
+                            <Popconfirm placement="top" title={"确定提交吗？"} onConfirm={this.handleSubmit} >
+                                <button className="jh_btn jh_btn22 jh_btn_apro mgR20">提交</button>
+                            </Popconfirm>
+                            <Popconfirm placement="top" title={"确定退回吗？"} onConfirm={this.handleCancel} >
+                                <button className="jh_btn jh_btn22 refresh-icon mgR20">退回</button>
+                            </Popconfirm>
                             <button className="jh_btn jh_btn22 jh_btn_edit"
                                         onClick={this.handleEdit}>{dynamicEdit ? "保存" : "编辑"}
 
@@ -582,7 +587,7 @@ class SignIndex extends Component {
                 <WrapperTreeTable
                     loading={loading}
                     size="small"
-                    onDataChange={this.onDataChangeDynamic}
+                  //  onDataChange={this.onDataChangeDynamic}
                     headerData={dynamicHeaderData}
                     editState={dynamicEdit}
                     editMode="LastLevel"
