@@ -193,7 +193,7 @@ class Index extends Component {
                     </Col>
                     <Col span={12} className="text-align-right">
                         {
-                            permission != "Show" ?
+                            permission != "1Show" ?
                                 <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick}>
                                     编辑供货
                                 </button> : null

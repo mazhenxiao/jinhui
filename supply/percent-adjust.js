@@ -33,6 +33,8 @@ class PercentAdjust extends Component {
         currentYear: 0,
         supplyData: [],
         batchDate: "",//批量设置的日期
+        summarySaleArea: 0,
+        summaryMonery: 0
     };
 
     componentWillMount() {
@@ -55,10 +57,21 @@ class PercentAdjust extends Component {
         });
         SupplyService.getSupplyData(dataKey, mode)
             .then(({supplyId, supplyData}) => {
+                let summarySaleArea = 0;
+                let summaryMonery = 0;
+                supplyData.forEach(row => {
+                    const {SaleArea, Monery} = row;
+                    summarySaleArea += parseFloat(SaleArea);
+                    summaryMonery += parseFloat(Monery);
+                });
+                summarySaleArea = summarySaleArea.toFixed(2);
+                summaryMonery = summaryMonery.toFixed(2);
                 this.setState({
                     loading: false,
                     supplyId,
                     supplyData,
+                    summarySaleArea,
+                    summaryMonery,
                 });
             })
             .catch(error => {
@@ -254,10 +267,23 @@ class PercentAdjust extends Component {
         const saleArea = parseFloat(SourceSaleArea) * parseFloat(nextValue) * 0.01;
         const monery = parseFloat(SourceMonery) * parseFloat(nextValue) * 0.01;
 
-        record["SaleArea"] = saleArea.toFixed(2);
-        record["Monery"] = monery.toFixed(2);
+        record["SaleArea"] = saleArea === saleArea ? saleArea.toFixed(2) : 0.00;
+        record["Monery"] = monery === monery ? monery.toFixed(2) : 0.00;
         record["Proportion"] = nextValue;
-        this.forceUpdate();
+
+        let summarySaleArea = 0;
+        let summaryMonery = 0;
+        supplyData.forEach(row => {
+            const {SaleArea, Monery} = row;
+            summarySaleArea += parseFloat(SaleArea);
+            summaryMonery += parseFloat(Monery);
+        });
+        summarySaleArea = summarySaleArea.toFixed(2);
+        summaryMonery = summaryMonery.toFixed(2);
+        this.setState({
+            summarySaleArea,
+            summaryMonery,
+        });
     };
 
     handleAddFormat = (record, index) => {
@@ -338,7 +364,7 @@ class PercentAdjust extends Component {
     };
 
     renderContent = () => {
-        const {batchDate, currentMonth, currentYear, supplyData} = this.state;
+        const {batchDate, currentMonth, currentYear, supplyData, summarySaleArea, summaryMonery} = this.state;
         const {switchMonth, switchYear, isCheck} = this.props.baseInfo;
         const lastYear = switchYear.indexOf(currentYear) === 3 ? true : false;
         const columns = this.getColumns();
@@ -361,6 +387,9 @@ class PercentAdjust extends Component {
                     </div>
                     <div className="batch-set-date">
                         <Button onClick={this.handleBatchSetDate}>设置供货日期</Button>
+                    </div>
+                    <div className="summary-wrapper">
+                        {`汇总: 已选可售面积 ${summarySaleArea} (㎡)， 已选可售货值 ${summaryMonery} (万元)`}
                     </div>
                 </div>
                 <div className="adjust-table">
