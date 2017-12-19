@@ -218,11 +218,10 @@ class Index extends Component {
                                 </div>
                                 : null
                         }
-
                     </Col>
                 </Row>
                 <WrapperTreeTable key={dataKey + "-dynamic"} rowKey="ID" dataSource={adjustData.dataSource}
-                                  fixedAble={false} firstColumnWidth={240}
+                                  fixedAble={true} firstColumnWidth={240}
                                   headerData={adjustData.headerData}></WrapperTreeTable>
             </article>
         )
@@ -246,7 +245,7 @@ class Index extends Component {
                     </Col>
                 </Row>
                 <WrapperTreeTable key={dataKey + "-plan"} rowKey="ID" dataSource={planData.dataSource}
-                                  fixedAble={false} firstColumnWidth={240}
+                                  fixedAble={true} firstColumnWidth={240}
                                   headerData={planData.headerData}></WrapperTreeTable>
             </article>
         );
