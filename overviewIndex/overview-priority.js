@@ -55,6 +55,7 @@ class OverviewPriority extends Component {
          
           let rate=interTime/intervalTime;
           rate = parseFloat(rate.toFixed(2))*100;
+          rate = rate.toFixed(2);
           //console.log(riskTime);
           //console.log(latestSolutionTime);
           //console.log(currentTime);
@@ -318,12 +319,14 @@ class OverviewPriority extends Component {
       render() {
           // pagination 是否分页，columns头部标题数据，dataSource表内容数据
           return (
+              <div className="PriorityTable" style={{clear:"both"}}>
+                <Table 
+                    columns={this.columns||[]}
+                    dataSource={this.state.data||[]} 
+                    bordered={true} 
+                />
+              </div>
               
-              <Table 
-                  columns={this.columns||[]}
-                  dataSource={this.state.data||[]} 
-                  bordered={true} 
-              />
           );
          
       }

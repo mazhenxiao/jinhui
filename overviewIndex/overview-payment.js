@@ -271,8 +271,8 @@ class OverviewPayment extends Component {
     paymentTable = () => {
         //this.addWidth(columns)
         return (
-            <div className="tableBox">
-                <Table columns={this.columns} pagination={false} bordered scroll={{x: this.scrollWidth, y: "100%"}}
+            <div className="">
+                <Table columns={this.columns} pagination={false} bordered scroll={{x: this.scrollWidth, y: "200"}}
                        dataSource={this.state.data}/>
             </div>
 
@@ -284,14 +284,32 @@ class OverviewPayment extends Component {
     render() {
 
 
-        return (
-                <Row>
-                    <Col span={24}>
-                        <article>
-                            {this.paymentTable()}
-                        </article>
-                    </Col>
-                </Row>
+        return (<div className="stateNodeBox">
+                    <Row>
+                        <Col span={24}>
+                            <b>回款计划版（货值：万元）</b>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={24}>
+                            <article>
+                                {this.paymentTable()}
+                            </article>
+                        </Col>
+                    </Row>
+                    <Row style={{marginTop:"20px"}}>
+                        <Col span={24}>
+                            <b>回款动态调整版（货值：万元）</b>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={24}>
+                            <article>
+                                {this.paymentTable()}
+                            </article>
+                        </Col>
+                    </Row>
+            </div>
         );
     }
    
