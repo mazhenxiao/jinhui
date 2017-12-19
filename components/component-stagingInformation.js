@@ -765,7 +765,7 @@ class StagingInformation extends React.Component {
         let status = th.props.status;
         let projectId=th.state.PROJECTID;/*项目id*/
 	      let versionId=th.state.STAGEVERSIONID;/*版本id*/
-        if(status=="add"){
+        if(status=="add" || status=="upgrade"){
         		iss.popover({ content: "请先暂存分期信息"});
         		return false;
         }
@@ -799,7 +799,7 @@ class StagingInformation extends React.Component {
         let status = th.props.status;
         let projectId=th.state.PROJECTID;/*项目id*/
 	      let versionId=th.state.STAGEVERSIONID;/*版本id*/
-        if(status=="add"){
+        if(status=="add"  || status=="upgrade"){
         		iss.popover({ content: "请先暂存分期信息"});
         		return false;
         }
