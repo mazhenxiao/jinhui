@@ -114,7 +114,6 @@ export const saveSupplyData = (dataKey, mode, SupplyID, currentMonth, DataSource
         type: "post",
         data: JSON.stringify(paramsValue),
     })
-        .then(res => res.rows);
 };
 
 

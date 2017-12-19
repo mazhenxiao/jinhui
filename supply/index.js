@@ -15,7 +15,7 @@ const TabPane = Tabs.TabPane;
 class Index extends Component {
 
     state = {
-        loading: false,
+        loading: true,
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : "Stage",//显示模式，项目或者分期
         //供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货
@@ -48,10 +48,13 @@ class Index extends Component {
         const nextMode = location.query.isProOrStage == "1" ? "Project" : "Stage";
 
         //切换路由之后，重新获取数据
-        if (dataKey != nextDataKey) {
+        if (nextDataKey != dataKey && !!nextDataKey) {
             this.setState({
+                    loading: true,
                     dataKey: nextDataKey,
-                    mode: nextMode
+                    mode: nextMode,
+                    planData: {},
+                    adjustData: {},
                 }
             );
             this.loadBaseData(nextDataKey, nextMode);
@@ -84,21 +87,8 @@ class Index extends Component {
             return;
         }
 
-        this.setState({
-            loading: true,
-        });
-
         //变量, 延迟setState
-        let nextState = {
-            supplyType: "",
-            permission: "",
-            dynamicId: "",
-            versionId: "",
-            versionData: [],
-            baseInfo: {},
-            planData: [],
-            adjustData: []
-        };
+        let nextState = {};
 
         return SupplyService.getBaseData(dataKey, mode)
             .then(({supplyType, permission, dynamicId, versionId, versionData, baseInfo}) => {
@@ -194,7 +184,7 @@ class Index extends Component {
     };
 
     renderDynamicAdjust = () => {
-        const {adjustData, dataKey} = this.state;
+        const {adjustData, dataKey, permission} = this.state;
 
         return (
             <article>
@@ -203,13 +193,17 @@ class Index extends Component {
                         <span className="title">供货计划动态调整版（面积：平方米，货值：万元）</span>
                     </Col>
                     <Col span={12} className="text-align-right">
-                        <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick}>
-                            编辑供货
-                        </button>
+                        {
+                            permission != "Show" ?
+                                <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick}>
+                                    编辑供货
+                                </button> : null
+                        }
+
                     </Col>
                 </Row>
                 <WrapperTreeTable key={dataKey + "-dynamic"} rowKey="ID" dataSource={adjustData.dataSource}
-                                  fixedAble={false}
+                                  fixedAble={false} firstColumnWidth={240}
                                   headerData={adjustData.headerData}></WrapperTreeTable>
             </article>
         )
@@ -233,7 +227,7 @@ class Index extends Component {
                     </Col>
                 </Row>
                 <WrapperTreeTable key={dataKey + "-plan"} rowKey="ID" dataSource={planData.dataSource}
-                                  fixedAble={false}
+                                  fixedAble={false} firstColumnWidth={240}
                                   headerData={planData.headerData}></WrapperTreeTable>
             </article>
         );

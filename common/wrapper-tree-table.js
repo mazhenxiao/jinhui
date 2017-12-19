@@ -307,6 +307,7 @@ class WrapperTreeTable extends Component {
         onDataChange: React.PropTypes.func,//文本框数据修改
         editState: React.PropTypes.bool,//单元格是否可编辑
         fixedAble: React.PropTypes.bool,//固定列是否可用
+        firstColumnWidth: React.PropTypes.number,//第一列的宽度
     };
 
     static defaultProps = {
@@ -317,6 +318,7 @@ class WrapperTreeTable extends Component {
         columnRender: null,
         editState: false,
         fixedAble: true,
+        firstColumnWidth: 0,
     };
 
     handleInputChange = (record, key, column) => {
@@ -332,7 +334,7 @@ class WrapperTreeTable extends Component {
     };
 
     getColumns = (headerData) => {
-        const {columnRender, editState, fixedAble} = this.props;
+        const {columnRender, editState, fixedAble, firstColumnWidth} = this.props;
         let columnArray = [];
         columnArray.scrollX = 0;
 
@@ -378,6 +380,11 @@ class WrapperTreeTable extends Component {
                 } else {
                     column.width = defaultWidth;
                 }
+
+                if (firstColumnWidth) {
+                    column.width = firstColumnWidth;
+                }
+
                 columnArray.scrollX += column.width;
             }
             columnArray.push(column);
