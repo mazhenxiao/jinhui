@@ -344,19 +344,57 @@ class SignIndex extends Component {
      * 保存数据
      */
     saveDynamicTableData() {
+        this.dynamicTable.saveData={};//清场
         let {dataKey} = this.props.location.query;
+        let {dynamicDataSource}=this.state.dynamicTable;
+        this.filterSaveData(dynamicDataSource);//递归赋值
         let {saveData} = this.dynamicTable;
-       //  console.log(saveData);
+    
         let _da =JSON.stringify(Object.values(saveData));
         let postData = {
             versionId:dataKey,
-            dataSource:_da
+            signAContractSaveData:_da
         }
         Payment.SignAContractSaveData(postData)
                .then(arg=>{
-
+                    
+               }).catch(err=>{
+                    
                })
     
+    }
+    /**
+     * 返回数据
+     */
+    filterSaveData=da=>{
+        da.map(arg=>{
+            if(arg.children&&arg.children.length){ 
+                this.filterSaveData(arg.children)
+            }else{
+                for(let key in arg){
+                  let reg = /^Y\d{3}/ig;
+                  if(reg.test(key)&&arg[key]){
+                    let {startYear}=this.dynamicTable;
+                    startYear = startYear? startYear.split("-")[0]:"";
+                    let _da = {
+                        dataType:key.substr(4),
+                        titlename:`${startYear}-${key.substr(2,2)}-01`,
+                        productTypeID:arg["showId"]||"",
+                        GROUPID:arg["GROUPID"],
+                        val:arg[key]
+                    }
+                    this.dynamicTable.saveData[_da.titlename+"-"+key+"-"+arg.key]=_da;
+                  }
+                }
+                /* let _da = {
+                    dataType:key.substr(4),
+                    titlename:`${startYear}-${key.substr(2,2)}-01`,
+                    productTypeID:record["showId"]||"",
+                    GROUPID:record["GROUPID"],
+                    val:value
+                } */
+            }
+        })
     }
 
     onDataChangeDynamic=(recordKEY,  key, value, record, column)=>{
@@ -368,6 +406,7 @@ class SignIndex extends Component {
             dataType:key.substr(4),
             titlename:`${startYear}-${key.substr(2,2)}-01`,
             productTypeID:record["showId"]||"",
+            GROUPID:record["GROUPID"],
             val:value
         }
         //let fild = saveData.some(arg=>(arg.productTypeID==_da.productTypeID&&arg.dataType==_da.dataType))
