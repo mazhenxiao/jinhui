@@ -161,7 +161,7 @@ class OverviewPriority extends Component {
                 companyName:'天津',//公司名称
                 projectName:'天津优步花园',//项目名称
                 riskTime:'2017-11-23',//风险报备时间
-                riskSaid:'十九大召开存在停工风险',//风险描述
+                riskSaid:'治理空气污染项目有延期风险',//风险描述
                 finishRate:'20%',//完成率
                 latestSolutionTime:'2017-12-23',//最迟解决时间
                 importantGrade:'高',//重要级别
@@ -174,7 +174,7 @@ class OverviewPriority extends Component {
                 companyName:'天津',//公司名称
                 projectName:'天津优步花园',//项目名称
                 riskTime:'2017-11-23',//风险报备时间
-                riskSaid:'十九大召开存在停工风险',//风险描述
+                riskSaid:'治理空气污染项目有延期风险',//风险描述
                 finishRate:'30%',//完成率
                 latestSolutionTime:'2018-11-23',//最迟解决时间
                 importantGrade:'高',//重要级别
@@ -187,7 +187,7 @@ class OverviewPriority extends Component {
                 companyName:'天津',//公司名称
                 projectName:'天津优步花园',//项目名称
                 riskTime:'2017-11-23',//风险报备时间
-                riskSaid:'十九大召开存在风十九大召开存在风十九大召开存在风',//风险描述
+                riskSaid:'治理空气污染项目有延期风险',//风险描述
                 finishRate:'40%',//完成率
                 latestSolutionTime:'2017-11-23',//最迟解决时间
                 importantGrade:'高',//重要级别
@@ -200,7 +200,7 @@ class OverviewPriority extends Component {
                 companyName:'天津',//公司名称
                 projectName:'天津优步花园',//项目名称
                 riskTime:'2017-11-23',//风险报备时间
-                riskSaid:'十九大召开存在停工风险',//风险描述
+                riskSaid:'治理空气污染项目有延期风险',//风险描述
                 finishRate:'50%',//完成率
                 latestSolutionTime:'2017-11-23',//最迟解决时间
                 importantGrade:'高',//重要级别
@@ -213,7 +213,7 @@ class OverviewPriority extends Component {
                 companyName:'天津',//公司名称
                 projectName:'天津优步花园',//项目名称
                 riskTime:'2017-11-23',//风险报备时间
-                riskSaid:'十九大召开存在停工风险',//风险描述
+                riskSaid:'治理空气污染项目有延期风险',//风险描述
                 finishRate:'60%',//完成率
                 latestSolutionTime:'2017-11-23',//最迟解决时间
                 importantGrade:'高',//重要级别
@@ -226,7 +226,7 @@ class OverviewPriority extends Component {
                 companyName:'天津',//公司名称
                 projectName:'天津优步花园',//项目名称
                 riskTime:'2017-11-23',//风险报备时间
-                riskSaid:'十九大召开存在停工风险',//风险描述
+                riskSaid:'治理空气污染项目有延期风险',//风险描述
                 finishRate:'70%',//完成率
                 latestSolutionTime:'2017-11-23',//最迟解决时间
                 importantGrade:'高',//重要级别
@@ -239,7 +239,7 @@ class OverviewPriority extends Component {
                 companyName:'天津',//公司名称
                 projectName:'天津优步花园',//项目名称
                 riskTime:'2017-11-23',//风险报备时间
-                riskSaid:'十九大召开存在停工风险',//风险描述
+                riskSaid:'治理空气污染项目有延期风险',//风险描述
                 finishRate:'70%',//完成率
                 latestSolutionTime:'2017-11-23',//最迟解决时间
                 importantGrade:'高',//重要级别
@@ -252,7 +252,7 @@ class OverviewPriority extends Component {
                 companyName:'天津',//公司名称
                 projectName:'天津优步花园',//项目名称
                 riskTime:'2017-11-23',//风险报备时间
-                riskSaid:'十九大召开存在停工风险',//风险描述
+                riskSaid:'治理空气污染项目有延期风险',//风险描述
                 finishRate:'70%',//完成率
                 latestSolutionTime:'2017-11-23',//最迟解决时间
                 importantGrade:'高',//重要级别
@@ -265,7 +265,7 @@ class OverviewPriority extends Component {
                 companyName:'天津',//公司名称
                 projectName:'天津优步花园',//项目名称
                 riskTime:'2017-11-23',//风险报备时间
-                riskSaid:'十九大召开存在停工风险',//风险描述
+                riskSaid:'治理空气污染项目有延期风险',//风险描述
                 finishRate:'70%',//完成率
                 latestSolutionTime:'2017-11-23',//最迟解决时间
                 importantGrade:'高',//重要级别
@@ -278,7 +278,7 @@ class OverviewPriority extends Component {
                 companyName:'天津',//公司名称
                 projectName:'天津优步花园',//项目名称
                 riskTime:'2017-11-23',//风险报备时间
-                riskSaid:'十九大召开存在停工风险',//风险描述
+                riskSaid:'治理空气污染项目有延期风险',//风险描述
                 finishRate:'80%',//完成率
                 latestSolutionTime:'2017-11-23',//最迟解决时间
                 importantGrade:'高',//重要级别
@@ -291,7 +291,7 @@ class OverviewPriority extends Component {
                 companyName:'天津',//公司名称
                 projectName:'天津优步花园',//项目名称
                 riskTime:'2017-11-23',//风险报备时间
-                riskSaid:'十九大召开存在停工风险',//风险描述
+                riskSaid:'治理空气污染项目有延期风险',//风险描述
                 latestSolutionTime:'2018-11-28',//最迟解决时间
                 finishRate:'100%',//完成率
                 importantGrade:'高',//重要级别
@@ -304,7 +304,7 @@ class OverviewPriority extends Component {
                 companyName:'天津',//公司名称
                 projectName:'天津优步花园',//项目名称
                 riskTime:'2017-11-23',//风险报备时间
-                riskSaid:'十九大召开存在停工风险',//风险描述
+                riskSaid:'治理空气污染项目有延期风险',//风险描述
                 latestSolutionTime:'2017-12-29',//最迟解决时间
                 finishRate:'70%',//完成率
                 importantGrade:'高',//重要级别
