@@ -149,6 +149,24 @@ export const IGetSignAContractData = (dataKey) => {
     })
 };
 /**
+ * 获取起始年
+ * @param {*} dataKey 4100835d-2464-2f9e-5086-bc46a8af14f4
+ */
+export const IGetStartYear=(dataKey)=>{
+    return iss.fetch({
+        url:"/SignAContract/IGetStartYear",
+        data:{
+            versionId:dataKey
+        }
+    })
+    .then(arg=>{
+        return arg.rows
+    })
+    .catch(err=>{
+        console.log("获取起始年份失败",err);
+    })
+}
+/**
  * 获取动态数据头部
  * /SignAContract/IGetSignAContractTableTitle?versionid=884dd5a6-ff48-4628-f4fa-294472d49b37
  * @param {*} dataKey 
@@ -169,8 +187,18 @@ export const IGetSignAContractTableTitle = (dataKey) => {
 /**
  * 保存签约数据
  */
-export const saveSignData = () => {
-
+export const  SignAContractSaveData = (data) => {
+    
+    return  iss.fetch({
+           url:"/SignAContract/SignAContractSaveData",
+           data
+       })
+       .then(arg=>{
+          
+       })
+       .catch(err=>{
+           console.log("SignAContractSaveData保存失败",err)
+       })
 };
 
 /**

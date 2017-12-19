@@ -56,9 +56,12 @@ class SignIndex extends Component {
     dynamicTable = { //动态表格私有仓储
         number: 0,//死循环记录
         dynamicRender: {
-            /*   "FullBuilding":(text,ind,row)=>this.setDynamicRender(text,ind,row) */
+               "showName":(text,record)=><a href="javascript:;" onClick={this.clickOpenDialog.bind(this,text,record)}>{text}</a> 
+             
 
-        } //动态编辑表格
+        }, //动态编辑表格
+        startYear:"",
+        saveData:{}//保存数据临时存储
     }
 
 
@@ -96,7 +99,7 @@ class SignIndex extends Component {
                 }
             );
         }
-        console.log("componentWillReceiveProps");
+       // console.log("componentWillReceiveProps");
         this.getFetData();
 
     }
@@ -106,13 +109,14 @@ class SignIndex extends Component {
      * first 判断是否第一次加载dom,如果第一次加载返回promise
      */
     getFetData = (first) => {
+        this.dynamicTable.saveData={};
         //获取动态调整表格数据
         let dynamicTable = this.getDynamicData();
         //获取比对版数据   
         let planTable = this.getPlanData();
 
         return Promise.all([dynamicTable, planTable]).then(arg => {
-
+            
             //获取弹窗数据如果需要，因为张权说要给一个获取的id不知道依赖在哪里，先放到这,估计需要从动态表获取
             this.getFetDialogData();
             this.bindScrollLock();
@@ -190,10 +194,12 @@ class SignIndex extends Component {
     getDynamicData = () => {
         let {dataKey} = this.props.location.query;
         let {dynamicTable} = this.state;
-        dataKey = "884dd5a6-ff48-4628-f4fa-294472d49b37";
+        dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
+  
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let title = Payment.IGetSignAContractTableTitle(dataKey)
-            .then(dynamicColum => {
+            .then((dynamicColum) => {
+                
                 this.setDynamicRender(dynamicColum);//创建编辑表
                 return dynamicColum;
             })
@@ -204,8 +210,14 @@ class SignIndex extends Component {
             .catch(e => {
                 return e
             });
+        let IGetStartYear = Payment.IGetStartYear(dataKey)
+                                   .then(arg=>{
+                                       this.dynamicTable.startYear=arg
+                                   })
+     
         return Promise.all([title, data])
             .then(arg => {
+                
                 let [dynamicHeaderData, dynamicDataSource] = arg,
                     newData = {
                         dynamicHeaderData,
@@ -215,6 +227,7 @@ class SignIndex extends Component {
                     },
                     dynamicTable = {...this.state.dynamicTable, ...newData};
                 this.setState({dynamicTable});
+            
 
             })
             .catch(arg => {
@@ -288,10 +301,10 @@ class SignIndex extends Component {
      * 是否编辑行
      * 递归查询此处如果数据有问题容易出现bug目前先不用
      */
-    setDynamicRender(dynamicColum) {
-
-        /*  return <a href="javascript:;" onClick={this.clickOpenDialog.bind(this,text,record,index)}>{text}</a> */
-        if (this.dynamicTable.number += 1, this.dynamicTable.number > 1000) {
+    setDynamicRender(text,record,index) {
+            
+         
+        /* if (this.dynamicTable.number += 1, this.dynamicTable.number > 1000) {
             console.log("强制判断如果列数据大于1000或死循环强制推出防止如果后台数据有误造成的死循环");
             return
         }
@@ -302,7 +315,7 @@ class SignIndex extends Component {
             } else {
                 this.dynamicTable.dynamicRender[arg.field] = this.setDynamicColumns;
             }
-        })
+        }) */
 
     }
 
@@ -331,13 +344,36 @@ class SignIndex extends Component {
      * 保存数据
      */
     saveDynamicTableData() {
-        let _data = this.state.dynamicTable.dynamicDataSource.filter(arg => {
+        let {dataKey} = this.props.location.query;
+        let {saveData} = this.dynamicTable;
+       //  console.log(saveData);
+        let _da =JSON.stringify(Object.values(saveData));
+        let postData = {
+            versionId:dataKey,
+            dataSource:_da
+        }
+        Payment.SignAContractSaveData(postData)
+               .then(arg=>{
 
-        })
+               })
+    
     }
 
-    onDataChangeDynamic(recordKEY, key, value) {
-
+    onDataChangeDynamic=(recordKEY,  key, value, record, column)=>{
+        //debugger
+        let {saveData,startYear}=this.dynamicTable;
+            startYear = startYear? startYear.split("-")[0]:"";
+            
+        let _da = {
+            dataType:key.substr(4),
+            titlename:`${startYear}-${key.substr(2,2)}-01`,
+            productTypeID:record["showId"]||"",
+            val:value
+        }
+        //let fild = saveData.some(arg=>(arg.productTypeID==_da.productTypeID&&arg.dataType==_da.dataType))
+       // console.log(key+"-"+_da.productTypeID)
+        this.dynamicTable.saveData[_da.titlename+"-"+key+"-"+record.key]=_da;
+        //console.log(this.dynamicTable.saveData)
     }
 
     /**
