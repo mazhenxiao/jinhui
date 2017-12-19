@@ -39,7 +39,7 @@ export const getBaseData = (dataKey, mode) => {
                         };
                     }),
                     currentYear: data.StartYear,
-                    switchYear: [data.StartYear, data.StartYear + 1, data.StartYear + 2, data.StartYear + 3],
+                    switchYear: [data.StartYear, data.StartYear + 1, data.StartYear + 2, (data.StartYear + 3)],
                 }
             };
             return obj;

@@ -38,6 +38,8 @@ class BuildingAdjust extends Component {
         filterBuilding: "",//筛选楼栋
     };
 
+    innerSupplyData = [];
+
     /**
      * 修改的数据
      * @type {Array}
@@ -187,8 +189,88 @@ class BuildingAdjust extends Component {
         return <span className="header-center">{name}</span>;
     };
 
+    /**
+     * 根据筛选条件, 筛选数据源
+     * filterGroup: "",//筛选组团
+     * filterFormat: "",//筛选业态
+     * filterBuilding: "",//筛选楼栋
+     */
+    getFilterSupplyData = () => {
+        const {currentYear, filterGroup, filterFormat, filterBuilding, supplyData} = this.state;
+        const {switchYear} = this.props.baseInfo;
+
+        let filterSupplyData = [...supplyData];
+        if (filterGroup) {
+            filterSupplyData = filterSupplyData.filter(item => item["GROUPID"] === filterGroup);
+        }
+        if (filterFormat) {
+            filterSupplyData = filterSupplyData.filter(item => item["PRODUCTTYPEID"] === filterFormat);
+        }
+        if (filterBuilding) {
+            filterSupplyData = filterSupplyData.filter(item => item["BUILDID"] === filterBuilding);
+        }
+
+        const areaRow = {
+            ID: iss.guid(),
+            GROUPNAME: "汇总: ",
+            SupplyDate: "可售面积(㎡)",
+            mode: "Summary",
+        };
+
+        const moneryRow = {
+            ID: iss.guid(),
+            GROUPNAME: "汇总: ",
+            SupplyDate: "可售货值(万元)",
+            mode: "Summary",
+        };
+
+        let totalAreaSummary = 0;
+        let totalMonerySummary = 0;
+
+        const index = switchYear.indexOf(currentYear);
+        if (index < 2) {
+            for (let i = 1; i <= 12; i++) {
+                let areaSummary = this.getAreaSummary("month", filterSupplyData, currentYear, i);
+                let monerySummary = this.getMonerySummary("month", filterSupplyData, currentYear, i);
+                totalAreaSummary += areaSummary;
+                totalMonerySummary += monerySummary;
+                areaRow[`${currentYear}-${i}`] = areaSummary;
+                moneryRow[`${currentYear}-${i}`] = monerySummary;
+            }
+        } else if (index === 2) {
+            for (let i = 1; i <= 4; i++) {
+                let areaSummary = this.getAreaSummary("quarter", filterSupplyData, currentYear, i);
+                let monerySummary = this.getMonerySummary("quarter", filterSupplyData, currentYear, i);
+                totalAreaSummary += areaSummary;
+                totalMonerySummary += monerySummary;
+                areaRow[`${currentYear}-quarter-${i}`] = areaSummary;
+                moneryRow[`${currentYear}-quarter-${i}`] = monerySummary;
+            }
+        } else {
+            let areaSummary = this.getAreaSummary("year", filterSupplyData, currentYear);
+            let monerySummary = this.getMonerySummary("year", filterSupplyData, currentYear);
+            totalAreaSummary += areaSummary;
+            totalMonerySummary += monerySummary;
+            areaRow[`future-year`] = areaSummary;
+            moneryRow[`future-year`] = monerySummary;
+        }
+
+        if (filterSupplyData.length > 0) {
+            filterSupplyData.push(areaRow);
+            filterSupplyData.push(moneryRow);
+        }
+
+        areaRow.GROUPNAME = areaRow.GROUPNAME + totalAreaSummary;
+        moneryRow.GROUPNAME = moneryRow.GROUPNAME + totalMonerySummary;
+
+        this.innerSupplyData = filterSupplyData;
+        return filterSupplyData;
+    };
+
     fillMonthColor = (year, month) => {
         return (text, record) => {
+            if (record["mode"] === "Summary")
+                return text;
             const strDate = record["SupplyDate"];
             if (strDate) {
                 const date = new Date(strDate);
@@ -201,8 +283,70 @@ class BuildingAdjust extends Component {
         };
     };
 
+    getAreaSummary = (mode, filterSupplyData, currentYear, num) => {
+        let summary = 0;
+        filterSupplyData.forEach(row => {
+            const strDate = row["SupplyDate"];
+            if (!strDate) {
+                return;
+            }
+            const date = new Date(strDate);
+            if (mode == "month") {
+                if (date.getFullYear() != currentYear || (date.getMonth() + 1) != num) {
+                    return;
+                }
+                summary += parseFloat(row["SourceSaleArea"]);
+
+            } else if (mode == "quarter") {
+                const month = date.getMonth() + 1;
+                if (date.getFullYear() == currentYear) {
+                    if (month > (num - 1) * 3 && month <= num * 3) {
+                        summary += parseFloat(row["SourceSaleArea"]);
+                    }
+                }
+            } else if (mode == "year") {
+                if (date.getFullYear() >= currentYear) {
+                    summary += parseFloat(row["SourceSaleArea"]);
+                }
+            }
+        });
+
+        return summary;
+    };
+    getMonerySummary = (mode, filterSupplyData, currentYear, num) => {
+        let summary = 0;
+        filterSupplyData.forEach(row => {
+            const strDate = row["SupplyDate"];
+            if (!strDate) {
+                return;
+            }
+            const date = new Date(strDate);
+            if (mode == "month") {
+                if (date.getFullYear() != currentYear || (date.getMonth() + 1) != num) {
+                    return;
+                }
+                summary += parseFloat(row["SourceMonery"]);
+
+            } else if (mode == "quarter") {
+                const month = date.getMonth() + 1;
+                if (date.getFullYear() == currentYear) {
+                    if (month > (num - 1) * 3 && month <= num * 3) {
+                        summary += parseFloat(row["SourceMonery"]);
+                    }
+                }
+            } else if (mode == "year") {
+                if (date.getFullYear() >= currentYear) {
+                    summary += parseFloat(row["SourceMonery"]);
+                }
+            }
+        });
+        return summary;
+    };
+
     fillQuarterColor = (year, quarter) => {
         return (text, record) => {
+            if (record["mode"] === "Summary")
+                return text;
             const strDate = record["SupplyDate"];
             if (strDate) {
                 const date = new Date(strDate);
@@ -218,10 +362,12 @@ class BuildingAdjust extends Component {
 
     fillYearColor = (year) => {
         return (text, record) => {
+            if (record["mode"] === "Summary")
+                return text;
             const strDate = record["SupplyDate"];
             if (strDate) {
                 const date = new Date(strDate);
-                if (date.getFullYear() == year) {
+                if (date.getFullYear() >= year) {
                     return <span className="select-block"></span>;
                 }
             }
@@ -242,49 +388,66 @@ class BuildingAdjust extends Component {
                 dataIndex: 'GROUPNAME',
                 key: 'GROUPNAME',
                 width: 140,
+                render: (text, row, index) => {
+                    if (index < this.innerSupplyData.length - 2) {
+                        return text;
+                    }
+                    return {
+                        children: <div className="summary">{text}</div>,
+                        props: {
+                            colSpan: 6,
+                        },
+                    };
+                }
             },
             {
                 title: this.getFormatHeader(),
                 dataIndex: 'PRODUCTTYPENAME',
                 key: 'PRODUCTTYPENAME',
                 width: 140,
+                render: this.renderColumnContent.bind(this)
             },
             {
                 title: this.getBuildHeader(),
                 dataIndex: 'BUILDNAME',
                 key: 'BUILDNAME',
                 width: 140,
+                render: this.renderColumnContent.bind(this)
             },
             {
                 title: this.setAlignCenter("可售面积(m²)"),
                 dataIndex: 'SourceSaleArea',
                 key: 'SourceSaleArea',
                 width: 100,
+                render: this.renderColumnContent.bind(this)
             },
             {
                 title: this.setAlignCenter("可售货值(万元)"),
                 dataIndex: 'SourceMonery',
                 key: 'SourceMonery',
                 width: 100,
+                render: this.renderColumnContent.bind(this)
             },
             {
                 title: this.setAlignCenter("计划预证时间"),
                 dataIndex: 'PlanSaleDate',
                 key: 'PlanSaleDate',
                 width: 100,
+                render: this.renderColumnContent.bind(this)
             },
             {
                 title: this.setAlignCenter("供货日期"),
                 dataIndex: 'SupplyDate',
                 key: 'SupplyDate',
                 render: (text, record) => {
+                    if (record["mode"] === "Summary")
+                        return text;
                     return <DatePicker allowClear={false} onChange={this.handleRowDataChange.bind(this, record)}
                                        value={text ? moment(text, 'YYYY-MM-DD') : null}></DatePicker>;
                 },
                 width: 120,
             }
         ];
-
         const index = switchYear.indexOf(currentYear);
         if (index < 2) {
             for (let i = 1; i <= 12; i++) {
@@ -410,25 +573,16 @@ class BuildingAdjust extends Component {
         });
     };
 
-    /**
-     * 根据筛选条件, 筛选数据源
-     * filterGroup: "",//筛选组团
-     * filterFormat: "",//筛选业态
-     * filterBuilding: "",//筛选楼栋
-     */
-    getFilterSupplyData = () => {
-        const {filterGroup, filterFormat, filterBuilding, supplyData} = this.state;
-        let filterSupplyData = [...supplyData];
-        if (filterGroup) {
-            filterSupplyData = filterSupplyData.filter(item => item["GROUPID"] === filterGroup);
+
+    renderColumnContent = (value, row, index) => {
+        const obj = {
+            children: value,
+            props: {},
+        };
+        if (index === this.innerSupplyData.length - 1 || index === this.innerSupplyData.length - 2) {
+            obj.props.colSpan = 0;
         }
-        if (filterFormat) {
-            filterSupplyData = filterSupplyData.filter(item => item["PRODUCTTYPEID"] === filterFormat);
-        }
-        if (filterBuilding) {
-            filterSupplyData = filterSupplyData.filter(item => item["BUILDID"] === filterBuilding);
-        }
-        return filterSupplyData;
+        return obj;
     };
 
     renderSwitchYear = () => {
@@ -440,8 +594,12 @@ class BuildingAdjust extends Component {
         return (
             <Radio.Group value={currentYear} onChange={this.handleChangeYear}>
                 {
-                    switchYear.map(year => {
-                        return <Radio.Button key={year} value={year}>{year}</Radio.Button>;
+                    switchYear.map((year, index) => {
+                        let displayYear = year + "年";
+                        if (index === 3) {
+                            displayYear += "及以后";
+                        }
+                        return <Radio.Button key={year} value={year}>{displayYear}</Radio.Button>;
                     })
                 }
             </Radio.Group>
@@ -452,10 +610,9 @@ class BuildingAdjust extends Component {
         const {batchDate, currentMonth, currentYear, supplyData} = this.state;
         const {switchMonth, switchYear, isCheck} = this.props.baseInfo;
         const lastYear = switchYear.indexOf(currentYear) === 3 ? true : false;
+        const filterSupplyData = this.getFilterSupplyData();
         const columns = this.getColumns();
         const scrollX = columns.scrollX;
-
-        const filterSupplyData = this.getFilterSupplyData();
 
         return (
             <div className="building-adjust">
