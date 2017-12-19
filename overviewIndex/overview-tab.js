@@ -152,7 +152,9 @@ class OverviewTab extends React.Component {
          switch(arg){
             case "index"://项目概览
                 //return <OverviewIndex />
-                return <div  style={{fontSize:"16px"}}>项目概览建设中。。。</div>
+                return <div  style={{fontSize:"16px"}}>
+                        <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
+                    </div>
             break;
             case "identityProject"://项目身份证
                  if(currentPosi=="project"){
@@ -162,7 +164,7 @@ class OverviewTab extends React.Component {
                     />  
                  }
             break;
-            
+
             case "identityIntallment"://分期身份证
                 if(currentPosi=="intallment"){
                     return <div>
@@ -174,28 +176,40 @@ class OverviewTab extends React.Component {
             break;
             case "supply"://供货
                 //return <OverviewSupply location={location} />
-                return <div style={{fontSize:"16px"}}>供货建设中。。。</div>
+                return <div style={{fontSize:"16px"}}>
+                    <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
+                </div>
             break;
             case "sign"://签约
                 //return <OverviewSign location={location} />
-                return <div style={{fontSize:"16px"}}>签约建设中。。。</div>
+                return <div style={{fontSize:"16px"}}>
+                    <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
+                </div>
             break;  
             case "payment"://回款
                 //return <OverviewPayment />
-                return <div style={{fontSize:"16px"}}>回款建设中。。。</div>
+                return <div style={{fontSize:"16px"}}>
+                    <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
+                </div>
             break;
             case "plan"://计划
                 // return <div className="iframeLoad"> 
                 //         {this.iframeLoad()}
                 //     </div>
-                 return <div style={{fontSize:"16px"}}>主项计划建设中。。。</div>
+                 return <div style={{fontSize:"16px"}}>
+                    <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
+                </div>
             break;
             case "matter"://重点事项
                 // return <OverviewPriority />
-                return <div style={{fontSize:"16px"}}>重点事项建设中。。。</div>
+                return <div style={{fontSize:"16px"}}>
+                    <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
+                </div>
             break; 
             case "keyPoint"://关键指标
-                return <div style={{fontSize:"16px"}}>关键指标建设中。。。</div>
+                return <div style={{fontSize:"16px"}}>
+                    <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
+                </div>
                 //return <OverviewPrimaryKey />
             break;
         } 
