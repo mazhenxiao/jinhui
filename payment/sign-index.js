@@ -207,7 +207,7 @@ class SignIndex extends Component {
                         dynamicHeaderData,
                         dynamicDataSource,
                         dynamicEdit: false,
-                        dynamicEditButtonShow: Boolean(status==0&&dynamicDataSource && dynamicDataSource.length),
+                        dynamicEditButtonShow: Boolean(status!=0&&dynamicDataSource && dynamicDataSource.length),
                     },
                     dynamicTable = {...this.state.dynamicTable, ...newData};
                 this.setState({dynamicTable});
@@ -356,10 +356,14 @@ class SignIndex extends Component {
                     let reg = /^Y\d{3}/ig;
                     if (reg.test(key) && arg[key] !== "") {
                         let {startYear} = this.dynamicTable;
-                        startYear = eval(startYear - key.substr(1, 1))
+                        let _startYear = `${startYear}+${key.substr(1,1)}-1`;
+                        _startYear = eval(_startYear);
+                        
                         let _da = {
                             dataType: key.substr(4),
-                            titlename: `${startYear}-${key.substr(2, 2)}-01`,
+                            year:_startYear,
+                            month:key.substr(2, 2),
+                            titlename: `${_startYear}-${key.substr(2, 2)}-01`,
                             productTypeID: arg["showId"] || "",
                             GROUPID: arg["GROUPID"],
                             val: arg[key]
