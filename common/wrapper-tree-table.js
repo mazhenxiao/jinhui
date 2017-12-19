@@ -342,7 +342,7 @@ class WrapperTreeTable extends Component {
 
         headerData.forEach((headerItem, index) => {
             const column = {
-                title: <span style={headerStyle}>{headerItem.name || "空标题"}</span>
+                title: <span style={headerStyle}>{headerItem.name || ""}</span>
             };
 
             //默认固定第一列
@@ -409,7 +409,7 @@ class WrapperTreeTable extends Component {
         item.children.forEach(childHeaderItem => {
 
             const childColumn = {
-                title: <span style={headerStyle}>{childHeaderItem.name || "空标题"}</span>
+                title: <span style={headerStyle}>{childHeaderItem.name || ""}</span>
             };
 
             childColumn.render = (text, record) => {
@@ -465,10 +465,10 @@ class WrapperTreeTable extends Component {
     render() {
 
         const {headerData, dataSource, rowKey, defaultHeight} = this.props;
-        let tableColumns = [];
-        if (dataSource && dataSource.length > 0) {
-            tableColumns = this.getColumns(headerData);
-        }
+        let tableColumns = this.getColumns(headerData);
+        // if (dataSource && dataSource.length > 0) {
+        //     tableColumns = this.getColumns(headerData);
+        // }
 
         return (
             <Table
