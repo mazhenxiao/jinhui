@@ -207,7 +207,7 @@ class SignIndex extends Component {
                         dynamicHeaderData,
                         dynamicDataSource,
                         dynamicEdit: false,
-                        dynamicEditButtonShow: Boolean(status!=0&&dynamicDataSource && dynamicDataSource.length),
+                        dynamicEditButtonShow: Boolean(status==0&&dynamicDataSource && dynamicDataSource.length),
                     },
                     dynamicTable = {...this.state.dynamicTable, ...newData};
                 this.setState({dynamicTable});
