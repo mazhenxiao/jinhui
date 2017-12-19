@@ -31,6 +31,7 @@ class OverviewTab extends React.Component {
                 { "guid":"6","text":"重点事项","tap":"matter"},
                 { "guid":"7","text":"关键指标","tap":"keyPoint"},
             ],
+            activeKey:"0",
             planUrl:"http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=",
         
         };//通过props初始化tab菜单子组件的state
@@ -193,12 +194,12 @@ class OverviewTab extends React.Component {
                 </div>
             break;
             case "plan"://计划
-                // return <div className="iframeLoad"> 
-                //         {this.iframeLoad()}
-                //     </div>
-                 return <div style={{fontSize:"16px"}}>
-                    <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
-                </div>
+                return <div className="iframeLoad"> 
+                        {this.iframeLoad()}
+                    </div>
+                //  return <div style={{fontSize:"16px"}}>
+                //     <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
+                // </div>
             break;
             case "matter"://重点事项
                 // return <OverviewPriority />
