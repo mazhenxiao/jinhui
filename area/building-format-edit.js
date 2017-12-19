@@ -444,7 +444,8 @@ class BuildingFormatEdit extends Component {
                                                 onSelectChange={this.handleModalSelectChange("business")}/>
                         </Col>
                         <Col span={8}>
-                            <WrapperModalSelect labelText="车位及配套:" dataSource={conditionData.parkAndSupport}
+                            <WrapperModalSelect labelText="车位、配套及其他可售:" dataSource={conditionData.parkAndSupport}
+                                                labelSpan={9} inputSpan={15}
                                                 onSelectChange={this.handleModalSelectChange("parkAndSupport")}/>
                         </Col>
                     </Row>

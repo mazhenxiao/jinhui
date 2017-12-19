@@ -113,7 +113,7 @@ class WrapperModalSelect extends Component {
             };
             if (value) {
                 newState.visible = true;
-            }else{
+            } else {
                 //触发回调函数
                 this.props.onSelectChange && this.props.onSelectChange([]);
             }
@@ -209,17 +209,17 @@ class WrapperModalSelect extends Component {
                 maskClosable={false}
                 width="360px"
             >
-                <Row style={{height:"35px"}}>
+                <Row style={{height: "35px"}}>
                     <WrapperSelect labelText="产权属性：" dataSource={AreaConstants.RightsProperty}
                                    showRequired={this.checkPropertyValue("ishaveproperty")}
                                    onChange={this.handlePropertyChange("ishaveproperty")}/>
                 </Row>
-                <Row style={{height:"35px"}}>
+                <Row style={{height: "35px"}}>
                     <WrapperSelect labelText="精装属性：" dataSource={AreaConstants.HardcoverProperty}
                                    showRequired={this.checkPropertyValue("isdecoration")}
                                    onChange={this.handlePropertyChange("isdecoration")}/>
                 </Row>
-                <Row style={{height:"35px"}}>
+                <Row style={{height: "35px"}}>
                     <WrapperSelect labelText="层高属性：" dataSource={AreaConstants.LayerProperty}
                                    showRequired={this.checkPropertyValue("storeyheight")}
                                    onChange={this.handlePropertyChange("storeyheight")}/>
@@ -247,7 +247,7 @@ class WrapperModalSelect extends Component {
                         <Select
                             mode={!!multiple ? "multiple" : "-"}
                             value={selectedValue}
-                            style={{width: "65%"}}
+                            style={{width: "55%"}}
                             onChange={this.handleChange}
                             placeholder="请选择"
                         >
