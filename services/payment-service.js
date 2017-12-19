@@ -1,52 +1,6 @@
 import iss from '../js/iss'
 import { locale } from 'moment';
-/**
- * /SignAContract/IGetExamineVersion?versionId=
- */
-export const IGetExamineVersion=(versionId)=>{
-    let versionData={
-        "message": "成功",
-        "errorcode": 200,
-        "stackTrace": "",
-        "rows": [
-        {
-        "id": "1E281021816741C7B1EA6A5421645C59",
-        "versioncode": "2",
-        "step": 4,
-        "parentid": "3a111ca8-029d-79d6-a6ac-4044cce00eab",
-        "status": 99,
-        "statusname": "审批通过",
-        "statusCode": "approvaled"
-        },
-        {
-        "id": "0A9B3AA0B0DD449AB94F7E2C134022E1",
-        "versioncode": "1",
-        "step": 4,
-        "parentid": "df644014-c818-3ce3-62a0-ff8cc22283a0",
-        "status": 99,
-        "statusname": "审批通过",
-        "statusCode": "approvaled"
-        }
-        ],
-        "total": 0,
-        "token": ""
-        };
-    return iss.fetch({
-        url:"/SignAContract/IGetExamineVersion",
-        data:{
-            versionId
-        }
-    }).then(arg=>{
-        let rows = arg.rows;
-       // rows=rows.length? rows:versionData.rows;
-         return rows.map(arg=>{
-            return {
-                id:arg.id,
-                name:arg.versioncode
-            }
-        })
-    })
-}
+
 /**
  * 获取签约版本
  * 
@@ -153,14 +107,15 @@ export const IGetSignAContractData = (dataKey) => {
  * 获取起始年
  * @param {*} dataKey 4100835d-2464-2f9e-5086-bc46a8af14f4
  */
-export const IGetStartYear=(dataKey)=>{
+export const IGetSignAContractBaseInfo=(dataKey)=>{
     return iss.fetch({
-        url:"/SignAContract/IGetStartYear",
+        url:"/SignAContract/IGetSignAContractBaseInfo",
         data:{
             versionId:dataKey
         }
     })
     .then(arg=>{
+        
         return arg.rows
     })
     .catch(err=>{

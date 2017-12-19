@@ -210,7 +210,7 @@ class SignIndex extends Component {
             .catch(e => {
                 return e
             });
-        let IGetStartYear = Payment.IGetStartYear(dataKey)
+        let IGetStartYear = Payment.IGetSignAContractBaseInfo(dataKey)
                                    .then(arg=>{
                                        this.dynamicTable.startYear=arg
                                    })
@@ -562,7 +562,7 @@ class SignIndex extends Component {
                         </Col>
                         <Col span={12}>
                             <div className={dynamicEditButtonShow ? "RT" : "hidden"}>
-                            <button className="jh_btn jh_btn22 jh_btn_submit mgR20"
+                            <button className="jh_btn jh_btn22 jh_btn_apro mgR20"
                                         onClick={this.handleSubmit}>提交
 
                             </button>
