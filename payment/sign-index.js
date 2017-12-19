@@ -193,7 +193,7 @@ class SignIndex extends Component {
     getDynamicData = () => {
         let {dataKey} = this.props.location.query;
         let {dynamicTable} = this.state;
-        dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
+        //dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
   
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let title = Payment.IGetSignAContractTableTitle(dataKey)
@@ -261,8 +261,7 @@ class SignIndex extends Component {
         let {dataKey} = this.props.location.query;
         let {planTable, version,dynamicTable} = this.state;
         let {dynamicHeaderData} =dynamicTable 
-        dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
-
+       // dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let currentVersion = "", versionData;
         
@@ -477,10 +476,7 @@ class SignIndex extends Component {
         this.setState({
             dialog
         })
-        // Payment.getOpen()
-        //        .then(data=>{
-
-        //        })
+   
     }
 
     /**
