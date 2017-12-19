@@ -231,6 +231,7 @@ class SignIndex extends Component {
 
             })
             .catch(arg => {
+               
                 console.log("动态调整版未拿到数据")
             })
     }
@@ -404,9 +405,12 @@ class SignIndex extends Component {
 
         let toTable = document.querySelector(".toTable .ant-table-body"),
             pkTable = document.querySelector(".pkTable .ant-table-body");
-        toTable.scrollTop = toTable.scrollLeft = 0;
-        pkTable.scrollTop = pkTable.scrollLeft = 0;
-        toTable && pkTable && (this.antdTableScrollLock = knife.AntdTable_ScrollLock(toTable, pkTable));
+        if(toTable && pkTable){
+            toTable.scrollTop = toTable.scrollLeft = 0;
+            pkTable.scrollTop = pkTable.scrollLeft = 0;
+             this.antdTableScrollLock = knife.AntdTable_ScrollLock(toTable, pkTable);
+        }
+      
 
     }
 
@@ -512,7 +516,7 @@ class SignIndex extends Component {
         let {signAContractVersionId,dynamicEdit}=this.dynamicTable;
          let newData={...dynamicTable,dynamicEditButtonShow:false,dynamicEdit:false};
 
-                Payment.ISubmitSignAContractData(signAContractVersionId)
+                Payment.ISendBackSignAContractData(signAContractVersionId)
                 .then(arg=>{
                     iss.tip({
                         type:"success",
@@ -588,10 +592,10 @@ class SignIndex extends Component {
                     loading={loading}
                     size="small"
                   //  onDataChange={this.onDataChangeDynamic}
-                    headerData={dynamicHeaderData}
+                    headerData={dynamicHeaderData||[]}
                     editState={dynamicEdit}
                     editMode="LastLevel"
-                    dataSource={dynamicDataSource}
+                    dataSource={dynamicDataSource||[]}
                     columnRender={this.dynamicTable.dynamicRender}
                 />
             </article>
@@ -623,8 +627,8 @@ class SignIndex extends Component {
                 </header>
                 <WrapperTreeTable
                     loading={loading}
-                    headerData={dynamicHeaderData}
-                    dataSource={dynamicDataSource}/>
+                    headerData={dynamicHeaderData||[]}
+                    dataSource={dynamicDataSource||[]}/>
             </article>
         );
     };
