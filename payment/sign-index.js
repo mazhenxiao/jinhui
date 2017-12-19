@@ -56,7 +56,7 @@ class SignIndex extends Component {
        dynamicTable={ //动态表格私有仓储
             number:0,//死循环记录
             dynamicRender:{
-                "FullBuilding":(text,ind,row)=>this.setDynamicRender(text,ind,row)
+              /*   "FullBuilding":(text,ind,row)=>this.setDynamicRender(text,ind,row) */
                 
             } //动态编辑表格
         }
@@ -181,11 +181,11 @@ class SignIndex extends Component {
     getDynamicData=()=>{
         let {dataKey}=this.props.location.query;
         let {dynamicTable}=this.state;
-             dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
+             dataKey = "884dd5a6-ff48-4628-f4fa-294472d49b37";
              //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let title = Payment.IGetSignAContractTableTitle(dataKey)
                            .then(dynamicColum=>{
-                            //this.setDynamicRender(dynamicColum);//创建编辑表
+                            this.setDynamicRender(dynamicColum);//创建编辑表
                                return dynamicColum;
                            })
                            .catch(e=>{
@@ -278,20 +278,26 @@ class SignIndex extends Component {
      * 是否编辑行
      * 递归查询此处如果数据有问题容易出现bug目前先不用
      */
-    setDynamicRender(text,record,index){
+    setDynamicRender(dynamicColum){
         
-        return <a href="javascript:;" onClick={this.clickOpenDialog.bind(this,text,record,index)}>{text}</a>
-        /*   if(this.dynamicTable.number+=1,this.dynamicTable.number>1000){ console.log("强制判断如果列数据大于1000或死循环强制推出防止如果后台数据有误造成的死循环"); return}
+       /*  return <a href="javascript:;" onClick={this.clickOpenDialog.bind(this,text,record,index)}>{text}</a> */
+           if(this.dynamicTable.number+=1,this.dynamicTable.number>1000){ console.log("强制判断如果列数据大于1000或死循环强制推出防止如果后台数据有误造成的死循环"); return}
           
           dynamicColum.forEach(arg=>{
                 if(arg.children){
                     this.setDynamicRender(arg.children);
-                }else if(arg.field=="FullBuilding"){
-                    
-                   this.dynamicTable.dynamicRender[arg.field]=this.renderContent;
+                }else{  
+                   this.dynamicTable.dynamicRender[arg.field]=this.setDynamicColumns;
                 }
-        }) */
+        }) 
         
+    }
+    /**
+     * 动态编辑数据
+     */
+    setDynamicColumns(field,value,index){
+        let arg=field;
+        debugger
     }
 
     handleEdit = () => {
@@ -456,6 +462,7 @@ class SignIndex extends Component {
                         </Col>
                     </Row>
                 </header>
+               
                 <WrapperTreeTable 
                     loading={loading}
                     size="small"
