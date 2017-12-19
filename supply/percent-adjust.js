@@ -13,6 +13,7 @@ import "../css/button.less";
 import "./css/supply.less";
 
 const Option = Select.Option;
+const confirm = Modal.confirm;
 
 const defaultHeight = 400;
 
@@ -299,19 +300,25 @@ class PercentAdjust extends Component {
 
     handleDeleteFormat = (record, index) => {
         const {supplyData} = this.state;
-        //同名称的业态
-        const formatGroup = supplyData.filter(item => item["PRODUCTTYPENAME"].trim() === record["PRODUCTTYPENAME"]);
-        if (formatGroup.length === 1) {
-            iss.error(`业态 [${record["PRODUCTTYPENAME"]}] 只剩下最后一条, 不能删除!`);
-            return;
-        }
+        confirm({
+            title: '删除确认',
+            content: '确认要删除吗? ',
+            onOk: () => {
+                //同名称的业态
+                const formatGroup = supplyData.filter(item => item["PRODUCTTYPENAME"].trim() === record["PRODUCTTYPENAME"]);
+                if (formatGroup.length === 1) {
+                    iss.error(`业态 [${record["PRODUCTTYPENAME"]}] 只剩下最后一条, 不能删除!`);
+                    return;
+                }
 
-        const nextSupplyData = [...supplyData];
-        nextSupplyData.splice(index, 1);
-        this.setState({
-            supplyData: nextSupplyData
+                const nextSupplyData = [...supplyData];
+                nextSupplyData.splice(index, 1);
+                this.setState({
+                    supplyData: nextSupplyData
+                });
+                iss.info("删除成功!");
+            },
         });
-        iss.info("删除成功!");
     };
 
     handleDateChange = (value, dateString) => {
