@@ -60,6 +60,7 @@ class SignIndex extends Component {
                                              onClick={this.clickOpenDialog.bind(this, text, record)}>{text}</a>
 
         }, //动态编辑表格
+        status:"",//接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回 
         startYear: "",//起始年
         signAContractVersionId: "",//调整版本id
         saveData: {}//保存数据临时存储
@@ -145,7 +146,6 @@ class SignIndex extends Component {
             })
             .catch(err => {
                 iss.error(err);
-                // iss.error("getFetDialogData获取数据失败")
             })
     }
 
@@ -156,15 +156,6 @@ class SignIndex extends Component {
         }
         return false;
     };
-
-    /**
-     * 绑定锁定
-     */
-    bindLockTable() {
-        // knife.ready(".toTable .ant-table-body,.pkTable .ant-table-body", arg => {
-        this.bindScrollLock();
-        //  })
-    }
 
     /**
      * 获取弹窗头部数据
@@ -198,23 +189,25 @@ class SignIndex extends Component {
             });
 
         let data = Payment.IGetSignAContractData(dataKey)
-
+        //获取当前版本，当前获取年份提交数据要使用
         Payment.IGetSignAContractBaseInfo(dataKey).then(arg => {
-            let {signAContractVersionId, startYear} = arg;
-            this.dynamicTable.signAContractVersionId = signAContractVersionId;
-            this.dynamicTable.startYear = startYear;
+            let {signAContractVersionId, startYear,status} = arg;
+            this.dynamicTable.signAContractVersionId = signAContractVersionId; //设置id
+            this.dynamicTable.startYear = startYear; //设置当前年份
+            this.dynamicTable.status = status;//0编制 10提交 -1 驳回
         }).catch(error => {
             iss.error(error);
         });
 
         return Promise.all([title, data])
             .then(arg => {
+                let {status}=this.dynamicTable;
                 let [dynamicHeaderData, dynamicDataSource] = arg,
                     newData = {
                         dynamicHeaderData,
                         dynamicDataSource,
                         dynamicEdit: false,
-                        dynamicEditButtonShow: Boolean(dynamicDataSource && dynamicDataSource.length)
+                        dynamicEditButtonShow: Boolean(status==0&&dynamicDataSource && dynamicDataSource.length),
                     },
                     dynamicTable = {...this.state.dynamicTable, ...newData};
                 this.setState({dynamicTable});
