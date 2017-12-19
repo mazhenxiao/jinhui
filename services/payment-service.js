@@ -24,6 +24,8 @@ export const IGenerateBudgetVersion = (dataKey) => {
                     name:arg.versioncode
                 }
             })
+        }).catch(err=>{
+            Promise.reject("获取版本失败",err);
         })
   
 };
@@ -98,7 +100,8 @@ export const IGetSignAContractData = (dataKey) => {
           //  return  JSON.parse(localStorage.getItem("IGetSignAContractData"));
         }
        
-    }).catch(e=>{ 
+    }).catch(err=>{ 
+        Promise.reject("/SignAContract/IGetSignAContractData失败",err);
         console.log(`/SignAContract/IGetSignAContractData 请求未拿到数据`);
         return e;
     })
@@ -119,6 +122,7 @@ export const IGetSignAContractBaseInfo=(dataKey)=>{
         return arg.rows
     })
     .catch(err=>{
+        Promise.reject("获取年份失败",err);
         console.log("获取起始年份失败",err);
     })
 }
@@ -135,7 +139,8 @@ export const IGetSignAContractTableTitle = (dataKey) => {
         }
     }).then(response=>{
         return response.rows
-    }).catch(e=>{ 
+    }).catch(err=>{ 
+        Promise.reject("动态调整版本头部未获取到数据",err);
         console.log(`/SignAContract/IGetSignAContractTableTitle 请求未拿到数据`);
         return e;
     })
@@ -160,6 +165,7 @@ export const IGetBudgetList=versionId=>{
         })
     })
     .catch(err=>{
+        Promise.reject("获取考核版数据失败",err);
         console.log("IGetBudgetList获取考核版数据失败",err)
     })
 }
@@ -176,6 +182,7 @@ export const  ISaveSignAContractData = (data) => {
           
        })
        .catch(err=>{
+        Promise.reject("保存签约失败",err);
            console.log("SignAContractSaveData保存失败",err)
        })
 };
@@ -189,6 +196,8 @@ export const ISubmitSignAContractData=(signAContractVersionId)=>{
         data:{
             signAContractVersionId
         }
+    }).catch(err=>{
+        Promise.reject("保存签约失败",err);
     })
     
 }
@@ -197,7 +206,14 @@ export const ISubmitSignAContractData=(signAContractVersionId)=>{
  * @param {*} arg 
  */
 export const ISendBackSignAContractData=signAContractVersionId=>{
-    
+    return iss.fetch({
+        url:"/SignAContract/ISendBackSignAContractData",
+        data:{
+            signAContractVersionId
+        }
+    }).catch(err=>{
+        Promise.reject("驳回失败",err);
+    })
 }
 
 /**
