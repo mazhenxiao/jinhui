@@ -1,3 +1,6 @@
+.PriorityTable .ant-progress-text {
+  width: 3em;
+}
 .PriorityTable .ant-progress-status-success .ant-progress-bg {
   background-color: #f04134;
 }

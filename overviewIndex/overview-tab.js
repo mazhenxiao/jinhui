@@ -138,9 +138,9 @@ class OverviewTab extends React.Component {
         const {dataKey}  = this.state;
         let iframeUrl=this.state.planUrl+dataKey;
         if(dataKey == undefined ){
-            return <iframe ref="outheIframe" src={"http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=1E1CB1E95A864AFA961392C3E3644642"} scrolling="no" width="100%" height="700" style={{border: 0}}></iframe>
+            return <iframe ref="outheIframe" src={"http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=1E1CB1E95A864AFA961392C3E3644642"} scrolling="no" width="100%" height="600" style={{border: 0}}></iframe>
         }else{
-            let att = <iframe ref="outheIframe" scrolling="no" width="100%" height="700" src={iframeUrl} style={{border: 0,width:"100%",height:"700px"}}></iframe>;
+            let att = <iframe ref="outheIframe" scrolling="no" width="100%" height="600" src={iframeUrl} style={{border: 0,width:"100%",height:"700px"}}></iframe>;
             return att;
         } 
         
@@ -152,10 +152,10 @@ class OverviewTab extends React.Component {
          const {currentPosi, dataKey,location,parentid} = this.props;
          switch(arg){
             case "index"://项目概览
-                //return <OverviewIndex />
-                return <div  style={{fontSize:"16px"}}>
-                        <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
-                    </div>
+                return<div>
+                    <p style={{clear:"both"}}><b style={{float:"right",color:"red",fontSize:"18px"}}>数据案例</b></p>
+                    <OverviewIndex />
+                </div>
             break;
             case "identityProject"://项目身份证
                  if(currentPosi=="project"){
@@ -176,42 +176,48 @@ class OverviewTab extends React.Component {
                     
             break;
             case "supply"://供货
-                //return <OverviewSupply location={location} />
-                return <div style={{fontSize:"16px"}}>
-                    <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
+                return <div>
+                    <p style={{clear:"both"}}><b style={{float:"right",color:"red",fontSize:"18px"}}>数据案例</b></p>
+                    <OverviewSupply location={location} />
                 </div>
             break;
             case "sign"://签约
-                //return <OverviewSign location={location} />
-                return <div style={{fontSize:"16px"}}>
-                    <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
-                </div>
+                return <div>
+                        <p style={{clear:"both"}}><b style={{float:"right",color:"red",fontSize:"18px"}}>数据案例</b></p>
+                        <OverviewSign location={location} />
+                    </div>
+                
             break;  
             case "payment"://回款
-                //return <OverviewPayment />
-                return <div style={{fontSize:"16px"}}>
-                    <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
-                </div>
+                return <div>
+                        <p style={{clear:"both"}}><b style={{float:"right",color:"red",fontSize:"18px"}}>数据案例</b></p>
+                        <OverviewPayment />
+                    </div>
+                
             break;
             case "plan"://计划
                 return <div className="iframeLoad"> 
                         {this.iframeLoad()}
-                    </div>
-                //  return <div style={{fontSize:"16px"}}>
-                //     <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
-                // </div>
+                 </div>
             break;
             case "matter"://重点事项
-                // return <OverviewPriority />
-                return <div style={{fontSize:"16px"}}>
-                    <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
+                return <div>
+                    <p style={{clear:"both"}}><b style={{float:"right",color:"red",fontSize:"18px"}}>数据案例</b></p>
+                    <div>
+                        <OverviewPriority />
+                    </div>
                 </div>
             break; 
             case "keyPoint"://关键指标
-                return <div style={{fontSize:"16px"}}>
-                    <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
+                // return <div style={{fontSize:"16px"}}>
+                //     <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
+                // </div>
+                return <div>
+                     <p style={{clear:"both"}}><b style={{float:"right",color:"red",fontSize:"18px"}}>数据案例</b></p>
+                    <div>
+                        <OverviewPrimaryKey />
+                    </div>
                 </div>
-                //return <OverviewPrimaryKey />
             break;
         } 
 

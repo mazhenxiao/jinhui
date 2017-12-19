@@ -303,12 +303,14 @@ class OverviewPrimaryKey extends Component {
     render() {
         // pagination 是否分页，columns头部标题数据，dataSource表内容数据
         return (
+            <div style={{clear:"both"}}>
             <Table 
                 columns={this.columns||[]} 
                 pagination={false} 
                 dataSource={this.state.data||[]} 
                 bordered={true} 
             />
+            </div>
         );
        
     }
