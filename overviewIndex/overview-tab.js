@@ -162,6 +162,7 @@ class OverviewTab extends React.Component {
                     />  
                  }
             break;
+            
             case "identityIntallment"://分期身份证
                 if(currentPosi=="intallment"){
                     return <div>
