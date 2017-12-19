@@ -122,7 +122,7 @@ export const submitSupplyData = (dataKey, mode) => {
         datalevel: mode,
     };
     return iss.fetch({
-        url: "Supply/ISaveInfo",
+        url: "Supply/ISubmintInfo",
         type: "post",
         data: JSON.stringify(paramsValue),
     })

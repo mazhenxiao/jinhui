@@ -54,7 +54,6 @@ class BuildingAdjust extends Component {
         });
     };
 
-
     componentDidMount() {
         this.loadData();
     }
@@ -118,7 +117,7 @@ class BuildingAdjust extends Component {
     };
 
     getGroupHeader = () => {
-        const {supplyData} = this.state;
+        const {supplyData, filterGroup} = this.state;
         const options = [];
         const dataSource = [{id: "", name: "全部组团"}];
         supplyData.forEach(item => {
@@ -132,14 +131,15 @@ class BuildingAdjust extends Component {
         });
 
         return (
-            <Select defaultValue="" style={{width: 120}} onChange={this.handleSelectChange.bind(this, "filterGroup")}>
+            <Select value={filterGroup} style={{width: 120}}
+                    onChange={this.handleSelectChange.bind(this, "filterGroup")}>
                 {options}
             </Select>
         );
     };
 
     getFormatHeader = () => {
-        const {supplyData} = this.state;
+        const {supplyData, filterFormat} = this.state;
         const options = [];
         const dataSource = [{id: "", name: "全部业态"}];
         supplyData.forEach(item => {
@@ -153,14 +153,15 @@ class BuildingAdjust extends Component {
         });
 
         return (
-            <Select defaultValue="" style={{width: 120}} onChange={this.handleSelectChange.bind(this, "filterFormat")}>
+            <Select value={filterFormat} style={{width: 120}}
+                    onChange={this.handleSelectChange.bind(this, "filterFormat")}>
                 {options}
             </Select>
         );
     };
 
     getBuildHeader = () => {
-        const {supplyData} = this.state;
+        const {supplyData, filterBuilding} = this.state;
         const options = [];
         const dataSource = [{id: "", name: "全部楼栋"}];
         supplyData.forEach(item => {
@@ -174,7 +175,7 @@ class BuildingAdjust extends Component {
         });
 
         return (
-            <Select defaultValue="" style={{width: 120}}
+            <Select value={filterBuilding} style={{width: 120}}
                     onChange={this.handleSelectChange.bind(this, "filterBuilding")}>
                 {options}
             </Select>
