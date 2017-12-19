@@ -209,15 +209,15 @@ class BuildingAdjust extends Component {
 
         const areaRow = {
             ID: iss.guid(),
-            GROUPNAME: "汇总: ",
-            SupplyDate: "可售面积(㎡)",
+            GROUPNAME: "可售面积汇总(㎡): ",
+            SupplyDate: "",
             mode: "Summary",
         };
 
         const moneryRow = {
             ID: iss.guid(),
-            GROUPNAME: "汇总: ",
-            SupplyDate: "可售货值(万元)",
+            GROUPNAME: "可售货值汇总(万元): ",
+            SupplyDate: "",
             mode: "Summary",
         };
 
@@ -378,6 +378,7 @@ class BuildingAdjust extends Component {
     getColumns = () => {
         const {switchYear} = this.props.baseInfo;
         const {currentYear} = this.state;
+        const lastYear = switchYear.indexOf(currentYear) === 3 ? true : false;
 
         const columns = [
             {
@@ -385,14 +386,15 @@ class BuildingAdjust extends Component {
                 dataIndex: 'GROUPNAME',
                 key: 'GROUPNAME',
                 width: 140,
+                fixed: !lastYear ? 'left' : false,
                 render: (text, row, index) => {
                     if (index < this.innerSupplyData.length - 2) {
                         return text;
                     }
                     return {
-                        children: <div className="summary"><span>{text}</span></div>,
+                        children: <div className="summary">{text}</div>,
                         props: {
-                            colSpan: 6,
+                            colSpan: 3,
                         },
                     };
                 }
@@ -402,6 +404,7 @@ class BuildingAdjust extends Component {
                 dataIndex: 'PRODUCTTYPENAME',
                 key: 'PRODUCTTYPENAME',
                 width: 140,
+                fixed: !lastYear ? 'left' : false,
                 render: this.renderColumnContent.bind(this)
             },
             {
@@ -409,6 +412,7 @@ class BuildingAdjust extends Component {
                 dataIndex: 'BUILDNAME',
                 key: 'BUILDNAME',
                 width: 140,
+                fixed: !lastYear ? 'left' : false,
                 render: this.renderColumnContent.bind(this)
             },
             {
@@ -416,7 +420,18 @@ class BuildingAdjust extends Component {
                 dataIndex: 'SourceSaleArea',
                 key: 'SourceSaleArea',
                 width: 100,
-                render: this.renderColumnContent.bind(this)
+                // render: this.renderColumnContent.bind(this)
+                render: (text, row, index) => {
+                    if (index < this.innerSupplyData.length - 2) {
+                        return text;
+                    }
+                    return {
+                        children: <span></span>,
+                        props: {
+                            colSpan: 3,
+                        },
+                    };
+                }
             },
             {
                 title: this.setAlignCenter("可售货值(万元)"),
@@ -463,7 +478,7 @@ class BuildingAdjust extends Component {
                     title: this.setAlignCenter(`第${i}季度`),
                     dataIndex: `${currentYear}-quarter-${i}`,
                     key: `${currentYear}-quarter-${i}`,
-                    width: 90,
+                    width: 100,
                     render: this.fillQuarterColor(currentYear, i),
                 });
             }
