@@ -210,7 +210,9 @@ class SignIndex extends Component {
                         dynamicEditButtonShow: Boolean(status==0&&dynamicDataSource && dynamicDataSource.length),
                     },
                     dynamicTable = {...this.state.dynamicTable, ...newData};
+                
                 this.setState({dynamicTable});
+                if(data&&data.length<=0){ iss.error("当前签约数据为空！")}
             })
     }
     /**
@@ -265,9 +267,9 @@ class SignIndex extends Component {
                     }
                 planTable = {...planTable, ...newData};
                 version = {...version, ...newVersion};
-
+                    
                 this.setState({planTable, version});
-
+                if(planDataSource&&planDataSource.length<=0){ iss.error("当前考核数据为空！")}
             })
     }
 
@@ -354,7 +356,7 @@ class SignIndex extends Component {
             } else {
                 for (let key in arg) {
                     let reg = /^Y\d{3}/ig;
-                    if (reg.test(key) && arg[key] !== "") {
+                    if (reg.test(key)) {
                         let {startYear} = this.dynamicTable;
                         let _startYear = `${startYear}+${key.substr(1,1)}-1`;
                         _startYear = eval(_startYear);
