@@ -18,7 +18,7 @@ const TabPane = Tabs.TabPane;
 class SignIndex extends Component {
 
     state = {
-        loading: false,
+        loading: true,
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : this.props.location.query.isProOrStage == "2" ? "Stage" : "",//显示模式，项目或者分期
         versionId: "",
@@ -35,7 +35,8 @@ class SignIndex extends Component {
             planHeaderData: [],
             planDataSource: [],
             planEdit: false,
-            loading: true
+            loading: true,
+            showHeader:true//显示表头
         },
         version: { //版本
             currentVersion: "",//当前版本
@@ -63,9 +64,9 @@ class SignIndex extends Component {
         status:"",//接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回 
         startYear: "",//起始年
         signAContractVersionId: "",//调整版本id
-        saveData: {}//保存数据临时存储
+        saveData: {},//保存数据临时存储
+        scrollHeight:200//table高度
     }
-
 
     antdTableScrollLock = null;//用来触发卸载原生事件
 
@@ -94,6 +95,7 @@ class SignIndex extends Component {
 
         if (dataKey != nextDataKey) {
             this.setState({
+                    loading:true,
                     dataKey: nextDataKey,
                     mode: nextMode,
                     activeTapKey: "plan-quota",
@@ -121,6 +123,9 @@ class SignIndex extends Component {
             this.bindScrollLock();
         }).catch(error => {
             iss.error(error);
+            this.setState({
+                loading:false
+            })
         })
     }
 
@@ -210,7 +215,9 @@ class SignIndex extends Component {
                         dynamicEditButtonShow: Boolean(status==0&&dynamicDataSource && dynamicDataSource.length),
                     },
                     dynamicTable = {...this.state.dynamicTable, ...newData};
+                
                 this.setState({dynamicTable});
+                if(data&&data.length<=0){ iss.info("当前签约数据为空！")}
             })
     }
     /**
@@ -265,9 +272,9 @@ class SignIndex extends Component {
                     }
                 planTable = {...planTable, ...newData};
                 version = {...version, ...newVersion};
-
-                this.setState({planTable, version});
-
+                    
+                this.setState({planTable, version,loading:false});
+                if(planDataSource&&planDataSource.length<=0){ iss.info("当前考核数据为空！")}
             })
     }
 
@@ -354,7 +361,7 @@ class SignIndex extends Component {
             } else {
                 for (let key in arg) {
                     let reg = /^Y\d{3}/ig;
-                    if (reg.test(key) && arg[key] !== "") {
+                    if (reg.test(key)) {
                         let {startYear} = this.dynamicTable;
                         let _startYear = `${startYear}+${key.substr(1,1)}-1`;
                         _startYear = eval(_startYear);
@@ -545,7 +552,7 @@ class SignIndex extends Component {
     renderHistoryData = () => {
         const {versionData, versionId, editable, dynamicTable, loading} = this.state;
         const {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow} = dynamicTable;
-
+        const {scrollHeight} =this.dynamicTable;
         return (
             <article className="toTable signPage">
                 <header className="bottom-header-bar">
@@ -572,6 +579,7 @@ class SignIndex extends Component {
                 <WrapperTreeTable
                     loading={loading}
                     size="small"
+                    defaultHeight={scrollHeight}
                     //  onDataChange={this.onDataChangeDynamic}
                     headerData={dynamicHeaderData || []}
                     editState={dynamicEdit}
@@ -587,9 +595,10 @@ class SignIndex extends Component {
      */
     renderCurrentData = () => {
         const {planTable, dynamicTable, version} = this.state;
-        const {planHeaderData, planDataSource} = planTable;
+        const {planHeaderData, planDataSource,showHeader} = planTable;
         const {versionData, versionShow, versionId, currentVersion} = version;
         const {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow, loading} = dynamicTable;
+        const {scrollHeight} =this.dynamicTable
         return (
             <article className="pkTable mgT10">
                 <header className="top-header-bar">
@@ -606,7 +615,9 @@ class SignIndex extends Component {
                     </Row>
                 </header>
                 <WrapperTreeTable
+                    showHeader={showHeader}
                     loading={loading}
+                    defaultHeight={scrollHeight}
                     headerData={dynamicHeaderData || []}
                     dataSource={dynamicDataSource || []}/>
             </article>
