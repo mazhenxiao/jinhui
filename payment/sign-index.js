@@ -71,7 +71,11 @@ class SignIndex extends Component {
     antdTableScrollLock = null;//用来触发卸载原生事件
 
     componentDidMount() {
-        this.getFetData(true);
+        let {dataKey}=this.props.location.query;
+        if(dataKey){
+            this.getFetData(true);
+        }
+   
     }
 
     componentWillUnmount() {
@@ -100,7 +104,10 @@ class SignIndex extends Component {
                     mode: nextMode,
                     activeTapKey: "plan-quota",
                 }, arg => {
-                    this.getFetData();
+                    if(nextDataKey){
+                        this.getFetData();
+                    }
+
                 }
             );
         }
@@ -335,6 +342,9 @@ class SignIndex extends Component {
             versionId: dataKey,
             signAContractSaveData: _da
         }
+        this.setState({
+            loading:true
+        })
         return Payment.ISaveSignAContractData(postData)
             .then(arg => {
                 iss.tip({
@@ -342,10 +352,21 @@ class SignIndex extends Component {
                     description: "保存成功"
                 });
                 return _da;
-            }).catch(err => {
+            }).then(arg=>{
+               return this.getDynamicData();//动态获取数据
+            })
+            .then(arg=>{
+                this.setState({
+                    loading:false
+                })
+            })
+            .catch(err => {
                 iss.tip({
                     type: "error",
                     description: "保存失败请重试！"
+                })
+                this.setState({
+                    loading:false
                 })
             })
 
