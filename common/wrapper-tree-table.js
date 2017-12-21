@@ -299,7 +299,7 @@ const headerStyle = {
 class WrapperTreeTable extends Component {
 
     static propTypes = {
-        showHeader:React.PropTypes.bool,//是否显示表头
+        showHeader: React.PropTypes.bool,//是否显示表头
         headerData: React.PropTypes.array,//表头数据
         dataSource: React.PropTypes.array,//表格数据源
         rowKey: React.PropTypes.string,//主键
@@ -313,7 +313,7 @@ class WrapperTreeTable extends Component {
     };
 
     static defaultProps = {
-        showHeader:true,
+        showHeader: true,
         headerData: [],
         dataSource: [],
         rowKey: "key",
@@ -355,7 +355,7 @@ class WrapperTreeTable extends Component {
             //render
             if (index != 0) {
                 column.render = (text, record) => {
-                    return <span className="text-center">{text}</span>
+                    return <span className="text-center">{text ? text : "-"}</span>
                 };
             }
 
@@ -415,7 +415,7 @@ class WrapperTreeTable extends Component {
             };
 
             childColumn.render = (text, record) => {
-                return <span className="text-center">{text}</span>
+                return <span className="text-center">{text ? text : "-"}</span>
             };
 
             if (columnRender && columnRender[childHeaderItem.field]) {
@@ -466,12 +466,12 @@ class WrapperTreeTable extends Component {
 
     render() {
 
-        const {headerData, dataSource, rowKey, defaultHeight,showHeader} = this.props;
+        const {headerData, dataSource, rowKey, defaultHeight, showHeader} = this.props;
         let tableColumns = this.getColumns(headerData);
         // if (dataSource && dataSource.length > 0) {
         //     tableColumns = this.getColumns(headerData);
         // }
-        
+
         return (
             <Table
                 showHeader={showHeader}
