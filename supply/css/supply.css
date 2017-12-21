@@ -4,6 +4,12 @@
 .supply-wrapper {
   margin-bottom: 20px;
 }
+.supply-wrapper .ant-table-fixed .ant-table-tbody .ant-table-row {
+  height: 35px !important;
+}
+.supply-wrapper .ant-table-bordered .ant-table-tbody > tr > td {
+  text-align: left;
+}
 .supply-wrapper .title {
   font-size: 13px;
   font-weight: 600;
@@ -38,6 +44,12 @@
   padding-bottom: 3px;
   text-align: center;
 }
+.building-adjust .summary {
+  text-align: right;
+  padding-right: 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
 .building-adjust .adjust-header {
   position: relative;
   bottom: 10px;
@@ -71,8 +83,12 @@
 }
 .building-adjust .adjust-header .switch-year {
   display: inline-block;
-  width: 300px;
+  width: 380px;
   padding-left: 50px;
+}
+.building-adjust .adjust-header .summary-wrapper {
+  display: inline-block;
+  padding-left: 40px;
 }
 .building-adjust .adjust-table {
   margin-top: 10px;
