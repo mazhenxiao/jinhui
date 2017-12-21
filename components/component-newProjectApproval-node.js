@@ -5,10 +5,10 @@
  */
 /*审批信息*/
 import React from 'react';
-import "../js/iss.js";
+import iss from "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import "../css/newProjectApproval.less";
-
+import { Spin } from 'antd';
 class ApprovalControlNode extends React.Component {
     constructor(arg) {
         super(arg);
@@ -17,7 +17,8 @@ class ApprovalControlNode extends React.Component {
             aList: [],
             InfoData: [],//流程信息
             allSearchArg: this.props.allSearchArg,
-            history: [] //历史纪录
+            history: [], //历史纪录
+            loading:true
         }
         this.type = "edit"  //this.props["type"] || "edit"; //以防外部没有设置type类型
         this.newId = null;//10102项目所需新id
@@ -68,11 +69,12 @@ class ApprovalControlNode extends React.Component {
             success(result) {
 
                 th.setState({
+                    loading:false,
                     InfoData: JSON.parse(result.d.Data)
                 });
             },
             error(e) {
-
+                this.errorInformation();
             }
         })
         let url = "/iWorkflow/Workflow/api/WFServices.asmx/GetFlowLog";//获取历史纪录
@@ -149,6 +151,7 @@ class ApprovalControlNode extends React.Component {
                     "id": dataKey  //==================================================
                 },
                 success(da) {
+
                     if (da["rows"]) {
                         resolve(da["rows"]);
                         //th.BIND_CHECKED(da["rows"])
@@ -158,11 +161,18 @@ class ApprovalControlNode extends React.Component {
 
                 },
                 error() {
-
+                    this.errorInformation();
                 }
             })
         })
         //  th.BIND_CHECKED();  //检查数据
+    }
+    //错误提示
+    errorInformation=()=>{
+        iss.info("加载失败");
+        this.setState({
+            loading:false
+        });
     }
 
     BIND_CHECKED() {   //第一次ajax提交检查数据
@@ -422,9 +432,9 @@ class ApprovalControlNode extends React.Component {
     }
 
     render() {
-
-        var re_aOpinions = this.state.aOpinions;
-        return (<div className="boxGroupDetail">
+        let {loading,aOpinions:re_aOpinions}=this.state;
+       // var re_aOpinions = this.state.aOpinions;
+        return <Spin spinning={loading}><div className="boxGroupDetail">
 
             <table className="table tableProject">
                 <tbody>
@@ -471,7 +481,7 @@ class ApprovalControlNode extends React.Component {
                 }
                 </tbody>
             </table>
-        </div>);
+        </div></Spin>;
 
     }
 }
