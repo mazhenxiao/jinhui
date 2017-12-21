@@ -6,7 +6,6 @@ import PercentAdjust from './percent-adjust';
 import {Spin, Tabs, Row, Col, Button, Select, Table, Modal} from 'antd';
 import {WrapperSelect, WrapperTreeTable} from '../common';
 import {SupplyService} from "../services";
-import {knife} from '../utils';
 import "../css/button.less";
 import "./css/supply.less";
 
@@ -30,8 +29,6 @@ class Index extends Component {
         adjustData: {},//动态调整板数据
         modalKey: "",//弹窗的key
     };
-
-    antdTableScrollLock = null;
 
     componentDidMount() {
         //判断是否是审批, 真:审批状态; 假:普通状态
@@ -60,12 +57,6 @@ class Index extends Component {
                 }
             );
             this.loadBaseData(nextDataKey, nextMode);
-        }
-    }
-
-    componentWillUnmount() {
-        if (this.antdTableScrollLock) {
-            this.antdTableScrollLock.remove();//注销双向绑定
         }
     }
 
@@ -116,10 +107,11 @@ class Index extends Component {
                     dynamicId,
                 };
             })
-            .then(({dynamicId, versionId}) => {
+            .then(({versionId, dynamicId}) => {
                 const allPromise = [
                     SupplyService.getDynamicAdjustData(dynamicId),
-                    SupplyService.getPlanData(versionId),
+                    // SupplyService.getPlanData(versionId),
+                    SupplyService.getPlanData(dynamicId),//TODO 测试 临时处理
                 ];
                 return Promise.all(allPromise);
             })
@@ -129,8 +121,6 @@ class Index extends Component {
                     ...nextState,
                     planData,
                     adjustData,
-                }, () => {
-                    this.bindScrollLock();
                 });
             })
             .catch(error => {
@@ -139,21 +129,8 @@ class Index extends Component {
                 });
                 iss.error(error);
             })
-    };
-
-    /**
-     * 绑定双向滚动
-     */
-    bindScrollLock = () => {
-
-        let toTable = document.querySelector(".toTable .ant-table-body"),
-            pkTable = document.querySelector(".pkTable .ant-table-body");
-        if (toTable && pkTable) {
-            toTable.scrollTop = toTable.scrollLeft = 0;
-            pkTable.scrollTop = pkTable.scrollLeft = 0;
-            this.antdTableScrollLock = knife.AntdTable_ScrollLock(toTable, pkTable);
-        }
     }
+    ;
 
     handleVersionChange = (versionId) => {
         this.setState({
@@ -225,7 +202,7 @@ class Index extends Component {
 
         return (
             <article>
-                <Row className="toTable top-header">
+                <Row className="top-header">
                     <Col span={12}>
                         <span className="title">供货计划动态调整版（面积：平方米，货值：万元）</span>
                     </Col>
@@ -255,7 +232,7 @@ class Index extends Component {
         const {versionId, versionData, planData, dataKey} = this.state;
         return (
             <article>
-                <Row className="pkTable bottom-header">
+                <Row className="bottom-header">
                     <Col span={12}>
                         <span className="title">供货计划考核版（面积：平方米，货值：万元）</span>
                     </Col>

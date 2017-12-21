@@ -140,7 +140,6 @@ class $iss {
         } else {
             arg.data["token"] = token;
         }
-        $.support.cors = true;
         return $.ajax(arg).done((da) => {
 
             var _da = da;

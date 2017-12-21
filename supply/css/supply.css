@@ -4,6 +4,9 @@
 .supply-wrapper {
   margin-bottom: 20px;
 }
+.supply-wrapper .ant-table-fixed .ant-table-tbody .ant-table-row {
+  height: 35px !important;
+}
 .supply-wrapper .ant-table-bordered .ant-table-tbody > tr > td {
   text-align: left;
 }
@@ -17,7 +20,7 @@
 }
 .supply-wrapper .plan-version {
   display: inline-block;
-  width: 280px;
+  width: 210px;
 }
 .supply-wrapper .top-header {
   padding-bottom: 5px;

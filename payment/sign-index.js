@@ -18,7 +18,7 @@ const TabPane = Tabs.TabPane;
 class SignIndex extends Component {
 
     state = {
-        loading: true,
+        loading: false,
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : this.props.location.query.isProOrStage == "2" ? "Stage" : "",//显示模式，项目或者分期
         versionId: "",
@@ -35,8 +35,7 @@ class SignIndex extends Component {
             planHeaderData: [],
             planDataSource: [],
             planEdit: false,
-            loading: true,
-            showHeader:true//显示表头
+            loading: true
         },
         version: { //版本
             currentVersion: "",//当前版本
@@ -64,18 +63,14 @@ class SignIndex extends Component {
         status:"",//接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回 
         startYear: "",//起始年
         signAContractVersionId: "",//调整版本id
-        saveData: {},//保存数据临时存储
-        scrollHeight:200//table高度
+        saveData: {}//保存数据临时存储
     }
+
 
     antdTableScrollLock = null;//用来触发卸载原生事件
 
     componentDidMount() {
-        let {dataKey}=this.props.location.query;
-        if(dataKey){
-            this.getFetData(true);
-        }
-   
+        this.getFetData(true);
     }
 
     componentWillUnmount() {
@@ -99,15 +94,11 @@ class SignIndex extends Component {
 
         if (dataKey != nextDataKey) {
             this.setState({
-                    loading:true,
                     dataKey: nextDataKey,
                     mode: nextMode,
                     activeTapKey: "plan-quota",
                 }, arg => {
-                    if(nextDataKey){
-                        this.getFetData();
-                    }
-
+                    this.getFetData();
                 }
             );
         }
@@ -130,9 +121,6 @@ class SignIndex extends Component {
             this.bindScrollLock();
         }).catch(error => {
             iss.error(error);
-            this.setState({
-                loading:false
-            })
         })
     }
 
@@ -222,9 +210,7 @@ class SignIndex extends Component {
                         dynamicEditButtonShow: Boolean(status==0&&dynamicDataSource && dynamicDataSource.length),
                     },
                     dynamicTable = {...this.state.dynamicTable, ...newData};
-                
                 this.setState({dynamicTable});
-                if(data&&data.length<=0){ iss.info("当前签约数据为空！")}
             })
     }
     /**
@@ -263,7 +249,7 @@ class SignIndex extends Component {
             .then(Adata => { //获取版本
                 currentVersion = this.getCurrentVertion(Adata);
                 versionData = Adata;
-                return Payment.IGetSignAContractData(dataKey||currentVersion)
+                return Payment.IGetSignAContractData(currentVersion)
             })
             .then((planDataSource) => {
 
@@ -279,9 +265,9 @@ class SignIndex extends Component {
                     }
                 planTable = {...planTable, ...newData};
                 version = {...version, ...newVersion};
-                    
-                this.setState({planTable, version,loading:false});
-                if(planDataSource&&planDataSource.length<=0){ iss.info("当前考核数据为空！")}
+
+                this.setState({planTable, version});
+
             })
     }
 
@@ -342,9 +328,6 @@ class SignIndex extends Component {
             versionId: dataKey,
             signAContractSaveData: _da
         }
-        this.setState({
-            loading:true
-        })
         return Payment.ISaveSignAContractData(postData)
             .then(arg => {
                 iss.tip({
@@ -352,21 +335,10 @@ class SignIndex extends Component {
                     description: "保存成功"
                 });
                 return _da;
-            }).then(arg=>{
-               return this.getDynamicData();//动态获取数据
-            })
-            .then(arg=>{
-                this.setState({
-                    loading:false
-                })
-            })
-            .catch(err => {
+            }).catch(err => {
                 iss.tip({
                     type: "error",
                     description: "保存失败请重试！"
-                })
-                this.setState({
-                    loading:false
                 })
             })
 
@@ -382,16 +354,12 @@ class SignIndex extends Component {
             } else {
                 for (let key in arg) {
                     let reg = /^Y\d{3}/ig;
-                    if (reg.test(key)) {
+                    if (reg.test(key) && arg[key] !== "") {
                         let {startYear} = this.dynamicTable;
-                        let _startYear = `${startYear}+${key.substr(1,1)}-1`;
-                        _startYear = eval(_startYear);
-                        
+                        startYear = eval(startYear - key.substr(1, 1))
                         let _da = {
                             dataType: key.substr(4),
-                            year:_startYear,
-                            month:key.substr(2, 2),
-                            titlename: `${_startYear}-${key.substr(2, 2)}-01`,
+                            titlename: `${startYear}-${key.substr(2, 2)}-01`,
                             productTypeID: arg["showId"] || "",
                             GROUPID: arg["GROUPID"],
                             val: arg[key]
@@ -573,7 +541,7 @@ class SignIndex extends Component {
     renderHistoryData = () => {
         const {versionData, versionId, editable, dynamicTable, loading} = this.state;
         const {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow} = dynamicTable;
-        const {scrollHeight} =this.dynamicTable;
+
         return (
             <article className="toTable signPage">
                 <header className="bottom-header-bar">
@@ -600,7 +568,6 @@ class SignIndex extends Component {
                 <WrapperTreeTable
                     loading={loading}
                     size="small"
-                    defaultHeight={scrollHeight}
                     //  onDataChange={this.onDataChangeDynamic}
                     headerData={dynamicHeaderData || []}
                     editState={dynamicEdit}
@@ -616,10 +583,9 @@ class SignIndex extends Component {
      */
     renderCurrentData = () => {
         const {planTable, dynamicTable, version} = this.state;
-        const {planHeaderData, planDataSource,showHeader} = planTable;
+        const {planHeaderData, planDataSource} = planTable;
         const {versionData, versionShow, versionId, currentVersion} = version;
         const {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow, loading} = dynamicTable;
-        const {scrollHeight} =this.dynamicTable
         return (
             <article className="pkTable mgT10">
                 <header className="top-header-bar">
@@ -636,9 +602,7 @@ class SignIndex extends Component {
                     </Row>
                 </header>
                 <WrapperTreeTable
-                    showHeader={showHeader}
                     loading={loading}
-                    defaultHeight={scrollHeight}
                     headerData={dynamicHeaderData || []}
                     dataSource={dynamicDataSource || []}/>
             </article>

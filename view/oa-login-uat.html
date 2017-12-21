@@ -35,7 +35,6 @@
 
         var fdLoginName = GetQueryString("fdLoginName");
         var fdPassword = GetQueryString("fdPassword");
-        $.support.cors = true;
         $.ajax({
             url: home + "/Account/OASSOLogin",
             data: {"fdLoginName": fdLoginName, "fdPassword": fdPassword},

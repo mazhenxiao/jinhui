@@ -436,7 +436,6 @@
         var login = function () {
             var _username = $('#username').val();
             var _pwd = $('#pwd').val();
-            $.support.cors = true;
             $.ajax({
                 url: home + "/Account/ILogin",
                 data: {"UserName": _username, "UserPwd": _pwd},
