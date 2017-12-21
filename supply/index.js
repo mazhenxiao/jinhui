@@ -116,10 +116,10 @@ class Index extends Component {
                     dynamicId,
                 };
             })
-            .then(({versionId, dynamicId}) => {
+            .then(({dynamicId, versionId}) => {
                 const allPromise = [
+                    SupplyService.getDynamicAdjustData(dynamicId),
                     SupplyService.getPlanData(versionId),
-                    SupplyService.getPlanData(dynamicId),
                 ];
                 return Promise.all(allPromise);
             })

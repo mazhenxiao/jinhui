@@ -66,7 +66,7 @@ export const getPlanData = (versionId) => {
 export const getDynamicAdjustData = (dynamicId) => {
 
     return iss.fetch({
-        url: "Supply/IApprovedView",
+        url: "/Supply/IApprovedView",
         type: "get",
         data: {
             id: dynamicId,
@@ -80,7 +80,7 @@ export const getDynamicAdjustData = (dynamicId) => {
  */
 export const getSupplyData = (dataKey, mode) => {
     return iss.fetch({
-        url: "Supply/IGetSelectSupplyData",
+        url: "/Supply/IGetSelectSupplyData",
         type: "get",
         data: {
             id: dataKey,
@@ -110,7 +110,7 @@ export const saveSupplyData = (dataKey, mode, SupplyID, currentMonth, DataSource
         DataSource,
     };
     return iss.fetch({
-        url: "Supply/ISaveInfo",
+        url: "/Supply/ISaveInfo",
         type: "post",
         data: JSON.stringify(paramsValue),
     })
@@ -122,7 +122,7 @@ export const submitSupplyData = (dataKey, mode) => {
         datalevel: mode,
     };
     return iss.fetch({
-        url: "Supply/ISubmintInfo",
+        url: "/Supply/ISubmintInfo",
         type: "post",
         data: JSON.stringify(paramsValue),
     })
