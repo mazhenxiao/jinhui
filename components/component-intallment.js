@@ -5,6 +5,7 @@ import "babel-polyfill";  //兼容ie
 import StagingInformation from "./component-stagingInformation.js";
 import Indicators from "./component-indicators.js";
 import { setTimeout } from 'timers';
+import { Spin } from 'antd';
 import "../css/intallment.less";
 class Intallment extends React.Component {
     constructor(arg) {
@@ -25,10 +26,13 @@ class Intallment extends React.Component {
             ID_guid:this.ID_guid,
             landCode:"",/*地块编码*/
             projectCode:"",/*项目编码*/
+       
             //maxCode:"",/*最大编码*/
             //pCodeAndLXCode:""/*分期编码*/
         }
-        
+    this.outh={
+        loading:false
+    }
      
     }    
     componentWillMount(){
@@ -181,7 +185,8 @@ class Intallment extends React.Component {
     }
     /*暂存*/
     EVENT_CLICK_SAVE=($str,callback)=>{
-    
+        console.log(this.outh.loading)
+        if(this.outh.loading){ iss.info("不能过于频繁的缓存数据！");return}
         let str = typeof $str =="string"? $str:"Save"
         
         let th=this;
@@ -225,6 +230,7 @@ class Intallment extends React.Component {
         
         if ($.trim(th.state.StagingInformationDATA.STAGENAME)) {
             //if (!th.state.StagingInformationDATA.checkName) { iss.popover({ content: "分期名称已存在请重新填写！" }); return }
+            th.outh.loading=true;
             iss.ajax({
                 type:"POST",
                 url:"/Stage/IToCreate",
@@ -235,8 +241,7 @@ class Intallment extends React.Component {
                     EditType:str //暂存是save 发起审批是submit
                 },
                 success(data) {
-
-                  
+                    setTimeout(arg=>{ th.outh.loading=false; },1000);
                     let results=data,id="";
                     if(results.message=="成功"){
                         
@@ -250,6 +255,7 @@ class Intallment extends React.Component {
 					    	}
                         	
                             th.setState({
+                                laoding:false,
                                 "status":"edit",
                             });
                             window.location.href=urlPath;
@@ -266,6 +272,7 @@ class Intallment extends React.Component {
 					    	}
                         	
                             th.setState({
+                                laoding:false,
                                 "status":"edit",
                             });
                             window.location.href=urlPath;
@@ -365,6 +372,7 @@ class Intallment extends React.Component {
     // }
     render() {
         var th=this;
+      
         return <article>
         <div>
             <h3 className="boxGroupTit">
@@ -390,7 +398,7 @@ class Intallment extends React.Component {
         <div>
         <Indicators local={this.props} location={th.props.location} versionId={th.state.versionId} versionOldId={th.state.versionOldId} status={this.state.status} callback={th.evLandList.bind(th)}/>
         </div>
-        </article> 
+        </article>
     }      
 
 }
