@@ -109,9 +109,8 @@ class Index extends Component {
             })
             .then(({versionId, dynamicId}) => {
                 const allPromise = [
-                    SupplyService.getDynamicAdjustData(dynamicId),
-                    // SupplyService.getPlanData(versionId),
-                    SupplyService.getPlanData(dynamicId),//TODO 测试 临时处理
+                    SupplyService.getPlanData(versionId),
+                    SupplyService.getPlanData(dynamicId),
                 ];
                 return Promise.all(allPromise);
             })
