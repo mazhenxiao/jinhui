@@ -55,7 +55,7 @@ class OverviewPriority extends Component {
          
           let rate=interTime/intervalTime;
           rate = parseFloat(rate.toFixed(2))*100;
-          rate = rate.toFixed(2);
+          //rate = rate.toFixed(2);
           //console.log(riskTime);
           //console.log(latestSolutionTime);
           //console.log(currentTime);
