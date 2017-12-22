@@ -625,7 +625,7 @@ class BuildingAdjust extends Component {
     };
 
     renderContent = () => {
-        const {batchDate, currentMonth, currentYear, supplyData} = this.state;
+        const {batchDate, currentMonth, currentYear, supplyData,bordered} = this.state;
         const {switchMonth, switchYear, isCheck} = this.props.baseInfo;
         const lastYear = switchYear.indexOf(currentYear) === 3 ? true : false;
         const filterSupplyData = this.getFilterSupplyData();

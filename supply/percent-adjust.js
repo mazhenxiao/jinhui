@@ -374,7 +374,7 @@ class PercentAdjust extends Component {
     };
 
     renderContent = () => {
-        const {batchDate, currentMonth, currentYear, supplyData, summarySaleArea, summaryMonery} = this.state;
+        const {batchDate, currentMonth, currentYear, supplyData, summarySaleArea, summaryMonery,bordered} = this.state;
         const {switchMonth, switchYear, isCheck} = this.props.baseInfo;
         const lastYear = switchYear.indexOf(currentYear) === 3 ? true : false;
         const columns = this.getColumns();
