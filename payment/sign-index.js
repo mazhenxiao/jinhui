@@ -98,6 +98,7 @@ class SignIndex extends Component {
 
         if (dataKey != nextDataKey) {
             this.setState({
+                    loading:true,
                     dataKey: nextDataKey,
                     mode: nextMode,
                     activeTapKey: "plan-quota",
@@ -312,10 +313,15 @@ class SignIndex extends Component {
         let dynamicEdit = !dynamicTable.dynamicEdit;
         dynamicTable = {...dynamicTable, ...{dynamicEdit}}
         this.setState({
+           
             dynamicTable
         });
         if (!dynamicEdit) { //保存
+            this.setState({
+                loading:true
+            })
             this.saveDynamicTableData();
+            
         }
 
     };
@@ -342,7 +348,11 @@ class SignIndex extends Component {
                     description: "保存成功"
                 });
                 return _da;
-            }).catch(err => {
+            })
+            .then(arg=>{
+                this.getDynamicData();//重新拉去数据
+            })
+            .catch(err => {
                 iss.tip({
                     type: "error",
                     description: "保存失败请重试！"
