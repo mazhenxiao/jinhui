@@ -6,6 +6,7 @@ import StagingInformation from "./component-stagingInformation.js";
 import Indicators from "./component-indicators.js";
 import { setTimeout } from 'timers';
 import "../css/intallment.less";
+
 class Intallment extends React.Component {
     constructor(arg) {
         super(arg);
@@ -70,10 +71,10 @@ class Intallment extends React.Component {
 		var th=this;
 		var projectId=basicInfor.PROJECTID;
 		var stageCode=basicInfor.STAGECODE;
-
-		th.setState({
+        th.state.projectId=projectId;  //原来下面的代码会造成系统死循环，现在按非标准做法写，不建议其他地方用
+		/* th.setState({
         	projectId:projectId
-        });
+        }); */
         $(document).triggerHandler("landFirstLoad",[projectId]);
 		//th.getPjcodeAMCode(projectId,stageCode);
 	}
@@ -163,7 +164,7 @@ class Intallment extends React.Component {
         }
         th.EVENT_CLICK_SAVE("Submit",arg=>{
             let {final_versionId,areaId,areaName}=arg;
-            debugger
+            
             iss.hashHistory.push({
                 pathname: "/ProcessApproval",
                 search:'?e='+intallmentStatus+'&dataKey='+final_versionId+'&current=ProcessApproval&areaId='+areaId+'&areaName='+areaName
@@ -379,7 +380,14 @@ class Intallment extends React.Component {
 			</h3>
         </div> 
         
-        <StagingInformation  versionNewId={this.state.versionNewId} STAGECODE={this.state.STAGECODE} location={th.props.location} versionId={th.state.versionId} landCode={th.state.landCode} versionOldId={th.state.versionOldId} projectId={th.state.projectId}  status={th.state.status}  equityTxt={th.state.equityRatio} save={th.EVENT_CLICK_SAVE.bind(th)} baseCallBack={th.getBasicInforTodo.bind(th)} StagingInformationDATA={th.BIND_StagingInformationDATA.bind(th)} />
+        <StagingInformation  
+                versionNewId={this.state.versionNewId} STAGECODE={this.state.STAGECODE} 
+                location={th.props.location} versionId={th.state.versionId} 
+                landCode={th.state.landCode} versionOldId={th.state.versionOldId} 
+                projectId={th.state.projectId}  status={th.state.status}  
+                equityTxt={th.state.equityRatio} save={th.EVENT_CLICK_SAVE.bind(th)} 
+                baseCallBack={th.getBasicInforTodo.bind(th)} 
+                StagingInformationDATA={th.BIND_StagingInformationDATA.bind(th)} />
         <div>
             <h3 className="boxGroupTit">
                 <p>

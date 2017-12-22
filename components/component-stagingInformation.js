@@ -83,6 +83,7 @@ class StagingInformation extends React.Component {
                 }
                var baseformInfo=res.rows.BaseFormInfo;
                /*获取到基本信息后，返回*/
+                debugger
                 th.props.baseCallBack(baseformInfo);
                 th.setState({
                 	  "SEQNUM":baseformInfo.SEQNUM,/*分期排序字段*/
@@ -264,7 +265,7 @@ class StagingInformation extends React.Component {
                     "deletePushPlate":deletePushPlate,
                     "newPushPlateNumber":newPushPlateNumber
                 }
-                console.log(json)
+               // console.log(json)
                 iss.ajax({
                     url: "/Stage/ISavePushPlateMapping",
                     data:json,
