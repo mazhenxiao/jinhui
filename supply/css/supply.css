@@ -29,25 +29,22 @@
   padding-top: 20px;
   padding-bottom: 0px;
 }
-.ant-input {
-  height: auto;
+.building-adjust {
+  /*  .ant-btn {
+    line-height: 26px;
+  } */
 }
 .building-adjust .ant-radio-button-wrapper-checked {
   background: #108ee9;
   color: white;
 }
-.building-adjust .ant-btn {
-  line-height: 26px;
-}
 .building-adjust .ant-calendar-picker-input {
   display: inline-block;
-  padding: 0 3px;
 }
 .building-adjust .ant-table-tbody > tr > td {
-  padding-top: 3px;
-  padding-bottom: 3px;
+  /* padding-top: 3px;
+    padding-bottom: 3px; */
   text-align: center;
-  box-sizing: border-box;
 }
 .building-adjust .summary {
   text-align: right;
@@ -65,7 +62,7 @@
   top: 10px;
   display: inline-block;
   width: 200px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
 }
 .building-adjust .adjust-header .chk-wrapper {
@@ -74,7 +71,7 @@
 }
 .building-adjust .adjust-header .chk-wrapper .chk {
   left: 20px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
 }
 .building-adjust .adjust-header .date-picker-wrapper {
