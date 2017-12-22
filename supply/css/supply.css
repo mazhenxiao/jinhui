@@ -38,6 +38,7 @@
 }
 .building-adjust .ant-calendar-picker-input {
   display: inline-block;
+  padding: 0 3px;
 }
 .building-adjust .ant-table-tbody > tr > td {
   padding-top: 3px;
