@@ -659,7 +659,7 @@ class BuildingAdjust extends Component {
                         bordered={true}
                         dataSource={filterSupplyData}
                         columns={columns}
-                        size="middle"
+                        size="small"
                         scroll={!lastYear ? {x: (scrollX), y: defaultHeight} : {}}
                         pagination={false}
                     />

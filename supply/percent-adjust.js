@@ -407,7 +407,7 @@ class PercentAdjust extends Component {
                         bordered={true}
                         dataSource={supplyData}
                         columns={columns}
-                        size="middle"
+                        size="small"
                         scroll={!lastYear ? {x: (scrollX), y: defaultHeight} : {}}
                         pagination={false}
                     />
