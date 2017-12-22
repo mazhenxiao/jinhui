@@ -72,9 +72,9 @@ class BuildingAdjust extends Component {
                     supplyData,
                    
                 },arg=>{
-                    this.setState({
+                /*     this.setState({
                         bordered:true
-                    })
+                    }) */
                 });
             })
             .catch(error => {
