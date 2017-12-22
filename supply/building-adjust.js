@@ -70,7 +70,11 @@ class BuildingAdjust extends Component {
                     loading: false,
                     supplyId,
                     supplyData,
-                    bordered:true
+                   
+                },arg=>{
+                    this.setState({
+                        bordered:true
+                    })
                 });
             })
             .catch(error => {

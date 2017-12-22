@@ -72,9 +72,13 @@ class PercentAdjust extends Component {
                     loading: false,
                     supplyId,
                     supplyData,
-                    bordered:true,
+                    
                     summarySaleArea,
                     summaryMonery,
+                },arg=>{
+                    this.setState({
+                        bordered:true,
+                    })
                 });
             })
             .catch(error => {
