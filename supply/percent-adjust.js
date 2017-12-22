@@ -75,12 +75,13 @@ class PercentAdjust extends Component {
                     
                     summarySaleArea,
                     summaryMonery,
-                },arg=>{
-                  /*   this.setState({
-                        bordered:true,
-                    }) */
                 });
             })
+            .then(arg=>{
+                this.setState({
+                       bordered:true
+                   }) 
+           })
             .catch(error => {
                 this.setState({
                     loading: false,
