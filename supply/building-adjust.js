@@ -14,7 +14,7 @@ import "./css/supply.less";
 
 const Option = Select.Option;
 
-const defaultHeight = 400;
+const defaultHeight = 350;
 
 class BuildingAdjust extends Component {
 

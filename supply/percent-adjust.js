@@ -15,7 +15,7 @@ import "./css/supply.less";
 const Option = Select.Option;
 const confirm = Modal.confirm;
 
-const defaultHeight = 400;
+const defaultHeight = 350;
 
 class PercentAdjust extends Component {
 
