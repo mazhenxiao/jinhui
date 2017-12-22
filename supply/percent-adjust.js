@@ -15,7 +15,7 @@ import "./css/supply.less";
 const Option = Select.Option;
 const confirm = Modal.confirm;
 
-const defaultHeight = 300;
+const defaultHeight = 400;
 
 class PercentAdjust extends Component {
 
@@ -35,7 +35,8 @@ class PercentAdjust extends Component {
         supplyData: [],
         batchDate: "",//批量设置的日期
         summarySaleArea: 0,
-        summaryMonery: 0
+        summaryMonery: 0,
+        bordered:false
     };
 
     componentWillMount() {
@@ -71,6 +72,7 @@ class PercentAdjust extends Component {
                     loading: false,
                     supplyId,
                     supplyData,
+                    bordered:true,
                     summarySaleArea,
                     summaryMonery,
                 });
@@ -404,7 +406,7 @@ class PercentAdjust extends Component {
                 <div className="adjust-table">
                     <Table
                         rowKey="ID"
-                        bordered={true}
+                        bordered={bordered}
                         dataSource={supplyData}
                         columns={columns}
                         size="small"

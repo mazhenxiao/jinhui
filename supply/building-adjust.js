@@ -14,7 +14,7 @@ import "./css/supply.less";
 
 const Option = Select.Option;
 
-const defaultHeight = 300;
+const defaultHeight = 400;
 
 class BuildingAdjust extends Component {
 
@@ -36,6 +36,7 @@ class BuildingAdjust extends Component {
         filterGroup: "",//筛选组团
         filterFormat: "",//筛选业态
         filterBuilding: "",//筛选楼栋
+        bordered:false
     };
 
     innerSupplyData = [];
@@ -69,6 +70,7 @@ class BuildingAdjust extends Component {
                     loading: false,
                     supplyId,
                     supplyData,
+                    bordered:true
                 });
             })
             .catch(error => {
@@ -656,7 +658,7 @@ class BuildingAdjust extends Component {
                 <div className="adjust-table">
                     <Table
                         rowKey="ID"
-                        bordered={true}
+                        bordered={bordered}
                         dataSource={filterSupplyData}
                         columns={columns}
                         size="small"
