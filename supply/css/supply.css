@@ -29,6 +29,9 @@
   padding-top: 20px;
   padding-bottom: 0px;
 }
+.ant-input {
+  height: auto;
+}
 .building-adjust .ant-radio-button-wrapper-checked {
   background: #108ee9;
   color: white;
