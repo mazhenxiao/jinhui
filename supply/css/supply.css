@@ -44,6 +44,7 @@
   padding-top: 3px;
   padding-bottom: 3px;
   text-align: center;
+  box-sizing: border-box;
 }
 .building-adjust .summary {
   text-align: right;
