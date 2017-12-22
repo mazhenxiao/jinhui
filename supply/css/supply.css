@@ -5,13 +5,13 @@
   margin-bottom: 20px;
 }
 .supply-wrapper .ant-table-fixed .ant-table-tbody .ant-table-row {
-  /* height: 35px !important; */
+  height: 35px !important;
 }
 .supply-wrapper .ant-table-bordered .ant-table-tbody > tr > td {
   text-align: left;
 }
 .supply-wrapper .title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
 }
 .supply-wrapper .text-align-right {
@@ -29,21 +29,23 @@
   padding-top: 20px;
   padding-bottom: 0px;
 }
-.building-adjust {
-  /*  .ant-btn {
-    line-height: 26px;
-  } */
-}
 .building-adjust .ant-radio-button-wrapper-checked {
   background: #108ee9;
   color: white;
+}
+.building-adjust .ant-btn {
+  line-height: 26px;
+}
+.building-adjust .ant-calendar-picker {
+  height: 32px;
+  box-sizing: border-box;
 }
 .building-adjust .ant-calendar-picker-input {
   display: inline-block;
 }
 .building-adjust .ant-table-tbody > tr > td {
-  /* padding-top: 3px;
-    padding-bottom: 3px; */
+  padding-top: 3px;
+  padding-bottom: 3px;
   text-align: center;
 }
 .building-adjust .summary {
@@ -55,14 +57,14 @@
 .building-adjust .adjust-header {
   position: relative;
   bottom: 10px;
-  /*     line-height: 30px; */
+  line-height: 30px;
 }
 .building-adjust .adjust-header .select-month {
   position: relative;
   top: 10px;
   display: inline-block;
   width: 200px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
 }
 .building-adjust .adjust-header .chk-wrapper {
@@ -71,7 +73,7 @@
 }
 .building-adjust .adjust-header .chk-wrapper .chk {
   left: 20px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
 }
 .building-adjust .adjust-header .date-picker-wrapper {
@@ -93,7 +95,7 @@
   padding-left: 40px;
 }
 .building-adjust .adjust-table {
-  /* margin-top: 10px; */
+  margin-top: 10px;
 }
 .building-adjust .format-operation a {
   display: inline-block;
@@ -127,7 +129,7 @@
 }
 .empty-div {
   text-align: center;
-  /* line-height: 28px; */
+  line-height: 28px;
   margin-top: 10px;
   color: rgba(0, 0, 0, 0.43);
 }
