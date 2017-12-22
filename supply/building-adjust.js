@@ -676,7 +676,7 @@ class BuildingAdjust extends Component {
                 visible={true}
                 onCancel={this.handleCancel}
                 maskClosable={false}
-                width="90%"
+                width={1200}
                 footer={[
                     <Button key="save" type="primary" size="large" onClick={this.handleSave}>
                         保存
