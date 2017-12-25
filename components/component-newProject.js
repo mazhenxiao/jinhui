@@ -291,6 +291,16 @@ class NewProject extends React.Component {
         // if(this.time){ clearTimeout(this.time) }
         var th = this;
         var el = e ? e.target.value : da.val, list = this.state.DynamicData[this.state.pid];
+        if(da.id=="LANDCODE"){
+            let lists = this.state.DynamicData,ck=false;
+           for(let key in lists){
+               if(el&&key!=this.state.pid&&lists[key]["FieldList"].some(value=>(value["id"]=="LANDCODE"&&(value["val"]||"").indexOf(el)>=0))){
+                iss.error("地块编码被占用请使用其他字符命名");
+                    return; 
+               }
+           }
+         
+        }
         list.FieldList.forEach((d, i) => {
             if (da.id == d.id) {
                 d["val"] = el;
@@ -298,7 +308,6 @@ class NewProject extends React.Component {
                 if (d["parent"]) {
                     th.SET_PARENTCOUNT(list.FieldList, d)
                 }
-
                 return
             }
 
@@ -797,7 +806,7 @@ class NewProject extends React.Component {
                 </ul>
 
                 <DynamicTable pid={this.state.pid} DynamicData={this.state.propsDATA} CallBack={this.BIND_CALLBACK.bind(this)} />
-                <article className={this.state.propsDATA.length ? "tools-dynamicTable " : "tools-dynamicTable "}>
+                <article className={this.state.propsDATA.length ? "tools-dynamicTable hide" : "tools-dynamicTable hide"}>
                     <ul className="row">
                         <li className="col-sm-4 col-md-4 col-lg-4">
                             <label className="require"></label><i><b></b></i>

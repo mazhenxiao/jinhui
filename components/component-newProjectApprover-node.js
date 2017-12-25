@@ -5,7 +5,8 @@
  */
 /*审批信息*/
 import React from 'react';
-import "../js/iss.js";
+import iss from "../js/iss.js";
+import {Spin} from "antd"
 import "babel-polyfill";  //兼容ie
 import "../css/newProjectApproval.less";
 class ApprovalControlNode2 extends React.Component {
@@ -19,7 +20,8 @@ class ApprovalControlNode2 extends React.Component {
             mainData: "",//通过驳回权限
             history: [],//历史纪录
             fromArg: this.props.allSearchArg.from || "",
-            hide:false //默认隐藏按钮等待ajax
+            hide:false, //默认隐藏按钮等待ajax
+            loading:true
         }
 
         this.getInfo = {  //从页面获取
@@ -148,7 +150,8 @@ class ApprovalControlNode2 extends React.Component {
                     }
                 });
                 th.setState({
-                    InfoData: data
+                    InfoData: data,
+                    loading:false
                 });
             },
             error(e) {
@@ -357,7 +360,7 @@ class ApprovalControlNode2 extends React.Component {
     render() {
 
         var re_aOpinions = this.state.aOpinions;
-        return (<div className="boxGroupDetail">
+        return <Spin spinning={this.state.loading}><div className="boxGroupDetail">
 
             <table className="table tableProject">
                 <tbody><tr>
@@ -395,7 +398,7 @@ class ApprovalControlNode2 extends React.Component {
                         this.BIND_HISTORY()
                     }
                 </tbody></table>
-        </div>);
+        </div></Spin>;
 
     }
 }
