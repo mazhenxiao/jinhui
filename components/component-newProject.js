@@ -6,7 +6,7 @@ import DynamicTable from "./tools-dynamicTable.js";
 import {Project} from '../services';
 import NewProjectTime from "./component-newProject-time.js"
 import "../css/tools-dynamicTable.less";//专用css
-/* import Peripheral from "./component-newProject-peripheral.js";//外设条件 */
+ import Peripheral from "./component-newProject-peripheral.js";//外设条件 
 
 /*
     pdi id   DynamicData  结构数据 CallBack 数据修改回调
@@ -83,7 +83,7 @@ class NewProject extends React.Component {
             title: "外设地块",
             width: 800,
             height: 400,
-            content: `<div class="iframeBox" style="height:400px;overflow:hidden"><iframe id="iframeBoxI" src='/Home/MYTodo/#/peripheral?dataKey=${th.state.projectId}&currentID=${this.state.pid}' width='100%' height='400' frameborder=0  /></div>`,
+            content: `<div class="iframeBox" style="height:400px;overflow:hidden"><iframe id="iframeBoxI" src='/MYTodo/#/peripheral?dataKey=${th.state.projectId}&currentID=${this.state.pid}' width='100%' height='400' frameborder=0  /></div>`,
             okVal: "确定",
             ok(arg) {
                 var win = document.querySelector("#iframeBoxI").contentWindow;
@@ -797,7 +797,7 @@ class NewProject extends React.Component {
                 </ul>
 
                 <DynamicTable pid={this.state.pid} DynamicData={this.state.propsDATA} CallBack={this.BIND_CALLBACK.bind(this)} />
-                <article className={this.state.propsDATA.length ? "tools-dynamicTable hide" : "tools-dynamicTable hide"}>
+                <article className={this.state.propsDATA.length ? "tools-dynamicTable " : "tools-dynamicTable "}>
                     <ul className="row">
                         <li className="col-sm-4 col-md-4 col-lg-4">
                             <label className="require"></label><i><b></b></i>

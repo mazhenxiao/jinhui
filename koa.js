@@ -55,6 +55,9 @@ router.get('/', async (ctx, next) => {
     })
     .get('/AreaInfo', async (ctx, next) => {
         await ctx.render("AreaInfo", {layout: false})
+    })
+    .get('/MYTodo', async (ctx, next) => {
+        await ctx.render("MYTodo", {layout: false})
     });
 
 let port = appConfig["port"] || 8090;

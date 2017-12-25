@@ -128,5 +128,14 @@ export const projectRouter=[
             callback(null, app.default);
           }, "component-newProjectStage");
         }
+      },
+      { //外设条件
+        path: "/peripheral",
+        getComponent: function (next, callback) {
+          require.ensure([], function (require) {
+            var peripheral = require('../iframeComponents/IC_peripheral.js');//============================外设条件
+            callback(null, peripheral.default);
+          }, "IC-peripheral");
+        }
       }
 ]
