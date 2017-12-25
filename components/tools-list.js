@@ -180,11 +180,11 @@ export default class ToolsList extends React.Component {
                                             onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "sign")}>签约</a></li>
                         <li className=""><a href="javascript:void(0);"
                                             onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "payment")}>回款</a></li>
-                        {/*<li className=""><a href="javascript:void(0);"*/}
-                                            {/*onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "priority")}>重点事项</a></li>*/}
-                        {/*<li className=""><a href="javascript:void(0);"*/}
-                                            {/*onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "primarykey")}>关键指标</a>*/}
-                        {/*</li>*/}
+                        <li className=""><a href="javascript:void(0);"
+                                            onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "priority")}>重点事项</a></li>
+                        <li className=""><a href="javascript:void(0);"
+                                            onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "primarykey")}>关键指标</a>
+                        </li>
                         <li><a href="javascript:void(0);"
                                onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "groupbuild")}>项目团队维护</a>
 
@@ -213,7 +213,7 @@ export default class ToolsList extends React.Component {
                         <li className=""><a href="javascript:void(0);">字典维护(建设中)</a></li>
                     </ol>
                 </li>
-                {/*  <li className="hide"> 
+                 {/* <li className="hide"> 
                     <a href="#">报表管理</a>
                 </li> */}
 
