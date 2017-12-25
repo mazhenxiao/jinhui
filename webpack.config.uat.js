@@ -5,7 +5,7 @@ var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin"); //t
 var config = {
     entry: {
         "jinhui-Index": path.join(__dirname, '/js/main.js'), //主入口文件
-        "jinhui-newOpen":path.join(__dirname, '/js/openmain.js') //暂用open 
+        //"jinhui-newOpen":path.join(__dirname, '/js/openmain.js') //暂用open 
     },
     output: {
         path: path.join(__dirname, '/dist/js/'),
@@ -55,23 +55,24 @@ var config = {
                 'NODE_ENV': JSON.stringify('uat')
             }
         }),
-        // new webpack.optimize.UglifyJsPlugin({
-        //     // 最紧凑的输出
-        //     beautify: false,
-        //     // 删除所有的注释
-        //     comments: false,
-        //     compress: {
-        //         // 在UglifyJs删除没有用到的代码时不输出警告
-        //         warnings: false,
-        //         // 删除所有的 `console` 语句
-        //         // 还可以兼容ie浏览器
-        //         drop_console: true,
-        //         // 内嵌定义了但是只用到一次的变量
-        //         collapse_vars: true,
-        //         // 提取出出现多次但是没有定义成变量去引用的静态值
-        //         reduce_vars: true,
-        //     },
-        // }),
+        new webpack.optimize.UglifyJsPlugin({
+            include:[/echarts\.min\.js/,/chunk\.js/,/chunk\-component\-echarts\.js/,/jinhui\-Index\.js/],
+            // 最紧凑的输出
+            beautify: false,
+            // 删除所有的注释
+            comments: false,
+            compress: {
+                // 在UglifyJs删除没有用到的代码时不输出警告
+                warnings: false,
+                // 删除所有的 `console` 语句
+                // 还可以兼容ie浏览器
+                drop_console: true,
+                // 内嵌定义了但是只用到一次的变量
+                collapse_vars: true,
+                // 提取出出现多次但是没有定义成变量去引用的静态值
+                reduce_vars: true,
+            },
+        }),
     ],
     resolve: {
         modules: [path.resolve(__dirname, 'node_modules')]

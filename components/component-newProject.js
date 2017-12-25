@@ -292,6 +292,7 @@ class NewProject extends React.Component {
         var th = this;
         var el = e ? e.target.value : da.val, list = this.state.DynamicData[this.state.pid];
         if(da.id=="LANDCODE"){
+            el = (el||"").toLocaleUpperCase();
             let lists = this.state.DynamicData,ck=false;
            for(let key in lists){
                if(el&&key!=this.state.pid&&lists[key]["FieldList"].some(value=>(value["id"]=="LANDCODE"&&(value["val"]||"").indexOf(el)>=0))){

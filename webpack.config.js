@@ -14,7 +14,7 @@ var config = {
     entry: {
         //  "WebpackDevServer": "webpack-dev-server/client?http://localhost:5001/",
         "jinhui-Index": path.join(__dirname, '/js/main.js'), //主入口文件
-        "jinhui-newOpen":path.join(__dirname, '/js/openmain.js') //暂用open 
+      //  "jinhui-newOpen":path.join(__dirname, '/js/openmain.js') //暂用open 
     },
     output: {
         path: path.join(__dirname, '/dist/js/'),
@@ -57,21 +57,22 @@ var config = {
 
         new CommonsChunkPlugin({
             name: "chunk",
-            minChunks: 2
+            minChunks: 3
         }),
         new webpack.DefinePlugin({
             'process.env': {
                 'NODE_ENV': JSON.stringify('test')
             }
-        })
-        /*      new compress({
+        }),
+       /*  new compress({
+              include:[/echarts\.min\.js/,/chunk\.js/,/chunk\-component\-echarts\.js/,/jinhui\-Index\.js/],
               output: {
                   comments: false,   // remove all comments
                 },
                 compress: {
                   warnings: false
                 }
-          }), */
+          }),  */
         // new DedupePlugin({
         //     'process.env': { NODE_ENV: '"production"' }
         // }),
