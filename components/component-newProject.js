@@ -6,7 +6,7 @@ import DynamicTable from "./tools-dynamicTable.js";
 import {Project} from '../services';
 import NewProjectTime from "./component-newProject-time.js"
 import "../css/tools-dynamicTable.less";//专用css
- import Peripheral from "./component-newProject-peripheral.js";//外设条件 
+/*  import Peripheral from "./component-newProject-peripheral.js";//外设条件  */
 
 /*
     pdi id   DynamicData  结构数据 CallBack 数据修改回调
@@ -806,7 +806,7 @@ class NewProject extends React.Component {
                 </ul>
 
                 <DynamicTable pid={this.state.pid} DynamicData={this.state.propsDATA} CallBack={this.BIND_CALLBACK.bind(this)} />
-                <article className={this.state.propsDATA.length ? "tools-dynamicTable hide" : "tools-dynamicTable hide"}>
+                {/* <article className={this.state.propsDATA.length ? "tools-dynamicTable hide" : "tools-dynamicTable hide"}>
                     <ul className="row">
                         <li className="col-sm-4 col-md-4 col-lg-4">
                             <label className="require"></label><i><b></b></i>
@@ -815,7 +815,7 @@ class NewProject extends React.Component {
                             </div>
                         </li>
                     </ul>
-                </article>
+                </article> */}
 
             </section>
 
