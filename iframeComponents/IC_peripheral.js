@@ -2,12 +2,13 @@
  * 外设条件 适用于非当前模块逻辑
  */
 import React from 'react';
-import "../js/iss.js";
+import iss from "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-require("../css/IC_peripheral.less");
+import "../css/IC_peripheral.less";
 class ICPeripheral extends React.Component {
     constructor(arg) {
-        super(arg)
+        super(arg);
+      
         this.state = {
             listData: [], //显示数据
             current: []
@@ -44,7 +45,7 @@ class ICPeripheral extends React.Component {
 
         iss.ajax({
             type: "POST",
-            url: url,
+            url: iss.url(url),
             dataType: "JSON",
             data: { 
                 "projectId":th.dataKey,    
@@ -106,7 +107,7 @@ class ICPeripheral extends React.Component {
                 return;
             }
             iss.ajax({
-                url: url,
+                url: iss.url(url),
                 data: { projectId: projectId },
                 success(da) {
                     let str = da["rows"] ? JSON.stringify(da["rows"]) : "";
@@ -121,7 +122,7 @@ class ICPeripheral extends React.Component {
         })
         let dynamic_promise = new Promise((resolve, reject) => {
             iss.ajax({   //已有外设条件
-                url: url2,
+                url: iss.url(url2),
                 data: { projectId: projectId },
                 success(da) {
                     if (da["rows"] && da["rows"].length) {
@@ -146,11 +147,12 @@ class ICPeripheral extends React.Component {
 
     }
     EVENT_CLICK_UPDATE(da) { //上传
-        var url = "../../Project/UpLoadFile"; //上传
-        var url2 = "../../Project/IGetAttachmentsByItemId";//获取已上传
+        var url = "/Project/UpLoadFile"; //上传
+        var url2 = "/Project/IGetAttachmentsByItemId";//获取已上传
         let promise1 = new Promise((resolve, reject) => {
+            if(!da.valueId){ iss.error("该条目valueId为空！"); return}
          iss.ajax({
-                url: url2,
+                url: iss.url(url2),
                 data: { "itemId": da.valueId },
                 success(da) {
                     if (da && da["rows"]) {
@@ -162,11 +164,10 @@ class ICPeripheral extends React.Component {
                     reject();
                 }
             })
-        })
-        promise1.then(arg => {
-     
+        }).then(arg => {
+            
             top.iss.upload({
-                server: url,
+                server: iss.url(url),
                 content:arg,
                 fileVal: "FileData",
                 formData: {
@@ -177,9 +178,10 @@ class ICPeripheral extends React.Component {
                 },
                 onUploadSucess(f,render,opt){
                     iss.ajax({
-                        url: url2,
+                        url: iss.url(url2),
                         data: { "itemId": da.valueId },
                         success(da) {
+                            if(!da.rows){ iss.error(da.message)}
                             render(da["rows"]||[])
                         },
                         error(e) {
@@ -190,7 +192,7 @@ class ICPeripheral extends React.Component {
                 onRemove(pa,id){
                   
                   iss.ajax({
-                      url:"../../Project/IDeleteAttachment",
+                      url:iss.url("/Project/IDeleteAttachment"),
                       data:{"attachmentId":id},
                       success(da){
                         pa.remove();
