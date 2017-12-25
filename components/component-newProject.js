@@ -797,7 +797,7 @@ class NewProject extends React.Component {
                 </ul>
 
                 <DynamicTable pid={this.state.pid} DynamicData={this.state.propsDATA} CallBack={this.BIND_CALLBACK.bind(this)} />
-                <article className={this.state.propsDATA.length ? "tools-dynamicTable " : "tools-dynamicTable "}>
+                <article className={this.state.propsDATA.length ? "tools-dynamicTable hide" : "tools-dynamicTable hide"}>
                     <ul className="row">
                         <li className="col-sm-4 col-md-4 col-lg-4">
                             <label className="require"></label><i><b></b></i>
