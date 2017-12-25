@@ -5,7 +5,8 @@
  */
 /*审批信息*/
 import React from 'react';
-import "../js/iss.js";
+import iss from "../js/iss.js";
+import {Spin} from "antd"
 import "babel-polyfill";  //兼容ie
 import "../css/newProjectApproval.less";
 
@@ -17,7 +18,8 @@ class ApprovalControlNode extends React.Component {
             aList: [],
             InfoData: [],//流程信息
             allSearchArg: this.props.allSearchArg,
-            history: [] //历史纪录
+            history: [], //历史纪录
+            loading:true
         }
         this.type = "edit"  //this.props["type"] || "edit"; //以防外部没有设置type类型
         this.newId = null;//10102项目所需新id
@@ -68,7 +70,8 @@ class ApprovalControlNode extends React.Component {
             success(result) {
 
                 th.setState({
-                    InfoData: JSON.parse(result.d.Data)
+                    InfoData: JSON.parse(result.d.Data),
+                    loading:false
                 });
             },
             error(e) {
@@ -424,7 +427,8 @@ class ApprovalControlNode extends React.Component {
     render() {
 
         var re_aOpinions = this.state.aOpinions;
-        return (<div className="boxGroupDetail">
+        return <Spin spinning={this.state.loading}>
+            <div className="boxGroupDetail">
 
             <table className="table tableProject">
                 <tbody>
@@ -471,7 +475,7 @@ class ApprovalControlNode extends React.Component {
                 }
                 </tbody>
             </table>
-        </div>);
+        </div></Spin>;
 
     }
 }

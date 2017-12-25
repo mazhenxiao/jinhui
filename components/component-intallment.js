@@ -5,8 +5,8 @@ import "babel-polyfill";  //兼容ie
 import StagingInformation from "./component-stagingInformation.js";
 import Indicators from "./component-indicators.js";
 import { setTimeout } from 'timers';
+import emitter from "../utils/events";
 import "../css/intallment.less";
-
 class Intallment extends React.Component {
     constructor(arg) {
         super(arg);
@@ -75,6 +75,7 @@ class Intallment extends React.Component {
 		/* th.setState({
         	projectId:projectId
         }); */
+        emitter.emit("landFirstLoad",projectId);
         $(document).triggerHandler("landFirstLoad",[projectId]);
 		//th.getPjcodeAMCode(projectId,stageCode);
 	}

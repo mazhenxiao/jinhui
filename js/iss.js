@@ -283,7 +283,7 @@ class $iss {
     }
 
     upload(arg) {
-        var th = this;
+        var th = this,token = this.token;
         let str = `<section class="upload">
             <header><div id="uploadAddBTN"></div><div class="uploadBtn J_uploadBtn hide">上传</div></header>
             <ul class="uploadList"></ul>
@@ -323,6 +323,7 @@ class $iss {
             } //上传完成
         }
         $.extend(opt, arg || {})
+        opt.server =  opt.server.indexOf("token")>=0? opt.server:opt.server+`?token=${token}`
         let addFile = $f => {  //新增上传
             let txt = "";
             if ($f.length) {

@@ -14,6 +14,7 @@ var config = {
     entry: {
         //  "WebpackDevServer": "webpack-dev-server/client?http://localhost:5001/",
         "jinhui-Index": path.join(__dirname, '/js/main.js'), //主入口文件
+        "jinhui-newOpen":path.join(__dirname, '/js/openmain.js') //暂用open 
     },
     output: {
         path: path.join(__dirname, '/dist/js/'),
