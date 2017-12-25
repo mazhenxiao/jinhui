@@ -25,7 +25,6 @@ export default class ToolsList extends React.Component {
      *routerArr 页面分类下对应的路由
      * */
     EVENT_CLICK(pageClass, routerArr) {
-
         let th = this;
         let pageUrl = "/Index/#/";
         if (!pageClass && !routerArr) {
@@ -208,7 +207,8 @@ export default class ToolsList extends React.Component {
                         <li className=""><a href={this.state.toURL} target="_blank"
                                             className={this.state.toURL ? "" : "hide"}>标准角色授权</a>
                         </li>
-                        <li className=""><a href="javascript:void(0);">考核版本设置(建设中)</a></li>
+                        <li className=""><a href="javascript:void(0);"
+                                            onClick={this.EVENT_CLICK.bind(this, "basicSetting", "assessmentVersion")}>考核版本设置(建设中)</a></li>
                         <li className=""><a href="javascript:void(0);">组织架构维护(建设中)</a></li>
                         <li className=""><a href="javascript:void(0);">字典维护(建设中)</a></li>
                     </ol>

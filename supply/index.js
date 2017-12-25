@@ -186,6 +186,25 @@ class Index extends Component {
                 modalKey: "percent-adjust",
             });
         }
+
+        // var parentHeight = document.querySelector(".supply-wrapper"),
+        //     trHeight = parentHeight.querySelectorAll(".ant-table-row");
+
+         setTimeout(function(){
+$(".ant-table-content").find("tr").css({height:"39px"});
+        },1000);   
+        setTimeout(function(){
+            $(".ant-table-content").find("tr").css({height:"39px"});
+        },2000);  
+        setTimeout(function(){
+            $(".ant-table-content").find("tr").css({height:"39px"});
+        },3000);  
+        setTimeout(function(){
+            $(".ant-table-content").find("tr").css({height:"39px"});
+        },4000);   
+        setTimeout(function(){
+$(".ant-table-content").find("tr").css({height:"39px"});
+        },5000);
     };
 
     handleHideModal = (param) => {
