@@ -236,6 +236,25 @@ class PriceControl extends React.Component {
             }
         })
     }
+/**
+ * 合计值统计
+ * @param {* 汇总数据} data 
+ */
+    Exec_MainCount(data){
+       // this.filterRegEXP("AVERAGEPRICE PRICE");
+        let countdb,reg = {AVERAGEPRICE_COUNT:0,AVERAGEPRICE:this.filterRegEXP("AVERAGEPRICE"),PRICE_COUNT:0,PRICE:this.filterRegEXP("PRICE")}
+        
+        data.forEach(arg=>{
+            if(arg["LEVELS"]==0){
+                countdb=arg; 
+            }else if(arg["LEVELS"]==1){
+                reg.AVERAGEPRICE_COUNT+=parseFloat(arg.AVERAGEPRICE);
+                reg.PRICE_COUNT+=parseFloat(arg.PRICE);
+            }
+        });
+        countdb.AVERAGEPRICE=reg.AVERAGEPRICE==""? reg.AVERAGEPRICE_COUNT:parseFloat(reg.AVERAGEPRICE_COUNT).toFixed(reg.AVERAGEPRICE);
+        countdb.PRICE=reg.PRICE==""? reg.PRICE_COUNT:parseFloat(reg.PRICE_COUNT).toFixed(reg.PRICE)
+    }
     /**
      * 设置表头
      */
@@ -254,7 +273,7 @@ class PriceControl extends React.Component {
                         return <span className={record.LEVELS == "2" ? "Title padL20" : "Title"}>
                                 {text}
                              </span>
-                    } else if (th.state.edit == true && da.field == "AVERAGEPRICE" && record.LEVELS != "1") {
+                    } else if (th.state.edit == true && da.field == "AVERAGEPRICE" && record.LEVELS != "1"&&record.LEVELS != "0") {
                          
                         return <Input value={text} className="text-right"
                                       onChange={th.EventChangeInput.bind(this, record, da["field"])}/>
@@ -324,17 +343,27 @@ class PriceControl extends React.Component {
         //纵向汇总 向parentId汇总
         this.Exec_ColumsCount(data,params.parentId,"PRICE",);
         //横向汇总 LEVE=1 的货值PRICE/总可售TOTALSALEAREA=均价AVERAGEPRICE
-        let _fixed = "",_filter = this.state.priceColumnsSource.filter(arg=>arg.field=="AVERAGEPRICE")[0],_reg;
+        let _reg=this.filterRegEXP("AVERAGEPRICE");
+        this.Exec_AveragePiceCount(data,_reg);
+        //合计值汇总 
+        this.Exec_MainCount(data);
+        
+        this.setState({
+            priceData:data
+        })
+    }
+    /**
+     * 
+     * @param {* 查询保留小数位} str 
+     */
+    filterRegEXP(str){
+       let _filter = this.state.priceColumnsSource.filter(arg=>arg.field==str)[0],_reg;
         if(_filter){ 
                 _reg = _filter.regExps? eval(`(${_filter.regExps})`):"";
                 _reg = _reg["type"]? (/\d+/ig).exec(_reg["type"]):"";
                 _reg = _reg!=""? _reg[0]:"";
         }
-        this.Exec_AveragePiceCount(data,_reg);
-        
-        this.setState({
-            priceData:data
-        })
+        return _reg
     }
     /**
      * 非当前阶段和非当前最新版本、非状态为0 不现实保存和编辑
@@ -676,12 +705,12 @@ class PriceControl extends React.Component {
     }
     renderTable = () => {
         let width = knife.recursion(this.state.priceColumns, 0);
-        if (this.state.isApproal) {
+        if (this.state.isApproal) {//发起审批显示没有价格管理标签用此
             return <div>
                 <Table pagination={false} scroll={{x: width, y: 400}} loading={this.state.tableLoading} border
                        columns={this.state.priceColumns} dataSource={this.state.priceData} ></Table>
             </div>
-        } else {
+        } else { //正常页面
             return <Tabs>
                 <TabPane tab="价格管理" key="plan-quota">
 
