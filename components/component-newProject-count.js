@@ -1,8 +1,8 @@
 import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-require("./tools-validate");
-require("./tools-city.js");
+import "./tools-validate";
+import "./tools-city.js";
 require("../css/intallment.less");
 import ToolsCity from "./tools-city.js"; //城市
 class NewProjectCount extends React.Component {

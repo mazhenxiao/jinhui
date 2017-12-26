@@ -5,29 +5,50 @@ class $tree {
     constructor(ele) {
        
         this.state={
-            url:"/Home/GetTreeInfo?Time="+new Date().getTime(),
+            url:"/Home/GetTreeInfo",
             treeDate:[]
         }
         this.getAjax();
-   
     }
     getAjax(){
         
-        var th =this;
-        iss.ajax({
+        let th =this,dataKey = this.getDataKey(); 
+        
+         iss.ajax({
             type:"post",
             url:th.state.url,
+            data:{
+                dataKey:dataKey
+            },
             success(da){
-            	
-                th.ele.tree("loadData",da);
-                var Height = $(window).height()-80;
-                $(".treeBox").height(Height)
-                $(".JH-RightBox .JH-Content").height(Height)
+            	th.setTreeState.call(th,da)
+                
             },
             error(e){
 
             }
-        });
+        }); 
+    }
+    setTreeState(da){
+        let top = document.querySelector("#mCSB_1_container");
+            top = top? top.style.top:"0px";
+        this.ele.tree("loadData",da);
+        var Height = $(window).height()-80;
+        $(".treeBox").height(Height)
+        $(".JH-RightBox .JH-Content").height(Height);
+        setTimeout(arg=>{
+          document.querySelector("#mCSB_1_container").style.top=top;   
+        },1000)
+    }
+    getDataKey(){
+        let hash = location.hash.split("?");
+            hash =(hash&&hash.length>1)? eval(`({"`+hash[1].replace(/\&/ig,`","`).replace(/=/ig,`":"`)+`"})`)["dataKey"]:"";
+        let dataKey = hash? hash:iss.id.id;
+        return dataKey
+     
+    }
+    filterTree(){
+
     }
     togo(node){ //跳转
        

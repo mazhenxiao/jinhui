@@ -37,6 +37,9 @@
 .bg-eee {
   background: #eee;
 }
+.bg-d6 {
+  background: #d6d6d6;
+}
 .areaVeSel {
   float: left;
   padding-right: 15px;
@@ -79,10 +82,10 @@
 .PosRight .jh_btn_save {
   padding-right: 10px;
 }
-/*.ant-table-bordered .ant-table-tbody > tr > td,*/
-/*.ant-table-bordered .ant-table-thead > tr > th {*/
-  /*text-align: center;*/
-/*}*/
+.ant-table-bordered .ant-table-tbody > tr > td,
+.ant-table-bordered .ant-table-thead > tr > th {
+  text-align: center;
+}
 .building-format-warn {
   color: red;
   line-height: 26px;

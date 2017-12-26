@@ -5,8 +5,8 @@ import NewProjectCount from "./component-newProject-count.js";
 import DynamicTable from "./tools-dynamicTable.js";
 import {Project} from '../services';
 import NewProjectTime from "./component-newProject-time.js"
-import "../css/tools-dynamicTable.less";//专用css
-/* import Peripheral from "./component-newProject-peripheral.js";//外设条件 */
+require("../css/tools-dynamicTable.less");//专用css
+/*  import Peripheral from "./component-newProject-peripheral.js";//外设条件  */
 
 /*
     pdi id   DynamicData  结构数据 CallBack 数据修改回调
@@ -83,7 +83,7 @@ class NewProject extends React.Component {
             title: "外设地块",
             width: 800,
             height: 400,
-            content: `<div class="iframeBox" style="height:400px;overflow:hidden"><iframe id="iframeBoxI" src='/Home/MYTodo/#/peripheral?dataKey=${th.state.projectId}&currentID=${this.state.pid}' width='100%' height='400' frameborder=0  /></div>`,
+            content: `<div class="iframeBox" style="height:400px;overflow:hidden"><iframe id="iframeBoxI" src='/MYTodo/#/peripheral?dataKey=${th.state.projectId}&currentID=${this.state.pid}' width='100%' height='400' frameborder=0  /></div>`,
             okVal: "确定",
             ok(arg) {
                 var win = document.querySelector("#iframeBoxI").contentWindow;
@@ -291,6 +291,17 @@ class NewProject extends React.Component {
         // if(this.time){ clearTimeout(this.time) }
         var th = this;
         var el = e ? e.target.value : da.val, list = this.state.DynamicData[this.state.pid];
+        if(da.id=="LANDCODE"){
+            el = (el||"").toLocaleUpperCase();
+            let lists = this.state.DynamicData,ck=false;
+           for(let key in lists){
+               if(el&&key!=this.state.pid&&lists[key]["FieldList"].some(value=>(value["id"]=="LANDCODE"&&(value["val"]||"").indexOf(el)>=0))){
+                iss.error("地块编码被占用请使用其他字符命名");
+                    return; 
+               }
+           }
+         
+        }
         list.FieldList.forEach((d, i) => {
             if (da.id == d.id) {
                 d["val"] = el;
@@ -298,7 +309,6 @@ class NewProject extends React.Component {
                 if (d["parent"]) {
                     th.SET_PARENTCOUNT(list.FieldList, d)
                 }
-
                 return
             }
 
@@ -797,7 +807,7 @@ class NewProject extends React.Component {
                 </ul>
 
                 <DynamicTable pid={this.state.pid} DynamicData={this.state.propsDATA} CallBack={this.BIND_CALLBACK.bind(this)} />
-                <article className={this.state.propsDATA.length ? "tools-dynamicTable hide" : "tools-dynamicTable hide"}>
+                {/* <article className={this.state.propsDATA.length ? "tools-dynamicTable hide" : "tools-dynamicTable hide"}>
                     <ul className="row">
                         <li className="col-sm-4 col-md-4 col-lg-4">
                             <label className="require"></label><i><b></b></i>
@@ -806,7 +816,7 @@ class NewProject extends React.Component {
                             </div>
                         </li>
                     </ul>
-                </article>
+                </article> */}
 
             </section>
 

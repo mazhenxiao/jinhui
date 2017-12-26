@@ -1,12 +1,12 @@
 // 分期经济指标（投决会版）
 import React from 'react';
 import ReactDOM from 'react-dom';
-import "../js/iss.js";
+import iss from "../js/iss.js";
+import emitter from "../utils/events";
 import "babel-polyfill";  //兼容ie
 import "./tools-validate.js";
-
 import DynamicTable from "./tools-dynamicTable.js";
-require("../css/tools-dynamicTable.less");//专用css
+import "../css/tools-dynamicTable.less";//专用css
 import Winopen from "./component-indicators-winopen.js"; //弹出选择地块
 class Indicators extends React.Component {
     constructor(arg) {
@@ -69,18 +69,22 @@ class Indicators extends React.Component {
     evIGetLandStageShow(projectId){
         var th=this;
         let status=th.props.status;
-        iss.ajax({
-            url: "/Stage/IGetLandStageShow",
-            type: "get",
-            data:{
-                projectid:projectId
-            },
-            success(d) {
-                th.setState({
-                    landStageArr:d.rows
-                });
-            }
-        })
+       
+            iss.ajax({
+                url: "/Stage/IGetLandStageShow",
+                type: "get",
+                data:{
+                    projectid:projectId
+                },
+                success(d) {
+                  
+                     th.setState({
+                        landStageArr:d.rows
+                    }); 
+                }
+            })
+        
+       
     }
     /*编辑：初次汇总分期规划条件指标*/
     evGetLandFieldSum(listArrs) {
@@ -228,15 +232,18 @@ class Indicators extends React.Component {
                 allListArr.forEach((obj,index)=>{
                     selIDs.push(obj.ID);
                 });
-                let countData=th.setCount(d.rows)
-                th.setState({
+                let countData=th.setCount(d.rows);
+                th.state.winopenSelId=selIDs.join(",");
+                th.state.winAllBuiltData=allListArr;
+                th.state.winopenDATA=[];
+                th.state.AcountData=countData;
+            /*     th.setState({
                     winopenSelId:selIDs.join(","),
                     winAllBuiltData:allListArr,
                     winopenDATA:[],
                     AcountData:countData
-                });
+                }); */
                 th.props.callback(allListArr);
-
             }
         });
     }
@@ -325,16 +332,24 @@ class Indicators extends React.Component {
     }
     componentDidMount() {
         var th=this;
-        $(function(){
+        //使用react事件替代jquery事件，包含直接给state赋值等非标准操作
+        emitter.on("landFirstLoad",projectId=>{
+           th.state.projectId=projectId;
+                th.evGetLandData(projectId);/*编辑分期时，初次获取分期占用土地数据*/
+		        th.evIGetLandStageShow(projectId);/*分期占用土地=获取相关分期*/
+		        th.evLoadLandData(projectId);/*加载所有地块信息*/
+
+        })
+     /*    $(function(){
         	$(document).off("landFirstLoad").on("landFirstLoad",function(e,projectId){
         		th.setState({
         			projectId:projectId
         		});
-        		th.evGetLandData(projectId);/*编辑分期时，初次获取分期占用土地数据*/
-		        th.evIGetLandStageShow(projectId);/*分期占用土地=获取相关分期*/
-		        th.evLoadLandData(projectId);/*加载所有地块信息*/
+        		th.evGetLandData(projectId);//编辑分期时，初次获取分期占用土地数据
+		        th.evIGetLandStageShow(projectId);//分期占用土地=获取相关分期
+		        th.evLoadLandData(projectId);//加载所有地块信息
         	});
-        });
+        }); */
         
     }
 
