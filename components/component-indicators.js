@@ -233,10 +233,10 @@ class Indicators extends React.Component {
                     selIDs.push(obj.ID);
                 });
                 let countData=th.setCount(d.rows);
-                this.state.winopenSelId=selIDs.join(",");
-                this.state.winAllBuiltData=allListArr;
-                this.state.winopenDATA=[];
-                this.state.AcountData=countData;
+                th.state.winopenSelId=selIDs.join(",");
+                th.state.winAllBuiltData=allListArr;
+                th.state.winopenDATA=[];
+                th.state.AcountData=countData;
             /*     th.setState({
                     winopenSelId:selIDs.join(","),
                     winAllBuiltData:allListArr,
