@@ -30,7 +30,7 @@ class SignIndex extends Component {
             dynamicEdit: false, //动态调整是否可编辑
             dynamicEditButtonShow: false,
             loading: true,
-            defaultHeight:200
+            defaultHeight: 200
         },
         planTable: { //同上
             planHeaderData: [],
@@ -61,7 +61,7 @@ class SignIndex extends Component {
                                              onClick={this.clickOpenDialog.bind(this, text, record)}>{text}</a>
 
         }, //动态编辑表格
-        status:"",//接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回 
+        status: "",//接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回
         startYear: "",//起始年
         signAContractVersionId: "",//调整版本id
         saveData: {}//保存数据临时存储
@@ -71,8 +71,8 @@ class SignIndex extends Component {
     antdTableScrollLock = null;//用来触发卸载原生事件
 
     componentDidMount() {
-        let {dataKey}=this.props.location.query;
-        if(dataKey){
+        let {dataKey} = this.props.location.query;
+        if (dataKey) {
             this.getFetData(true);
         }
     }
@@ -98,12 +98,12 @@ class SignIndex extends Component {
 
         if (dataKey != nextDataKey) {
             this.setState({
-                    loading:true,
+                    loading: true,
                     dataKey: nextDataKey,
                     mode: nextMode,
                     activeTapKey: "plan-quota",
                 }, arg => {
-                    if(nextDataKey){
+                    if (nextDataKey) {
                         this.getFetData();
                     }
                 }
@@ -127,6 +127,9 @@ class SignIndex extends Component {
             this.getFetDialogData();
             this.bindScrollLock();
         }).catch(error => {
+            this.setState({
+                loading: false,
+            });
             iss.error(error);
         })
     }
@@ -198,7 +201,7 @@ class SignIndex extends Component {
         let data = Payment.IGetSignAContractData(dataKey)
         //获取当前版本，当前获取年份提交数据要使用
         Payment.IGetSignAContractBaseInfo(dataKey).then(arg => {
-            let {signAContractVersionId, startYear,status} = arg;
+            let {signAContractVersionId, startYear, status} = arg;
             this.dynamicTable.signAContractVersionId = signAContractVersionId; //设置id
             this.dynamicTable.startYear = startYear; //设置当前年份
             this.dynamicTable.status = status;//0编制 10提交 -1 驳回
@@ -208,16 +211,16 @@ class SignIndex extends Component {
 
         return Promise.all([title, data])
             .then(arg => {
-                let {status}=this.dynamicTable;
+                let {status} = this.dynamicTable;
                 let [dynamicHeaderData, dynamicDataSource] = arg,
                     newData = {
                         dynamicHeaderData,
                         dynamicDataSource,
                         dynamicEdit: false,
-                        dynamicEditButtonShow: Boolean(status==0&&dynamicDataSource && dynamicDataSource.length),
+                        dynamicEditButtonShow: Boolean(status == 0 && dynamicDataSource && dynamicDataSource.length),
                     },
                     dynamicTable = {...this.state.dynamicTable, ...newData};
-                this.setState({dynamicTable,loading:false});
+                this.setState({dynamicTable, loading: false});
             })
     }
     /**
@@ -272,7 +275,7 @@ class SignIndex extends Component {
                     }
                 planTable = {...planTable, ...newData};
                 version = {...version, ...newVersion};
-               
+
                 this.setState({planTable, version});
 
             })
@@ -313,15 +316,15 @@ class SignIndex extends Component {
         let dynamicEdit = !dynamicTable.dynamicEdit;
         dynamicTable = {...dynamicTable, ...{dynamicEdit}}
         this.setState({
-           
+
             dynamicTable
         });
         if (!dynamicEdit) { //保存
             this.setState({
-                loading:true
+                loading: true
             })
             this.saveDynamicTableData();
-            
+
         }
 
     };
@@ -333,8 +336,8 @@ class SignIndex extends Component {
         this.dynamicTable.saveData = {};//清场
         let {dataKey, dynamicTable} = this.state;
         let {dynamicDataSource,} = dynamicTable;
-        let {saveData,signAContractVersionId} = this.dynamicTable;//非stage存储保存数据
- 
+        let {saveData, signAContractVersionId} = this.dynamicTable;//非stage存储保存数据
+
         this.filterSaveData(dynamicDataSource);//递归赋值    
         let _da = JSON.stringify(Object.values(saveData));
         let postData = {
@@ -349,7 +352,7 @@ class SignIndex extends Component {
                 });
                 return _da;
             })
-            .then(arg=>{
+            .then(arg => {
                 this.getDynamicData();//重新拉去数据
             })
             .catch(err => {
@@ -373,7 +376,7 @@ class SignIndex extends Component {
                     let reg = /^Y\d{3}/ig;
                     if (reg.test(key) && arg[key] !== "") {
                         let {startYear} = this.dynamicTable;
-                        startYear = eval(startYear+"-1+"+key.substr(1, 1))
+                        startYear = eval(startYear + "-1+" + key.substr(1, 1))
                         let _da = {
                             dataType: key.substr(4),
                             titlename: `${startYear}-${key.substr(2, 2)}-01`,
@@ -557,7 +560,7 @@ class SignIndex extends Component {
      */
     renderHistoryData = () => {
         const {versionData, versionId, editable, dynamicTable, loading} = this.state;
-        const {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow,defaultHeight} = dynamicTable;
+        const {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow, defaultHeight} = dynamicTable;
 
         return (
             <article className="toTable signPage">
@@ -603,7 +606,7 @@ class SignIndex extends Component {
         const {planTable, dynamicTable, version} = this.state;
         const {planHeaderData, planDataSource} = planTable;
         const {versionData, versionShow, versionId, currentVersion} = version;
-        const {dynamicHeaderData,defaultHeight} = dynamicTable;
+        const {dynamicHeaderData, defaultHeight} = dynamicTable;
         return (
             <article className="pkTable mgT10">
                 <header className="top-header-bar">

@@ -83,12 +83,15 @@ export const IGetSupplyVersionData = key => {
  分期后三个阶段：/SignAContract/IGetSignAContractData?stageVersionId=884dd5a6-ff48-4628-f4fa-294472d49b37
  */
 export const IGetSignAContractData = (dataKey) => {
+    if (!dataKey) {
+        return Promise.resolve([]);
+    }
     return iss.fetch({
         url: "/SignAContract/IGetSignAContractData",
         data: {
             "stageVersionId": dataKey //"884dd5a6-ff48-4628-f4fa-294472d49b37"//dataKey
         }
-    }).then(da=>da.rows)
+    }).then(da => da.rows)
 };
 /**
  * 获取起始年
