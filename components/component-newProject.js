@@ -5,7 +5,7 @@ import NewProjectCount from "./component-newProject-count.js";
 import DynamicTable from "./tools-dynamicTable.js";
 import {Project} from '../services';
 import NewProjectTime from "./component-newProject-time.js"
-import "../css/tools-dynamicTable.less";//专用css
+require("../css/tools-dynamicTable.less");//专用css
 /*  import Peripheral from "./component-newProject-peripheral.js";//外设条件  */
 
 /*
