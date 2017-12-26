@@ -76,9 +76,7 @@ class GroupIframe extends React.Component{
         var th = this,arr=[];
         var delAr = th.state.dataList;
         const target = ev.currentTarget;
-        th.setState({
-            index: da
-        })
+    
         delAr.forEach((el,ind) =>{
             if(arr.indexOf(el.groupnumber) == -1){
                 arr.push(el.groupnumber)
@@ -99,6 +97,7 @@ class GroupIframe extends React.Component{
         })
 
         th.setState({
+            index: da,
             dataList:delAr
         })
     }

@@ -241,7 +241,7 @@ class StagingInformation extends React.Component {
                     
                     if(valueNumber.indexOf(el.pushPlateNumber) == -1){
                         valueNumber.push(el.pushPlateNumber)
-                        //console.log(valueNumber)
+
                         if(el.current == "new" && el.pushPlateNumber != 0){
                             var newG = {
                                 "key": el.pushPlateId,
@@ -249,13 +249,7 @@ class StagingInformation extends React.Component {
                             }
                             newPushPlate.push(newG)
                         }
-                        // if(el.buildingId && el.pushPlateId && el.pushPlateNumber !=0 && el.delete ==""){
-                        //     var newG = {
-                        //         "key": el.pushPlateId,
-                        //         "value": el.pushPlateNumber
-                        //     }
-                        //     newPushPlate.push(newG)
-                        // }
+                        
                     }
                 })
                 let json = {
@@ -364,6 +358,7 @@ class StagingInformation extends React.Component {
                         valueNumber.push(el.groupnumber)
                     }
                 })
+                th.checkDataValue(newGroupNumber);
                 let json = {
                     "stageversionid":stageversionid,
                     "newGroup":newGroup,
@@ -396,6 +391,17 @@ class StagingInformation extends React.Component {
         }
         ReactDOM.render(<GroupIframe  data={data} callback={th.GroupIframeCallback.bind(this)}  
         versionId = {checkid} />,document.querySelector("#GroupIframeBox"));
+    }
+    /**
+     * 发重复
+     * @param {* json} data 
+     */
+    checkDataValue=(data)=>{
+        let keys = new Set(data.map(arg=>arg.value));
+            if(keys.length<data.length){
+                iss.error("组团重复！")
+                return 
+            }
     }
     /**
      * 点击
