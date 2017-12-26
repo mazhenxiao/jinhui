@@ -1,6 +1,6 @@
 /* 价格服务数据获取 */
 import "babel-polyfill";  //兼容ie
-import "../js/iss.js";
+import iss from "../js/iss.js";
 /**
  * 价格
  * @param {*} arg 

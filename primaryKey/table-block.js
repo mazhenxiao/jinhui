@@ -105,6 +105,7 @@ class TableBlock extends Component {
             title: '序号',
             colSpan: 1,
             dataIndex: 'order',
+            width:60,
             render:(value, row,ind) => this.renderContent(value, row,'order',ind),
           }, {
             title: '指标名称',
