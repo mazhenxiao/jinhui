@@ -670,7 +670,8 @@ class PriceControl extends React.Component {
     }
     BindTableRowClass=(record, index)=>{
         let {LEVELS}=record;
-        return LEVELS=="1"?  "bg-eee":"";
+      
+        return LEVELS=="1"?  "bg-eee":LEVELS=="0"? "bg-d6":"";
         
     }
     renderTable = () => {
