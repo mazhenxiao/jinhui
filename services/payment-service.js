@@ -1,6 +1,16 @@
 import iss from '../js/iss'
 import {locale} from 'moment';
-
+/**
+ * 获取签约基础数据，用dataKey去换取当前版本id
+ * /SignAContract/IGetSignBaseInfo?businessId=f2f29de7-2f36-9947-7c40-808e229f1d8f&type=project
+ */
+export const IGetSignBaseInfo=({dataKey:businessId,mode:type})=>{
+    return iss.fetch({
+        url:"/SignAContract/IGetSignBaseInfo",
+        data:{businessId,type}
+    })
+    .then(this.ThenListener)
+}
 /**
  * 获取签约版本
  *
@@ -203,7 +213,7 @@ export const IGetVersionList=({dataKey,mode:projectLevel})=>{
             projectLevel
         }
     })
-    .then(ThenListener);
+    .then(this.ThenListener);
 }
 /**
  * 获取回款考核版数据
