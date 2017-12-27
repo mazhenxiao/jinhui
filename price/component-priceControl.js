@@ -256,9 +256,9 @@ class PriceControl extends React.Component {
             }else if(arg["LEVELS"]==1){
                // reg.AVERAGEPRICE_COUNT+=parseFloat(arg.AVERAGEPRICE);
                 reg.PRICE_COUNT+=parseFloat(arg.PRICE);
-                reg.TOTALSALEAREA=parseFloat(arg.TOTALSALEAREA); 
             }
         });
+        reg.TOTALSALEAREA=parseFloat(countdb.TOTALSALEAREA); 
         reg.AVERAGEPRICE_COUNT =reg.PRICE_COUNT*10000/parseFloat(reg.TOTALSALEAREA);
         countdb.PRICE=reg.PRICE==""? reg.PRICE_COUNT:parseFloat(reg.PRICE_COUNT).toFixed(reg.PRICE);
         countdb.AVERAGEPRICE=reg.AVERAGEPRICE==""? reg.AVERAGEPRICE_COUNT:parseFloat(reg.AVERAGEPRICE_COUNT).toFixed(reg.AVERAGEPRICE);
