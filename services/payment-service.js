@@ -178,6 +178,48 @@ export const ISendBackSignAContractData = signAContractVersionId => {
 };
 
 /**
+ * 获取回款动态调整版本数据
+ * /Income/IGetIncomeListEditForAdjustment?dataKey=32172052-2da4-85c9-c266-81faf2b1f10f&projectLevel=project
+ */
+export const IGetIncomeListEditForAdjustment=({dataKey,mode:projectLevel})=>{
+    
+    return iss.fetch({
+        url:"/Income/IGetIncomeListEditForAdjustment",
+        data:{
+            dataKey,
+            projectLevel
+        }
+    }).then(arg=>arg.rows)
+}
+/**
+ * 获取回款考核版版本
+ * /Income/IGetVersionList?dataKey=32172052-2da4-85c9-c266-81faf2b1f10f&projectLevel=project
+ */
+export const IGetVersionList=({dataKey,mode:projectLevel})=>{
+    return iss.fetch({
+        url:"/Income/IGetVersionList",
+        data:{
+            dataKey,
+            projectLevel
+        }
+    })
+    .then(ThenListener);
+}
+/**
+ * 获取回款考核版数据
+ * /Income/IGetIncomeListEditForCheck?versionId=&dataKey=&projectLevel=
+ */
+export const IGetIncomeListEditForCheck=({dataKey,versionId,mode:projectLevel})=>{
+    return iss.fetch({
+        url:"/Income/IGetIncomeListEditForCheck",
+        data:{dataKey,versionId,projectLevel}
+    })
+}
+
+const ThenListener=(arg)=>{
+    return arg.rows;
+}
+/**
  * 获取回款版本
  */
 export const getPaymentVersion = () => {
