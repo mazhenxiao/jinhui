@@ -4,7 +4,6 @@ import iss from "../js/iss.js";
 import React, { Component } from 'react';
 import { Spin, Tabs, Row, Col, Button, Select,Input,Progress} from 'antd';
 import { AreaService } from '../services';
-import {WrapperSelect,WrapperInput} from '../common';
 import PriorityTable from './priority-table.js';
 import PriorityForm from './priority-form.js';
 require("../css/tools-processBar.less");
@@ -15,7 +14,37 @@ require("../area/areaCss/areaManage.less");
 class Index extends Component {
     state = {
         addAatterStatus:false,
+        dataList:[],
+        entityJson:{ 
+            "ID": null,
+            "AREANAME": null,
+            "COMPANYNAME": null,
+            "PROJECTID": null,
+            "PROJECTNAME": null,
+            "STAGEID": null,
+            "STAGENAME": null,
+            "RISKDESC": null,
+            "RISKEFFECT": null, 
+            "PROGRESS": null, 
+            "SUPPORT": null, 
+            "POINTLEVEL": -1, 
+            "ISOLVE": -1, 
+            "REPORTTIME": '0001-01-01', 
+            "OWNER": null, 
+            "USERNAME": null, 
+            "POST": null, 
+            "SOLVETIME": '0001-01-01', 
+            "CREATETIME": '0001-01-01', 
+            "CREATEUSER": null, 
+            "APPROVESTATUS":-1
+        }
     }
+    
+    PROJECTNAME=null; //项目
+    USERNAME=null; //负责人
+    POINTLEVEL=-1; //重要级别
+    ISOLVE=-1; //是否解决
+    SOLVETIME='0001-01-01'; //最迟解决时间
     /**
      * 在组件接收到一个新的prop时被调用,这个方法在初始化render时不会被调用
      * param nextProps 下一阶段的props
@@ -40,10 +69,58 @@ class Index extends Component {
             );
         }
     }
+    componentWillMount() {
+        this.getAjax(this.state.entityJson);
+    }
     componentDidMount(){
-
     };
 
+    getLocalTime(nS) {     
+        return new Date(parseInt((/\d+/ig).exec(nS)[0])).Format("yyyy-MM-dd")     
+    }     
+     
+
+    getAjax(obj) {
+        var th = this;
+        
+        iss.ajax({
+            url: "/ProjectKayPoint/GetListPage",
+            data:{
+              "pageIndex":1,
+              "pageSize":10,
+              "entityJson":JSON.stringify(obj)
+            },
+            success(data) {
+                if(data.errorcode == 200 || data.errorcode == 202){
+                    data.rows.forEach((el,ind) => {
+                       if(el.ISOLVE == 1){
+                           el.ISOLVE = "是"
+                       }else{
+                        el.ISOLVE = "否"
+                       }
+                       if(el.POINTLEVEL == 0){
+                        el.POINTLEVEL = "低"
+                       }else if(el.POINTLEVEL == 1){
+                        el.POINTLEVEL = "中"
+                       }else{
+                        el.POINTLEVEL = "高"
+                       }
+
+                       el.REPORTTIME=th.getLocalTime(el.REPORTTIME)
+                       el.CREATETIME=th.getLocalTime(el.CREATETIME)
+                       el.SOLVETIME=th.getLocalTime(el.SOLVETIME)
+                    })
+                    th.setState({
+                        dataList:data.rows  
+                    }
+                );
+                }
+            },
+            error() {
+                console.log('失败')
+            }
+        })
+    }
     BIND_AddAatter = () =>{
         this.setState({
             addAatterStatus:true,
@@ -54,6 +131,8 @@ class Index extends Component {
             addAatterStatus:false,
         })
     }
+
+    
     renderButton = () =>{
         const addAatterStatus=this.state.addAatterStatus;
         if(addAatterStatus){
@@ -87,6 +166,39 @@ class Index extends Component {
             
         );
     }
+    projectValue_FN = (e) =>{
+        const { value } = e.target;
+        this.PROJECTNAME = value;
+    }
+    ownerValue_FN = (e) =>{
+        const { value } = e.target;
+        this.USERNAME = value;
+    }
+    SOLVETIME_FN = (e) =>{
+        const { value } = e.target;
+        if(value == ""){
+            this.SOLVETIME='0001-01-01';
+        }else{
+            this.SOLVETIME=value
+        }
+    }
+    POINTLEVEL_FN = (value) =>{
+        this.POINTLEVEL = value;
+    }
+    ISOLVE_FN = (value) =>{
+        this.ISOLVE = value;
+    }
+    handleLocalSearch = () =>{
+        if(this.PROJECTNAME != "" || this.USERNAME!="" || this.SOLVETIME != "" || this.POINTLEVEL!="" || this.ISOLVE!=""){
+            let {PROJECTNAME,POINTLEVEL,ISOLVE,USERNAME,SOLVETIME}=this;
+            
+            let obj = {...this.state.entityJson,...{PROJECTNAME,POINTLEVEL,ISOLVE,USERNAME,SOLVETIME}}
+            console.log("objs",obj);
+            console.log(obj)
+            this.getAjax(obj);
+            
+        }
+    }
     renderContent = () =>{
         const addAatterStatus=this.state.addAatterStatus;
         if(addAatterStatus){
@@ -106,24 +218,28 @@ class Index extends Component {
                 <div className="PriorityTable">
                     <Row>
                         <Col span={4}>
-                            <WrapperInput labelText="项目：" labelSpan={10} inputSpan={14} />
+                            项目：<Input onChange={this.projectValue_FN} />
                         </Col>
                         <Col span={4}>
-                            <WrapperInput labelText="责任人：" labelSpan={10} inputSpan={14} />
+                            责任人：<Input onChange={this.ownerValue_FN} />
                         </Col>
                         <Col span={4}>
-                            <WrapperSelect labelText="重要级别：" 
-                                           labelSpan={12}
-                                           inputSpan={12} /> 
+                            重要级别：<Select onChange={this.POINTLEVEL_FN} defaultValue="请选择" style={{ width: 100 }}>
+                                <Option value="-1">请选择</Option>
+                                <Option value="0">低</Option>
+                                <Option value="1">中</Option>
+                                <Option value="2">高</Option>
+                            </Select>
                         </Col>
                         <Col span={4}>
-                            {/* onChange={this.handleSelectChange("land")}*/}
-                            <WrapperSelect labelText="是否解决" 
-                                           labelSpan={12}
-                                           inputSpan={12} /> 
+                            是否解决：<Select onChange={this.ISOLVE_FN} defaultValue="请选择" style={{ width: 100 }}>
+                                <Option value="-1">请选择</Option>
+                                <Option value="1">是</Option>
+                                <Option value="0">否</Option>
+                            </Select> 
                         </Col>
-                        <Col span={4}>
-                            <WrapperInput labelText="最迟解决时间：" labelSpan={14} inputSpan={10} />
+                        <Col span={5}>
+                            最迟解决时间：<Input onChange={this.SOLVETIME_FN} placeholder="格式：yyyy-mm-dd" style={{ width: 125 }} />
                         </Col>
                         <Col span={3} style={{textAlign: "left", paddingLeft: "10px"}}>
                             <Button onClick={this.handleLocalSearch}>查询</Button>
@@ -132,7 +248,7 @@ class Index extends Component {
                     <Row>
                         <Col span={24}>
                             <article>
-                                <PriorityTable />
+                                <PriorityTable dataList={this.state.dataList}/>
                             </article>
                         </Col>
                     </Row>
@@ -140,6 +256,7 @@ class Index extends Component {
             )
         }
     }
+
     render() {
         return (
             <div className="processBar">

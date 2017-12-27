@@ -54,13 +54,31 @@ class assessmentVersionIndex extends Component {
 
     tableRender () {
     }
-    onPanelChange(value, mode) {
-        console.log(value, mode);
-      }
+    
     timeRender () {
-        return <div>
-        <Calendar />
-      </div>
+        function onSelect(value) {
+            console.log(new Date(value._d).Format('yyyy-MM-dd'))
+        }
+        return <div style={{ width: 300, border: '1px solid #d9d9d9', borderRadius: 4 }}>
+                    <Calendar fullscreen={false} onSelect={onSelect} />
+                </div>
+    }
+    time_ONCLICK () {
+        var th=this;
+        iss.Alert({
+            title:"",
+            width:300,
+            height:300,
+            content:`<div>`+this.timeRender()+`</div>`,
+            okVal:"确定",
+            cancel:"取消",
+            ok(){
+                
+            },
+            cancel(da){
+                
+            }
+        })
     }
     render() {
         return (
@@ -118,7 +136,7 @@ class assessmentVersionIndex extends Component {
                     </table>
                     
                 </div>
-                {this.timeRender()}
+                {this.time_ONCLICK()}
             </div>
         );
     }

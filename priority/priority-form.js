@@ -16,6 +16,7 @@ class PriorityForm extends Component {
          
     }
     componentDidMount() {
+
     }
     render(){
         return (
@@ -32,19 +33,20 @@ class PriorityForm extends Component {
                                     <label className="formTableLabel boxSizing redFont">项目</label>
                                 </th>
                                 <td>
-                                    <input readOnly="readonly" id="PROJECTNAME"  className="inputTextBox inputGray boxSizing" type="text" maxLength="20" />
+                                    {/* <input id="PROJECTNAME"  className="inputTextBox boxSizing" type="text" maxLength="20" /> */}
+                                    <Input />
                                 </td>
                                 <th>
                                     <label className="formTableLabel boxSizing redFont">区域</label>
                                 </th>
                                 <td>
-                                    <input readOnly="readonly" id="CompanyAreaName"  className="inputTextBox inputGray boxSizing" type="text" />
+                                    <Input />
                                 </td>
                                 <th>
                                     <label className="formTableLabel boxSizing redFont">公司</label>
                                 </th>
                                 <td>
-                                    <input readOnly="readonly" id="CompanyCityName"  className="inputTextBox inputGray boxSizing" type="text" />
+                                    <Input />
                                 </td>
                             </tr>
                             <tr>

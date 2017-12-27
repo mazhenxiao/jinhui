@@ -1,5 +1,11 @@
+.PriorityTable .ant-row:first-child {
+  margin-bottom: 5px;
+}
 .PriorityTable .ant-progress-text {
   width: 3em;
+}
+.PriorityTable .ant-input {
+  width: 100px;
 }
 .PriorityTable .ant-progress-status-success .ant-progress-bg {
   background-color: #f04134;
