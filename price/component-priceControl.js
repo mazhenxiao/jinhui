@@ -242,18 +242,26 @@ class PriceControl extends React.Component {
  */
     Exec_MainCount(data){
        // this.filterRegEXP("AVERAGEPRICE PRICE");
-        let countdb,reg = {AVERAGEPRICE_COUNT:0,AVERAGEPRICE:this.filterRegEXP("AVERAGEPRICE"),PRICE_COUNT:0,PRICE:this.filterRegEXP("PRICE")}
+        let countdb,reg = {
+            TOTALSALEAREA:0,
+            AVERAGEPRICE_COUNT:0,
+            AVERAGEPRICE:this.filterRegEXP("AVERAGEPRICE"),
+            PRICE_COUNT:0,
+            PRICE:this.filterRegEXP("PRICE")
+        }
         
         data.forEach(arg=>{
             if(arg["LEVELS"]==0){
                 countdb=arg; 
             }else if(arg["LEVELS"]==1){
-                reg.AVERAGEPRICE_COUNT+=parseFloat(arg.AVERAGEPRICE);
+               // reg.AVERAGEPRICE_COUNT+=parseFloat(arg.AVERAGEPRICE);
                 reg.PRICE_COUNT+=parseFloat(arg.PRICE);
             }
         });
+        reg.TOTALSALEAREA=parseFloat(countdb.TOTALSALEAREA); 
+        reg.AVERAGEPRICE_COUNT =reg.PRICE_COUNT*10000/parseFloat(reg.TOTALSALEAREA);
+        countdb.PRICE=reg.PRICE==""? reg.PRICE_COUNT:parseFloat(reg.PRICE_COUNT).toFixed(reg.PRICE);
         countdb.AVERAGEPRICE=reg.AVERAGEPRICE==""? reg.AVERAGEPRICE_COUNT:parseFloat(reg.AVERAGEPRICE_COUNT).toFixed(reg.AVERAGEPRICE);
-        countdb.PRICE=reg.PRICE==""? reg.PRICE_COUNT:parseFloat(reg.PRICE_COUNT).toFixed(reg.PRICE)
     }
     /**
      * 设置表头
@@ -598,11 +606,11 @@ class PriceControl extends React.Component {
             const {step, dataKey, mode, versionId} = this.state;
             if (newStep.code === step.code) return;
 
-            this.setState({
+  /*           this.setState({
                 edit: false,
                 loading: true,
                 step: newStep,
-            });
+            }); */
             AreaService.getVersion(newStep, dataKey, mode, "Price")
                 .then(versionData => {
                     let versionId = this.getDefaultVersionId(versionData),
@@ -610,6 +618,9 @@ class PriceControl extends React.Component {
                             return arg["id"] == versionId;
                         })[0]
                     this.setState({
+                        edit: false,
+                        loading: true,
+                        step: newStep,
                         versionData,
                         versionId,
                         curVersion: curVersion ? curVersion.statusName : ""
