@@ -71,8 +71,6 @@ class SignIndex extends Component {
         signAContractVersionId: "",//调整版本id
         saveData: {}//保存数据临时存储
     }
-
-
     antdTableScrollLock = null;//用来触发卸载原生事件
 
     componentDidMount() {

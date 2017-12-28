@@ -98,7 +98,7 @@ var config = {
     },
 }
 if (process.argv.pop().indexOf("-w") >= 0) {
-    c.exec("npm run server-cloud");
+   // c.exec("npm run server-cloud");
 }
 
 module.exports = config;

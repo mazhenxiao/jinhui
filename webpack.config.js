@@ -14,7 +14,7 @@ var config = {
     entry: {
         //  "WebpackDevServer": "webpack-dev-server/client?http://localhost:5001/",
         "jinhui-Index": path.join(__dirname, '/js/main.js'), //主入口文件
-      //  "jinhui-newOpen":path.join(__dirname, '/js/openmain.js') //暂用open 
+        "jinhui-newOpen":path.join(__dirname, '/js/openmain.js') //暂用open 
     },
     output: {
         path: path.join(__dirname, '/dist/js/'),
@@ -98,7 +98,8 @@ var config = {
     },
 }
 if (process.argv.pop().indexOf("-w") >= 0) {
-    c.exec("node koa");
+    //var str = process.env.NODE_ENV||"test";
+    // c.exec("node koa");
 }
 
 module.exports = config;
