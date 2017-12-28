@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js&webpack --display-error-details -w",
-    "dev": "webpack --display-error-details -w",
+    "dev": "set NODE_ENV=test&&webpack --display-error-details -w",
     "cloud":"set NODE_ENV=cloud&&webpack --config ./webpack.config.js --display-error-details -w",
     "build-cloud": "webpack --config ./webpack.config.cloud.js --display-error-details",
     "build-test": "webpack --config ./webpack.config.test.js --display-error-details",

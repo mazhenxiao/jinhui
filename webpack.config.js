@@ -98,7 +98,8 @@ var config = {
     },
 }
 if (process.argv.pop().indexOf("-w") >= 0) {
-    //var str = process.env.NODE_ENV||"test";
+    var str = `npm run server-${process.env.NODE_ENV}`;
+     c.exec(str)
     // c.exec("node koa");
 }
 
