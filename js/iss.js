@@ -978,7 +978,20 @@ class $iss {
             }
         });
     }
-
+    Error = (error)=>{
+        this.tip({
+            type:"error",
+            message:"提示",
+            description:error
+        })
+    }
+    Info=(message)=>{
+        this.tip({
+            type:"info",
+            message:"提示",
+            description:message
+        })  
+    }
     error = (error) => {
         this.message({
                 type: "error",

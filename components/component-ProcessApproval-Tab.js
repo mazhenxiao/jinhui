@@ -33,10 +33,10 @@ class ProcessApprovalTab extends React.Component {
                 {id: "groupbuild", url: "/AreaInfo/groupbuild"},//项目团队维护3
                 {id: "priceControl", url: "/AreaInfo/priceControl"},//价格4
                 {id: "area", url: "/AreaInfo/areaManage"},//面积5
-                {id: "priority", url: "/AreaInfo/priority"},//重点事项
-                {id: "supply", url: "/AreaInfo/supply"},//供货6
-                {id: "sign", url: "/AreaInfo/sign"},//签约7
-                {id: "payment", url: "/AreaInfo/payment"}//回款8
+                {id: "priority", url: "/AreaInfo/priority"},//重点事项6
+                {id: "supply", url: "/AreaInfo/supply"},//供货7
+                {id: "sign", url: "/AreaInfo/sign"},//签约8
+                {id: "payment", url: "/AreaInfo/payment"}//回款9
             ],
             id = th.state.allSearchArg['e'];
         switch (id) {
@@ -73,7 +73,7 @@ class ProcessApprovalTab extends React.Component {
             case iss.getEVal("sign"):
             case iss.getEVal("payment"):
                 this.setState({ // 回款
-                    TapList: [list[0], list[6],list[7],list[8]]
+                    TapList: [list[0], list[7],list[8],list[9]]
                 });
                 break;
         }

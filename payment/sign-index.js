@@ -118,7 +118,25 @@ class SignIndex extends Component {
      * first 判断是否第一次加载dom,如果第一次加载返回promise
      */
     getFetData = (first) => {
+        let {dataKey,mode}=this.state;
         this.dynamicTable.saveData = {};
+        //获取基础数据
+        Payment.IGetSignBaseInfo({dataKey,mode})
+        .then(arg=>{  //进行错误判断
+            let {DynamicId,Error}=arg;
+            if(!DynamicId){                
+                return Promise.reject(Error);
+            }
+           // return arg
+        }).catch(err=>{
+            err&&iss.Info(err);
+            this.setState({
+                loading:false
+            })
+        })
+       
+    }
+    PromiseAllAndLockScroll=params=>{
         //获取动态调整表格数据
         let dynamicTable = this.getDynamicData();
         //获取比对版数据   
