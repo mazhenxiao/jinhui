@@ -32,7 +32,8 @@ class ProcessApprovalTab extends React.Component {
                 {id: "newProjectStage", url: "/newProjectStage"},//分期
                 {id: "groupbuild", url: "/AreaInfo/groupbuild"},//项目团队维护
                 {id: "priceControl", url: "/AreaInfo/priceControl"},//价格
-                {id: "area", url: "/AreaInfo/areaManage"}//面积
+                {id: "area", url: "/AreaInfo/areaManage"},//面积
+                {id: "priority", url: "/AreaInfo/priority"}//重点事项
             ],
             id = th.state.allSearchArg['e'];
         switch (id) {
@@ -59,6 +60,10 @@ class ProcessApprovalTab extends React.Component {
             case iss.getEVal("area"):
                 this.setState({ // 项目团队维护
                     TapList: [list[0], list[5]]
+                });
+            case iss.getEVal("priority"):
+                this.setState({ // 项目团队维护
+                    TapList: [list[0], list[6]]
                 });
                 break;
         }
@@ -87,6 +92,9 @@ class ProcessApprovalTab extends React.Component {
                     break;
                 case "area":
                     str = "面积管理";
+                    break;
+                case "priority":
+                    str = "重点事项";
                     break;
             }
             return <li className={this.props.current == el.id ? "active" : ""} key={id}

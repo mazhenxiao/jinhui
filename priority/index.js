@@ -37,7 +37,9 @@ class Index extends Component {
             "CREATETIME": '0001-01-01', 
             "CREATEUSER": null, 
             "APPROVESTATUS":-1
-        }
+        },
+        sundryId:"",
+        level_id:""
     }
     
     PROJECTNAME=null; //项目
@@ -50,29 +52,33 @@ class Index extends Component {
      * param nextProps 下一阶段的props
      */
     componentWillReceiveProps(nextProps) {
+        
         //debugger;
-        const {dataKey, mode} = this.state;
+        console.log(nextProps)
         const {location} = nextProps;
-        const nextDataKey = location.query.dataKey || "";
-        let nextMode = location.query.isProOrStage || "";
-        nextMode = nextMode == "1" ? "Project" : "Stage";
-
-        //切换路由之后，重新获取数据
-
-        if (dataKey != nextDataKey
-            || mode != nextMode) {
-            this.setState({
-                    dataKey: nextDataKey,
-                    mode: nextMode,
-                    //activeTapKey: "plan-quota",
-                }
-            );
+        if(location.state != undefined){
+            const nextDataKey = location.state.id || "";
+            const nextLevel_id = location.state.level_id || "";
+            
+            //切换路由之后，重新获取数据
+                this.setState({
+                    sundryId: nextDataKey,
+                    level_id:nextLevel_id
+                },()=>{
+                    this.getAjax(this.state.entityJson);
+                });
         }
+        
+
     }
     componentWillMount() {
-        this.getAjax(this.state.entityJson);
+        if(this.state.sundryId != ""){
+            this.getAjax(this.state.entityJson);
+        }
+        
     }
     componentDidMount(){
+        console.log(this.props)
     };
 
     getLocalTime(nS) {     
@@ -86,6 +92,8 @@ class Index extends Component {
         iss.ajax({
             url: "/ProjectKayPoint/GetListPage",
             data:{
+              "SELECTEDID":th.state.sundryId,
+              "SELECTEDLEVEL":th.state.level_id,
               "pageIndex":1,
               "pageSize":10,
               "entityJson":JSON.stringify(obj)
@@ -256,8 +264,17 @@ class Index extends Component {
             )
         }
     }
-
+    renderEmpty = () => {
+        return (
+            <div className="processBar">
+                <p>请点击左侧树</p>
+            </div>
+        );
+    };
     render() {
+        if (this.props.location.state == undefined) {
+            return this.renderEmpty();
+        }
         return (
             <div className="processBar">
                    <Row>
