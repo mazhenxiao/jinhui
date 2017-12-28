@@ -7,6 +7,7 @@ import {Spin, Tabs, Row, Col, Button, Select, Table, Modal} from 'antd';
 import {WrapperSelect, WrapperTreeTable} from '../common';
 import {SupplyService} from "../services";
 import {knife} from '../utils';
+import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
 import "../css/button.less";
 import "./css/supply.less";
 
@@ -29,6 +30,7 @@ class Index extends Component {
         planData: {},//计划版数据
         adjustData: {},//动态调整板数据
         modalKey: "",//弹窗的key
+        isApproal: false, //是否是审批
     };
 
     antdTableScrollLock = null;
@@ -40,6 +42,7 @@ class Index extends Component {
         // } else {
         //     this.loadVersionData();
         // }
+        this.SetisApproal();
         this.loadBaseData();
     }
 
@@ -48,7 +51,7 @@ class Index extends Component {
         const {location} = nextProps;
         const nextDataKey = location.query.dataKey || "";
         const nextMode = location.query.isProOrStage == "1" ? "Project" : "Stage";
-
+        this.SetisApproal(location);
         //切换路由之后，重新获取数据
         if (nextDataKey != dataKey && !!nextDataKey) {
             this.setState({
@@ -302,15 +305,62 @@ class Index extends Component {
             </div>
         );
     };
-
-    render() {
-        const {loading, dataKey, dynamicId} = this.state;
-        if (!dataKey) {
-            return this.renderEmpty();
+         /**
+     * 发起审批
+     */
+    isApproal = arg => {
+        let stateData = this.props.location.query;
+        if (this.state.isApproal) {
+            return <section className="padB20">
+                <ProcessApprovalTab current="supply" allSearchArg={stateData}/>
+            </section>
         }
 
+    }
+     /**
+     * 发起审批
+     */
+    handleApproval = params => {
+        this.saveDynamicTableData()
+            .then(arg => {
+                this.goToApplroal();
+            })
+
+    }
+    /**
+     * 审批跳转
+     */
+    goToApplroal = arg => {
+        //获取小版本跳转
+        let versionId = this.state.versionId; //;
+        let newProjectStatus = iss.getEVal("payment");
+        const {isProOrStage} = this.props.location.query;
+        iss.hashHistory.push({
+            pathname: "/ProcessApproval",
+            search: `?e=${newProjectStatus}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${this.props.location.query["dataKey"]}&isProOrStage=${isProOrStage}`
+        });
+    }
+        /**
+     * 当前是否是审批
+     */
+    SetisApproal = arg => {
+
+        let stateData = arg ? arg.query : this.props.location.query;
+        this.setState({
+            isApproal: Boolean(stateData["current"])
+        })
+        return Boolean(stateData["current"])
+    }
+
+    render() {
+        const {dataKey,current} = this.props.location.query;
+        const {loading} = this.state
+        if (!dataKey&&!current) {
+            return this.renderEmpty();
+        }
         return (
             <div className="supply-wrapper">
+                 {this.isApproal()}   
                 <Spin size="large" spinning={loading}>
                     <Tabs defaultActiveKey="history">
                         <TabPane tab="供货" key="history">

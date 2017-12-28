@@ -5,11 +5,12 @@ import {locale} from 'moment';
  * /SignAContract/IGetSignBaseInfo?businessId=f2f29de7-2f36-9947-7c40-808e229f1d8f&type=project
  */
 export const IGetSignBaseInfo=({dataKey:businessId,mode:type})=>{
+   
     return iss.fetch({
         url:"/SignAContract/IGetSignBaseInfo",
         data:{businessId,type}
     })
-    .then(this.ThenListener)
+    .then(ThenListener)
 }
 /**
  * 获取签约版本
@@ -206,6 +207,7 @@ export const IGetIncomeListEditForAdjustment=({dataKey,mode:projectLevel})=>{
  * /Income/IGetVersionList?dataKey=32172052-2da4-85c9-c266-81faf2b1f10f&projectLevel=project
  */
 export const IGetVersionList=({dataKey,mode:projectLevel})=>{
+  
     return iss.fetch({
         url:"/Income/IGetVersionList",
         data:{
@@ -213,7 +215,7 @@ export const IGetVersionList=({dataKey,mode:projectLevel})=>{
             projectLevel
         }
     })
-    .then(this.ThenListener);
+    .then(ThenListener);
 }
 /**
  * 获取回款考核版数据

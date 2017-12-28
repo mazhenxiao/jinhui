@@ -741,12 +741,12 @@ class PriceControl extends React.Component {
 
     render() {
         var th = this;
-
+        let {dataKey,current}=this.props.location.query;
 
         return <article>
 
             {this.isApproal()}
-
+         
             <section className={this.props.location.query["dataKey"] ? "processBar" : "processBar none"}>
                 <header className="price">
                     <Spin size="large" spinning={false}>
@@ -782,7 +782,7 @@ class PriceControl extends React.Component {
                     </section>
                 </article>
             </section>
-            <section className={this.props.location.query["dataKey"] ? "none" : "noneBlock processBar-Prompt"}>
+            <section className={(dataKey&&current) ? "none" : "noneBlock processBar-Prompt"}>
                 <h3>价格管理操作指引</h3>
                 <p>1、前置条件：面积管理已审批通过。</p>                
                 <p className="Prompt">每当审批通过一版面积信息，系统将自动生成一版编制中的价格信息。</p>
