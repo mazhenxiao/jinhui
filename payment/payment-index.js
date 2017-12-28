@@ -5,6 +5,7 @@ import {Spin, Tabs, Row, Col, Button, Select, Modal, Table, Popconfirm, message}
 import {WrapperTreeTable, WrapperSelect} from '../common';
 import {Payment} from '../services';
 import {knife} from '../utils';
+import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
 
 import "../css/antd.min.css";
 import "../css/payment.css";
@@ -581,6 +582,9 @@ class SignIndex extends Component {
                         </Col>
                         <Col span={12}>
                             <div className={dynamicEditButtonShow ? "RT" : "hidden"}>
+                                <Popconfirm placement="top" title={"确定发起审批吗？"} onConfirm={this.handleApproval}>
+                                    <button className="jh_btn jh_btn22 jh_btn_apro mgR20">发起审批</button>
+                                </Popconfirm>
                                 <Popconfirm placement="top" title={"确定提交吗？"} onConfirm={this.handleSubmit}>
                                     <button className="jh_btn jh_btn22 jh_btn_apro mgR20">提交</button>
                                 </Popconfirm>
@@ -650,7 +654,49 @@ class SignIndex extends Component {
             </div>
         );
     };
+    /**
+     * 发起审批
+     */
+    isApproal = arg => {
+        let stateData = this.props.location.query;
+        if (this.state.isApproal) {
+            return <section className="padB20">
+                <ProcessApprovalTab current="priceControl" allSearchArg={stateData}/>
+            </section>
+        }
 
+    }
+     /**
+     * 发起审批
+     */
+    handleApproval = params => {
+        this.saveNewPriceVersion()
+            .then(arg => {
+                this.goToApplroal();
+            })
+
+    }
+    /**
+     * 审批跳转
+     */
+    goToApplroal = arg => {
+        //获取小版本跳转
+        let versionId = this.state.versionId; //;
+        let newProjectStatus = iss.getEVal("priceControl");
+        const {isProOrStage} = this.props.location.query;
+        iss.hashHistory.push({
+            pathname: "/ProcessApproval",
+            search: `?e=${newProjectStatus}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${this.props.location.query["dataKey"]}&isProOrStage=${isProOrStage}`
+        });
+        /*      price.IGetProVersion(dataKey)
+                 .then(arg => {
+                
+                 }) */
+
+
+        //$(window).trigger("treeLoad");
+    }
+ 
     render() {
         const {dataKey} = this.state;
         if (!dataKey) {
@@ -659,6 +705,7 @@ class SignIndex extends Component {
 
         return (
             <div className="sign-wrapper">
+                {this.isApproal()}    
                 <Spin size="large" spinning={this.state.loading} tip="加载中请稍后。。。">
                     <article>
                         <Tabs defaultActiveKey="sign">
