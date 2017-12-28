@@ -103,10 +103,8 @@ class ProcessApprovalTab extends React.Component {
                 case "area":
                     str = "面积管理";
                     break;
-<<<<<<< HEAD
                 case "priority":
                     str = "重点事项";
-=======
                 case "supply":
                     str = "供货";
                     break;
@@ -115,7 +113,6 @@ class ProcessApprovalTab extends React.Component {
                     break;
                 case "payment":
                     str = "回款";
->>>>>>> mzx
                     break;
             }
             return <li className={this.props.current == el.id ? "active" : ""} key={id}
