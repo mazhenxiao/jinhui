@@ -319,7 +319,7 @@ class PriceControl extends React.Component {
             Array.isArray(da["children"]) && (opt["children"] = da["children"]);
             return opt
         });
-       
+       console.log(priceColumns)
         this.setState({
             priceColumnsSource:params,
             priceColumns
