@@ -19,6 +19,11 @@ const config = {
         domain: "http://pocs.radiance.com.cn:10013",//服务端接口
         port: 10010,//前端项目监听端口
     },
+    'cloud':{
+        env:"cloud",
+        domain: "http://39.106.71.187:8000",//服务端接口
+        port: 8090 //前端项目监听端口
+    }
 };
 
 const appConfig = config[process.env.NODE_ENV || "test"];

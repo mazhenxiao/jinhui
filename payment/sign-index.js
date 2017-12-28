@@ -56,6 +56,10 @@ class SignIndex extends Component {
 
     //protected 数据
     dynamicTable = { //动态表格私有仓储
+        DynamicId:"",//新加入的id，用此id获取动态调整版数据
+        Permission:"",//新加入是否可以编辑
+        Status:"",//新加入当前阶段
+        VersionList:[],//新加入不知道是什么
         number: 0,//死循环记录
         dynamicRender: {
             "showName": (text, record) => <a href="javascript:;"
@@ -127,6 +131,7 @@ class SignIndex extends Component {
             if(!DynamicId){                
                 return Promise.reject(Error);
             }
+            
            // return arg
         }).catch(err=>{
             err&&iss.Info(err);
@@ -136,6 +141,9 @@ class SignIndex extends Component {
         })
        
     }
+    /**
+     * 获取动态数据、比对数据并锁定表格
+     */
     PromiseAllAndLockScroll=params=>{
         //获取动态调整表格数据
         let dynamicTable = this.getDynamicData();
