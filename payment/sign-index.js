@@ -5,7 +5,7 @@ import {Spin, Tabs, Row, Col, Button, Select, Modal, Table, Popconfirm, message}
 import {WrapperTreeTable, WrapperSelect} from '../common';
 import {Payment} from '../services';
 import {knife} from '../utils';
-
+import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
 import "../css/antd.min.css";
 import "../css/payment.css";
 import "../css/tools-processBar.less";
@@ -24,6 +24,7 @@ class SignIndex extends Component {
         versionId: "",
         versionData: [],
         editable: false,//是否可编辑
+        isApproal: false, //是否是审批
         dynamicTable: {
             dynamicHeaderData: [],//动态调整版头部
             dynamicDataSource: [],//动态调整版数据
@@ -72,6 +73,7 @@ class SignIndex extends Component {
 
     componentDidMount() {
         let {dataKey} = this.props.location.query;
+        this.SetisApproal();
         if (dataKey) {
             this.getFetData(true);
         }
@@ -93,7 +95,7 @@ class SignIndex extends Component {
         const nextDataKey = location.query.dataKey || "";
         let nextMode = location.query.isProOrStage || "";
         nextMode = nextMode == "1" ? "Project" : nextMode == "2" ? "Stage" : "";
-
+        this.SetisApproal(location);
         //切换路由之后，重新获取数据
 
         if (dataKey != nextDataKey) {
@@ -640,15 +642,62 @@ class SignIndex extends Component {
             </div>
         );
     };
+      /**
+     * 发起审批
+     */
+    isApproal = arg => {
+        let stateData = this.props.location.query;
+        if (this.state.isApproal) {
+            return <section className="padB20">
+                <ProcessApprovalTab current="sign" allSearchArg={stateData}/>
+            </section>
+        }
+
+    }
+     /**
+     * 发起审批
+     */
+    handleApproval = params => {
+        this.saveDynamicTableData()
+            .then(arg => {
+                this.goToApplroal();
+            })
+
+    }
+    /**
+     * 审批跳转
+     */
+    goToApplroal = arg => {
+        //获取小版本跳转
+        let versionId = this.state.versionId; //;
+        let newProjectStatus = iss.getEVal("payment");
+        const {isProOrStage} = this.props.location.query;
+        iss.hashHistory.push({
+            pathname: "/ProcessApproval",
+            search: `?e=${newProjectStatus}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${this.props.location.query["dataKey"]}&isProOrStage=${isProOrStage}`
+        });
+    }
+        /**
+     * 当前是否是审批
+     */
+    SetisApproal = arg => {
+
+        let stateData = arg ? arg.query : this.props.location.query;
+        this.setState({
+            isApproal: Boolean(stateData["current"])
+        })
+        return Boolean(stateData["current"])
+    }
 
     render() {
-        const {dataKey} = this.state;
-        if (!dataKey) {
+        const {dataKey,current} = this.props.location.query;
+        if (!dataKey&&!current) {
             return this.renderEmpty();
         }
 
         return (
             <div className="sign-wrapper">
+                {this.isApproal()}   
                 <Spin size="large" spinning={this.state.loading} tip="加载中请稍后。。。">
                     <article>
                         <Tabs defaultActiveKey="sign">

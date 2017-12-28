@@ -25,6 +25,7 @@ class SignIndex extends Component {
         versionId: "",
         versionData: [],
         editable: false,//是否可编辑
+        isApproal: false, //是否是审批
         dynamicTable: {
             dynamicHeaderData: [],//动态调整版头部
             dynamicDataSource: [],//动态调整版数据
@@ -73,6 +74,7 @@ class SignIndex extends Component {
 
     componentDidMount() {
         let {dataKey} = this.props.location.query;
+        this.SetisApproal();
         if (dataKey) {
             this.getFetData(true);
         }
@@ -94,7 +96,7 @@ class SignIndex extends Component {
         const nextDataKey = location.query.dataKey || "";
         let nextMode = location.query.isProOrStage || "";
         nextMode = nextMode == "1" ? "Project" : nextMode == "2" ? "Stage" : "";
-
+        this.SetisApproal(location)
         //切换路由之后，重新获取数据
 
         if (dataKey != nextDataKey) {
@@ -111,7 +113,17 @@ class SignIndex extends Component {
             );
         }
     }
+     /**
+     * 当前是否是审批
+     */
+    SetisApproal = arg => {
 
+        let stateData = arg ? arg.query : this.props.location.query;
+        this.setState({
+            isApproal: Boolean(stateData["current"])
+        })
+        return Boolean(stateData["current"])
+    }
     /**
      * 获取动态数据，获取签约计划数据，获取版本数据
      * first 判断是否第一次加载dom,如果第一次加载返回promise
@@ -661,7 +673,7 @@ class SignIndex extends Component {
         let stateData = this.props.location.query;
         if (this.state.isApproal) {
             return <section className="padB20">
-                <ProcessApprovalTab current="priceControl" allSearchArg={stateData}/>
+                <ProcessApprovalTab current="payment" allSearchArg={stateData}/>
             </section>
         }
 
@@ -670,7 +682,7 @@ class SignIndex extends Component {
      * 发起审批
      */
     handleApproval = params => {
-        this.saveNewPriceVersion()
+        this.saveDynamicTableData()
             .then(arg => {
                 this.goToApplroal();
             })
@@ -682,7 +694,7 @@ class SignIndex extends Component {
     goToApplroal = arg => {
         //获取小版本跳转
         let versionId = this.state.versionId; //;
-        let newProjectStatus = iss.getEVal("priceControl");
+        let newProjectStatus = iss.getEVal("payment");
         const {isProOrStage} = this.props.location.query;
         iss.hashHistory.push({
             pathname: "/ProcessApproval",
@@ -698,11 +710,10 @@ class SignIndex extends Component {
     }
  
     render() {
-        const {dataKey} = this.state;
-        if (!dataKey) {
+        const {dataKey,current} = this.props.location.query;
+        if (!dataKey&&!current) {
             return this.renderEmpty();
         }
-
         return (
             <div className="sign-wrapper">
                 {this.isApproal()}    

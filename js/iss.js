@@ -932,6 +932,14 @@ class $iss {
             case "area":
                 eVal = "10104";
                 break;//面积
+            case "supply":
+            case "sign":
+            case "payment":
+                eVal = "10106";
+                break;//供销存
+            case "area":
+                eVal = "10113";
+                break;//重点事项
         }
         return eVal;
     }

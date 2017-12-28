@@ -4,7 +4,7 @@ import React from 'react';
  * 首页导航条
  * index  identity  supply  所需
  */
-import "../js/iss.js";
+import iss from "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 
 class ProcessApprovalTab extends React.Component {
@@ -27,12 +27,15 @@ class ProcessApprovalTab extends React.Component {
         }
          
         var list = [
-                {id: `${url}`, url: `/${url}`},//审批
-                {id: "newProjectApproval", url: "/newProjectApproval"},//项目
-                {id: "newProjectStage", url: "/newProjectStage"},//分期
-                {id: "groupbuild", url: "/AreaInfo/groupbuild"},//项目团队维护
-                {id: "priceControl", url: "/AreaInfo/priceControl"},//价格
-                {id: "area", url: "/AreaInfo/areaManage"}//面积
+                {id: `${url}`, url: `/${url}`},//审批0
+                {id: "newProjectApproval", url: "/newProjectApproval"},//项目1
+                {id: "newProjectStage", url: "/newProjectStage"},//分期2
+                {id: "groupbuild", url: "/AreaInfo/groupbuild"},//项目团队维护3
+                {id: "priceControl", url: "/AreaInfo/priceControl"},//价格4
+                {id: "area", url: "/AreaInfo/areaManage"},//面积5
+                {id: "supply", url: "/AreaInfo/supply"},//供货6
+                {id: "sign", url: "/AreaInfo/sign"},//签约7
+                {id: "payment", url: "/AreaInfo/payment"}//回款8
             ],
             id = th.state.allSearchArg['e'];
         switch (id) {
@@ -52,13 +55,20 @@ class ProcessApprovalTab extends React.Component {
                 });
                 break;
             case iss.getEVal("priceControl"):
-                this.setState({ // 项目团队维护
+                this.setState({ // 价格
                     TapList: [list[0], list[4]]
                 });
                 break;
             case iss.getEVal("area"):
-                this.setState({ // 项目团队维护
+                this.setState({ // 面积
                     TapList: [list[0], list[5]]
+                });
+                break;
+            case iss.getEVal("supply"):
+            case iss.getEVal("sign"):
+            case iss.getEVal("payment"):
+                this.setState({ // 回款
+                    TapList: [list[0], list[6],list[7],list[8]]
                 });
                 break;
         }
@@ -87,6 +97,15 @@ class ProcessApprovalTab extends React.Component {
                     break;
                 case "area":
                     str = "面积管理";
+                    break;
+                case "supply":
+                    str = "供货";
+                    break;
+                case "sign":
+                    str = "签约";
+                    break;
+                case "payment":
+                    str = "回款";
                     break;
             }
             return <li className={this.props.current == el.id ? "active" : ""} key={id}
