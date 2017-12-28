@@ -37,8 +37,8 @@ const errorHandle = async (ctx, next) => {
 app.use(errorHandle);
 
 var evn = process.env.NODE_ENV || "dev";
-var loginHtml = `login-${evn}`;
-//var loginHtml = `login`;
+//var loginHtml = `login-${evn}`;
+var loginHtml = `login`;
 var oaLoginHtml = `oa-login-${evn}`;
 var url = appConfig.domain;
 
