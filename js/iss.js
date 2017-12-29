@@ -1,4 +1,4 @@
-import {message, notification} from 'antd';
+import {message, notification,Calendar } from 'antd';
 import "babel-polyfill";  //兼容ie  
 import 'whatwg-fetch';//兼容ie fetch
 import appConfig from '../app.config';
@@ -445,7 +445,7 @@ class $iss {
             }
         })
     }
-
+    
     chooseTo(arg) {  //选人控件
         let th = this,
             str = `<section class="chooseTo">
@@ -631,7 +631,6 @@ class $iss {
             weeks: ['日', '一', '二', '三', '四', '五', '六'],
             months: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
         });
-
         let opt = {
             date: date || new Date(),
             callback: callback || $.noop

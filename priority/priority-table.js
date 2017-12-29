@@ -91,8 +91,8 @@ class PriorityTable extends Component {
           const columns = [{
               title: '序号',
               colSpan: 1,
-              dataIndex: 'KEY',
-              render:(value, row,ind) => this.renderContent(value, row,'KEY',ind),
+              dataIndex: 'key',
+              render:(value, row,ind) => this.renderContent(value, row,'key',ind),
             }, {
               title: '区域',
               colSpan: 1,//跨两列
