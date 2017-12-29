@@ -10,6 +10,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 //var WebpackDevServer = require('webpack-dev-server');
 var childProcess = require('child_process');
 var process = require("process");
+const appConfig = require("./app.config");
 var NODE_ENV = process.env.NODE_ENV || "dev";
 
 var config = {
@@ -96,13 +97,20 @@ var config = {
         modules: [path.resolve(__dirname, 'node_modules')]
     },
 }
+
 if (process.argv.pop().indexOf("-w") >= 0) {
     var options = {
         env: {
             NODE_ENV: NODE_ENV,
         }
     };
-    childProcess.exec("node koa", options)
+    childProcess.exec("node koa", options,arg=>{
+
+        let port = appConfig["port"] || 8090;
+        childProcess.exec(`start http://localhost:${port}/login`);
+        console.log(`启动成功，请访问 http://localhost:${port}/login`);
+
+    })
 
     // var str = `set NODE_ENV=${process.env.NODE_ENV}&&node koa`;
     // childProcess.exec(str)

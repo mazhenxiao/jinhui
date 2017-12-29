@@ -285,7 +285,7 @@ class SignIndex extends Component {
         // dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let currentVersion = "", versionData;
-
+        
         return Payment.IGetBudgetList(dataKey)
             .then(Adata => { //获取版本
                 currentVersion = this.getCurrentVertion(Adata);
