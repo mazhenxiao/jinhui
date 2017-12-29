@@ -56,7 +56,7 @@ var config = {
             }
         }),
         new webpack.optimize.UglifyJsPlugin({
-            include:[/echarts\.min\.js/,/chunk\.js/,/chunk\-component\-echarts\.js/,/jinhui\-Index\.js/],
+            // include:[/echarts\.min\.js/,/chunk\.js/,/chunk\-component\-echarts\.js/,/jinhui\-Index\.js/],
             // 最紧凑的输出
             beautify: true,
             // 删除所有的注释
