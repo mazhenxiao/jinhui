@@ -65,7 +65,7 @@ var config = {
             }
         }),
         new compress({
-            include: [/echarts\.min\.js/, /chunk\.js/, /chunk\-component\-echarts\.js/, /jinhui\-Index\.js/],
+            // include: [/echarts\.min\.js/, /chunk\.js/, /chunk\-component\-echarts\.js/, /jinhui\-Index\.js/],
             output: {
                 comments: false,   // remove all comments
             },
