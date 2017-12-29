@@ -1,7 +1,8 @@
 const config = {
     'dev': {
         env: "dev",
-        domain: "http://192.168.10.164:8000",//服务端接口
+        // domain: "http://localhost",//本地服务端口
+        domain: "http://39.106.71.187:8000",//服务端接口
         port: 8090,//前端项目监听端口
     },
     'cloud': {
@@ -11,7 +12,7 @@ const config = {
     },
     'test': {
         env: "test",
-        domain: "http://192.168.10.164:8000",//服务端接口
+        domain: "http://39.106.71.187:8000",//服务端接口
         port: 8090,//前端项目监听端口
     },
     'uat': {

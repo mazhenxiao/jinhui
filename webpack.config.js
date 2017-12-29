@@ -59,22 +59,23 @@ var config = {
 
         new CommonsChunkPlugin({
             name: "chunk",
-            minChunks: 3
+            minChunks: 2
         }),
         new webpack.DefinePlugin({
             'process.env': {
                 'NODE_ENV': JSON.stringify(NODE_ENV)
             }
         }),
-        /*  new compress({
-               include:[/echarts\.min\.js/,/chunk\.js/,/chunk\-component\-echarts\.js/,/jinhui\-Index\.js/],
-               output: {
-                   comments: false,   // remove all comments
-                 },
-                 compress: {
-                   warnings: false
-                 }
-           }),  */
+        // new compress({
+        //     include: [/echarts\.min\.js/, /chunk\.js/, /chunk\-component\-echarts\.js/, /jinhui\-Index\.js/],
+        //     output: {
+        //         comments: false,   // remove all comments
+        //     },
+        //     compress: {
+        //         warnings: false
+        //     }
+        // }),
+
         // new DedupePlugin({
         //     'process.env': { NODE_ENV: '"production"' }
         // }),
