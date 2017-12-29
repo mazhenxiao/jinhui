@@ -36,18 +36,19 @@ const errorHandle = async (ctx, next) => {
 
 app.use(errorHandle);
 
-var evn = process.env.NODE_ENV || "dev";
-var loginHtml = `login-${evn}`;
-var oaLoginHtml = `oa-login-${evn}`;
+var env = process.env.NODE_ENV || "dev";
+var loginHtml = `login`;
+var oaLoginHtml = `oa-login-${env}`;
+var url = appConfig.domain;
 
 router.get('/', async (ctx, next) => {
-    await ctx.render(loginHtml, {layout: false})
+    await ctx.render(loginHtml, {layout: false, url: url})
 })
     .get('/Account/OALogin', async (ctx, next) => {
         await ctx.render(oaLoginHtml, {layout: false})
     })
     .get('/login', async (ctx, next) => {
-        await ctx.render(loginHtml, {layout: false})
+        await ctx.render(loginHtml, {layout: false, url: url})
     })
     .get('/index', async (ctx, next) => {
         // this // ctx.render("index",{layout:false})
@@ -60,9 +61,9 @@ router.get('/', async (ctx, next) => {
         await ctx.render("MYTodo", {layout: false})
     });
 
-let port = appConfig["port"] || 8090;
+
 app.listen(port, arg => {
-    c.exec(`start http://localhost:${port}/login`);
-    console.log(`启动成功，请访问 http://localhost:${port}/login`);
+   // c.exec(`start http://localhost:${port}/login`);
+   // console.log(`启动成功，请访问 http://localhost:${port}/login`);
 });
 

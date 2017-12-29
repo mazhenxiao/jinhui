@@ -1,15 +1,30 @@
 import iss from '../js/iss'
 import {locale} from 'moment';
 /**
- * 获取签约基础数据，用dataKey去换取当前版本id
+ *  瑞涛 获取签约基础数据，用dataKey去换取当前版本id
  * /SignAContract/IGetSignBaseInfo?businessId=f2f29de7-2f36-9947-7c40-808e229f1d8f&type=project
  */
 export const IGetSignBaseInfo=({dataKey:businessId,mode:type})=>{
+   
     return iss.fetch({
+        type:"GET",
         url:"/SignAContract/IGetSignBaseInfo",
         data:{businessId,type}
     })
-    .then(this.ThenListener)
+    .then(ThenListener)
+}
+/**
+ * 瑞涛 获取签约动态数据/SignAContract/IGetSignDataByVersionId
+ * @param {* versionId } 版本id 
+ * @param {* type} 项目还是分期
+ */
+export const IGetSignDataByVersionId=({DynamicId:versionId,mode:type})=>{
+    return iss.fetch({
+        type:"GET",
+        url:"/SignAContract/IGetSignDataByVersionId",
+        data:{versionId,type}
+    })
+    .then(ThenListener)
 }
 /**
  * 获取签约版本
@@ -206,6 +221,7 @@ export const IGetIncomeListEditForAdjustment=({dataKey,mode:projectLevel})=>{
  * /Income/IGetVersionList?dataKey=32172052-2da4-85c9-c266-81faf2b1f10f&projectLevel=project
  */
 export const IGetVersionList=({dataKey,mode:projectLevel})=>{
+  
     return iss.fetch({
         url:"/Income/IGetVersionList",
         data:{
@@ -213,7 +229,7 @@ export const IGetVersionList=({dataKey,mode:projectLevel})=>{
             projectLevel
         }
     })
-    .then(this.ThenListener);
+    .then(ThenListener);
 }
 /**
  * 获取回款考核版数据

@@ -87,7 +87,7 @@ class $knife {
                 ii+=parseInt(arg[i].width);
             }
         }
-        return ii;
+        return ii<150? 150:ii;
     }
     /**
      *

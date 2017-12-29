@@ -931,9 +931,14 @@ class $iss {
             case "area":
                 eVal = "10104";
                 break;//面积
+            case "supply":
+            case "sign":
+            case "payment":
+                eVal = "10106";
+                break;//供销存
             case "priority":
                 eVal = "10113";
-                break;//面积
+                break;//关键指标
         }
         return eVal;
     }
@@ -947,6 +952,7 @@ class $iss {
             case "10102":url="newProject";break; //项目
             case "10114":url="AreaInfo/groupbuild";break; //团队维护
             case "10104":url="AreaInfo/areaManage";break; //面积
+            case "10106":url="AreaInfo/payment";break;//供销存
             case "10105":url="AreaInfo/priceControl";break; //价格
             case "10113":url="AreaInfo/priority";break; //重点事项
             default:console.error("iss.js里没有配置convertURL");break;
@@ -971,7 +977,20 @@ class $iss {
             }
         });
     }
-
+    Error = (error)=>{
+        this.tip({
+            type:"error",
+            message:"提示",
+            description:error
+        })
+    }
+    Info=(message)=>{
+        this.tip({
+            type:"info",
+            message:"提示",
+            description:message
+        })  
+    }
     error = (error) => {
         this.message({
                 type: "error",

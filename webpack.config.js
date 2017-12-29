@@ -8,13 +8,15 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 // console.log(path.join(__dirname,"/source/"));
 //const extractLESS = new ExtractTextPlugin('./Content/dist/css/[name].min.css');
 //var WebpackDevServer = require('webpack-dev-server');
-var c = require('child_process');
-var process = require("process")
+var childProcess = require('child_process');
+var process = require("process");
+var NODE_ENV = process.env.NODE_ENV || "dev";
+
 var config = {
     entry: {
         //  "WebpackDevServer": "webpack-dev-server/client?http://localhost:5001/",
         "jinhui-Index": path.join(__dirname, '/js/main.js'), //主入口文件
-      //  "jinhui-newOpen":path.join(__dirname, '/js/openmain.js') //暂用open 
+        "jinhui-newOpen": path.join(__dirname, '/js/openmain.js') //暂用open
     },
     output: {
         path: path.join(__dirname, '/dist/js/'),
@@ -61,18 +63,18 @@ var config = {
         }),
         new webpack.DefinePlugin({
             'process.env': {
-                'NODE_ENV': JSON.stringify('test')
+                'NODE_ENV': JSON.stringify(NODE_ENV)
             }
         }),
-       /*  new compress({
-              include:[/echarts\.min\.js/,/chunk\.js/,/chunk\-component\-echarts\.js/,/jinhui\-Index\.js/],
-              output: {
-                  comments: false,   // remove all comments
-                },
-                compress: {
-                  warnings: false
-                }
-          }),  */
+        /*  new compress({
+               include:[/echarts\.min\.js/,/chunk\.js/,/chunk\-component\-echarts\.js/,/jinhui\-Index\.js/],
+               output: {
+                   comments: false,   // remove all comments
+                 },
+                 compress: {
+                   warnings: false
+                 }
+           }),  */
         // new DedupePlugin({
         //     'process.env': { NODE_ENV: '"production"' }
         // }),
@@ -91,14 +93,16 @@ var config = {
           }) */
     ],
     resolve: {
-        // modules:[path.resolve(__dirname,"/source/"),"node_modules"],
-        /* alias:{
-            echarts:path.join(__dirname,"/source/echarts.min.js")
-        } */
+        modules: [path.resolve(__dirname, 'node_modules')]
     },
 }
 if (process.argv.pop().indexOf("-w") >= 0) {
-    c.exec("node koa");
+    var options = {
+        env: {
+            NODE_ENV: NODE_ENV,
+        }
+    };
+    childProcess.exec("node koa", options)
 }
 
 module.exports = config;

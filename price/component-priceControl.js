@@ -319,7 +319,7 @@ class PriceControl extends React.Component {
             Array.isArray(da["children"]) && (opt["children"] = da["children"]);
             return opt
         });
-       
+       console.log(priceColumns)
         this.setState({
             priceColumnsSource:params,
             priceColumns
@@ -741,13 +741,24 @@ class PriceControl extends React.Component {
 
     render() {
         var th = this;
-
-
+        let {dataKey,current}=this.props.location.query;
+        if(!current&&!dataKey){
+         return <section className={"noneBlock processBar-Prompt"}>
+            <h3>价格管理操作指引</h3>
+            <p>1、前置条件：面积管理已审批通过。</p>                
+            <p className="Prompt">每当审批通过一版面积信息，系统将自动生成一版编制中的价格信息。</p>
+            <p>2、点击【编辑】，填写均价。</p>
+            <p className="Prompt"> 只有编制中状态的价格信息才显示【编辑】按钮，未编制、审批中、审批通过均不显示【编辑】按钮。</p>
+            <p className="Prompt"> 价格管理中的业态、楼栋、可售面积均来源于对应版本的面积管理。</p>
+            <div className="imgBorder"><img src="../img/price.png" /></div>
+            <p>3、点击【发起审批】</p>
+            <p>4、全部审批节点审批通过。</p>
+            </section>
+        }
         return <article>
 
             {this.isApproal()}
-
-            <section className={this.props.location.query["dataKey"] ? "processBar" : "processBar none"}>
+            <section className={"processBar"}>
                 <header className="price">
                     <Spin size="large" spinning={false}>
                         <Row className={this.state.isApproal ? "hide" : ""}>
@@ -782,17 +793,7 @@ class PriceControl extends React.Component {
                     </section>
                 </article>
             </section>
-            <section className={this.props.location.query["dataKey"] ? "none" : "noneBlock processBar-Prompt"}>
-                <h3>价格管理操作指引</h3>
-                <p>1、前置条件：面积管理已审批通过。</p>                
-                <p className="Prompt">每当审批通过一版面积信息，系统将自动生成一版编制中的价格信息。</p>
-                <p>2、点击【编辑】，填写均价。</p>
-                <p className="Prompt"> 只有编制中状态的价格信息才显示【编辑】按钮，未编制、审批中、审批通过均不显示【编辑】按钮。</p>
-                <p className="Prompt"> 价格管理中的业态、楼栋、可售面积均来源于对应版本的面积管理。</p>
-                <div className="imgBorder"><img src="../img/price.png" /></div>
-                <p>3、点击【发起审批】</p>
-                <p>4、全部审批节点审批通过。</p>
-            </section>
+         
         </article>
     }
 }
