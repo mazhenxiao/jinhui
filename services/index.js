@@ -5,6 +5,7 @@ import * as PrimaryKey from './primaryKey-service';
 import * as price from './price-service.js';
 import * as Project from './project-service';
 import * as CommonService from "./common-service";
+import * as Priority from "./priority-service"
 
 export {
     CommonService,
@@ -13,5 +14,6 @@ export {
     SupplyService,
     PrimaryKey,
     price,
-    Project
+    Project,
+    Priority
 };
