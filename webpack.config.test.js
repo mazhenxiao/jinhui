@@ -64,15 +64,15 @@ var config = {
                 'NODE_ENV': JSON.stringify('test')
             }
         }),
-             new compress({
-                include:[/echarts\.min\.js/,/chunk\.js/,/chunk\-component\-echarts\.js/,/jinhui\-Index\.js/],
-              output: {
-                  comments: false,   // remove all comments
-                },
-                compress: {
-                  warnings: false
-                }
-          }), 
+        new compress({
+            include: [/echarts\.min\.js/, /chunk\.js/, /chunk\-component\-echarts\.js/, /jinhui\-Index\.js/],
+            output: {
+                comments: false,   // remove all comments
+            },
+            compress: {
+                warnings: false
+            }
+        }),
         // new DedupePlugin({
         //     'process.env': { NODE_ENV: '"production"' }
         // }),

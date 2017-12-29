@@ -1,5 +1,6 @@
 var path = require("path");
 var webpack = require("webpack");
+var compress = require("webpack/lib/optimize/UglifyJsPlugin"); //压缩
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin"); //thunk
 var childProcess = require('child_process');
 
@@ -55,24 +56,33 @@ var config = {
                 'NODE_ENV': JSON.stringify('cloud')
             }
         }),
-        new webpack.optimize.UglifyJsPlugin({
-            // include:[/echarts\.min\.js/,/chunk\.js/,/chunk\-component\-echarts\.js/,/jinhui\-Index\.js/],
-            // 最紧凑的输出
-            beautify: true,
-            // 删除所有的注释
-            comments: true,
-            compress: {
-                // 在UglifyJs删除没有用到的代码时不输出警告
-                warnings: false,
-                // 删除所有的 `console` 语句
-                // 还可以兼容ie浏览器
-                drop_console: true,
-                // 内嵌定义了但是只用到一次的变量
-                collapse_vars: true,
-                // 提取出出现多次但是没有定义成变量去引用的静态值
-                reduce_vars: true,
+        new compress({
+            include: [/echarts\.min\.js/, /chunk\.js/, /chunk\-component\-echarts\.js/, /jinhui\-Index\.js/],
+            output: {
+                comments: false,   // remove all comments
             },
+            compress: {
+                warnings: false
+            }
         }),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     // include:[/echarts\.min\.js/,/chunk\.js/,/chunk\-component\-echarts\.js/,/jinhui\-Index\.js/],
+        //     // 最紧凑的输出
+        //     beautify: true,
+        //     // 删除所有的注释
+        //     comments: true,
+        //     compress: {
+        //         // 在UglifyJs删除没有用到的代码时不输出警告
+        //         warnings: false,
+        //         // 删除所有的 `console` 语句
+        //         // 还可以兼容ie浏览器
+        //         drop_console: true,
+        //         // 内嵌定义了但是只用到一次的变量
+        //         collapse_vars: true,
+        //         // 提取出出现多次但是没有定义成变量去引用的静态值
+        //         reduce_vars: true,
+        //     },
+        // }),
     ],
     resolve: {
         modules: [path.resolve(__dirname, 'node_modules')]
