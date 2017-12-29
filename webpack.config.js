@@ -103,9 +103,6 @@ if (process.argv.pop().indexOf("-w") >= 0) {
         }
     };
     childProcess.exec("node koa", options)
-
-    // var str = `set NODE_ENV=${process.env.NODE_ENV}&&node koa`;
-    // childProcess.exec(str)
 }
 
 module.exports = config;
