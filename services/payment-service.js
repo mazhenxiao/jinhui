@@ -1,14 +1,28 @@
 import iss from '../js/iss'
 import {locale} from 'moment';
 /**
- * 获取签约基础数据，用dataKey去换取当前版本id
+ *  瑞涛 获取签约基础数据，用dataKey去换取当前版本id
  * /SignAContract/IGetSignBaseInfo?businessId=f2f29de7-2f36-9947-7c40-808e229f1d8f&type=project
  */
 export const IGetSignBaseInfo=({dataKey:businessId,mode:type})=>{
    
     return iss.fetch({
+        type:"GET",
         url:"/SignAContract/IGetSignBaseInfo",
         data:{businessId,type}
+    })
+    .then(ThenListener)
+}
+/**
+ * 瑞涛 获取签约动态数据/SignAContract/IGetSignDataByVersionId
+ * @param {* versionId } 版本id 
+ * @param {* type} 项目还是分期
+ */
+export const IGetSignDataByVersionId=({DynamicId:versionId,mode:type})=>{
+    return iss.fetch({
+        type:"GET",
+        url:"/SignAContract/IGetSignDataByVersionId",
+        data:{versionId,type}
     })
     .then(ThenListener)
 }
