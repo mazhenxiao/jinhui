@@ -37,19 +37,18 @@ const errorHandle = async (ctx, next) => {
 app.use(errorHandle);
 
 var evn = process.env.NODE_ENV || "dev";
-//var loginHtml = `login-${evn}`;
 var loginHtml = `login`;
 var oaLoginHtml = `oa-login-${evn}`;
 var url = appConfig.domain;
 
 router.get('/', async (ctx, next) => {
-    await ctx.render(loginHtml, {layout: false})
+    await ctx.render(loginHtml, {layout: false, url: url})
 })
     .get('/Account/OALogin', async (ctx, next) => {
         await ctx.render(oaLoginHtml, {layout: false})
     })
     .get('/login', async (ctx, next) => {
-        await ctx.render(loginHtml, {layout: false,url:url})
+        await ctx.render(loginHtml, {layout: false, url: url})
     })
     .get('/index', async (ctx, next) => {
         // this // ctx.render("index",{layout:false})

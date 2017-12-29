@@ -5,7 +5,6 @@ var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin"); //t
 var config = {
     entry: {
         "jinhui-Index": path.join(__dirname, '/js/main.js'), //主入口文件
-        //"jinhui-newOpen":path.join(__dirname, '/js/openmain.js') //暂用open 
     },
     output: {
         path: path.join(__dirname, '/dist/js/'),
