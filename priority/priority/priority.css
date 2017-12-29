@@ -15,9 +15,11 @@
 }
 .PriorityTable .anticon-close-circle:before,
 .PriorityTable .anticon-cross-circle:before {
-  content: ">80%";
-  color: rgba(0, 0, 0, 0.65);
-  width: 34px;
+  content: "中";
+  padding: 6px;
+  border: 1px solid #F1A118;
+  border-radius: 12px;
+  color: #F1A118;
 }
 .PriorityTable .anticon-check-circle:before {
   content: "高";

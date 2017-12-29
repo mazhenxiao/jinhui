@@ -2,7 +2,7 @@
 import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";
 import React, { Component } from 'react';
-import { Spin, Tabs, Row, Col, Button, Select,Input,Progress} from 'antd';
+import { Spin, Tabs, Row, Col, Button, Select,Input,Progress,Alert,DatePicker} from 'antd';
 import { AreaService,Priority } from '../services';
 import PriorityTable from './priority-table.js';
 import PriorityForm from './priority-form.js';
@@ -36,7 +36,9 @@ class Index extends Component {
             "SOLVETIME": '0001-01-01', 
             "CREATETIME": '0001-01-01', 
             "CREATEUSER": null, 
-            "APPROVESTATUS":-1
+            "APPROVESTATUS":-1,
+            "SELECTEDID": 1,
+            "SELECTEDLEVEL": null
         },
         sundryId:"",
         level_id:"",
@@ -77,16 +79,25 @@ class Index extends Component {
         
         //debugger;
         const {location} = nextProps;
+        console.log(location)
         if(location.state != undefined){
             const nextDataKey = location.state.id || "";
             const nextLevel_id = location.state.level_id || "";
-            var nextProjectID = ""
+            const text = location.state.id || "";
+            var nextProjectID = null,areaID = null, companyID=null;
+            if(nextLevel_id == 2){
+                areaID = text
+            }else if(nextLevel_id == 3){
+                companyID = text
+            }
             if(nextLevel_id == 5){
                  nextProjectID = location.state.parentid;
                  this.PriorityFormDat.STAGEID = location.state.id;
-            }else{
+            }else if(nextLevel_id == 4){
                  nextProjectID = location.state.id;
                  this.PriorityFormDat.STAGEID = null;
+            }else{
+                nextProjectID = null
             }
             //切换路由之后，重新获取数据
                 this.setState({
@@ -95,16 +106,41 @@ class Index extends Component {
                     projectID:nextProjectID,
                     addAatterStatus: false
                 },()=>{
-                    this.getAjax(this.state.entityJson);
+                    var entityJson={ 
+                        "ID": null,
+                        "AREANAME": null,
+                        "AREAID": null,
+                        "COMPANYNAME": null,
+                        "COMPANYID":null,
+                        "PROJECTID": nextProjectID,
+                        "PROJECTNAME": null,
+                        "STAGEID": null,
+                        "STAGENAME": null,
+                        "RISKDESC": null,
+                        "RISKEFFECT": null, 
+                        "PROGRESS": null, 
+                        "SUPPORT": null, 
+                        "POINTLEVEL": -1, 
+                        "ISOLVE": -1, 
+                        "REPORTTIME": '0001-01-01', 
+                        "OWNER": null, 
+                        "USERNAME": null, 
+                        "POST": null, 
+                        "SOLVETIME": '0001-01-01', 
+                        "CREATETIME": '0001-01-01', 
+                        "CREATEUSER": null, 
+                        "APPROVESTATUS":-1,
+                        "SELECTEDID": this.state.sundryId,
+                        "SELECTEDLEVEL": this.state.level_id
+                    }
+                    this.getAjax(entityJson);
                 });
         }
         
 
     }
     componentWillMount() {
-            this.getAjax(this.state.entityJson);
-        
-        
+         this.getAjax(this.state.entityJson);
     }
     componentDidMount(){
     };
@@ -119,7 +155,7 @@ class Index extends Component {
         let {sundryId:SELECTEDID,level_id:SELECTEDLEVEL}=this.state;
         
         Priority.GetListPage({
-            SELECTEDID,SELECTEDLEVEL,"pageIndex":1,"pageSize":10,"entityJson":JSON.stringify(obj)
+            "pageIndex":1,"pageSize":10,"entityJson":JSON.stringify(obj)
         }).then(dataList=>{
             dataList.forEach((el,ind) => {
                 if(el.ISOLVE == 1){
@@ -141,7 +177,6 @@ class Index extends Component {
              })
              th.setState({dataList})
         }).catch(err=>{
-            
         })
 
     }
@@ -150,7 +185,6 @@ class Index extends Component {
         let {projectID} = this.state;
         Priority.GetOrganization({projectID})
                 .then(data=>{
-                    console.log(data)
                     data.forEach((el,ind) => {
                         if(el.ORGLEVEL == 4){
                             this.formData.projectName = el.ORGNAME
@@ -172,19 +206,25 @@ class Index extends Component {
                 })
 
     }
-
+    errorPrompt = () =>{
+        return 
+    }
     BIND_Save = () =>{
-        console.log(this.formData)
         for(let key in this.PriorityFormDat){
             if(key != "SUPPORT" || key != "STAGEID"){
                 if(this.PriorityFormDat[key] == ""){
-                    iss.popover({ content: "*为必填项！"});
+                    iss.popover({ content: " * 为必填项！！"});
+                    // iss.tip({
+                    //     type: "error",
+                    //     description: "*为必填项！！"
+                    // })
+                     return 
                 }
             }
-           
+            
         }
-        return
-        userInfo = iss.userInfo;
+        
+        var userInfo = iss.userInfo;
         var entityJson={ 
             "ID": null,
             "AREANAME": this.formData.areaName,           //*
@@ -206,14 +246,16 @@ class Index extends Component {
             "SOLVETIME": this.PriorityFormDat.SOLVETIME, 
             "CREATETIME": '0001-01-01', 
             "CREATEUSER": userInfo.ID, 
-            "APPROVESTATUS":-1
+            "APPROVESTATUS":-1,
+            "SELECTEDID": this.state.sundryId,
+            "SELECTEDLEVEL": this.state.level_id
         }
         
         Priority.ProjectKayPointSave({
            "entityJson":JSON.stringify(entityJson)
         })
         .then(data=>{
-            console.log(data)
+            this.handleLocalSearch()
         })
         .catch(err=>{
             
@@ -275,8 +317,7 @@ class Index extends Component {
         const { value } = e.target;
         this.USERNAME = value;
     }
-    SOLVETIME_FN = (e) =>{
-        const { value } = e.target;
+    SOLVETIME_FN = (e,value) =>{
         if(value == ""){
             this.SOLVETIME='0001-01-01';
         }else{
@@ -292,8 +333,9 @@ class Index extends Component {
     handleLocalSearch = () =>{
         if(this.PROJECTNAME != "" || this.USERNAME!="" || this.SOLVETIME != "" || this.POINTLEVEL!="" || this.ISOLVE!=""){
             let {PROJECTNAME,POINTLEVEL,ISOLVE,USERNAME,SOLVETIME}=this;
-            
             let obj = {...this.state.entityJson,...{PROJECTNAME,POINTLEVEL,ISOLVE,USERNAME,SOLVETIME}}
+            obj.SELECTEDID=  this.state.sundryId;
+            obj.SELECTEDLEVEL= this.state.level_id;
             this.getAjax(obj);
             
         }
@@ -342,7 +384,7 @@ class Index extends Component {
                             </Select> 
                         </Col>
                         <Col span={5}>
-                            最迟解决时间：<Input onChange={this.SOLVETIME_FN} placeholder="格式：yyyy-mm-dd" style={{ width: 125 }} />
+                            最迟解决时间：<DatePicker onChange={this.SOLVETIME_FN} />
                         </Col>
                         <Col span={3} style={{textAlign: "left", paddingLeft: "10px"}}>
                             <Button onClick={this.handleLocalSearch}>查询</Button>
