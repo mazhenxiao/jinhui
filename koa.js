@@ -62,8 +62,9 @@ router.get('/', async (ctx, next) => {
     });
 
 
+let port = appConfig["port"] || 8090;
 app.listen(port, arg => {
-   // c.exec(`start http://localhost:${port}/login`);
-   // console.log(`启动成功，请访问 http://localhost:${port}/login`);
+    c.exec(`start http://localhost:${port}/login`);
+    console.log(`启动成功，请访问 http://localhost:${port}/login`);
 });
 
