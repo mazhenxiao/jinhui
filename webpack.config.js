@@ -98,9 +98,10 @@ var config = {
 }
 if (process.argv.pop().indexOf("-w") >= 0) {
     var options = {
-        NODE_ENV: NODE_ENV,
+        env: {
+            NODE_ENV: NODE_ENV,
+        }
     };
-    console.log("options", options);
     childProcess.exec("node koa", options)
 
     // var str = `set NODE_ENV=${process.env.NODE_ENV}&&node koa`;

@@ -36,9 +36,9 @@ const errorHandle = async (ctx, next) => {
 
 app.use(errorHandle);
 
-var evn = process.env.NODE_ENV || "dev";
+var env = process.env.NODE_ENV || "dev";
 var loginHtml = `login`;
-var oaLoginHtml = `oa-login-${evn}`;
+var oaLoginHtml = `oa-login-${env}`;
 var url = appConfig.domain;
 
 router.get('/', async (ctx, next) => {
