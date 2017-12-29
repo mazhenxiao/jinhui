@@ -932,7 +932,6 @@ class $iss {
             case "area":
                 eVal = "10104";
                 break;//面积
-          
             case "supply":
             case "sign":
             case "payment":
@@ -954,6 +953,7 @@ class $iss {
             case "10102":url="newProject";break; //项目
             case "10114":url="AreaInfo/groupbuild";break; //团队维护
             case "10104":url="AreaInfo/areaManage";break; //面积
+            case "10106":url="AreaInfo/payment";break;//供销存
             case "10105":url="AreaInfo/priceControl";break; //价格
             case "10113":url="AreaInfo/priority";break; //重点事项
             default:console.error("iss.js里没有配置convertURL");break;

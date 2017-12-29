@@ -64,8 +64,9 @@ class ProcessApprovalTab extends React.Component {
                 this.setState({ // 面积
                     TapList: [list[0], list[5]]
                 });
+                break;
             case iss.getEVal("priority"):
-                this.setState({ // 项目团队维护
+                this.setState({ // 重点事项
                     TapList: [list[0], list[6]]
                 });
                 break;

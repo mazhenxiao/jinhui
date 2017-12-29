@@ -58,8 +58,9 @@ class SignIndex extends Component {
     dynamicTable = { //动态表格私有仓储
         DynamicId:"",//新加入的id，用此id获取动态调整版数据
         Permission:"",//新加入是否可以编辑
-        Status:"",//新加入当前阶段
+        Status:"",//新加入当前阶段,接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回
         VersionList:[],//新加入不知道是什么
+        StartYear:"",//新加入起始年份
         number: 0,//死循环记录
         dynamicRender: {
             "showName": (text, record) => <a href="javascript:;"
@@ -125,11 +126,12 @@ class SignIndex extends Component {
         //获取基础数据
         Payment.IGetSignBaseInfo({dataKey,mode})
         .then(arg=>{  //进行错误判断
-            let {DynamicId,Error}=arg;
+            let {DynamicId,StartYear,VersionList,Status}=arg;
             if(!DynamicId){                
                 return Promise.reject(Error);
             }
-            
+            this.dynamicTable = {...this.dynamicTable,DynamicId,StartYear,VersionList,Status}
+            this.PromiseAllAndLockScroll();//调用
            // return arg
         }).catch(err=>{
             err&&iss.Info(err);
@@ -214,9 +216,9 @@ class SignIndex extends Component {
      * return promise
      */
     getDynamicData = () => {
-        let {dynamicTable, dataKey} = this.state;
-        //dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
-
+        let {dynamicTable, dataKey,mode} = this.state;
+        let {DynamicId}=this.dynamicTable;
+       
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let title = Payment.IGetSignAContractTableTitle(dataKey)
             .then((dynamicColum) => {
@@ -224,19 +226,22 @@ class SignIndex extends Component {
                 return dynamicColum;
             });
 
-        let data = Payment.IGetSignAContractData(dataKey)
+       //张权版数据获取 let data = Payment.IGetSignAContractData(dataKey)
+       //瑞涛版数据
+       let data = Payment.IGetSignDataByVersionId({DynamicId,mode});
         //获取当前版本，当前获取年份提交数据要使用
-        Payment.IGetSignAContractBaseInfo(dataKey).then(arg => {
+       /*  Payment.IGetSignAContractBaseInfo(dataKey).then(arg => {
             let {signAContractVersionId, startYear, status} = arg;
             this.dynamicTable.signAContractVersionId = signAContractVersionId; //设置id
             this.dynamicTable.startYear = startYear; //设置当前年份
             this.dynamicTable.status = status;//0编制 10提交 -1 驳回
         }).catch(error => {
             iss.error(error);
-        });
+        }); */
 
         return Promise.all([title, data])
             .then(arg => {
+                
                 let {status} = this.dynamicTable;
                 let [dynamicHeaderData, dynamicDataSource] = arg,
                     newData = {
