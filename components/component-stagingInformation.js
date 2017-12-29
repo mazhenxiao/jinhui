@@ -366,7 +366,6 @@ class StagingInformation extends React.Component {
                     "deleteGroup":deleteGroup,
                     "newGroupNumber":newGroupNumber
                 }
-                console.log(json)
                 iss.ajax({
                     url: "/Stage/ISaveGroupBuildingMapping",
                     data:json,

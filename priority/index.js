@@ -55,17 +55,17 @@ class Index extends Component {
     SOLVETIME='0001-01-01'; //最迟解决时间
 
     PriorityFormDat={
-        RISKDESC:"",
-        RISKEFFECT:"",
-        PROGRESS:"",
+        RISKDESC:"",    //*
+        RISKEFFECT:"",  //*
+        PROGRESS:"",    //*
         SUPPORT:"",
-        POINTLEVEL:"",
-        ISOLVE:"",
-        REPORTTIME:"",
-        OWNER:"",
-        POST:"",
-        SOLVETIME:"",
-        PROJECTID:"",
+        POINTLEVEL:"",   //*
+        ISOLVE:"",       //*
+        REPORTTIME:"",    //*
+        OWNER:"",         //*
+        POST:"",          //*
+        SOLVETIME:"",     //*
+        PROJECTID:"",     //*
         STAGEID:null
     }
 
@@ -176,21 +176,26 @@ class Index extends Component {
     BIND_Save = () =>{
         console.log(this.formData)
         for(let key in this.PriorityFormDat){
-            console.log(this.PriorityFormDat[key])
+            if(key != "SUPPORT" || key != "STAGEID"){
+                if(this.PriorityFormDat[key] == ""){
+                    iss.popover({ content: "*为必填项！"});
+                }
+            }
+           
         }
         return
         userInfo = iss.userInfo;
         var entityJson={ 
             "ID": null,
-            "AREANAME": this.formData.areaName,
-            "COMPANYNAME": this.formData.companyName,
-            "PROJECTID": this.PriorityFormDat.PROJECTID,
-            "PROJECTNAME": this.formData.projectName,
+            "AREANAME": this.formData.areaName,           //*
+            "COMPANYNAME": this.formData.companyName,       //*
+            "PROJECTID": this.PriorityFormDat.PROJECTID,    //*
+            "PROJECTNAME": this.formData.projectName,       //*
             "STAGEID": this.PriorityFormDat.STAGEID,
             "STAGENAME": null,
-            "RISKDESC": this.PriorityFormDat.RISKDESC,
-            "RISKEFFECT": this.PriorityFormDat.RISKEFFECT, 
-            "PROGRESS": this.PriorityFormDat.PROGRESS, 
+            "RISKDESC": this.PriorityFormDat.RISKDESC,       //*
+            "RISKEFFECT": this.PriorityFormDat.RISKEFFECT,   //*
+            "PROGRESS": this.PriorityFormDat.PROGRESS,      //*
             "SUPPORT": this.PriorityFormDat.SUPPORT, 
             "POINTLEVEL": this.PriorityFormDat.POINTLEVEL, 
             "ISOLVE": this.PriorityFormDat.ISOLVE, 
