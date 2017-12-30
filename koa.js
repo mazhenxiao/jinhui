@@ -38,14 +38,14 @@ app.use(errorHandle);
 
 var env = process.env.NODE_ENV || "dev";
 var loginHtml = `login`;
-var oaLoginHtml = `oa-login-${env}`;
+var oaLoginHtml = `oa-login`;
 var url = appConfig.domain;
 
 router.get('/', async (ctx, next) => {
     await ctx.render(loginHtml, {layout: false, url: url})
 })
     .get('/Account/OALogin', async (ctx, next) => {
-        await ctx.render(oaLoginHtml, {layout: false})
+        await ctx.render(oaLoginHtml, {layout: false, url: url})
     })
     .get('/login', async (ctx, next) => {
         await ctx.render(loginHtml, {layout: false, url: url})
