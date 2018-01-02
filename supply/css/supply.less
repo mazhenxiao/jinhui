@@ -1,161 +1,167 @@
+/*
+  supply 供货信息页面
+*/
 @bg: #f7f7f7;
-.HeaderBar {
-  padding: 10px;
-}
-
-.supply-wrapper {
-  margin-bottom: 20px;
-  .ant-table-fixed .ant-table-tbody .ant-table-row{
-    height: 35px !important;
-  }
-  .ant-table-bordered .ant-table-tbody > tr > td {
-    text-align: left;
-  }
-
-  .title {
-    font-size: 13px;
-    font-weight: 600;
-  }
-
-  .text-align-right {
-    text-align: right;
-    padding-bottom: 2px;
-  }
-
-  .plan-version {
-    display: inline-block;
-    width: 210px;
-  }
-
-  .top-header {
-    padding-bottom: 5px;
-  }
-
-  .bottom-header {
-    padding-top: 20px;
-    padding-bottom: 0px;
-  }
-}
-
-.building-adjust {
-  .ant-radio-button-wrapper-checked {
-    background: #108ee9;
-    color: white;
-  }
-  .ant-btn {
-    line-height: 26px;
-  }
-  .ant-calendar-picker{
-     height:32px;box-sizing: border-box;
-  }
-  .ant-calendar-picker-input {
-    display: inline-block;
-  }
-  .ant-table-tbody > tr > td {
-    padding-top: 3px;
-    padding-bottom: 3px;
-    text-align: center;
-  }
-
-  .summary {
-    text-align: right;
-    padding-right: 10px;
-    font-size: 12px;
-    font-weight: 600;
-  }
-
-  .adjust-header {
-    position: relative;
-    bottom: 10px;
-    line-height: 30px;
-
-    .select-month {
-      position: relative;
-      top: 10px;
-      display: inline-block;
-      width: 200px;
-      font-size: 13px;
-      font-weight: 500;
+.supply-wrapper{
+    .HeaderBar {
+      padding: 10px;
     }
 
-    .chk-wrapper {
+  .supply-wrapper {
+    margin-bottom: 20px;
+    .ant-table-fixed .ant-table-tbody .ant-table-row{
+      height: 35px !important;
+    }
+    .ant-table-bordered .ant-table-tbody > tr > td {
+      text-align: left;
+    }
+
+    .title {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .text-align-right {
+      text-align: right;
+      padding-bottom: 2px;
+    }
+
+    .plan-version {
       display: inline-block;
-      width: 120px;
-      .chk {
-        left: 20px;
+      width: 210px;
+    }
+
+    .top-header {
+      padding-bottom: 5px;
+    }
+
+    .bottom-header {
+      padding-top: 20px;
+      padding-bottom: 0px;
+    }
+  }
+
+  .building-adjust {
+    .ant-radio-button-wrapper-checked {
+      background: #108ee9;
+      color: white;
+    }
+    .ant-btn {
+      line-height: 26px;
+    }
+    .ant-calendar-picker{
+      height:32px;box-sizing: border-box;
+    }
+    .ant-calendar-picker-input {
+      display: inline-block;
+    }
+    .ant-table-tbody > tr > td {
+      padding-top: 3px;
+      padding-bottom: 3px;
+      text-align: center;
+    }
+
+    .summary {
+      text-align: right;
+      padding-right: 10px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .adjust-header {
+      position: relative;
+      bottom: 10px;
+      line-height: 30px;
+
+      .select-month {
+        position: relative;
+        top: 10px;
+        display: inline-block;
+        width: 200px;
         font-size: 13px;
         font-weight: 500;
       }
+
+      .chk-wrapper {
+        display: inline-block;
+        width: 120px;
+        .chk {
+          left: 20px;
+          font-size: 13px;
+          font-weight: 500;
+        }
+      }
+
+      .date-picker-wrapper {
+        display: inline-block;
+        width: 100px;
+      }
+
+      .batch-set-date {
+        display: inline-block;
+        width: 100px;
+        padding-left: 10px;
+      }
+
+      .switch-year {
+        display: inline-block;
+        width: 380px;
+        padding-left: 50px;
+      }
+
+      .summary-wrapper {
+        display: inline-block;
+        padding-left: 40px;
+      }
     }
 
-    .date-picker-wrapper {
-      display: inline-block;
-      width: 100px;
+    .adjust-table {
+      margin-top: 10px;
     }
 
-    .batch-set-date {
-      display: inline-block;
-      width: 100px;
-      padding-left: 10px;
-    }
-
-    .switch-year {
-      display: inline-block;
-      width: 380px;
-      padding-left: 50px;
-    }
-
-    .summary-wrapper {
-      display: inline-block;
-      padding-left: 40px;
+    .format-operation {
+      a {
+        display: inline-block;
+        padding-left: 5px;
+        padding-right: 5px;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: none;
+      }
     }
   }
 
-  .adjust-table {
+  .text-center {
+    display: block;
+    text-align: center;
+  }
+
+  .header-center {
+    text-align: center;
+    display: block;
+  }
+
+  .select-block {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #bababa;
+    background-color: limegreen;
+  }
+
+  .no-select-block {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #bababa;
+  }
+
+  .empty-div {
+    text-align: center;
+    line-height: 28px;
     margin-top: 10px;
+    color: rgba(0, 0, 0, .43);
   }
 
-  .format-operation {
-    a {
-      display: inline-block;
-      padding-left: 5px;
-      padding-right: 5px;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: none;
-    }
-  }
-}
-
-.text-center {
-  display: block;
-  text-align: center;
-}
-
-.header-center {
-  text-align: center;
-  display: block;
-}
-
-.select-block {
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  border: 1px solid #bababa;
-  background-color: limegreen;
-}
-
-.no-select-block {
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  border: 1px solid #bababa;
-}
-
-.empty-div {
-  text-align: center;
-  line-height: 28px;
-  margin-top: 10px;
-  color: rgba(0, 0, 0, .43);
 }

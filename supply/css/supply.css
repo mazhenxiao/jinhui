@@ -1,65 +1,68 @@
-.HeaderBar {
+/*
+  supply 供货信息页面
+*/
+.supply-wrapper .HeaderBar {
   padding: 10px;
 }
-.supply-wrapper {
+.supply-wrapper .supply-wrapper {
   margin-bottom: 20px;
 }
-.supply-wrapper .ant-table-fixed .ant-table-tbody .ant-table-row {
+.supply-wrapper .supply-wrapper .ant-table-fixed .ant-table-tbody .ant-table-row {
   height: 35px !important;
 }
-.supply-wrapper .ant-table-bordered .ant-table-tbody > tr > td {
+.supply-wrapper .supply-wrapper .ant-table-bordered .ant-table-tbody > tr > td {
   text-align: left;
 }
-.supply-wrapper .title {
+.supply-wrapper .supply-wrapper .title {
   font-size: 13px;
   font-weight: 600;
 }
-.supply-wrapper .text-align-right {
+.supply-wrapper .supply-wrapper .text-align-right {
   text-align: right;
   padding-bottom: 2px;
 }
-.supply-wrapper .plan-version {
+.supply-wrapper .supply-wrapper .plan-version {
   display: inline-block;
   width: 210px;
 }
-.supply-wrapper .top-header {
+.supply-wrapper .supply-wrapper .top-header {
   padding-bottom: 5px;
 }
-.supply-wrapper .bottom-header {
+.supply-wrapper .supply-wrapper .bottom-header {
   padding-top: 20px;
   padding-bottom: 0px;
 }
-.building-adjust .ant-radio-button-wrapper-checked {
+.supply-wrapper .building-adjust .ant-radio-button-wrapper-checked {
   background: #108ee9;
   color: white;
 }
-.building-adjust .ant-btn {
+.supply-wrapper .building-adjust .ant-btn {
   line-height: 26px;
 }
-.building-adjust .ant-calendar-picker {
+.supply-wrapper .building-adjust .ant-calendar-picker {
   height: 32px;
   box-sizing: border-box;
 }
-.building-adjust .ant-calendar-picker-input {
+.supply-wrapper .building-adjust .ant-calendar-picker-input {
   display: inline-block;
 }
-.building-adjust .ant-table-tbody > tr > td {
+.supply-wrapper .building-adjust .ant-table-tbody > tr > td {
   padding-top: 3px;
   padding-bottom: 3px;
   text-align: center;
 }
-.building-adjust .summary {
+.supply-wrapper .building-adjust .summary {
   text-align: right;
   padding-right: 10px;
   font-size: 12px;
   font-weight: 600;
 }
-.building-adjust .adjust-header {
+.supply-wrapper .building-adjust .adjust-header {
   position: relative;
   bottom: 10px;
   line-height: 30px;
 }
-.building-adjust .adjust-header .select-month {
+.supply-wrapper .building-adjust .adjust-header .select-month {
   position: relative;
   top: 10px;
   display: inline-block;
@@ -67,67 +70,67 @@
   font-size: 13px;
   font-weight: 500;
 }
-.building-adjust .adjust-header .chk-wrapper {
+.supply-wrapper .building-adjust .adjust-header .chk-wrapper {
   display: inline-block;
   width: 120px;
 }
-.building-adjust .adjust-header .chk-wrapper .chk {
+.supply-wrapper .building-adjust .adjust-header .chk-wrapper .chk {
   left: 20px;
   font-size: 13px;
   font-weight: 500;
 }
-.building-adjust .adjust-header .date-picker-wrapper {
+.supply-wrapper .building-adjust .adjust-header .date-picker-wrapper {
   display: inline-block;
   width: 100px;
 }
-.building-adjust .adjust-header .batch-set-date {
+.supply-wrapper .building-adjust .adjust-header .batch-set-date {
   display: inline-block;
   width: 100px;
   padding-left: 10px;
 }
-.building-adjust .adjust-header .switch-year {
+.supply-wrapper .building-adjust .adjust-header .switch-year {
   display: inline-block;
   width: 380px;
   padding-left: 50px;
 }
-.building-adjust .adjust-header .summary-wrapper {
+.supply-wrapper .building-adjust .adjust-header .summary-wrapper {
   display: inline-block;
   padding-left: 40px;
 }
-.building-adjust .adjust-table {
+.supply-wrapper .building-adjust .adjust-table {
   margin-top: 10px;
 }
-.building-adjust .format-operation a {
+.supply-wrapper .building-adjust .format-operation a {
   display: inline-block;
   padding-left: 5px;
   padding-right: 5px;
   text-decoration: none;
 }
-.building-adjust .format-operation a:hover {
+.supply-wrapper .building-adjust .format-operation a:hover {
   text-decoration: none;
 }
-.text-center {
+.supply-wrapper .text-center {
   display: block;
   text-align: center;
 }
-.header-center {
+.supply-wrapper .header-center {
   text-align: center;
   display: block;
 }
-.select-block {
+.supply-wrapper .select-block {
   display: inline-block;
   width: 15px;
   height: 15px;
   border: 1px solid #bababa;
   background-color: limegreen;
 }
-.no-select-block {
+.supply-wrapper .no-select-block {
   display: inline-block;
   width: 15px;
   height: 15px;
   border: 1px solid #bababa;
 }
-.empty-div {
+.supply-wrapper .empty-div {
   text-align: center;
   line-height: 28px;
   margin-top: 10px;
