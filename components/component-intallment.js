@@ -273,7 +273,10 @@ class Intallment extends React.Component {
                             window.location.href=urlPath;
                             iss.popover({ content: "保存成功", type: 2 });
                         }else if(status=="edit"){
-                            id=versionId;
+                            //id=versionId; 升版造成保存时id是老的，如果升级版本会在url带新的dataKey用来判断替换
+
+                            let {dataKey} = th.props.location.query;
+                            id=dataKey? dataKey:versionId;
                         }
                          
                         iss.popover({content:"保存成功",type:2});
