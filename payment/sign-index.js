@@ -125,10 +125,14 @@ class SignIndex extends Component {
      * 初始化数据
      */
     setStartData=()=>{
-        let {dynamicTable}=this.state;
+        let {dynamicTable,planTable,version}=this.state;
         dynamicTable={...dynamicTable,dynamicDataSource:[],dynamicEditButtonShow:false}
+        planTable = {...planTable,planDataSource:[]}
+        version = {...version,versionData:[],versionShow:false}
         this.setState({
             dynamicTable,
+            planTable,
+            version
         });
     }
 
@@ -290,7 +294,8 @@ class SignIndex extends Component {
      * currentVersion 当前版本 返回Promise
      */
     getCurrentVersionPlanData = currentVersion => {
-        return Payment.IGetBudgetList(currentVersion); //获取数据
+        let {mode} = this.state;
+        return Payment.IGetSignDataByVersionId({DynamicId:currentVersion,mode}); //获取数据
 
     }
     /**
@@ -390,7 +395,7 @@ class SignIndex extends Component {
             versionId: signAContractVersionId,
             signAContractSaveData: _da
         }
-        debugger
+        
         return Payment.ISaveSignAContractData(postData)
             .then(arg => {
                 iss.tip({
@@ -510,14 +515,13 @@ class SignIndex extends Component {
     selectChangeVersion = params => {
         // let _da= this.getCurrentVertion(params);
         let versionId = params; // _da.length? _da[0].id:"";
-        let {version} = this.state;
+        let {version,planTable} = this.state;
         let {dynamicHeaderData} = this.state.dynamicTable
         version = {...version, currentVersion: params}
         if (versionId) {
 
             this.getCurrentVersionPlanData(versionId)
                 .then((planDataSource) => {
-
                     let {planTable} = this.state;
                     let newData = {
                         dynamicHeaderData,
@@ -533,6 +537,9 @@ class SignIndex extends Component {
                 .catch(error => {
                     iss.error(error);
                 })
+        }else{
+          planTable = {...planTable,planDataSource:[]};
+          this.setState({planTable,version})
         }
 
     }
