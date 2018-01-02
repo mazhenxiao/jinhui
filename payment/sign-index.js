@@ -12,6 +12,8 @@ import "../css/tools-processBar.less";
 import "../css/button.less";
 import "../area/areaCss/areaManage.less";
 import "./css/sign.less";
+import '../source/jquery-easyui-1.5.2/themes/bootstrap/dialog.css';
+import '../source/jquery-easyui-1.5.2/themes/gray/dialog.css';
 
 const TabPane = Tabs.TabPane;
 
@@ -69,8 +71,10 @@ class SignIndex extends Component {
         StartYear:"",//新加入起始年份
         number: 0,//死循环记录
         dynamicRender: {
-            "showName": (text, record) => <a href="javascript:;"
-                                             onClick={this.clickOpenDialog.bind(this, text, record)}>{text}</a>
+            "showName": (text, record) => {
+            let {LEVELS}=record;
+           return LEVELS=="0" ? <a href="javascript:;" onClick={this.clickOpenDialog.bind(this, text, record)}>{text}</a>:{text}
+        }
 
         }, //动态编辑表格
         status: "",//接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回
@@ -125,10 +129,11 @@ class SignIndex extends Component {
      * 初始化数据
      */
     setStartData=()=>{
-        let {dynamicTable,planTable,version}=this.state;
+        let {dynamicTable,planTable,version,dialog}=this.state;
         dynamicTable={...dynamicTable,dynamicDataSource:[],dynamicEditButtonShow:false}
         planTable = {...planTable,planDataSource:[]}
         version = {...version,versionData:[],versionShow:false}
+        dialog={...dialog,ModalVisible:false};
         this.setState({
             dynamicTable,
             planTable,
@@ -595,7 +600,10 @@ class SignIndex extends Component {
             visible={ModalVisible}
             onCancel={this.clickModalCancel}
             onOk={this.clickModalOk}
+            mask={false}
+            width={800}
             footer={false}
+            style={{"top":0}}
         >
 
 
@@ -604,8 +612,9 @@ class SignIndex extends Component {
                 bordered={true}
                 size="small"
                 dataSource={dialogContent}
+                scroll={{x:true,y:100}}
                 columns={columns}/>
-
+                
         </Modal>
 
     }
