@@ -14,6 +14,7 @@ import "../area/areaCss/areaManage.less";
 import "./css/sign.less";
 import '../source/jquery-easyui-1.5.2/themes/bootstrap/dialog.css';
 import '../source/jquery-easyui-1.5.2/themes/gray/dialog.css';
+import '../source/jquery-easyui-1.5.2/themes/default/dialog.css';
 
 const TabPane = Tabs.TabPane;
 
@@ -129,24 +130,17 @@ class SignIndex extends Component {
     /**
      * 初始化数据
      */
-<<<<<<< HEAD
-    setStartData=()=>{
-        let {dynamicTable,planTable,version,dialog}=this.state;
-        dynamicTable={...dynamicTable,dynamicDataSource:[],dynamicEditButtonShow:false}
-        planTable = {...planTable,planDataSource:[]}
-        version = {...version,versionData:[],versionShow:false}
-        dialog={...dialog,ModalVisible:false};
-=======
     setStartData = () => {
-        let {dynamicTable, planTable, version} = this.state;
+        let {dynamicTable, planTable, version,dialog} = this.state;
         dynamicTable = {...dynamicTable, dynamicDataSource: [], dynamicEditButtonShow: false}
         planTable = {...planTable, planDataSource: []}
         version = {...version, versionData: [], versionShow: false}
->>>>>>> 2954a43567375c4cae85c7c49b6a2f7b175bc0ac
+        dialog = {...dialog,ModalVisible:false}
         this.setState({
             dynamicTable,
             planTable,
-            version
+            version,
+            dialog
         });
     }
 
