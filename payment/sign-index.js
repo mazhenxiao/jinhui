@@ -126,7 +126,7 @@ class SignIndex extends Component {
         //获取基础数据
         Payment.IGetSignBaseInfo({dataKey,mode})
         .then(arg=>{  //进行错误判断
-            let {DynamicId,StartYear,VersionList,Status}=arg;
+            let {DynamicId,StartYear,VersionList,Status,Error}=arg;
             if(!DynamicId){                
                 return Promise.reject(Error);
             }
@@ -134,6 +134,7 @@ class SignIndex extends Component {
             this.PromiseAllAndLockScroll();//调用
            // return arg
         }).catch(err=>{
+            
             err&&iss.Info(err);
             this.setState({
                 loading:false
