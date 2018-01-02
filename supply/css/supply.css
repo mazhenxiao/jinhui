@@ -109,28 +109,28 @@
 .building-adjust .format-operation a:hover {
   text-decoration: none;
 }
-.supply-wrapper .text-center {
+.text-center {
   display: block;
   text-align: center;
 }
-.supply-wrapper .header-center {
+.header-center {
   text-align: center;
   display: block;
 }
-.supply-wrapper .select-block {
+.select-block {
   display: inline-block;
   width: 15px;
   height: 15px;
   border: 1px solid #bababa;
   background-color: limegreen;
 }
-.supply-wrapper .no-select-block {
+.no-select-block {
   display: inline-block;
   width: 15px;
   height: 15px;
   border: 1px solid #bababa;
 }
-.supply-wrapper .empty-div {
+.empty-div {
   text-align: center;
   line-height: 28px;
   margin-top: 10px;

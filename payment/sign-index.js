@@ -121,6 +121,16 @@ class SignIndex extends Component {
             );
         }
     }
+    /**
+     * 初始化数据
+     */
+    setStartData=()=>{
+        let {dynamicTable}=this.state;
+        dynamicTable={...dynamicTable,dynamicDataSource:[],dynamicEditButtonShow:false}
+        this.setState({
+            dynamicTable,
+        });
+    }
 
     /**
      * 获取动态数据，获取签约计划数据，获取版本数据
@@ -134,11 +144,7 @@ class SignIndex extends Component {
         .then(arg=>{  //进行错误判断
             let {DynamicId,StartYear,VersionList,Status,Error}=arg;
              if(!DynamicId){ 
-                let {dynamicTable}=this.state;
-                dynamicTable={...dynamicTable,dynamicDataSource:[],dynamicEditButtonShow:false}
-                this.setState({
-                    dynamicTable,
-                });
+                this.setStartData();//初始化数据
                 return Promise.reject(Error);
             }
             this.version = {...this.version,versionData:VersionList,versionShow:Boolean(VersionList.length)}
@@ -303,7 +309,6 @@ class SignIndex extends Component {
       //瑞涛获取数据版本
     return  Payment.IGetSignDataByVersionId({DynamicId:currentVersion,mode})
             .then((planDataSource) => {
-                
                 let newData = { //table数据
                         dynamicHeaderData,
                         planDataSource,
