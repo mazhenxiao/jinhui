@@ -25,7 +25,7 @@
 <script src="/source/js/all0.0.1-min.js"></script><!--jquery bootstrap esayui-->
 <script>
     $(function () {
-        var home = "http://192.168.10.164:8000";//dev
+        var home ="<%=url%>";
         function GetQueryString(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
             var r = window.location.search.substr(1).match(reg);
