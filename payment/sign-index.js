@@ -53,6 +53,12 @@ class SignIndex extends Component {
 
 
     };
+    //版本信息私有数据
+    version={ //版本
+        currentVersion: "",//当前版本
+        versionData: [], //版本数据
+        versionShow: false //是否显示版本
+    };
 
     //protected 数据
     dynamicTable = { //动态表格私有仓储
@@ -123,13 +129,19 @@ class SignIndex extends Component {
     getFetData = (first) => {
         let {dataKey,mode}=this.state;
         this.dynamicTable.saveData = {};
-        //获取基础数据
+        //获取基础数据=瑞涛
         Payment.IGetSignBaseInfo({dataKey,mode})
         .then(arg=>{  //进行错误判断
             let {DynamicId,StartYear,VersionList,Status,Error}=arg;
-            if(!DynamicId){                
+             if(!DynamicId){ 
+                let {dynamicTable}=this.state;
+                dynamicTable={...dynamicTable,dynamicDataSource:[],dynamicEditButtonShow:false}
+                this.setState({
+                    dynamicTable,
+                });
                 return Promise.reject(Error);
             }
+            this.version = {...this.version,versionData:VersionList,versionShow:Boolean(VersionList.length)}
             this.dynamicTable = {...this.dynamicTable,DynamicId,StartYear,VersionList,Status}
             this.PromiseAllAndLockScroll();//调用
            // return arg
@@ -281,20 +293,17 @@ class SignIndex extends Component {
      */
     getPlanData = () => {
 
-        let {planTable, version, dynamicTable, dataKey} = this.state;
-        let {dynamicHeaderData} = dynamicTable
+        let {planTable, version, dynamicTable, dataKey,mode} = this.state;
+        let {dynamicHeaderData} = dynamicTable;
+        let {versionData}=this.version;
         // dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
-        let currentVersion = "", versionData;
-        
-        return Payment.IGetBudgetList(dataKey)
-            .then(Adata => { //获取版本
-                currentVersion = this.getCurrentVertion(Adata);
-                versionData = Adata;
-                return Payment.IGetSignAContractData(currentVersion)
-            })
+        let currentVersion = this.getCurrentVertion(versionData);
+         
+      //瑞涛获取数据版本
+    return  Payment.IGetSignDataByVersionId({DynamicId:currentVersion,mode})
             .then((planDataSource) => {
-
+                
                 let newData = { //table数据
                         dynamicHeaderData,
                         planDataSource,
@@ -376,6 +385,7 @@ class SignIndex extends Component {
             versionId: signAContractVersionId,
             signAContractSaveData: _da
         }
+        debugger
         return Payment.ISaveSignAContractData(postData)
             .then(arg => {
                 iss.tip({
@@ -407,11 +417,11 @@ class SignIndex extends Component {
                 for (let key in arg) {
                     let reg = /^Y\d{3}/ig;
                     if (reg.test(key) && arg[key] !== "") {
-                        let {startYear} = this.dynamicTable;
-                        startYear = eval(startYear + "-1+" + key.substr(1, 1))
+                        let {StartYear} = this.dynamicTable;
+                        StartYear = eval(StartYear + "-1+" + key.substr(1, 1))
                         let _da = {
                             dataType: key.substr(4),
-                            titlename: `${startYear}-${key.substr(2, 2)}-01`,
+                            titlename: `${StartYear}-${key.substr(2, 2)}-01`,
                             productTypeID: arg["showId"] || "",
                             GROUPID: arg["GROUPID"],
                             val: arg[key]

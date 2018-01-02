@@ -1,68 +1,68 @@
 /*
   supply 供货信息页面
 */
-.supply-wrapper .HeaderBar {
+.HeaderBar {
   padding: 10px;
 }
-.supply-wrapper .supply-wrapper {
+.supply-wrapper {
   margin-bottom: 20px;
 }
-.supply-wrapper .supply-wrapper .ant-table-fixed .ant-table-tbody .ant-table-row {
+.supply-wrapper .ant-table-fixed .ant-table-tbody .ant-table-row {
   height: 35px !important;
 }
-.supply-wrapper .supply-wrapper .ant-table-bordered .ant-table-tbody > tr > td {
+.supply-wrapper .ant-table-bordered .ant-table-tbody > tr > td {
   text-align: left;
 }
-.supply-wrapper .supply-wrapper .title {
+.supply-wrapper .title {
   font-size: 13px;
   font-weight: 600;
 }
-.supply-wrapper .supply-wrapper .text-align-right {
+.supply-wrapper .text-align-right {
   text-align: right;
   padding-bottom: 2px;
 }
-.supply-wrapper .supply-wrapper .plan-version {
+.supply-wrapper .plan-version {
   display: inline-block;
   width: 210px;
 }
-.supply-wrapper .supply-wrapper .top-header {
+.supply-wrapper .top-header {
   padding-bottom: 5px;
 }
-.supply-wrapper .supply-wrapper .bottom-header {
+.supply-wrapper .bottom-header {
   padding-top: 20px;
   padding-bottom: 0px;
 }
-.supply-wrapper .building-adjust .ant-radio-button-wrapper-checked {
+.building-adjust .ant-radio-button-wrapper-checked {
   background: #108ee9;
   color: white;
 }
-.supply-wrapper .building-adjust .ant-btn {
+.building-adjust .ant-btn {
   line-height: 26px;
 }
-.supply-wrapper .building-adjust .ant-calendar-picker {
+.building-adjust .ant-calendar-picker {
   height: 32px;
   box-sizing: border-box;
 }
-.supply-wrapper .building-adjust .ant-calendar-picker-input {
+.building-adjust .ant-calendar-picker-input {
   display: inline-block;
 }
-.supply-wrapper .building-adjust .ant-table-tbody > tr > td {
+.building-adjust .ant-table-tbody > tr > td {
   padding-top: 3px;
   padding-bottom: 3px;
   text-align: center;
 }
-.supply-wrapper .building-adjust .summary {
+.building-adjust .summary {
   text-align: right;
   padding-right: 10px;
   font-size: 12px;
   font-weight: 600;
 }
-.supply-wrapper .building-adjust .adjust-header {
+.building-adjust .adjust-header {
   position: relative;
   bottom: 10px;
   line-height: 30px;
 }
-.supply-wrapper .building-adjust .adjust-header .select-month {
+.building-adjust .adjust-header .select-month {
   position: relative;
   top: 10px;
   display: inline-block;
@@ -70,43 +70,43 @@
   font-size: 13px;
   font-weight: 500;
 }
-.supply-wrapper .building-adjust .adjust-header .chk-wrapper {
+.building-adjust .adjust-header .chk-wrapper {
   display: inline-block;
   width: 120px;
 }
-.supply-wrapper .building-adjust .adjust-header .chk-wrapper .chk {
+.building-adjust .adjust-header .chk-wrapper .chk {
   left: 20px;
   font-size: 13px;
   font-weight: 500;
 }
-.supply-wrapper .building-adjust .adjust-header .date-picker-wrapper {
+.building-adjust .adjust-header .date-picker-wrapper {
   display: inline-block;
   width: 100px;
 }
-.supply-wrapper .building-adjust .adjust-header .batch-set-date {
+.building-adjust .adjust-header .batch-set-date {
   display: inline-block;
   width: 100px;
   padding-left: 10px;
 }
-.supply-wrapper .building-adjust .adjust-header .switch-year {
+.building-adjust .adjust-header .switch-year {
   display: inline-block;
   width: 380px;
   padding-left: 50px;
 }
-.supply-wrapper .building-adjust .adjust-header .summary-wrapper {
+.building-adjust .adjust-header .summary-wrapper {
   display: inline-block;
   padding-left: 40px;
 }
-.supply-wrapper .building-adjust .adjust-table {
+.building-adjust .adjust-table {
   margin-top: 10px;
 }
-.supply-wrapper .building-adjust .format-operation a {
+.building-adjust .format-operation a {
   display: inline-block;
   padding-left: 5px;
   padding-right: 5px;
   text-decoration: none;
 }
-.supply-wrapper .building-adjust .format-operation a:hover {
+.building-adjust .format-operation a:hover {
   text-decoration: none;
 }
 .supply-wrapper .text-center {
