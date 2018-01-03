@@ -236,7 +236,7 @@ export const IGetVersionList=({dataKey,mode:projectLevel})=>{
  * 获取回款考核版数据
  * /Income/IGetIncomeListEditForCheck?versionId=&dataKey=&projectLevel=
  */
-export const IGetIncomeListEditForCheck=({dataKey,versionId,mode:projectLevel})=>{
+export const IGetIncomeListEditForCheck=({dataKey,currentVersion:versionId,mode:projectLevel})=>{
     return iss.fetch({
         url:"/Income/IGetIncomeListEditForCheck",
         data:{dataKey,versionId,projectLevel}

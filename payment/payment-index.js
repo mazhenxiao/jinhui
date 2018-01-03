@@ -59,8 +59,9 @@ class SignIndex extends Component {
     dynamicTable = { //动态表格私有仓储
         number: 0,//死循环记录
         dynamicRender: {
-            "showName": (text, record) => <a href="javascript:;"
-                                             onClick={this.clickOpenDialog.bind(this, text, record)}>{text}</a>
+            "PRODUCTNAME": (text, record) =>{ 
+                return  <a href="javascript:;"
+                           onClick={this.clickOpenDialog.bind(this, text, record)}>{text}</a>}
 
         }, //动态编辑表格
         status: "",//接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回
@@ -149,9 +150,13 @@ class SignIndex extends Component {
         let planTable = this.getPlanData();
 
         return Promise.all([dynamicTable, planTable]).then(arg => {
-            debugger
             //获取弹窗数据如果需要，因为张权说要给一个获取的id不知道依赖在哪里，先放到这,估计需要从动态表获取
-            this.getFetDialogData();
+            this.setState({
+                loading:false,
+                version:this.version, //版本
+                dynamicTable:this.dynamicTable, //动态调整
+                planTable:this.planTable,//考核版
+            });
             this.bindScrollLock();
         }).catch(error => {
             this.setState({
@@ -161,30 +166,7 @@ class SignIndex extends Component {
         })
     }
 
-    /**
-     * 获取弹窗数据
-     */
-    getFetDialogData(key) {//获取弹窗及校验数据
-        let title = this.getDynamicTitle(key);
-        let data = this.getDynamicDialogData(key);
-        let {dialog} = this.state;
-        Promise.all([title, data])
-            .then(([title, data]) => {
-                let newData = {
-                    columns: title || [],
-                    dataSource: data || [],
-                    ModalVisible: false
-                };
-                dialog = {...dialog, ...newData};
 
-                this.setState({
-                    dialog
-                })
-            })
-            .catch(err => {
-                iss.error(err);
-            })
-    }
 
     getApprovalState = () => {
 
@@ -224,13 +206,8 @@ class SignIndex extends Component {
        return Payment.IGetIncomeListEditForAdjustment({dataKey,mode})
                .then(arg=>{
                    let {titleInfo:dynamicHeaderData,incomeDataList:dynamicDataSource}=arg
-                   this.dynamicTable={...this.dynamicTable,dynamicHeaderData,dynamicDataSource};
-                       // dynamicTable = {...dynamicTable,dynamicHeaderData,dynamicDataSource,loading:false}
-                            
-                 /*   this.setState({
-                        loading:false,
-                        dynamicTable
-                   }); */
+                   this.dynamicTable={...this.dynamicTable,dynamicHeaderData,dynamicDataSource,dynamicEditButtonShow:Boolean(dynamicDataSource.length)};
+                   return "动态调整版本ok"
                }).catch(err=>{ iss.error(err)})
     }
     /**
@@ -273,17 +250,14 @@ class SignIndex extends Component {
                         currentVersion:this.getCurrentVertion(versionData),
                         versionShow:Boolean(versionData.length)
                     }
-                    return Payment.IGetIncomeListEditForAdjustment({dataKey,versionId:currentVersion,mode}) 
+                    let {currentVersion}=this.version;
+                    return Payment.IGetIncomeListEditForCheck({dataKey,currentVersion,mode}) 
                 })
                 .then(data=>{ //获取考核版数据
                     let {dynamicHeaderData:planHeaderData}=this.dynamicTable;
                     let {incomeDataList:planDataSource}=data;
                     this.planTable={...this.planTable,planHeaderData,planDataSource}
-                    this.setState({
-                        version:this.version, //版本
-                        dynamicTable:this.dynamicTable, //动态调整
-                        planTable:this.planTable,//考核版
-                    })
+                    return "考核版ok"
                 })
                 .catch(err=>{
                     iss.error(err);
@@ -607,7 +581,7 @@ class SignIndex extends Component {
                     editState={dynamicEdit}
                     editMode="LastLevel"
                     dataSource={dynamicDataSource || []}
-                    //columnRender={this.dynamicTable.dynamicRender}
+                    columnRender={this.dynamicTable.dynamicRender}
                 />
             </article>
         );
