@@ -251,6 +251,7 @@ class SignIndex extends Component {
                         versionShow:Boolean(versionData.length)
                     }
                     let {currentVersion}=this.version;
+                    if(!currentVersion){ return Promise.reject("没有获取到版本")}
                     return Payment.IGetIncomeListEditForCheck({dataKey,currentVersion,mode}) 
                 })
                 .then(data=>{ //获取考核版数据
