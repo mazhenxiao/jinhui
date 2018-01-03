@@ -436,13 +436,14 @@ class SignIndex extends Component {
                 //console.log(`${arg.GROUPNAME}=>${arg.PROJECTNAME}=>${arg.TYPENAME}`)
                // debugger
                 for (let key in arg) {
-                    let reg = /^Y\d{3}/ig;
+                    let reg = /^Y\d{3}/ig,mon=key.substr(2, 2),reg3=/Y3\d{3}Q\w/;
+                    
                     if (reg.test(key) && arg[key] !== "") {
                         let {StartYear} = this.dynamicTable;
                         StartYear = eval(StartYear + "-1+" + key.substr(1, 1))
                         let _da = {
                             dataType: key.substr(4),
-                            titlename: `${StartYear}-${key.substr(2, 2)}-01`,
+                            titlename: `${StartYear}-${mon}-01`,
                             productTypeID: arg["showId"] || "",
                             GROUPID: arg["GROUPID"],
                             val: arg[key]
