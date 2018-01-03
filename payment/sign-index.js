@@ -159,6 +159,7 @@ class SignIndex extends Component {
                     this.setStartData();//初始化数据
                     return Promise.reject(Error);
                 }
+                if(Error){ iss.error(Error)}
                 this.version = {...this.version, versionData: VersionList, versionShow: Boolean(VersionList.length)}
                 this.dynamicTable = {...this.dynamicTable, DynamicId, StartYear, VersionList, Status}
                 this.PromiseAllAndLockScroll();//调用
