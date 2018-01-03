@@ -395,12 +395,12 @@ class SignIndex extends Component {
         this.dynamicTable.saveData = {};//清场
         let {dataKey, dynamicTable} = this.state;
         let {dynamicDataSource,} = dynamicTable;
-        let {saveData, signAContractVersionId} = this.dynamicTable;//非stage存储保存数据
-
+        let {saveData,DynamicId} = this.dynamicTable;//非stage存储保存数据
+debugger
         this.filterSaveData(dynamicDataSource);//递归赋值    
         let _da = JSON.stringify(Object.values(saveData));
         let postData = {
-            versionId: signAContractVersionId,
+            versionId: DynamicId,
             signAContractSaveData: _da
         }
 
