@@ -15,6 +15,7 @@ import "./css/sign.less";
 import '../source/jquery-easyui-1.5.2/themes/bootstrap/dialog.css';
 import '../source/jquery-easyui-1.5.2/themes/gray/dialog.css';
 import '../source/jquery-easyui-1.5.2/themes/default/dialog.css';
+import '../common/css/view.css';
 
 const TabPane = Tabs.TabPane;
 
@@ -68,6 +69,7 @@ class SignIndex extends Component {
         DynamicId: "",//新加入的id，用此id获取动态调整版数据
         Permission: "",//新加入是否可以编辑
         Status: "",//新加入当前阶段,接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回
+        Permission:"edit",//瑞涛添加通过是否为edit判断是否可以编辑
         VersionList: [],//新加入不知道是什么
         StartYear: "",//新加入起始年份
         number: 0,//死循环记录
@@ -154,14 +156,14 @@ class SignIndex extends Component {
         //获取基础数据=瑞涛
         Payment.IGetSignBaseInfo({dataKey, mode})
             .then(arg => {  //进行错误判断
-                let {DynamicId, StartYear, VersionList, Status, Error} = arg;
+                let {DynamicId, StartYear, VersionList, Permission, Error} = arg;
                 if (!DynamicId) {
                     this.setStartData();//初始化数据
                     return Promise.reject(Error);
                 }
                 if(Error){ iss.error(Error)}
                 this.version = {...this.version, versionData: VersionList, versionShow: Boolean(VersionList.length)}
-                this.dynamicTable = {...this.dynamicTable, DynamicId, StartYear, VersionList, Status}
+                this.dynamicTable = {...this.dynamicTable, DynamicId, StartYear, VersionList, Permission}
                 this.PromiseAllAndLockScroll();//调用
                 // return arg
             }).catch(err => {
@@ -274,13 +276,13 @@ class SignIndex extends Component {
         return Promise.all([title, data])
             .then(arg => {
 
-                let {status} = this.dynamicTable;
+                let {Permission} = this.dynamicTable;
                 let [dynamicHeaderData, dynamicDataSource] = arg,
                     newData = {
                         dynamicHeaderData,
                         dynamicDataSource,
                         dynamicEdit: false,
-                        dynamicEditButtonShow: Boolean(status == 0 && dynamicDataSource && dynamicDataSource.length),
+                        dynamicEditButtonShow: Boolean(Permission ==`edit`&& dynamicDataSource && dynamicDataSource.length),
                     },
                     dynamicTable = {...this.state.dynamicTable, ...newData};
                 this.setState({dynamicTable, loading: false});
