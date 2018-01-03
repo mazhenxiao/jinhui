@@ -20,8 +20,7 @@ class Index extends Component {
         loading: true,
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : "Stage",//显示模式，项目或者分期
-        //供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货
-        supplyType: "",//TODO 删除默认值
+        supplyType: "",//供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货
         permission: "Show",//权限: Show:只允许查看, Add:新增, Edit:编辑, Upgrade:版本升级
         dynamicId: "",//动态调整版本Id
         versionId: "",//当前选中的计划版本
@@ -102,9 +101,11 @@ class Index extends Component {
         let nextState = {};
 
         return SupplyService.getBaseData(dataKey, mode)
-            .then(({supplyType, permission, dynamicId, versionId, versionData, baseInfo}) => {
+            .then(({supplyType, permission, dynamicId, versionId, versionData, baseInfo, error}) => {
                 console.log("supplyType=" + supplyType, "(供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货)");
-
+                if (error) {
+                    iss.error(error);
+                }
                 nextState = {
                     supplyType,
                     permission,
@@ -139,6 +140,13 @@ class Index extends Component {
             .catch(error => {
                 this.setState({
                     loading: false,
+                    permission: "Show",
+                    versionId: "",
+                    dynamicId: "",
+                    versionData: [],
+                    baseInfo: {},
+                    planData: {},
+                    adjustData: {},
                 });
                 iss.error(error);
             })
@@ -305,7 +313,7 @@ class Index extends Component {
             </div>
         );
     };
-         /**
+    /**
      * 发起审批
      */
     isApproal = arg => {
@@ -317,7 +325,7 @@ class Index extends Component {
         }
 
     }
-     /**
+    /**
      * 发起审批
      */
     handleApproval = params => {
@@ -340,7 +348,7 @@ class Index extends Component {
             search: `?e=${newProjectStatus}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${this.props.location.query["dataKey"]}&isProOrStage=${isProOrStage}`
         });
     }
-        /**
+    /**
      * 当前是否是审批
      */
     SetisApproal = arg => {
@@ -353,14 +361,14 @@ class Index extends Component {
     }
 
     render() {
-        const {dataKey,current} = this.props.location.query;
+        const {dataKey, current} = this.props.location.query;
         const {loading} = this.state
-        if (!dataKey&&!current) {
+        if (!dataKey && !current) {
             return this.renderEmpty();
         }
         return (
             <div className="supply-wrapper">
-                 {this.isApproal()}   
+                {this.isApproal()}
                 <Spin size="large" spinning={loading}>
                     <Tabs defaultActiveKey="history">
                         <TabPane tab="供货" key="history">

@@ -23,6 +23,7 @@ export const getBaseData = (dataKey, mode) => {
                 permission: data.eSaveType,
                 dynamicId: data.ID,//动态调整板Id
                 versionId: data.ApprovedId,
+                error: data.Error,
                 versionData: data.VersionList.map(version => {
                     return {
                         id: version.ID,

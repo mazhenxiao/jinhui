@@ -204,10 +204,14 @@ class SignIndex extends Component {
         let {dynamicTable, dataKey,mode} = this.state;
         //dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
         //回款
+        //let title,data;
+        return
         Payment.IGetIncomeListEditForAdjustment({dataKey,mode})
                .then(arg=>{
-                   console.log("IGetIncomeListEditForAdjustment",arg);
+                  // console.log("IGetIncomeListEditForAdjustment",arg);
+                   
                })
+               return;
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let title = Payment.IGetSignAContractTableTitle(dataKey)
             .then((dynamicColum) => {
