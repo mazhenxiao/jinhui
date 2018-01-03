@@ -396,9 +396,10 @@ class SignIndex extends Component {
         let {dataKey, dynamicTable} = this.state;
         let {dynamicDataSource,} = dynamicTable;
         let {saveData,DynamicId} = this.dynamicTable;//非stage存储保存数据
-debugger
+
         this.filterSaveData(dynamicDataSource);//递归赋值    
         let _da = JSON.stringify(Object.values(saveData));
+        
         let postData = {
             versionId: DynamicId,
             signAContractSaveData: _da
@@ -431,7 +432,8 @@ debugger
         da.map(arg => {
             if (arg.children && arg.children.length) {
                 this.filterSaveData(arg.children)
-            } else {
+            } else if(!arg.children) {
+                
                 for (let key in arg) {
                     let reg = /^Y\d{3}/ig;
                     if (reg.test(key) && arg[key] !== "") {
