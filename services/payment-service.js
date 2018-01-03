@@ -1,6 +1,6 @@
 import iss from '../js/iss'
 import {locale} from 'moment';
-/**
+/** 张权-瑞涛
  *  瑞涛 获取签约基础数据，用dataKey去换取当前版本id
  * /SignAContract/IGetSignBaseInfo?businessId=f2f29de7-2f36-9947-7c40-808e229f1d8f&type=project
  */
@@ -202,19 +202,19 @@ export const ISendBackSignAContractData = signAContractVersionId => {
     })
 };
 
-/**
+/**张政
  * 获取回款动态调整版本数据
  * /Income/IGetIncomeListEditForAdjustment?dataKey=32172052-2da4-85c9-c266-81faf2b1f10f&projectLevel=project
  */
-export const IGetIncomeListEditForAdjustment=({dataKey,mode:projectLevel})=>{
-    
+export const IGetIncomeListEditForAdjustment=({dataKey,versionId,mode:projectLevel})=>{
+    //如果有versionId是动态调如果没有是考核
+    let data = versionId==undefined? {dataKey,projectLevel}:{dataKey,versionId,projectLevel}
     return iss.fetch({
         url:"/Income/IGetIncomeListEditForAdjustment",
-        data:{
-            dataKey,
-            projectLevel
-        }
-    }).then(arg=>arg.rows)
+        data
+    })
+    .then(ThenListener)
+    .catch(err=>Promise.reject(err))
 }
 /**
  * 获取回款考核版版本
@@ -229,7 +229,8 @@ export const IGetVersionList=({dataKey,mode:projectLevel})=>{
             projectLevel
         }
     })
-    .then(ThenListener);
+    .then(ThenListener)
+    .catch(err=>Promise.reject(err));
 }
 /**
  * 获取回款考核版数据
@@ -240,6 +241,7 @@ export const IGetIncomeListEditForCheck=({dataKey,versionId,mode:projectLevel})=
         url:"/Income/IGetIncomeListEditForCheck",
         data:{dataKey,versionId,projectLevel}
     })
+    .catch(err=>Promise.reject(err))
 }
 
 
@@ -248,7 +250,7 @@ export const IGetIncomeListEditForCheck=({dataKey,versionId,mode:projectLevel})=
  * Income/IGetVersionList?datakey=&projectLevel=
  */
 export const IGetVersionListData = ({dataKey,mode:projectLevel}) => {
-    debugger
+    
     return iss.fetch({
         url:"/Income/IGetVersionList",
         data:{

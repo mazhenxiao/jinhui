@@ -70,6 +70,12 @@ class SignIndex extends Component {
         dynamicHeaderData:[],
         dynamicDataSource:[]
     }
+    planTable={ //同上
+        planHeaderData: [],
+        planDataSource: [],
+        planEdit: false,
+        loading: true
+    }
     //版本信息私有数据
     version= { //版本
         currentVersion: "",//当前版本
@@ -143,6 +149,7 @@ class SignIndex extends Component {
         let planTable = this.getPlanData();
 
         return Promise.all([dynamicTable, planTable]).then(arg => {
+            debugger
             //获取弹窗数据如果需要，因为张权说要给一个获取的id不知道依赖在哪里，先放到这,估计需要从动态表获取
             this.getFetDialogData();
             this.bindScrollLock();
@@ -233,7 +240,6 @@ class SignIndex extends Component {
     getCurrentVertion = AList => {
         if (typeof AList == "string") {
             return this.state.version.versionData.filter(arg => arg.id == AList);
-
         } else {
             return AList && AList.length ? AList[0].id : ""
         }
@@ -259,37 +265,30 @@ class SignIndex extends Component {
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let currentVersion = "", versionData;
         //回款版本
-        Payment.IGetVersionListData({dataKey,mode})
-                .then(arg=>{
-                  this.version.versionData=arg;
-                }).catch(err=>{
-                    console.log(err)
+       return Payment.IGetVersionListData({dataKey,mode})
+                .then(versionData=>{  //获取select版本
+                    this.version = {
+                        ...this.version,
+                        versionData,
+                        currentVersion:this.getCurrentVertion(versionData),
+                        versionShow:Boolean(versionData.length)
+                    }
+                    return Payment.IGetIncomeListEditForAdjustment({dataKey,versionId:currentVersion,mode}) 
+                })
+                .then(data=>{ //获取考核版数据
+                    let {dynamicHeaderData:planHeaderData}=this.dynamicTable;
+                    let {incomeDataList:planDataSource}=data;
+                    this.planTable={...this.planTable,planHeaderData,planDataSource}
+                    this.setState({
+                        version:this.version, //版本
+                        dynamicTable:this.dynamicTable, //动态调整
+                        planTable:this.planTable,//考核版
+                    })
+                })
+                .catch(err=>{
+                    iss.error(err);
                 })
 
-        return Payment.IGetBudgetList(dataKey)
-            .then(Adata => { //获取版本
-                currentVersion = this.getCurrentVertion(Adata);
-                versionData = Adata;
-                return Payment.IGetSignAContractData(currentVersion)
-            })
-            .then((planDataSource) => {
-
-                let newData = { //table数据
-                        dynamicHeaderData,
-                        planDataSource,
-                        // planEditButtonShow:Boolean(planDataSource&&planDataSource.length)
-                    },
-                    newVersion = { //版本数据
-                        currentVersion,
-                        versionData,
-                        versionShow: true
-                    }
-                planTable = {...planTable, ...newData};
-                version = {...version, ...newVersion};
-
-                this.setState({planTable, version});
-
-            })
     }
 
     /**
