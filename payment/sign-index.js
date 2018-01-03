@@ -433,7 +433,8 @@ class SignIndex extends Component {
             if (arg.children && arg.children.length) {
                 this.filterSaveData(arg.children)
             } else if(!arg.children) {
-                
+                //console.log(`${arg.GROUPNAME}=>${arg.PROJECTNAME}=>${arg.TYPENAME}`)
+               // debugger
                 for (let key in arg) {
                     let reg = /^Y\d{3}/ig;
                     if (reg.test(key) && arg[key] !== "") {

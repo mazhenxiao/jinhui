@@ -66,9 +66,16 @@ class SignIndex extends Component {
         status: "",//接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回
         startYear: "",//起始年
         signAContractVersionId: "",//调整版本id
-        saveData: {}//保存数据临时存储
+        saveData: {},//保存数据临时存储
+        dynamicHeaderData:[],
+        dynamicDataSource:[]
     }
-
+    //版本信息私有数据
+    version= { //版本
+        currentVersion: "",//当前版本
+        versionData: [], //版本数据
+        versionShow: false //是否显示版本
+    };
 
     antdTableScrollLock = null;//用来触发卸载原生事件
 
@@ -205,44 +212,19 @@ class SignIndex extends Component {
         //dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
         //回款
         //let title,data;
-        return
-        Payment.IGetIncomeListEditForAdjustment({dataKey,mode})
+        //获取动态数据头部与数据
+        
+       return Payment.IGetIncomeListEditForAdjustment({dataKey,mode})
                .then(arg=>{
-                  // console.log("IGetIncomeListEditForAdjustment",arg);
-                   
-               })
-               return;
-        //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
-        let title = Payment.IGetSignAContractTableTitle(dataKey)
-            .then((dynamicColum) => {
-                //this.setDynamicRender(dynamicColum);//创建编辑表
-                return dynamicColum;
-            });
-     
-        let data = Payment.IGetSignAContractData(dataKey)
-        //获取当前版本，当前获取年份提交数据要使用
-        Payment.IGetSignAContractBaseInfo(dataKey).then(arg => {
-            let {signAContractVersionId, startYear, status} = arg;
-            this.dynamicTable.signAContractVersionId = signAContractVersionId; //设置id
-            this.dynamicTable.startYear = startYear; //设置当前年份
-            this.dynamicTable.status = status;//0编制 10提交 -1 驳回
-        }).catch(error => {
-            iss.error(error);
-        });
-
-        return Promise.all([title, data])
-            .then(arg => {
-                let {status} = this.dynamicTable;
-                let [dynamicHeaderData, dynamicDataSource] = arg,
-                    newData = {
-                        dynamicHeaderData,
-                        dynamicDataSource,
-                        dynamicEdit: false,
-                        dynamicEditButtonShow: Boolean(status == 0 && dynamicDataSource && dynamicDataSource.length),
-                    },
-                    dynamicTable = {...this.state.dynamicTable, ...newData};
-                this.setState({dynamicTable, loading: false});
-            })
+                   let {titleInfo:dynamicHeaderData,incomeDataList:dynamicDataSource}=arg
+                   this.dynamicTable={...this.dynamicTable,dynamicHeaderData,dynamicDataSource};
+                       // dynamicTable = {...dynamicTable,dynamicHeaderData,dynamicDataSource,loading:false}
+                            
+                 /*   this.setState({
+                        loading:false,
+                        dynamicTable
+                   }); */
+               }).catch(err=>{ iss.error(err)})
     }
     /**
      * 返回当前id
@@ -277,9 +259,11 @@ class SignIndex extends Component {
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let currentVersion = "", versionData;
         //回款版本
-        Payment.IGetVersionList({dataKey,mode})
+        Payment.IGetVersionListData({dataKey,mode})
                 .then(arg=>{
-                    console.log("IGetVersionList",arg);
+                  this.version.versionData=arg;
+                }).catch(err=>{
+                    console.log(err)
                 })
 
         return Payment.IGetBudgetList(dataKey)
@@ -588,7 +572,7 @@ class SignIndex extends Component {
     renderHistoryData = () => {
         const {versionData, versionId, editable, dynamicTable, loading} = this.state;
         const {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow, defaultHeight} = dynamicTable;
-
+        
         return (
             <article className="toTable signPage">
                 <header className="bottom-header-bar">
@@ -614,7 +598,7 @@ class SignIndex extends Component {
                         </Col>
                     </Row>
                 </header>
-
+                
                 <WrapperTreeTable
                     loading={loading}
                     size="small"
@@ -624,7 +608,7 @@ class SignIndex extends Component {
                     editState={dynamicEdit}
                     editMode="LastLevel"
                     dataSource={dynamicDataSource || []}
-                    columnRender={this.dynamicTable.dynamicRender}
+                    //columnRender={this.dynamicTable.dynamicRender}
                 />
             </article>
         );

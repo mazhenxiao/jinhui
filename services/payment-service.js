@@ -242,14 +242,21 @@ export const IGetIncomeListEditForCheck=({dataKey,versionId,mode:projectLevel})=
     })
 }
 
-const ThenListener=(arg)=>{
-    return arg.rows;
-}
+
 /**
  * 获取回款版本
+ * Income/IGetVersionList?datakey=&projectLevel=
  */
-export const getPaymentVersion = () => {
-
+export const IGetVersionListData = ({dataKey,mode:projectLevel}) => {
+    debugger
+    return iss.fetch({
+        url:"/Income/IGetVersionList",
+        data:{
+            dataKey,
+            projectLevel
+        }  
+    }).then(ThenListener)
+      .catch(err=>Promise.reject(err))
 };
 
 /**
@@ -265,4 +272,11 @@ export const getPaymentData = () => {
 export const savePaymentData = () => {
 
 };
+/**
+ * 统一处理
+ * @param {*} arg 
+ */
+const ThenListener=(arg)=>{
+    return arg.rows;
+}
 
