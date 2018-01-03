@@ -241,6 +241,7 @@ export const IGetIncomeListEditForCheck=({dataKey,currentVersion:versionId,mode:
         url:"/Income/IGetIncomeListEditForCheck",
         data:{dataKey,versionId,projectLevel}
     })
+    .then(ThenListener)
     .catch(err=>Promise.reject(err))
 }
 

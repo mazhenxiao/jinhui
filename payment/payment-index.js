@@ -13,6 +13,7 @@ import "../css/tools-processBar.less";
 import "../css/button.less";
 import "../area/areaCss/areaManage.less";
 import "./css/sign.less";
+import { version } from 'react-dom';
 
 const TabPane = Tabs.TabPane;
 
@@ -150,6 +151,7 @@ class SignIndex extends Component {
         let planTable = this.getPlanData();
 
         return Promise.all([dynamicTable, planTable]).then(arg => {
+           // console.log("=======1",this.planTable)
             //获取弹窗数据如果需要，因为张权说要给一个获取的id不知道依赖在哪里，先放到这,估计需要从动态表获取
             this.setState({
                 loading:false,
@@ -447,31 +449,22 @@ class SignIndex extends Component {
      */
     selectChangeVersion = params => {
         // let _da= this.getCurrentVertion(params);
-        let versionId = params; // _da.length? _da[0].id:"";
-        let {version} = this.state;
-        let {dynamicHeaderData} = this.state.dynamicTable
-        version = {...version, currentVersion: params}
-        if (versionId) {
 
-            this.getCurrentVersionPlanData(versionId)
-                .then((planDataSource) => {
+        let {version,dataKey,mode,planTable} = this.state;
+        let {dynamicHeaderData} = this.state.dynamicTable;
 
-                    let {planTable} = this.state;
-                    let newData = {
-                        dynamicHeaderData,
-                        planDataSource
-                    }
-                    planTable = {...planTable, ...newData};
-                    this.setState({
-                        planTable,
-                        version
-                    })
-
+      //  if (versionId) {
+        Payment.IGetIncomeListEditForCheck({dataKey,currentVersion:params,mode}) 
+                .then(data=>{
+                    let {incomeDataList:planDataSource}=data;
+                    planTable={...planTable,planDataSource,planHeaderData:dynamicHeaderData}
+                    version={...version,currentVersion:params}
+                    this.setState({planTable,version})
                 })
                 .catch(error => {
                     iss.error(error);
                 })
-        }
+       // }
 
     }
     /**
