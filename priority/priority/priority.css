@@ -1,3 +1,14 @@
+.process {
+  padding: 10px;
+  text-align: center;
+}
+.process .ant-col-8 {
+  text-align: right;
+  padding-right: 10px;
+}
+.process .ant-col-16 {
+  padding-left: 10px;
+}
 .PriorityTable .ant-row:first-child {
   margin-bottom: 5px;
 }
@@ -9,25 +20,11 @@
 }
 .PriorityTable .ant-progress-status-success .ant-progress-bg {
   background-color: #f04134;
+  height: 5px !important;
 }
 .PriorityTable .ant-progress-status-exception .ant-progress-bg {
   background-color: #F1A118;
 }
-.PriorityTable .anticon-close-circle:before,
-.PriorityTable .anticon-cross-circle:before {
-  content: "中";
-  padding: 6px;
-  border: 1px solid #F1A118;
-  border-radius: 12px;
-  color: #F1A118;
-}
-.PriorityTable .anticon-check-circle:before {
-  content: "高";
-  padding: 6px;
-  border: 1px solid #f04134;
-  border-radius: 12px;
-  color: #f04134;
-}
-.PriorityTable .ant-progress-outer {
-  width: 93%;
+.PriorityTable .ant-progress-bg {
+  height: 5px !important;
 }

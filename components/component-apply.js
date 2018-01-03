@@ -45,6 +45,9 @@ class Apply extends React.Component {
             case iss.getEVal("priceControl"): //信息填报-价格
                 search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover`;
                 break;
+            case iss.getEVal("priority"): //信息填报-组团
+                search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover&readOnly=readOnly&isProOrStage=2`;
+                break;
             default: iss.tip({ type: "error", description: "url地址未带出，请联系后台工作人员。" }); break
         }
         iss.hashHistory.push({

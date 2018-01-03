@@ -938,7 +938,7 @@ class $iss {
                 break;//供销存
             case "priority":
                 eVal = "10113";
-                break;//关键指标
+                break;//重点事项
         }
         return eVal;
     }

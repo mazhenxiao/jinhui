@@ -30,6 +30,13 @@ export const ProjectKayPointSave=(data)=>{
      .then(ServiceCount)
  }
 
+export const GetProjectKeyPoint =(data)=>{
+    return iss.fetch({
+         url: "/ProjectKayPoint/GetProjectKeyPoint",
+         data,
+     })
+     .then(ServiceCount)
+ }
 const ServiceCount=(arg)=>{
     return arg.rows;
 }   

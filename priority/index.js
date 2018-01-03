@@ -6,6 +6,7 @@ import { Spin, Tabs, Row, Col, Button, Select,Input,Progress,Alert,DatePicker} f
 import { AreaService,Priority } from '../services';
 import PriorityTable from './priority-table.js';
 import PriorityForm from './priority-form.js';
+import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
 require("../css/tools-processBar.less");
 require("../css/button.less");
 require("../area/areaCss/areaManage.less");
@@ -15,6 +16,8 @@ class Index extends Component {
     state = {
         addAatterStatus:false,
         dataList:[],
+        isApproal:false,
+        editStatus:false,
         entityJson:{ 
             "ID": null,
             "AREANAME": null,
@@ -37,12 +40,13 @@ class Index extends Component {
             "CREATETIME": '0001-01-01', 
             "CREATEUSER": null, 
             "APPROVESTATUS":-1,
-            "SELECTEDID": 1,
-            "SELECTEDLEVEL": null
+            "SELECTEDID": null,
+            "SELECTEDLEVEL": 1
         },
-        sundryId:"",
-        level_id:"",
+        sundryId:this.props.location.state==undefined?"":this.props.location.state.id||"",
+        level_id:this.props.location.state==undefined?"":this.props.location.state.level_id||"",
         projectID:"",
+        index:0
     }
 
     formData={
@@ -55,7 +59,7 @@ class Index extends Component {
     POINTLEVEL=-1; //重要级别
     ISOLVE=-1; //是否解决
     SOLVETIME='0001-01-01'; //最迟解决时间
-
+    editData="";
     PriorityFormDat={
         RISKDESC:"",    //*
         RISKEFFECT:"",  //*
@@ -79,7 +83,7 @@ class Index extends Component {
         
         //debugger;
         const {location} = nextProps;
-        console.log(location)
+        this.SetisApproal(location);
         if(location.state != undefined){
             const nextDataKey = location.state.id || "";
             const nextLevel_id = location.state.level_id || "";
@@ -140,22 +144,32 @@ class Index extends Component {
 
     }
     componentWillMount() {
-         this.getAjax(this.state.entityJson);
+        this.SetisApproal();
+        this.getAjax(this.state.entityJson);
     }
     componentDidMount(){
+        this.rowSelection()
     };
 
     getLocalTime(nS) {     
         return new Date(parseInt((/\d+/ig).exec(nS)[0])).Format("yyyy-MM-dd")     
     }     
-     
+    rowSelection =()=> {
+        var th =this;
+        $(".processBar").find(".ant-table-tbody tr").on("click",function(){
+          var index= $(this).index();
+          th.index = index;
+          th.setState({editStatus:true})
+        })
+        
+      };
 
     getAjax=(obj)=>{
         var th = this;
         let {sundryId:SELECTEDID,level_id:SELECTEDLEVEL}=this.state;
         
         Priority.GetListPage({
-            "pageIndex":1,"pageSize":10,"entityJson":JSON.stringify(obj)
+            "pageIndex":1,"pageSize":100,"entityJson":JSON.stringify(obj)
         }).then(dataList=>{
             dataList.forEach((el,ind) => {
                 if(el.ISOLVE == 1){
@@ -175,12 +189,15 @@ class Index extends Component {
                 el.CREATETIME=th.getLocalTime(el.CREATETIME)
                 el.SOLVETIME=th.getLocalTime(el.SOLVETIME)
              })
-             th.setState({dataList})
+             th.setState({dataList},()=>{
+                this.rowSelection()
+              })
         }).catch(err=>{
         })
 
     }
     BIND_AddAatter = () =>{
+        
         var th=this;
         let {projectID} = this.state;
         Priority.GetOrganization({projectID})
@@ -206,12 +223,18 @@ class Index extends Component {
                 })
 
     }
-    errorPrompt = () =>{
-        return 
+    //编辑
+    editChange = () =>{
+        this.editData=this.state.dataList[this.index].ID,
+        this.setState({
+            addAatterStatus:true,
+        })
+        console.log(this.editData)
     }
-    BIND_Save = () =>{
+    //暂存
+    BIND_Save = (approval) =>{
         for(let key in this.PriorityFormDat){
-            if(key != "SUPPORT" || key != "STAGEID"){
+            if(key != "SUPPORT" && key != "STAGEID"){
                 if(this.PriorityFormDat[key] == ""){
                     iss.popover({ content: " * 为必填项！！"});
                     // iss.tip({
@@ -220,8 +243,7 @@ class Index extends Component {
                     // })
                      return 
                 }
-            }
-            
+            }  
         }
         
         var userInfo = iss.userInfo;
@@ -255,7 +277,16 @@ class Index extends Component {
            "entityJson":JSON.stringify(entityJson)
         })
         .then(data=>{
-            this.handleLocalSearch()
+            var status = iss.getEVal("priority");
+            if(approval=="approval"){
+                $(window).trigger("treeLoad");
+                location.href=`/Index/#/ProcessApproval?e=`+status+`&dataKey=`+data+`&current=ProcessApproval&areaId=&areaName=&readOnly=`+data;
+
+                
+            }else{
+                this.handleLocalSearch()
+            }
+            
         })
         .catch(err=>{
             
@@ -266,48 +297,56 @@ class Index extends Component {
         })
     }
 
+
     
     renderButton = () =>{
         const addAatterStatus=this.state.addAatterStatus;
-        if(addAatterStatus){
-            return(
-                <div>
-                    <button type="button" onClick={this.BIND_Save} className="jh_btn jh_btn22 jh_btn_add">暂存</button>
-                    <button type="button" className="jh_btn jh_btn22 jh_btn_add">发起审批</button>
-                </div>
-            )
-        }else{
-            if(this.state.level_id >3){
+        let {readOnly}=this.props.location.query;
+        if(!readOnly){
+            if(addAatterStatus){
                 return(
                     <div>
-                        <button type="button" onClick={this.BIND_AddAatter} className="jh_btn jh_btn22 jh_btn_add">新增事项</button>
-                        <button type="button" className="jh_btn jh_btn22 jh_btn_add">导出EXCEL</button>
+                        <button type="button" onClick={this.BIND_Save} className="jh_btn jh_btn22 jh_btn_add">暂存</button>
+                        <button type="button" onClick={this.BIND_Save.bind(this,"approval")} className="jh_btn jh_btn22 jh_btn_add">发起审批</button>
                     </div>
                 )
             }else{
-                return(
-                    <div>
-                        <button type="button" className="jh_btn jh_btn22 jh_btn_add">导出EXCEL</button>
-                    </div>
-                )
+                if(this.state.level_id >3){
+                    return(
+                        <div>
+                            <button type="button" onClick={this.editChange} className={this.state.editStatus ?"jh_btn jh_btn22 jh_btn_add":"hide jh_btn jh_btn22 jh_btn_add"}>编辑</button>
+                            <button type="button" onClick={this.BIND_AddAatter} className="jh_btn jh_btn22 jh_btn_add">新增事项</button>
+                            <button type="button" className="jh_btn jh_btn22 jh_btn_add">导出EXCEL</button>
+                        </div>
+                    )
+                }else{
+                    return(
+                        <div>
+                            <button type="button" className="jh_btn jh_btn22 jh_btn_add">导出EXCEL</button>
+                        </div>
+                    )
+                }
+                
             }
-            
         }
     }
     renderHeader = () => {
-        return (
-            <div>
-            <div className="boxGroupTit">
-                    <p><span>重点事项</span></p>
-                    <div>
-                        <div className="areaTopbtn jhBtn-wrap">
-                            {this.renderButton()}
+        let {readOnly}=this.props.location.query;
+        if(!readOnly){
+            return (
+                <div>
+                <div className="boxGroupTit">
+                        <p><span>重点事项</span></p>
+                        <div>
+                            <div className="areaTopbtn jhBtn-wrap">
+                                {this.renderButton()}
+                            </div>
                         </div>
-                    </div>
-            </div>
-        </div> 
-            
-        );
+                </div>
+            </div> 
+                
+            );
+        }
     }
     projectValue_FN = (e) =>{
         const { value } = e.target;
@@ -346,13 +385,14 @@ class Index extends Component {
     renderContent = () =>{
         const addAatterStatus=this.state.addAatterStatus;
         var th=this;
-        if(addAatterStatus){
+        let {readOnly}=this.props.location.query;
+        if(addAatterStatus || readOnly){
            return(
                <div>
                    <Row>
                         <Col span={24}>
                             <article>
-                                <PriorityForm callback = {this.PriorityFormCallback.bind(this)}  data={this.formData}  />
+                                <PriorityForm editData={this.editData} readOnly={readOnly} PriorityFormDat={this.PriorityFormDat} callback = {this.PriorityFormCallback.bind(this)}  data={this.formData}  />
                             </article>
                         </Col>
                     </Row>
@@ -408,20 +448,50 @@ class Index extends Component {
             </div>
         );
     };
+          /**
+     * 当前是否是审批
+     */
+    SetisApproal = arg => {
+        
+                let stateData = arg ? arg.query : this.props.location.query;
+                this.setState({
+                    isApproal: Boolean(stateData["current"])
+                })
+                return Boolean(stateData["current"])
+            }
+     /**
+     * 发起审批
+     */
+    isApproal = arg => {
+        
+        let stateData = this.props.location.query;
+        if (this.state.isApproal) {
+            return <section className="padB20">
+                <ProcessApprovalTab current="priority" allSearchArg={stateData}/>
+            </section>
+        }
+
+    }
     render() {
-        if (this.props.location.state == undefined) {
+        let {state,current,dataKey,readOnly}=this.props.location.query;
+        if (this.props.location.state == undefined && !current) {
             return this.renderEmpty();
         }
         return (
             <div className="processBar">
+            {this.isApproal()}
+                <article>
+
                    <Row>
                         <Col span={24}>
                             <article> 
+                                
                                 {this.renderHeader()}
                             </article>
                         </Col>
                     </Row>
                     {this.renderContent()}
+                    </article>
             </div>
         );
     }

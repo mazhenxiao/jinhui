@@ -368,6 +368,9 @@ class ApprovalControlNode extends React.Component {
             case iss.getEVal("area"):
                 url = "AreaInfo/areaManage";
                 break;//面积
+            case iss.getEVal("priority"):
+                url = "AreaInfo/priority";
+                break;//面积
         }
         sessionStorage.removeItem("currentApprovalText");//清楚临时历史数据存储，解决路由切换不能记录用户输入内容问题
         sessionStorage.removeItem("currentApprovalList");//清楚临时历史数据存储，解决路由切换不能记录用户选择内容问题

@@ -106,6 +106,7 @@ class ProcessApprovalTab extends React.Component {
                     break;
                 case "priority":
                     str = "重点事项";
+                    break;
                 case "supply":
                     str = "供货";
                     break;
