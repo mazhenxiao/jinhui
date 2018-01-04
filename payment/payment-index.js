@@ -373,21 +373,22 @@ class SignIndex extends Component {
      * 返回数据
      */
     filterSaveData = da => {
-       let listdata = da.map(arg => {
+       let listdata =[]; 
+       da.forEach(arg => {
               let reg = /month_\d{1,2}/;
-              let obj =[];
-              for(let key in arg){
-                  if(reg.test(key)&&arg[key]!=null){  //张政所需数据
-                    obj.push({
-                        versionId:arg.key,
-                        id:key,
-                        value:arg[key],
+             
+              for(let li in arg){
+                  if(reg.test(li)&&arg[li]!=null){  //张政所需数据
+                    listdata.push({
+                        filedId:li,
+                        versionId:arg.versionId,
+                        id:arg.key,
+                        value:arg[li],
                         year:arg.yearD
                     })
                       
                   }
               }
-            return obj
         });
         
       return listdata;
@@ -662,7 +663,6 @@ class SignIndex extends Component {
                 <ProcessApprovalTab current="payment" allSearchArg={stateData}/>
             </section>
         }
-
     }
      /**
      * 发起审批
