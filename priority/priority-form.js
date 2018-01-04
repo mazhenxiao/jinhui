@@ -42,6 +42,7 @@ class PriorityForm extends Component {
          PROJECTNAME= this.props.data.projectName||"";
          AREANAME=this.props.data.areaName||"";
          COMPANYNAME=this.props.data.companyName||"";
+         STAGENAME=this.props.data.stageName||""
          
     componentWillReceiveProps(nextProps) {
         
@@ -186,7 +187,7 @@ class PriorityForm extends Component {
                                     <label className="formTableLabel boxSizing redFont">分期名称</label>
                                 </th>
                                 <td>
-                                    <Input readOnly="readOnly" value={this.state.readOnlyData.PROJECTNAME} />
+                                    <Input readOnly="readOnly" value={this.state.readOnlyData.STAGENAME} />
                                 </td>
                             </tr>
                             <tr>
@@ -310,7 +311,7 @@ class PriorityForm extends Component {
                         <label className="formTableLabel boxSizing redFont">分期名称</label>
                     </th>
                     <td>
-                        <Input readOnly="readOnly" value={this.state.readOnlyData.PROJECTNAME} />
+                        <Input readOnly="readOnly" value={this.state.readOnlyData.STAGENAME} />
                     </td>
                 </tr>
                 <tr>
@@ -446,7 +447,7 @@ class PriorityForm extends Component {
                                     <label className="formTableLabel boxSizing">分期名称</label>
                                 </th>
                                 <td>
-                                    <Input readOnly="readOnly" value={this.PROJECTNAME} />
+                                    <Input readOnly="readOnly" value={this.STAGENAME} />
                                 </td>
                                 
                             </tr>

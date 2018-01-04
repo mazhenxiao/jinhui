@@ -55,7 +55,8 @@ class Index extends Component {
     formData={
         projectName:"",
         areaName:"",
-        companyName:""  
+        companyName:"",
+        stageName:"" 
     }    
     PROJECTNAME=null; //项目
     USERNAME=null; //负责人
@@ -221,6 +222,9 @@ class Index extends Component {
                         }
                         if(el.ORGLEVEL == 2){
                             this.formData.areaName = el.ORGNAME
+                        }
+                        if(el.ORGLEVEL == 5){
+                            this.formData.stageName = el.ORGNAME
                         }
                     })
                     this.setState({
