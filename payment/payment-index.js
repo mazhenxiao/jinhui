@@ -357,10 +357,15 @@ class SignIndex extends Component {
                 return _da;
             })
             .then(arg => {
-            debugger
-               // this.getDynamicData();//重新拉去数据
+                this.setState({
+                    loading:false
+                })
+                //this.getDynamicData();//重新拉去数据
             })
             .catch(err => {
+                this.setState({
+                    loading:false
+                })
                 iss.tip({
                     type: "error",
                     description: "保存失败请重试！"

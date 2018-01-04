@@ -111,8 +111,10 @@ class $iss {
                         description: `登陆超时请重新登陆！`
                     });
                     top.window.location.href = "/login";
-                }
-                else {
+                }else if(res["errorcode"] && res.errorcode == "500"){
+                    iss.error(res.message);
+                    return Promise.reject(res)
+                }else {
                     return Promise.reject(res);
                 }
             })
