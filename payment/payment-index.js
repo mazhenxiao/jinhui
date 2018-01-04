@@ -41,6 +41,7 @@ class SignIndex extends Component {
             loading: true
         },
         version: { //版本
+            saveId:"",//张政所需从版本中过滤出来的id
             currentVersion: "",//当前版本
             versionData: [], //版本数据
             versionShow: false //是否显示版本
@@ -80,6 +81,7 @@ class SignIndex extends Component {
     }
     //版本信息私有数据
     version= { //版本
+        saveId:"",//张政所需从版本中过滤出来的id
         currentVersion: "",//当前版本
         versionData: [], //版本数据
         versionShow: false //是否显示版本
@@ -188,7 +190,13 @@ class SignIndex extends Component {
     getShowEidtButtonFilter=dataList=>{
         return dataList.some(arg=>{
             let {isNewVersion,status}=arg;
-            return isNewVersion=="1"&&status=="0";
+            if(isNewVersion=="1"&&status=="0"){
+                this.version.saveId=arg.id;
+                return true;
+            }else{
+                return false
+            }
+            
         })
     }
     /**
@@ -523,19 +531,14 @@ class SignIndex extends Component {
      * 驳回
      */
     handleCancel = () => {
-        const {dynamicTable} = this.state;
-        let {signAContractVersionId, dynamicEdit} = this.dynamicTable;
-        let newData = {...dynamicTable, dynamicEditButtonShow: false, dynamicEdit: false};
-
-        Payment.ISendBackSignAContractData(signAContractVersionId)
+        const {saveId:versionId} = this.version;
+        Payment.IVersionBack(versionId)
             .then(arg => {
                 iss.tip({
                     type: "success",
                     description: "驳回成功"
                 });
-                this.setState({
-                    dynamicTable: newData
-                })
+                this.getFetData();
             })
             .catch(err => {
                 iss.error("驳回失败！")

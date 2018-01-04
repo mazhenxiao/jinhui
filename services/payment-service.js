@@ -263,10 +263,16 @@ export const IGetVersionListData = ({dataKey,mode:projectLevel}) => {
 };
 
 /**
- * 获取回款数据
+ * 退回
+ * Income/IVersionBack
  */
-export const getPaymentData = () => {
-
+export const IVersionBack = (versionId) => {
+    return iss.fetch({
+        url:"/Income/IVersionBack",
+        data:{
+            versionId
+        }
+    })
 };
 
 /**
@@ -281,6 +287,7 @@ export const ISaveIncomeInfo = (data) => {
     .then(ThenListener)
     .catch(err=>{return Promise.reject(err)})  
 };
+
 /**
  * 统一处理
  * @param {*} arg 
