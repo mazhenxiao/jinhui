@@ -24,25 +24,34 @@ export const getBaseData = (dataKey, mode) => {
                 dynamicId: data.ID,//动态调整板Id
                 versionId: data.ApprovedId,
                 error: data.Error,
-                versionData: data.VersionList.map(version => {
-                    return {
-                        id: version.ID,
-                        name: version.Name,
-                    };
-                }),
+                versionData: [],
                 baseInfo: {
                     isCheck: data.Ischeck === 1,//是否是考核版
                     currentMonth: data.StartDate,//"201711",
-                    switchMonth: data.AjuestMonthList.map(month => {
-                        return {
-                            id: month.ID,
-                            name: month.Name,
-                        };
-                    }),
+                    switchMonth: [],
                     currentYear: data.StartYear,
                     switchYear: [data.StartYear, data.StartYear + 1, data.StartYear + 2, (data.StartYear + 3)],
                 }
             };
+
+            if(data.VersionList){
+                obj.versionData = data.VersionList.map(version => {
+                    return {
+                        id: version.ID,
+                        name: version.Name,
+                    };
+                });
+            }
+
+            if(data.AjuestMonthList){
+                obj.baseInfo.switchMonth = data.AjuestMonthList.map(month => {
+                    return {
+                        id: month.ID,
+                        name: month.Name,
+                    };
+                });
+            }
+
             return obj;
         });
 };
