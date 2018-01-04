@@ -355,7 +355,7 @@ class WrapperTreeTable extends Component {
             //render
             if (index != 0) {
                 column.render = (text, record) => {
-                    return <span className="text-center">{text ? text : "-"}</span>
+                    return <span className="wrapper-tree-text-center">{text ? text : "-"}</span>
                 };
             }
 
@@ -415,7 +415,7 @@ class WrapperTreeTable extends Component {
             };
 
             childColumn.render = (text, record) => {
-                return <span className="text-center">{text ? text : "-"}</span>
+                return <span className="wrapper-tree-text-center">{text ? text : "-"}</span>
             };
 
             if (columnRender && columnRender[childHeaderItem.field]) {

@@ -755,7 +755,7 @@ class PriceControl extends React.Component {
             <p>4、全部审批节点审批通过。</p>
             </section>
         }
-        return <article>
+        return <article className="priceBlock">
 
             {this.isApproal()}
             <section className={"processBar"}>

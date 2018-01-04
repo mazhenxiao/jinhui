@@ -1,18 +1,18 @@
-.text-left {
+.priceBlock .text-left {
   text-align: left !important;
 }
-.text-center {
+.priceBlock .text-center {
   text-align: center !important;
 }
-.text-right {
+.priceBlock .text-right {
   text-align: right !important;
 }
-.BTN_GROUP li {
+.priceBlock .BTN_GROUP li {
   display: inline-block;
   margin-left: 5px;
   cursor: pointer;
 }
-#statusText {
+.priceBlock #statusText {
   width: 50px;
   display: inline-block;
 }

@@ -21,28 +21,37 @@ export const getBaseData = (dataKey, mode) => {
                 supplyType: data.SupplyType,
                 //权限: Show:只允许查看, Add:新增, Edit:编辑, Upgrade:版本升级
                 permission: data.eSaveType,
-                dynamicId: data.ID,//动态调整板Id
+                dynamicId: data.DynamicId,//动态调整板Id
                 versionId: data.ApprovedId,
                 error: data.Error,
-                versionData: data.VersionList.map(version => {
-                    return {
-                        id: version.ID,
-                        name: version.Name,
-                    };
-                }),
+                versionData: [],
                 baseInfo: {
                     isCheck: data.Ischeck === 1,//是否是考核版
                     currentMonth: data.StartDate,//"201711",
-                    switchMonth: data.AjuestMonthList.map(month => {
-                        return {
-                            id: month.ID,
-                            name: month.Name,
-                        };
-                    }),
+                    switchMonth: [],
                     currentYear: data.StartYear,
                     switchYear: [data.StartYear, data.StartYear + 1, data.StartYear + 2, (data.StartYear + 3)],
                 }
             };
+
+            if(data.VersionList){
+                obj.versionData = data.VersionList.map(version => {
+                    return {
+                        id: version.ID,
+                        name: version.Name,
+                    };
+                });
+            }
+
+            if(data.AjuestMonthList){
+                obj.baseInfo.switchMonth = data.AjuestMonthList.map(month => {
+                    return {
+                        id: month.ID,
+                        name: month.Name,
+                    };
+                });
+            }
+
             return obj;
         });
 };
@@ -51,6 +60,9 @@ export const getBaseData = (dataKey, mode) => {
  * 根据版本获取计划数据
  */
 export const getPlanData = (versionId) => {
+    if(!versionId){
+        return Promise.resolve({});
+    }
     return iss.fetch({
         url: "/Supply/IApprovedView",
         type: "get",
@@ -65,7 +77,9 @@ export const getPlanData = (versionId) => {
  * 根据项目id/分期id, 获取动态调整数据
  */
 export const getDynamicAdjustData = (dynamicId) => {
-
+    if(!dynamicId){
+        return Promise.resolve({});
+    }
     return iss.fetch({
         url: "Supply/IApprovedView",
         type: "get",

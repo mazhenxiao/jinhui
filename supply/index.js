@@ -131,8 +131,8 @@ class Index extends Component {
                 this.setState({
                     loading: false,
                     ...nextState,
-                    planData,
                     adjustData,
+                    planData,
                 }, () => {
                     this.bindScrollLock();
                 });

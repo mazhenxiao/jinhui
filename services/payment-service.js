@@ -1,6 +1,6 @@
 import iss from '../js/iss'
 import {locale} from 'moment';
-/**
+/** 张权-瑞涛
  *  瑞涛 获取签约基础数据，用dataKey去换取当前版本id
  * /SignAContract/IGetSignBaseInfo?businessId=f2f29de7-2f36-9947-7c40-808e229f1d8f&type=project
  */
@@ -180,13 +180,16 @@ export const ISaveSignAContractData = (data) => {
  * 提交动态签约数据
  * @param {*} signAContractVersionId
  */
-export const ISubmitSignAContractData = (signAContractVersionId) => {
+export const ISubmitSignAContractData = ({signAContractVersionId,dataKey,projectLevel}) => {
     return iss.fetch({
         url: "/SignAContract/ISubmitSignAContractData",
         data: {
-            signAContractVersionId
+            signAContractVersionId,
+            dataKey,
+            projectLevel
         }
     })
+    .catch(err=>{ iss.error(err);Promise.resolve(err)})
 };
 
 /**
@@ -202,19 +205,19 @@ export const ISendBackSignAContractData = signAContractVersionId => {
     })
 };
 
-/**
+/**张政
  * 获取回款动态调整版本数据
  * /Income/IGetIncomeListEditForAdjustment?dataKey=32172052-2da4-85c9-c266-81faf2b1f10f&projectLevel=project
  */
-export const IGetIncomeListEditForAdjustment=({dataKey,mode:projectLevel})=>{
-    
+export const IGetIncomeListEditForAdjustment=({dataKey,versionId,mode:projectLevel})=>{
+    //如果有versionId是动态调如果没有是考核
+    let data = versionId==undefined? {dataKey,projectLevel}:{dataKey,versionId,projectLevel}
     return iss.fetch({
         url:"/Income/IGetIncomeListEditForAdjustment",
-        data:{
-            dataKey,
-            projectLevel
-        }
-    }).then(arg=>arg.rows)
+        data
+    })
+    .then(ThenListener)
+    .catch(err=>Promise.reject(err))
 }
 /**
  * 获取回款考核版版本
@@ -229,40 +232,70 @@ export const IGetVersionList=({dataKey,mode:projectLevel})=>{
             projectLevel
         }
     })
-    .then(ThenListener);
+    .then(ThenListener)
+    .catch(err=>Promise.reject(err));
 }
 /**
  * 获取回款考核版数据
  * /Income/IGetIncomeListEditForCheck?versionId=&dataKey=&projectLevel=
  */
-export const IGetIncomeListEditForCheck=({dataKey,versionId,mode:projectLevel})=>{
+export const IGetIncomeListEditForCheck=({dataKey,currentVersion:versionId,mode:projectLevel})=>{
     return iss.fetch({
         url:"/Income/IGetIncomeListEditForCheck",
         data:{dataKey,versionId,projectLevel}
     })
+    .then(ThenListener)
+    .catch(err=>Promise.reject(err))
 }
 
-const ThenListener=(arg)=>{
-    return arg.rows;
-}
+
 /**
  * 获取回款版本
+ * Income/IGetVersionList?datakey=&projectLevel=
  */
-export const getPaymentVersion = () => {
-
+export const IGetVersionListData = ({dataKey,mode:projectLevel}) => {
+    
+    return iss.fetch({
+        url:"/Income/IGetVersionList",
+        data:{
+            dataKey,
+            projectLevel
+        }  
+    }).then(ThenListener)
+      .catch(err=>Promise.reject(err))
 };
 
 /**
- * 获取回款数据
+ * 退回
+ * Income/IVersionBack
  */
-export const getPaymentData = () => {
-
+export const IVersionBack = (versionId) => {
+    return iss.fetch({
+        url:"/Income/IVersionBack",
+        data:{
+            versionId
+        }
+    })
 };
 
 /**
  * 保存回款数据
+ * InCome/ISaveIncomeInfo
  */
-export const savePaymentData = () => {
-
+export const ISaveIncomeInfo = (data) => {
+    return iss.fetch({
+        url:"/InCome/ISaveIncomeInfo",
+        data
+    })
+    .then(ThenListener)
+    .catch(err=>{return Promise.reject(err)})  
 };
+
+/**
+ * 统一处理
+ * @param {*} arg 
+ */
+const ThenListener=(arg)=>{
+    return arg.rows;
+}
 
