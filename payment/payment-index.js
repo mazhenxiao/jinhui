@@ -69,7 +69,8 @@ class SignIndex extends Component {
         signAContractVersionId: "",//调整版本id
         saveData: {},//保存数据临时存储
         dynamicHeaderData:[],
-        dynamicDataSource:[]
+        dynamicDataSource:[],
+        dynamicEditButtonShow: false,
     }
     planTable={ //同上
         planHeaderData: [],
@@ -152,6 +153,8 @@ class SignIndex extends Component {
         return Promise.all([dynamicTable, planTable]).then(arg => {
             //获取弹窗数据如果需要，因为张权说要给一个获取的id不知道依赖在哪里，先放到这,估计需要从动态表获取
             let {dynamicTable,planTable,version} = this.state;
+            //判断如果
+             this.dynamicTable.dynamicEditButtonShow=(this.getShowEidtButtonFilter(this.version.versionData)&&this.dynamicTable.dynamicEditButtonShow);
             dynamicTable = {...dynamicTable,...this.dynamicTable};
             planTable = {...planTable,...this.planTable};
             version = {...version,...this.version};
@@ -179,7 +182,15 @@ class SignIndex extends Component {
         }
         return false;
     };
-
+    /**
+     * 张政=根据isNewVersion==1&&status==0 才显示button
+     */
+    getShowEidtButtonFilter=dataList=>{
+        return dataList.some(arg=>{
+            let {isNewVersion,status}=arg;
+            return isNewVersion=="1"&&status=="0";
+        })
+    }
     /**
      * 获取弹窗头部数据
      * 分开写防止万一数据需要二次编辑
@@ -254,6 +265,7 @@ class SignIndex extends Component {
                         currentVersion:this.getCurrentVertion(versionData),
                         versionShow:Boolean(versionData.length)
                     }
+                
                     let {currentVersion}=this.version;
                     return Payment.IGetIncomeListEditForCheck({dataKey,currentVersion,mode}) 
                 })
