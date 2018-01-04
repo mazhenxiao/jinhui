@@ -273,8 +273,13 @@ export const getPaymentData = () => {
  * 保存回款数据
  * InCome/ISaveIncomeInfo
  */
-export const ISaveIncomeInfo = () => {
-
+export const ISaveIncomeInfo = (data) => {
+    return iss.fetch({
+        url:"/InCome/ISaveIncomeInfo",
+        data
+    })
+    .then(ThenListener)
+    .catch(err=>{return Promise.reject(err)})  
 };
 /**
  * 统一处理

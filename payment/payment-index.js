@@ -334,19 +334,21 @@ class SignIndex extends Component {
      */
     saveDynamicTableData() {
         this.dynamicTable.saveData = {};//清场
-        let {dataKey, dynamicTable} = this.state;
+        let {dataKey, dynamicTable,mode} = this.state;
         let {dynamicDataSource} = dynamicTable;
         let {saveData, signAContractVersionId} = this.dynamicTable;//非stage存储保存数据
 
-        this.filterSaveData(dynamicDataSource);//递归赋值    
-       // let _da = JSON.stringify(Object.values(saveData));
-        let postData = {
-            versionId: signAContractVersionId,
-            signAContractSaveData: _da
-        }
-
-        return;
-        return Payment.ISaveSignAContractData(postData)
+        saveData=this.filterSaveData(dynamicDataSource);//递归赋值    
+        let _da = JSON.stringify({
+                    projectLevel:mode,
+                    saveList:saveData
+            });
+        
+        let paramsData={  //张政与瑞涛约定传参paramsData为固定参数
+            paramsData:_da
+            }
+     
+        return Payment.ISaveIncomeInfo(paramsData)
             .then(arg => {
                 iss.tip({
                     type: "success",
@@ -355,7 +357,8 @@ class SignIndex extends Component {
                 return _da;
             })
             .then(arg => {
-                this.getDynamicData();//重新拉去数据
+            debugger
+               // this.getDynamicData();//重新拉去数据
             })
             .catch(err => {
                 iss.tip({
@@ -370,20 +373,24 @@ class SignIndex extends Component {
      * 返回数据
      */
     filterSaveData = da => {
-       let saveList=da.map(arg => {
+       let listdata = da.map(arg => {
               let reg = /month_\d{1,2}/;
-              let obj ={};
-              for(let key in da){
-                  if(reg.test(key)){  //张政所需数据
-                      obj["versionId"]=da.key;
-                      obj["id"]=key;
-                      obj["value"]=da[key];
-                      obj["year"]=da.yearD;
+              let obj =[];
+              for(let key in arg){
+                  if(reg.test(key)&&arg[key]!=null){  //张政所需数据
+                    obj.push({
+                        versionId:arg.key,
+                        id:key,
+                        value:arg[key],
+                        year:arg.yearD
+                    })
+                      
                   }
               }
-              return obj;
+            return obj
         });
-        console.log(saveList)
+        
+      return listdata;
     }
 
 
@@ -589,6 +596,7 @@ class SignIndex extends Component {
                 </header>
                 
                 <WrapperGroupTable
+                    rowKey="key"
                     loading={loading}
                     size="small"
                     defaultHeight={defaultHeight}
@@ -627,6 +635,7 @@ class SignIndex extends Component {
                     </Row>
                 </header>
                 <WrapperGroupTable
+                    rowKey="key"
                     headerData={dynamicHeaderData || []}
                     dataSource={planDataSource || []}/>
             </article>
