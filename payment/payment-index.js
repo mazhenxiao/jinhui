@@ -2,7 +2,7 @@ import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";
 import React, {Component, Children} from 'react';
 import {Spin, Tabs, Row, Col, Button, Select, Modal, Table, Popconfirm, message} from 'antd';
-import {WrapperTreeTable, WrapperSelect} from '../common';
+import {WrapperGroupTable, WrapperSelect} from '../common';
 import {Payment} from '../services';
 import {knife} from '../utils';
 import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
@@ -13,7 +13,6 @@ import "../css/tools-processBar.less";
 import "../css/button.less";
 import "../area/areaCss/areaManage.less";
 import "./css/sign.less";
-import { version } from 'react-dom';
 
 const TabPane = Tabs.TabPane;
 
@@ -151,13 +150,16 @@ class SignIndex extends Component {
         let planTable = this.getPlanData();
 
         return Promise.all([dynamicTable, planTable]).then(arg => {
-           // console.log("=======1",this.planTable)
             //获取弹窗数据如果需要，因为张权说要给一个获取的id不知道依赖在哪里，先放到这,估计需要从动态表获取
+            let {dynamicTable,planTable,version} = this.state;
+            dynamicTable = {...dynamicTable,...this.dynamicTable};
+            planTable = {...planTable,...this.planTable};
+            version = {...version,...this.version};
             this.setState({
                 loading:false,
-                version:this.version, //版本
-                dynamicTable:this.dynamicTable, //动态调整
-                planTable:this.planTable,//考核版
+                version, //版本
+                dynamicTable, //动态调整
+                planTable,//考核版
             });
             this.bindScrollLock();
         }).catch(error => {
@@ -253,7 +255,6 @@ class SignIndex extends Component {
                         versionShow:Boolean(versionData.length)
                     }
                     let {currentVersion}=this.version;
-                    if(!currentVersion){ return Promise.reject("没有获取到版本")}
                     return Payment.IGetIncomeListEditForCheck({dataKey,currentVersion,mode}) 
                 })
                 .then(data=>{ //获取考核版数据
@@ -301,9 +302,9 @@ class SignIndex extends Component {
     handleEdit = () => {
         let {dynamicTable} = this.state;
         let dynamicEdit = !dynamicTable.dynamicEdit;
+        
         dynamicTable = {...dynamicTable, ...{dynamicEdit}}
         this.setState({
-
             dynamicTable
         });
         if (!dynamicEdit) { //保存
@@ -443,28 +444,43 @@ class SignIndex extends Component {
         })
 
     }
+    /**
+     * talbe input
+     */
+    onDataChangeDynamic=arg=>{
+
+    }
 
     /**
      * 版本下拉菜单事件
      */
     selectChangeVersion = params => {
         // let _da= this.getCurrentVertion(params);
+        let versionId = params; // _da.length? _da[0].id:"";
+        let {version} = this.state;
+        let {dynamicHeaderData} = this.state.dynamicTable
+        version = {...version, currentVersion: params}
+        if (versionId) {
 
-        let {version,dataKey,mode,planTable} = this.state;
-        let {dynamicHeaderData} = this.state.dynamicTable;
+            this.getCurrentVersionPlanData(versionId)
+                .then((planDataSource) => {
 
-      //  if (versionId) {
-        Payment.IGetIncomeListEditForCheck({dataKey,currentVersion:params,mode}) 
-                .then(data=>{
-                    let {incomeDataList:planDataSource}=data;
-                    planTable={...planTable,planDataSource,planHeaderData:dynamicHeaderData}
-                    version={...version,currentVersion:params}
-                    this.setState({planTable,version})
+                    let {planTable} = this.state;
+                    let newData = {
+                        dynamicHeaderData,
+                        planDataSource
+                    }
+                    planTable = {...planTable, ...newData};
+                    this.setState({
+                        planTable,
+                        version
+                    })
+
                 })
                 .catch(error => {
                     iss.error(error);
                 })
-       // }
+        }
 
     }
     /**
@@ -566,11 +582,11 @@ class SignIndex extends Component {
                     </Row>
                 </header>
                 
-                <WrapperTreeTable
+                <WrapperGroupTable
                     loading={loading}
                     size="small"
                     defaultHeight={defaultHeight}
-                    //  onDataChange={this.onDataChangeDynamic}
+                    onDataChange={this.onDataChangeDynamic}
                     headerData={dynamicHeaderData || []}
                     editState={dynamicEdit}
                     editMode="LastLevel"
@@ -604,7 +620,7 @@ class SignIndex extends Component {
                         </Col>
                     </Row>
                 </header>
-                <WrapperTreeTable
+                <WrapperGroupTable
                     headerData={dynamicHeaderData || []}
                     dataSource={planDataSource || []}/>
             </article>
