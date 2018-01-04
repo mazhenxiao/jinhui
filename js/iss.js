@@ -112,7 +112,7 @@ class $iss {
                     });
                     top.window.location.href = "/login";
                 }else if(res["errorcode"] && res.errorcode == "500"){
-                    iss.error(res.message);
+                    // iss.error(res.message);
                     return Promise.reject(res)
                 }else {
                     return Promise.reject(res);
