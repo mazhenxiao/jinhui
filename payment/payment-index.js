@@ -60,7 +60,7 @@ class SignIndex extends Component {
     dynamicTable = { //动态表格私有仓储
         number: 0,//死循环记录
         dynamicRender: {
-            "PRODUCTNAME": (text, record) =>{ 
+            "productName": (text, record) =>{ 
                 return  <a href="javascript:;"
                            onClick={this.clickOpenDialog.bind(this, text, record)}>{text}</a>}
 
@@ -444,31 +444,10 @@ class SignIndex extends Component {
     }
 
     clickOpenDialog(text, row, index) {
-
-        let {showId} = row;
-        let {dialog} = this.state;
-        let dialogContent = dialog.dataSource.filter(arg => {
-
-            if (arg.showId == showId) {
-                return arg.value;
-            }
-        });
-        for (var i = 0; i < 50; i++) {
-            dialogContent.push(dialog.dataSource[0]["value"]);//有真实数据后删除
-        }
-
-        if (dialogContent.length <= 0) {
-            // iss.info("暂无数据");
-            return
-        }
-        let newData = {
-            dialogContent,
-            ModalVisible: true
-        }
-        dialog = {...dialog, ...newData};
-        this.setState({
-            dialog
-        })
+        debugger
+        
+        
+      
 
     }
     /**
@@ -510,23 +489,7 @@ class SignIndex extends Component {
         }
 
     }
-    /**
-     * 提交
-     */
-    handleSubmit = arg => {
-        let {signAContractVersionId} = this.dynamicTable;
-        this.saveDynamicTableData()
-            .then(da => {
 
-                return Payment.ISubmitSignAContractData(signAContractVersionId);
-            })
-            .then(arg => {
-
-            })
-            .catch(err => {
-                iss.error("提交失败")
-            })
-    }
     /**
      * 驳回
      */
@@ -589,9 +552,6 @@ class SignIndex extends Component {
                             <div className={dynamicEditButtonShow ? "RT" : "hidden"}>
                                 <Popconfirm placement="top" title={"确定发起审批吗？"} onConfirm={this.handleApproval}>
                                     <button className="jh_btn jh_btn22 jh_btn_apro mgR20">发起审批</button>
-                                </Popconfirm>
-                                <Popconfirm placement="top" title={"确定提交吗？"} onConfirm={this.handleSubmit}>
-                                    <button className="jh_btn jh_btn22 jh_btn_apro mgR20">提交</button>
                                 </Popconfirm>
                                 <Popconfirm placement="top" title={"确定退回吗？"} onConfirm={this.handleCancel}>
                                     <button className="jh_btn jh_btn22 refresh-icon mgR20">退回</button>
