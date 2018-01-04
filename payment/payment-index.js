@@ -334,17 +334,21 @@ class SignIndex extends Component {
      */
     saveDynamicTableData() {
         this.dynamicTable.saveData = {};//清场
-        let {dataKey, dynamicTable} = this.state;
-        let {dynamicDataSource,} = dynamicTable;
+        let {dataKey, dynamicTable,mode} = this.state;
+        let {dynamicDataSource} = dynamicTable;
         let {saveData, signAContractVersionId} = this.dynamicTable;//非stage存储保存数据
 
-        this.filterSaveData(dynamicDataSource);//递归赋值    
-        let _da = JSON.stringify(Object.values(saveData));
-        let postData = {
-            versionId: signAContractVersionId,
-            signAContractSaveData: _da
-        }
-        return Payment.ISaveSignAContractData(postData)
+        saveData=this.filterSaveData(dynamicDataSource);//递归赋值    
+        let _da = JSON.stringify({
+                    projectLevel:mode,
+                    saveList:saveData
+            });
+        
+        let paramsData={  //张政与瑞涛约定传参paramsData为固定参数
+            paramsData:_da
+            }
+     
+        return Payment.ISaveIncomeInfo(paramsData)
             .then(arg => {
                 iss.tip({
                     type: "success",
@@ -353,9 +357,15 @@ class SignIndex extends Component {
                 return _da;
             })
             .then(arg => {
-                this.getDynamicData();//重新拉去数据
+                this.setState({
+                    loading:false
+                })
+                //this.getDynamicData();//重新拉去数据
             })
             .catch(err => {
+                this.setState({
+                    loading:false
+                })
                 iss.tip({
                     type: "error",
                     description: "保存失败请重试！"
@@ -368,28 +378,25 @@ class SignIndex extends Component {
      * 返回数据
      */
     filterSaveData = da => {
-        da.map(arg => {
-            if (arg.children && arg.children.length) {
-                this.filterSaveData(arg.children)
-            } else {
-                for (let key in arg) {
-                    let reg = /^Y\d{3}/ig;
-                    if (reg.test(key) && arg[key] !== "") {
-                        let {startYear} = this.dynamicTable;
-                        startYear = eval(startYear + "-1+" + key.substr(1, 1))
-                        let _da = {
-                            dataType: key.substr(4),
-                            titlename: `${startYear}-${key.substr(2, 2)}-01`,
-                            productTypeID: arg["showId"] || "",
-                            GROUPID: arg["GROUPID"],
-                            val: arg[key]
-                        }
-                        this.dynamicTable.saveData[_da.titlename + "-" + key + "-" + arg.key] = _da;
-                    }
-                }
-
-            }
-        })
+       let listdata =[]; 
+       da.forEach(arg => {
+              let reg = /month_\d{1,2}/;
+             
+              for(let li in arg){
+                  if(reg.test(li)&&arg[li]!=null){  //张政所需数据
+                    listdata.push({
+                        filedId:li,
+                        versionId:arg.versionId,
+                        id:arg.key,
+                        value:arg[li],
+                        year:arg.yearD
+                    })
+                      
+                  }
+              }
+        });
+        
+      return listdata;
     }
 
 
@@ -595,6 +602,7 @@ class SignIndex extends Component {
                 </header>
                 
                 <WrapperGroupTable
+                    rowKey="key"
                     loading={loading}
                     size="small"
                     defaultHeight={defaultHeight}
@@ -633,6 +641,7 @@ class SignIndex extends Component {
                     </Row>
                 </header>
                 <WrapperGroupTable
+                    rowKey="key"
                     headerData={dynamicHeaderData || []}
                     dataSource={planDataSource || []}/>
             </article>
@@ -659,7 +668,6 @@ class SignIndex extends Component {
                 <ProcessApprovalTab current="payment" allSearchArg={stateData}/>
             </section>
         }
-
     }
      /**
      * 发起审批
