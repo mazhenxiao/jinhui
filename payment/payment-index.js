@@ -335,15 +335,17 @@ class SignIndex extends Component {
     saveDynamicTableData() {
         this.dynamicTable.saveData = {};//清场
         let {dataKey, dynamicTable} = this.state;
-        let {dynamicDataSource,} = dynamicTable;
+        let {dynamicDataSource} = dynamicTable;
         let {saveData, signAContractVersionId} = this.dynamicTable;//非stage存储保存数据
 
         this.filterSaveData(dynamicDataSource);//递归赋值    
-        let _da = JSON.stringify(Object.values(saveData));
+       // let _da = JSON.stringify(Object.values(saveData));
         let postData = {
             versionId: signAContractVersionId,
             signAContractSaveData: _da
         }
+
+        return;
         return Payment.ISaveSignAContractData(postData)
             .then(arg => {
                 iss.tip({
@@ -368,28 +370,20 @@ class SignIndex extends Component {
      * 返回数据
      */
     filterSaveData = da => {
-        da.map(arg => {
-            if (arg.children && arg.children.length) {
-                this.filterSaveData(arg.children)
-            } else {
-                for (let key in arg) {
-                    let reg = /^Y\d{3}/ig;
-                    if (reg.test(key) && arg[key] !== "") {
-                        let {startYear} = this.dynamicTable;
-                        startYear = eval(startYear + "-1+" + key.substr(1, 1))
-                        let _da = {
-                            dataType: key.substr(4),
-                            titlename: `${startYear}-${key.substr(2, 2)}-01`,
-                            productTypeID: arg["showId"] || "",
-                            GROUPID: arg["GROUPID"],
-                            val: arg[key]
-                        }
-                        this.dynamicTable.saveData[_da.titlename + "-" + key + "-" + arg.key] = _da;
-                    }
-                }
-
-            }
-        })
+       let saveList=da.map(arg => {
+              let reg = /month_\d{1,2}/;
+              let obj ={};
+              for(let key in da){
+                  if(reg.test(key)){  //张政所需数据
+                      obj["versionId"]=da.key;
+                      obj["id"]=key;
+                      obj["value"]=da[key];
+                      obj["year"]=da.yearD;
+                  }
+              }
+              return obj;
+        });
+        console.log(saveList)
     }
 
 

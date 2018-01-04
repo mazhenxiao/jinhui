@@ -271,8 +271,9 @@ export const getPaymentData = () => {
 
 /**
  * 保存回款数据
+ * InCome/ISaveIncomeInfo
  */
-export const savePaymentData = () => {
+export const ISaveIncomeInfo = () => {
 
 };
 /**
