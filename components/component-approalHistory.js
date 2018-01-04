@@ -34,6 +34,9 @@ class ApproalHistory extends React.Component{
             case iss.getEVal("area"):
                 search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover`;
                 break;//面积
+            case iss.getEVal("priority"):
+                search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover`;
+                break;//面积
             default:
             	search ="";
         }

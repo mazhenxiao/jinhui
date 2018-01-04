@@ -102,7 +102,7 @@ class PriorityTable extends Component {
               dataIndex: 'AREANAME',
               render:(value, row,ind) => this.renderContent(value, row,"AREANAME",ind),
             } ,{
-              title: '公司',
+              title: '城市',
               colSpan: 1,
               dataIndex: 'COMPANYNAME',
               render:(value, row,ind) => this.renderContent(value, row,"COMPANYNAME",ind),
@@ -112,22 +112,16 @@ class PriorityTable extends Component {
               dataIndex: 'PROJECTNAME',
               render:(value, row,ind) => this.renderContent(value, row,"PROJECTNAME",ind),
             },{
-              title: '风险报备时间',
+              title: '分期',
               colSpan: 1,
-              dataIndex: 'REPORTTIME',
-              //render: this.renderContent,
-              render:(value, row,ind) => this.renderContent(value, row,"REPORTTIME",ind),
+              dataIndex: 'STAGENAME',
+              render:(value, row,ind) => this.renderContent(value, row,"STAGENAME",ind),
             },{
               title: '风险描述',
               colSpan: 1,
               width:200,
               dataIndex: 'RISKDESC',
               render:(value, row,ind) => this.renderProgress(value, row,"RISKDESC",ind),
-            },{
-              title: '最迟解决时间',
-              colSpan: 1,
-              dataIndex: 'SOLVETIME',
-              render:(value, row,ind) => this.renderContent(value, row,"SOLVETIME",ind),
             },{
               title: '重要级别',
               colSpan: 1,
@@ -143,6 +137,22 @@ class PriorityTable extends Component {
                 colSpan: 1,
                 dataIndex: 'USERNAME',
                 render:(value, row,ind) => this.renderContent(value, row,"USERNAME",ind),
+              },{
+                title: '风险报备时间',
+                colSpan: 1,
+                dataIndex: 'REPORTTIME',
+                //render: this.renderContent,
+                render:(value, row,ind) => this.renderContent(value, row,"REPORTTIME",ind),
+              },{
+                title: '最迟解决时间',
+                colSpan: 1,
+                dataIndex: 'SOLVETIME',
+                render:(value, row,ind) => this.renderContent(value, row,"SOLVETIME",ind),
+              },{
+                title: '最近更新时间',
+                colSpan: 1,
+                dataIndex: 'LASTUPDATETIME',
+                render:(value, row,ind) => this.renderContent(value, row,"LASTUPDATETIME",ind),
               }]; 
             return columns
       }

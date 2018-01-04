@@ -41,8 +41,11 @@ class Index extends Component {
             "CREATEUSER": null, 
             "APPROVESTATUS":-1,
             "SELECTEDID": null,
-            "SELECTEDLEVEL": 1
+            "SELECTEDLEVEL": 1,
+            "CONTENTID":null
         },
+        editData:"",
+        historyData:"",
         sundryId:this.props.location.state==undefined?"":this.props.location.state.id||"",
         level_id:this.props.location.state==undefined?"":this.props.location.state.level_id||"",
         projectID:"",
@@ -59,7 +62,6 @@ class Index extends Component {
     POINTLEVEL=-1; //重要级别
     ISOLVE=-1; //是否解决
     SOLVETIME='0001-01-01'; //最迟解决时间
-    editData="";
     PriorityFormDat={
         RISKDESC:"",    //*
         RISKEFFECT:"",  //*
@@ -81,7 +83,6 @@ class Index extends Component {
      */
     componentWillReceiveProps(nextProps) {
         
-        //debugger;
         const {location} = nextProps;
         this.SetisApproal(location);
         if(location.state != undefined){
@@ -108,7 +109,8 @@ class Index extends Component {
                     sundryId: nextDataKey,
                     level_id:nextLevel_id,
                     projectID:nextProjectID,
-                    addAatterStatus: false
+                    addAatterStatus: false,
+                    editStatus:false
                 },()=>{
                     var entityJson={ 
                         "ID": null,
@@ -134,6 +136,7 @@ class Index extends Component {
                         "CREATETIME": '0001-01-01', 
                         "CREATEUSER": null, 
                         "APPROVESTATUS":-1,
+                        "CONTENTID":null,
                         "SELECTEDID": this.state.sundryId,
                         "SELECTEDLEVEL": this.state.level_id
                     }
@@ -156,12 +159,18 @@ class Index extends Component {
     }     
     rowSelection =()=> {
         var th =this;
-        $(".processBar").find(".ant-table-tbody tr").on("click",function(){
+        // th.state.dataList.forEach(()=>{
+
+        // })
+        $(".processBar").find(".ant-table-tbody tr").on("click",function(e){
           var index= $(this).index();
           th.index = index;
           th.setState({editStatus:true})
         })
-        
+        $(".processBar").find(".ant-table-tbody tr").on("click","div",function(e){
+            //var index= $(this).index();
+            console.log(th.index)
+          })
       };
 
     getAjax=(obj)=>{
@@ -186,8 +195,8 @@ class Index extends Component {
                 }
 
                 el.REPORTTIME=th.getLocalTime(el.REPORTTIME)
-                el.CREATETIME=th.getLocalTime(el.CREATETIME)
                 el.SOLVETIME=th.getLocalTime(el.SOLVETIME)
+                el.LASTUPDATETIME=th.getLocalTime(el.LASTUPDATETIME)
              })
              th.setState({dataList},()=>{
                 this.rowSelection()
@@ -216,6 +225,8 @@ class Index extends Component {
                     })
                     this.setState({
                         addAatterStatus:true,
+                        editData : "",
+                        historyData:""
                     })
                 })
                 .catch(err=>{
@@ -225,52 +236,127 @@ class Index extends Component {
     }
     //编辑
     editChange = () =>{
-        this.editData=this.state.dataList[this.index].ID,
-        this.setState({
-            addAatterStatus:true,
+        var id=this.state.dataList[this.index].ID;
+        var th = this;
+        iss.ajax({
+            url: "/ProjectKayPoint/GetHistoryList",
+            data:{
+                "id": id
+            },
+            success(data) {
+                if(data.rows.length>0){
+                    if(data.rows[0].APPROVESTATUS==1){
+                        iss.popover({ content: "审批中，不能编辑！！"});
+                    }else{
+                        
+                        if(data.rows[0].APPROVESTATUS == 99){
+                            if(data.rows.length>1){
+                                if(data.rows[1].CONTENTID != null){
+                                    data.rows[0].CONTENTID = data.rows[1].CONTENTID
+                                }else{
+                                    data.rows[0].CONTENTID = data.rows[1].ID 
+                                }
+                            }else{
+                                data.rows[0].CONTENTID = data.rows[0].ID 
+                            }
+                            data.rows[0].ID = null
+                        }
+                        data.rows[0].APPROVESTATUS = 0
+                        var el = data.rows[0];
+                        if(el.ISOLVE == 1){
+                            el.ISOLVE = "是"
+                        }else{
+                            el.ISOLVE = "否"
+                        }
+                        if(el.POINTLEVEL == 0){
+                            el.POINTLEVEL = "低"
+                        }else if(el.POINTLEVEL == 1){
+                            el.POINTLEVEL = "中"
+                        }else{
+                            el.POINTLEVEL = "高"
+                        }
+        
+                        el.REPORTTIME=th.getLocalTime(el.REPORTTIME)
+                        el.SOLVETIME=th.getLocalTime(el.SOLVETIME)
+                        el.LASTUPDATETIME=th.getLocalTime(el.LASTUPDATETIME)
+                        
+                    th.setState({
+                        addAatterStatus:true,
+                        editData : el,
+                        historyData: data.rows
+                    })
+                    }
+                    
+                }else{
+                    iss.popover({ content: "数据为空，联系后台人员"});
+                }
+                    
+            },
+            error() {
+                console.log('失败')
+            }
         })
-        console.log(this.editData)
+        
     }
     //暂存
     BIND_Save = (approval) =>{
-        for(let key in this.PriorityFormDat){
-            if(key != "SUPPORT" && key != "STAGEID"){
-                if(this.PriorityFormDat[key] == ""){
-                    iss.popover({ content: " * 为必填项！！"});
-                    // iss.tip({
-                    //     type: "error",
-                    //     description: "*为必填项！！"
-                    // })
-                     return 
-                }
-            }  
-        }
         
-        var userInfo = iss.userInfo;
-        var entityJson={ 
-            "ID": null,
-            "AREANAME": this.formData.areaName,           //*
-            "COMPANYNAME": this.formData.companyName,       //*
-            "PROJECTID": this.PriorityFormDat.PROJECTID,    //*
-            "PROJECTNAME": this.formData.projectName,       //*
-            "STAGEID": this.PriorityFormDat.STAGEID,
-            "STAGENAME": null,
-            "RISKDESC": this.PriorityFormDat.RISKDESC,       //*
-            "RISKEFFECT": this.PriorityFormDat.RISKEFFECT,   //*
-            "PROGRESS": this.PriorityFormDat.PROGRESS,      //*
-            "SUPPORT": this.PriorityFormDat.SUPPORT, 
-            "POINTLEVEL": this.PriorityFormDat.POINTLEVEL, 
-            "ISOLVE": this.PriorityFormDat.ISOLVE, 
-            "REPORTTIME": this.PriorityFormDat.REPORTTIME, 
-            "OWNER": this.PriorityFormDat.OWNER, 
-            "USERNAME": null, 
-            "POST": this.PriorityFormDat.POST, 
-            "SOLVETIME": this.PriorityFormDat.SOLVETIME, 
-            "CREATETIME": '0001-01-01', 
-            "CREATEUSER": userInfo.ID, 
-            "APPROVESTATUS":-1,
-            "SELECTEDID": this.state.sundryId,
-            "SELECTEDLEVEL": this.state.level_id
+        var entityJson="";
+        if(this.state.editData == ""){
+           
+            for(let key in this.PriorityFormDat){
+                if(key != "SUPPORT" && key != "STAGEID"){
+                    if(this.PriorityFormDat[key] == ""){
+                        iss.popover({ content: " * 为必填项！！"});
+                        // iss.tip({
+                        //     type: "error",
+                        //     description: "*为必填项！！"
+                        // })
+                         return 
+                    }
+                }  
+            } 
+            var userInfo = iss.userInfo;
+            entityJson={ 
+                "ID": null,
+                "AREANAME": this.formData.areaName,           //*
+                "COMPANYNAME": this.formData.companyName,       //*
+                "PROJECTID": this.PriorityFormDat.PROJECTID,    //*
+                "PROJECTNAME": this.formData.projectName,       //*
+                "STAGEID": this.PriorityFormDat.STAGEID,
+                "STAGENAME": null,
+                "RISKDESC": this.PriorityFormDat.RISKDESC,       //*
+                "RISKEFFECT": this.PriorityFormDat.RISKEFFECT,   //*
+                "PROGRESS": this.PriorityFormDat.PROGRESS,      //*
+                "SUPPORT": this.PriorityFormDat.SUPPORT, 
+                "POINTLEVEL": this.PriorityFormDat.POINTLEVEL, 
+                "ISOLVE": this.PriorityFormDat.ISOLVE, 
+                "REPORTTIME": this.PriorityFormDat.REPORTTIME, 
+                "OWNER": this.PriorityFormDat.OWNER, 
+                "USERNAME": null, 
+                "POST": this.PriorityFormDat.POST, 
+                "SOLVETIME": this.PriorityFormDat.SOLVETIME, 
+                "CREATETIME": '0001-01-01', 
+                "CREATEUSER": userInfo.ID, 
+                "APPROVESTATUS":0,
+                "CONTENTID":null,
+                "SELECTEDID": this.state.sundryId,
+                "SELECTEDLEVEL": this.state.level_id
+            }
+        }else{
+            entityJson = this.state.editData;
+            if(entityJson.ISOLVE == "是"){
+                entityJson.ISOLVE = 1
+            }else{
+                entityJson.ISOLVE = 0
+            }
+            if(entityJson.POINTLEVEL == "低"){
+                entityJson.POINTLEVEL = 0
+            }else if(entityJson.POINTLEVEL == "中"){
+                entityJson.POINTLEVEL = 1
+            }else{
+                entityJson.POINTLEVEL = 2
+            }
         }
         
         Priority.ProjectKayPointSave({
@@ -280,29 +366,42 @@ class Index extends Component {
             var status = iss.getEVal("priority");
             if(approval=="approval"){
                 $(window).trigger("treeLoad");
-                location.href=`/Index/#/ProcessApproval?e=`+status+`&dataKey=`+data+`&current=ProcessApproval&areaId=&areaName=&readOnly=`+data;
-
-                
+                location.href=`/Index/#/ProcessApproval?e=`+status+`&dataKey=`+data+`&current=ProcessApproval&areaId=&areaName=&readOnly=`+data+`&cancel`;    
             }else{
                 this.handleLocalSearch()
             }
+            this.setState({
+                addAatterStatus:false,
+            })
             
         })
         .catch(err=>{
-            
+            console.log("失败")
         })
 
-        this.setState({
-            addAatterStatus:false,
+        
+    }
+    //导出
+    exportData = () =>{
+        let {PROJECTNAME,POINTLEVEL,ISOLVE,USERNAME,SOLVETIME}=this;
+        let obj = {...this.state.entityJson,...{PROJECTNAME,POINTLEVEL,ISOLVE,USERNAME,SOLVETIME}}
+        obj.SELECTEDID=  this.state.sundryId;
+        obj.SELECTEDLEVEL= this.state.level_id;
+        
+        Priority.Export({
+            "entityJson":JSON.stringify(obj)
+        }).then(data=>{
+            window.location.href="http://39.106.71.187:8000"+data; 
+        }).catch(err=>{
+            console.log("导出请求错误")
         })
     }
-
 
     
     renderButton = () =>{
         const addAatterStatus=this.state.addAatterStatus;
-        let {readOnly}=this.props.location.query;
-        if(!readOnly){
+        let {readOnly,current}=this.props.location.query;
+        if(!current){
             if(addAatterStatus){
                 return(
                     <div>
@@ -316,13 +415,13 @@ class Index extends Component {
                         <div>
                             <button type="button" onClick={this.editChange} className={this.state.editStatus ?"jh_btn jh_btn22 jh_btn_add":"hide jh_btn jh_btn22 jh_btn_add"}>编辑</button>
                             <button type="button" onClick={this.BIND_AddAatter} className="jh_btn jh_btn22 jh_btn_add">新增事项</button>
-                            <button type="button" className="jh_btn jh_btn22 jh_btn_add">导出EXCEL</button>
+                            <button type="button" onClick={this.exportData} className="jh_btn jh_btn22 jh_btn_add">导出EXCEL</button>
                         </div>
                     )
                 }else{
                     return(
                         <div>
-                            <button type="button" className="jh_btn jh_btn22 jh_btn_add">导出EXCEL</button>
+                            <button type="button" onClick={this.exportData} className="jh_btn jh_btn22 jh_btn_add">导出EXCEL</button>
                         </div>
                     )
                 }
@@ -370,29 +469,34 @@ class Index extends Component {
         this.ISOLVE = value;
     }
     handleLocalSearch = () =>{
-        if(this.PROJECTNAME != "" || this.USERNAME!="" || this.SOLVETIME != "" || this.POINTLEVEL!="" || this.ISOLVE!=""){
-            let {PROJECTNAME,POINTLEVEL,ISOLVE,USERNAME,SOLVETIME}=this;
-            let obj = {...this.state.entityJson,...{PROJECTNAME,POINTLEVEL,ISOLVE,USERNAME,SOLVETIME}}
-            obj.SELECTEDID=  this.state.sundryId;
-            obj.SELECTEDLEVEL= this.state.level_id;
-            this.getAjax(obj);
-            
-        }
+        let {PROJECTNAME,POINTLEVEL,ISOLVE,USERNAME,SOLVETIME}=this;
+        let obj = {...this.state.entityJson,...{PROJECTNAME,POINTLEVEL,ISOLVE,USERNAME,SOLVETIME}}
+        obj.SELECTEDID=  this.state.sundryId;
+        obj.SELECTEDLEVEL= this.state.level_id;
+        this.getAjax(obj);
     }
     PriorityFormCallback = (value,para) =>{
         this.PriorityFormDat[para] = value;
     }
+    editDataFormCallback = (value,para) =>{
+        if(this.state.editData !=""){
+            var obj = this.state.editData;
+            obj[para] = value;
+            this.setState({editData:obj})
+        }
+        
+    }
     renderContent = () =>{
         const addAatterStatus=this.state.addAatterStatus;
         var th=this;
-        let {readOnly}=this.props.location.query;
-        if(addAatterStatus || readOnly){
+        let {readOnly,current,dataKey}=this.props.location.query;
+        if(addAatterStatus || current){
            return(
                <div>
                    <Row>
                         <Col span={24}>
                             <article>
-                                <PriorityForm editData={this.editData} readOnly={readOnly} PriorityFormDat={this.PriorityFormDat} callback = {this.PriorityFormCallback.bind(this)}  data={this.formData}  />
+                                <PriorityForm historyData = {this.state.historyData} current={current} editData={this.state.editData} readOnly={dataKey} PriorityFormDat={this.PriorityFormDat} callback = {this.state.editData != ""?this.editDataFormCallback.bind(this):this.PriorityFormCallback.bind(this)}  data={this.formData}  />
                             </article>
                         </Col>
                     </Row>
@@ -473,7 +577,7 @@ class Index extends Component {
 
     }
     render() {
-        let {state,current,dataKey,readOnly}=this.props.location.query;
+        let {state,current,dataKey,readOnly,cancel}=this.props.location.query;
         if (this.props.location.state == undefined && !current) {
             return this.renderEmpty();
         }
@@ -485,7 +589,6 @@ class Index extends Component {
                    <Row>
                         <Col span={24}>
                             <article> 
-                                
                                 {this.renderHeader()}
                             </article>
                         </Col>
