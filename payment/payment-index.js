@@ -50,7 +50,10 @@ class SignIndex extends Component {
             ModalVisible: false,
             dialogContent: [],//弹出窗口content
             dataSource: [], //数据
-            columns: [{}] //表头
+            columns: [
+                {field:"Time",align:"center",name:"时间",width:80},
+                {field:"Price",align:"center",name:"货值",width:80}
+            ] //表头
         }
 
 
@@ -445,8 +448,12 @@ class SignIndex extends Component {
 
     clickOpenDialog(text, row, index) {
         debugger
-        
-        
+        let {dialog}=this.state;
+        let {signForIncome:dataSource}=row;
+             dialog = {...dialog,dataSource};
+             this.setState({
+                dialog
+             })
       
 
     }
