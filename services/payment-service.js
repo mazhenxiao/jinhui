@@ -180,13 +180,16 @@ export const ISaveSignAContractData = (data) => {
  * 提交动态签约数据
  * @param {*} signAContractVersionId
  */
-export const ISubmitSignAContractData = (signAContractVersionId) => {
+export const ISubmitSignAContractData = ({signAContractVersionId,dataKey,projectLevel}) => {
     return iss.fetch({
         url: "/SignAContract/ISubmitSignAContractData",
         data: {
-            signAContractVersionId
+            signAContractVersionId,
+            dataKey,
+            projectLevel
         }
     })
+    .catch(err=>{ iss.error(err);Promise.resolve(err)})
 };
 
 /**

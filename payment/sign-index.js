@@ -564,10 +564,12 @@ class SignIndex extends Component {
      * 提交
      */
     handleSubmit = arg => {
-        let {DynamicId} = this.dynamicTable;
+    
+        let {dataKey,mode:projectLevel}=this.state;
+        let {DynamicId:signAContractVersionId} = this.dynamicTable;
         this.saveDynamicTableData()
             .then(da => {
-                return Payment.ISubmitSignAContractData(DynamicId);
+                return Payment.ISubmitSignAContractData({signAContractVersionId,dataKey,projectLevel});
             })
             .catch(err => {
                 iss.error("提交失败")
