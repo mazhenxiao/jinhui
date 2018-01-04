@@ -439,11 +439,13 @@ class SignIndex extends Component {
                 //console.log(`${arg.GROUPNAME}=>${arg.PROJECTNAME}=>${arg.TYPENAME}`)
                // debugger
                 for (let key in arg) {
-                    let reg = /^Y\d{3}/ig,mon=key.substr(2, 2),reg3=/Y3\d{3}Q\w/;
-                    
+                    let reg = /^Y\d{3}/ig,mon=key.substr(2, 2),reg3=/Y3\d{2}Q\w/,yearNum=key.substr(1,1);
+                     if(yearNum=="3"&&!reg3.test(key)){ //用来处理第三年非带Q字段不获取-瑞涛版
+                        continue 
+                    } 
                     if (reg.test(key) && arg[key] !== "") {
                         let {StartYear} = this.dynamicTable;
-                        StartYear = eval(StartYear + "-1+" + key.substr(1, 1))
+                        StartYear = eval(StartYear + "-1+" + yearNum)
                         let _da = {
                             dataType: key.substr(4),
                             titlename: `${StartYear}-${mon}-01`,
