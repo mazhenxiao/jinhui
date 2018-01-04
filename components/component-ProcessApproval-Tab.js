@@ -6,6 +6,7 @@ import React from 'react';
  */
 import iss from "../js/iss.js";
 import "babel-polyfill";  //兼容ie
+import { debug } from 'util';
 
 class ProcessApprovalTab extends React.Component {
     constructor(arg) {

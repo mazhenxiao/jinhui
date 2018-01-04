@@ -37,6 +37,14 @@ export const GetProjectKeyPoint =(data)=>{
      })
      .then(ServiceCount)
  }
+
+ export const Export =(data)=>{
+    return iss.fetch({
+         url: "/ProjectKayPoint/Export",
+         data,
+     })
+     .then(ServiceCount)
+ }
 const ServiceCount=(arg)=>{
     return arg.rows;
 }   

@@ -350,7 +350,7 @@ class ApprovalControlNode extends React.Component {
  * isProOrStage 【项目1 分期2】信息填报所需
  */
     Event_click_cancel() { //取消
-        const {businessId, e} = this.props.allSearchArg;
+        const {businessId, e,cancel} = this.props.allSearchArg;
         var url = "";
         switch (this.props.allSearchArg.e) {
             case iss.getEVal("intallmentStatus"):
@@ -388,8 +388,13 @@ class ApprovalControlNode extends React.Component {
                 search: `?status=edit&dataKey=${businessId}&e=${e}&isProOrStage=${this.props.allSearchArg.isProOrStage}`
             }); 
            // location.href = `${location.origin}${location.pathname.replace(/\/$/ig, "")}/#/${url}?status=edit&dataKey=${businessId}&e=${e}&isProOrStage=${this.props.allSearchArg.isProOrStage}`
-        }
-        else {
+        }else if (cancel==null) {
+            iss.hashHistory.replace({
+               pathname: `/${url}`,
+               search: `?status=edit&dataKey=${this.props.allSearchArg.dataKey}&e=${this.props.allSearchArg.e}&cancel`
+           }); 
+          // location.href = `${location.origin}${location.pathname.replace(/\/$/ig, "")}/#/${url}?status=edit&dataKey=${businessId}&e=${e}&isProOrStage=${this.props.allSearchArg.isProOrStage}`
+        }else {
            
               iss.hashHistory.replace({
                  pathname: `/${url}`,

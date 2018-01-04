@@ -1,16 +1,32 @@
-.process {
-  padding: 10px;
+.projectinFormation {
+  padding-top: 10px;
+}
+.historyTable {
+  margin-left: 30px;
+  width: 88%;
   text-align: center;
 }
-.process .ant-col-8 {
-  text-align: right;
-  padding-right: 10px;
+.historyTable td {
+  border-bottom: 1px #ccc solid;
+  line-height: 36px;
 }
-.process .ant-col-16 {
-  padding-left: 10px;
+.formTable tbody th {
+  width: 180px;
+}
+.formTable tbody td {
+  width: 300px;
+}
+.formTable tbody input {
+  width: 300px;
+}
+.PriorityTable {
+  padding-top: 5px;
 }
 .PriorityTable .ant-row:first-child {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+}
+.PriorityTable .ant-progress-inner {
+  overflow: hidden;
 }
 .PriorityTable .ant-progress-text {
   width: 3em;
