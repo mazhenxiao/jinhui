@@ -100,10 +100,14 @@ class SignIndex extends Component {
 
     componentDidMount() {
         let {dataKey} = this.props.location.query;
-        this.SetisApproal();
-        if (dataKey) {
-            this.getFetData(true);
-        }
+        let isApproal = this.SetisApproal();
+        this.setApproalDataKeyState(isApproal)
+            .then(({VERSIONID,DATAKEY,DATALEVEL})=>{
+                if (dataKey) {
+                    this.getFetData(true);
+                }
+            })
+     
     }
 
     componentWillUnmount() {
@@ -138,6 +142,23 @@ class SignIndex extends Component {
                 }
             );
         }
+    }
+     /**
+     * 判断如果时审批页面则重新设置id
+     * 因为setStage方式直接赋值，会异步和刷新整个视图，此时操作不想惊动到视图，用非标准写法
+     */
+    setApproalDataKeyState=(check)=>{
+        let {dataKey} = this.props.location.query;
+        if(check){
+            return Payment.IGetApprovedInfo(dataKey,"payment")
+                   .then(({VERSIONID,DATAKEY,DATALEVEL})=>{
+                      
+                   })
+        }else{
+            return Promise.resolve("ok非审批");
+        }
+      
+
     }
 
     /**

@@ -21,18 +21,17 @@ class SignIndex extends Component {
     state = {
         loading: true,
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
-        mode: this.props.location.query.isProOrStage == "1" ? "Project" : this.props.location.query.isProOrStage == "2" ? "Stage" : "",//显示模式，项目或者分期
-        versionId: "",
-        versionData: [],
-        editable: false,//是否可编辑
+        mode: this.props.location.query.isProOrStage == "1" ? "Project" : this.props.location.query.isProOrStage == "2" ? "Stage" : "",//显示模式，项目或者分
         isApproal: false, //是否是审批
         dynamicTable: {
+            versionId:"",//或取数据版本id
             dynamicHeaderData: [],//动态调整版头部
             dynamicDataSource: [],//动态调整版数据
             dynamicEdit: false, //动态调整是否可编辑
             dynamicEditButtonShow: false,
             loading: true,
-            defaultHeight: 200
+            defaultHeight: 200,
+            adjustmentDataStr:""//title
         },
         planTable: { //同上
             planHeaderData: [],
@@ -74,6 +73,7 @@ class SignIndex extends Component {
         dynamicHeaderData:[],
         dynamicDataSource:[],
         dynamicEditButtonShow: false,
+        adjustmentDataStr:""//title需要
     }
     planTable={ //同上
         planHeaderData: [],
@@ -94,12 +94,8 @@ class SignIndex extends Component {
     componentDidMount() {
         let {dataKey} = this.props.location.query;
         let isApproal =this.SetisApproal();
-        this.setApproalDataKeyState(isApproal)
-            .then(arg=>{
-                if (dataKey) {
-                    this.getFetData(true);
-                }
-            });
+        this.pageInit(isApproal);
+            
     }
 
     componentWillUnmount() {
@@ -136,12 +132,31 @@ class SignIndex extends Component {
         }
     }
     /**
-     * 判断如果时审批页面则重新设置id
+     * 页面初始化入口
      */
-    setApproalDataKeyState=(check)=>{
+    pageInit=(isApproal)=>{
+        this.setApproalDataKeyState(isApproal)
+        .then(arg=>{   //获取基础数据
+           return this.getBaseInfo();
+        })
+        .then(arg=>{  //获取表格数据
+          return this.getFetData();
+        })
+    }
+    /**
+     * 判断如果时审批页面则重新设置id
+     * 因为setStage方式直接赋值，会异步和刷新整个视图，此时操作不想惊动到视图，用非标准写法
+     */
+    setApproalDataKeyState=(isApproal)=>{
         let {dataKey} = this.props.location.query;
-        if(check){
+        if(isApproal){
             return Payment.IGetApprovedInfo(dataKey,"payment")
+                   .then(({VERSIONID:versionId,DATAKEY:dataKey,DATALEVEL:mode})=>{
+                       this.dynamicTable.versionId=versionId;
+                       this.state.dataKey=dataKey;  //非法赋值不刷新视图只更改状态
+                       this.state.mode=mode;//非法赋值不刷新视图只更改状态
+
+                   })
         }else{
             return Promise.resolve("ok非审批");
         }
@@ -160,21 +175,39 @@ class SignIndex extends Component {
         return Boolean(stateData["current"])
     }
     /**
-     * 获取动态数据，获取签约计划数据，获取版本数据
-     * first 判断是否第一次加载dom,如果第一次加载返回promise
+     * 获取基础数据
+     * dataKey,projectLevel,versionId
      */
-    getFetData = (first) => {
+    getBaseInfo=()=>{
+        //let {dataKey} = this.props.location.query;
+        let {dataKey,mode:projectLevel} =this.state;
+        let {versionId}=this.dynamicTable;  //如果时审批页面已经赋值了
+        return Payment.IGetBaseInomeInfo({dataKey,projectLevel,versionId:""})
+               .then(arg=>{  //versionId会再次返回
+                   let {isEdit:dynamicEditButtonShow,adjustmentDataStr,versionId}=arg;
+                   adjustmentDataStr = new Date(adjustmentDataStr).Format("yyyy")
+                   dynamicEditButtonShow = Boolean(dynamicEditButtonShow);
+                    this.dynamicTable={...this.dynamicTable,versionId,dynamicEditButtonShow,adjustmentDataStr}
+                   
+               })
+        
+           
+        
+    }
+    /**
+     * 获取动态数据，获取签约计划数据，获取版本数据
+     */
+    getFetData = () => {
         this.dynamicTable.saveData = {};
         //获取动态调整表格数据
-        let dynamicTable = this.getDynamicData();
+        let {dataKey,mode}=this.state;
+        let dynamicTable = this.getDynamicData({dataKey,mode});
         //获取比对版数据   
-        let planTable = this.getPlanData();
+        let planTable = this.getPlanData({dataKey,mode});
 
         return Promise.all([dynamicTable, planTable]).then(arg => {
             //获取弹窗数据如果需要，因为张权说要给一个获取的id不知道依赖在哪里，先放到这,估计需要从动态表获取
             let {dynamicTable,planTable,version} = this.state;
-            //判断如果
-             this.dynamicTable.dynamicEditButtonShow=(this.getShowEidtButtonFilter(this.version.versionData)&&this.dynamicTable.dynamicEditButtonShow);
             dynamicTable = {...dynamicTable,...this.dynamicTable};
             planTable = {...planTable,...this.planTable};
             version = {...version,...this.version};
@@ -206,16 +239,13 @@ class SignIndex extends Component {
      * 张政=根据isNewVersion==1&&status==0 才显示button
      */
     getShowEidtButtonFilter=dataList=>{
-        return dataList.some(arg=>{
-            let {isNewVersion,status}=arg;
+           let lists = dataList.filter(arg=>{
+            let {isNewVersion,status,id}=arg;
             if(isNewVersion=="1"&&status=="0"){
-                this.version.saveId=arg.id;
-                return true;
-            }else{
-                return false
+               return true
             }
-            
         })
+        return lists.length? lists[0]["id"]:""
     }
     /**
      * 获取弹窗头部数据
@@ -230,19 +260,25 @@ class SignIndex extends Component {
      * 获取动态调整版数据
      * return promise
      */
-    getDynamicData = () => {
-        let {dynamicTable, dataKey,mode} = this.state;
+    getDynamicData = ({dataKey,mode}) => {
+        let {current}=this.props.location.query;
+        let edit = this.dynamicTable.dynamicEditButtonShow;
+        let {versionId}=this.dynamicTable;
         //dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
         //回款
         //let title,data;
         //获取动态数据头部与数据
-        
-       return Payment.IGetIncomeListEditForAdjustment({dataKey,mode})
+       return Payment.IGetIncomeListEditForAdjustment({dataKey,versionId,mode})
                .then(arg=>{
                    let {titleInfo:dynamicHeaderData,incomeDataList:dynamicDataSource}=arg
-                   this.dynamicTable={...this.dynamicTable,dynamicHeaderData,dynamicDataSource,dynamicEditButtonShow:Boolean(dynamicDataSource.length)};
+                   this.dynamicTable={
+                       ...this.dynamicTable,
+                       dynamicHeaderData,
+                       dynamicDataSource,
+                       dynamicEditButtonShow:!current&&edit&&Boolean(dynamicDataSource.length)};
                    return "动态调整版本ok"
-               }).catch(err=>{ iss.error(err)})
+               })
+               .catch(err=>{ iss.error(err)})
     }
     /**
      * 返回当前id
@@ -268,10 +304,10 @@ class SignIndex extends Component {
      * 获取计划版数据
      * return promise 884dd5a6-ff48-4628-f4fa-294472d49b37
      */
-    getPlanData = () => {
+    getPlanData = ({dataKey,mode}) => {
 
-        let {planTable, version, dynamicTable, dataKey,mode} = this.state;
-        let {dynamicHeaderData} = dynamicTable
+        
+        let {dynamicHeaderData} = this.dynamicTable
         // dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let currentVersion = "", versionData;
@@ -281,17 +317,17 @@ class SignIndex extends Component {
                     this.version = {
                         ...this.version,
                         versionData,
+                        saveId:this.getShowEidtButtonFilter(versionData),//改造成为当前版本id
                         currentVersion:this.getCurrentVertion(versionData),
                         versionShow:Boolean(versionData.length)
                     }
-                
                     let {currentVersion}=this.version;
+                    
                     return Payment.IGetIncomeListEditForCheck({dataKey,currentVersion,mode}) 
                 })
                 .then(data=>{ //获取考核版数据
-                    let {dynamicHeaderData:planHeaderData}=this.dynamicTable;
                     let {incomeDataList:planDataSource}=data;
-                    this.planTable={...this.planTable,planHeaderData,planDataSource}
+                    this.planTable={...this.planTable,planHeaderData:dynamicHeaderData,planDataSource}
                     return "考核版ok"
                 })
                 .catch(err=>{
@@ -563,15 +599,15 @@ class SignIndex extends Component {
      * 动态调整table
      */
     renderHistoryData = () => {
-        const {versionData, versionId, editable, dynamicTable, loading} = this.state;
-        const {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow, defaultHeight} = dynamicTable;
+        const {dynamicTable, loading} = this.state;
+        const {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow, defaultHeight,adjustmentDataStr} = dynamicTable;
         
         return (
             <article className="toTable signPage">
                 <header className="bottom-header-bar">
                     <Row>
                         <Col span={12}>
-                            <span className="header-title">回款计划动态调整版（面积：平方米，货值：万元）</span>
+                            <span className="header-title">回款计划{adjustmentDataStr}动态调整版（面积：平方米，货值：万元）</span>
                         </Col>
                         <Col span={12}>
                             <div className={dynamicEditButtonShow ? "RT" : "hidden"}>
@@ -612,13 +648,13 @@ class SignIndex extends Component {
         const {planTable, dynamicTable, version} = this.state;
         const {planHeaderData, planDataSource} = planTable;
         const {versionData, versionShow, versionId, currentVersion} = version;
-        const {dynamicHeaderData, defaultHeight} = dynamicTable;
+        const {dynamicHeaderData, defaultHeight,adjustmentDataStr} = dynamicTable;
         return (
             <article className="pkTable mgT10">
                 <header className="top-header-bar">
                     <Row>
                         <Col span={12}>
-                            <span className="header-title">回款计划考核版（面积：平方米，货值：万元）</span>
+                            <span className="header-title">回款计划{adjustmentDataStr}考核版（面积：平方米，货值：万元）</span>
                         </Col>
                         <Col span={12} className="action-section">
                             <WrapperSelect className={versionShow ? "select-version" : "hide"} labelText="版本:"
