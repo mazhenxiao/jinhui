@@ -77,28 +77,7 @@ export const IGetSupplyVersionTitle = key => {
         }];
     return Promise.resolve(_da);
 }
-/**
- * 获取弹出供货及校验
- * /SignAContract/IGetSupplyVersionData?signAContractVersionId=签约ID
- * @param {*} key
- */
-export const IGetSupplyVersionData = key => {
 
-    let _data = [{
-        "showId": "f8a6f4a8-ff9b-731b-0c54-53ca93df980a",
-        "showName": "地下平层",
-        "value": [
-            {
-                "showName": "2017年1月",
-                "area": 0,
-                "housecount": 0,
-                "value": 0
-            }
-        ]
-
-    }]
-    return Promise.resolve(_data)
-}
 
 /**
  * 获取签约动态数据

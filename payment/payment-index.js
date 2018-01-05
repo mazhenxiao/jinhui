@@ -48,9 +48,8 @@ class SignIndex extends Component {
         },
         dialog: { //弹窗
             ModalVisible: false,
-            dialogContent: [],//弹出窗口content
-            dataSource: [], //数据
-            columns: [
+            dialogContent: [{Time:"2018-01-02",Price:"测试数据",key:1}],//弹出窗口content 
+            dialogColumns: [
                 {field:"Time",align:"center",name:"时间",width:80},
                 {field:"Price",align:"center",name:"货值",width:80}
             ] //表头
@@ -210,13 +209,6 @@ class SignIndex extends Component {
         return Payment.IGetSupplyVersionTitle(key)
     }
 
-    /**
-     * 获取弹窗及校验数据
-     * 分开写防止万一数据需要二次编辑
-     */
-    getDynamicDialogData(key) {
-        return Payment.IGetSupplyVersionData(key)
-    }
 
     /**
      * 获取动态调整版数据
@@ -447,10 +439,11 @@ class SignIndex extends Component {
     }
 
     clickOpenDialog(text, row, index) {
-        debugger
         let {dialog}=this.state;
-        let {signForIncome:dataSource}=row;
-             dialog = {...dialog,dataSource};
+        let {signForIncome:dialogContent}=row;
+        dialogContent=dialogContent.length? dialogContent:dialog.dialogContent;//测试数据
+        if(dialogContent.length<=0){ iss.info(`${text}-暂无可查看信息`);return}
+             dialog = {...dialog,dialogContent,ModalVisible:true};
              this.setState({
                 dialog
              })
@@ -520,24 +513,32 @@ class SignIndex extends Component {
      * 弹出窗口
      */
     renderDialog = () => {
-        let {dialogContent, columns, ModalTile, ModalVisible} = this.state.dialog;
-
+        let {dialogContent, dialogColumns, ModalTile, ModalVisible} = this.state.dialog;
+        dialogColumns = dialogColumns.map((arg,key)=>{
+            let {field:dataIndex,name:title,width}=arg;
+            return {
+                dataIndex,title,width,key
+            }
+        })
         return <Modal
             title={ModalTile}
             visible={ModalVisible}
             onCancel={this.clickModalCancel}
             onOk={this.clickModalOk}
+            style={{"top":0}}
+            mask={false}
             footer={false}
         >
-
+        
 
             <Table
                 rowKey="key"
                 bordered={true}
                 size="small"
+                scroll={{x:true,y:100}}
                 dataSource={dialogContent}
-                columns={columns}/>
-
+                columns={dialogColumns}/>
+                
         </Modal>
 
     }
@@ -580,6 +581,7 @@ class SignIndex extends Component {
                     headerData={dynamicHeaderData || []}
                     editState={dynamicEdit}
                     editMode="LastLevel"
+                    fixedAble={true}
                     dataSource={dynamicDataSource || []}
                     columnRender={this.dynamicTable.dynamicRender}
                 />
@@ -612,6 +614,7 @@ class SignIndex extends Component {
                 </header>
                 <WrapperGroupTable
                     rowKey="key"
+                    fixedAble={true}
                     headerData={dynamicHeaderData || []}
                     dataSource={planDataSource || []}/>
             </article>
