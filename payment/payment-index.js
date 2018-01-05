@@ -48,10 +48,10 @@ class SignIndex extends Component {
         },
         dialog: { //弹窗
             ModalVisible: false,
-            dialogContent: [{Time:"2018-01-02",Price:"测试数据",key:1}],//弹出窗口content 
+            dialogContent: [{dateInfo:"2018-01-02",signValue:"测试数据",key:1}],//弹出窗口content 
             dialogColumns: [
-                {field:"Time",align:"center",name:"时间",width:80},
-                {field:"Price",align:"center",name:"货值",width:80}
+                {field:"dateInfo",align:"center",name:"时间",width:80},
+                {field:"signValue",align:"center",name:"货值",width:80}
             ] //表头
         }
 
@@ -520,6 +520,7 @@ class SignIndex extends Component {
                 dataIndex,title,width,key
             }
         })
+        
         return <Modal
             title={ModalTile}
             visible={ModalVisible}

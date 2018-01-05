@@ -269,6 +269,22 @@ export const ISaveIncomeInfo = (data) => {
     .then(ThenListener)
     .catch(err=>{return Promise.reject(err)})  
 };
+/**
+ *  Supply/IGetApprovedInfo?Id=
+ * 发起审批转换接口
+ */
+export const IGetApprovedInfo=Id=>{
+        return iss.fetch({
+            url:"/Supply/IGetApprovedInfo",
+            data:{
+                Id
+            }
+        })
+        .then(ThenListener)
+        .catch(err=>{
+            return Promise.reject(err);
+        })
+}
 
 /**
  * 统一处理
