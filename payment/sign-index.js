@@ -30,6 +30,7 @@ class SignIndex extends Component {
         editable: false,//是否可编辑
         isApproal: false, //是否是审批
         dynamicTable: {
+            DynamicDate:"",//title显示
             SupplyVersionId:"",//在弹出时需要获取的id
             dynamicHeaderData: [],//动态调整版头部
             dynamicDataSource: [],//动态调整版数据
@@ -73,6 +74,7 @@ class SignIndex extends Component {
 
     //protected 数据
     dynamicTable = { //动态表格私有仓储
+        DynamicDate:"",//titile显示
         TitleList:[],//在inof中获取表头数据
         SupplyVersionId:"",//在弹出时需要获取的id
         DynamicId: "",//新加入的id，用此id获取动态调整版数据
@@ -165,7 +167,7 @@ class SignIndex extends Component {
         //获取基础数据=瑞涛
         Payment.IGetSignBaseInfo({dataKey, mode})
             .then(arg => {  //进行错误判断
-                let {DynamicId, StartYear, VersionList, Permission, Error,SupplyVersionId,TitleList} = arg;
+                let {DynamicId, StartYear, VersionList, Permission, Error,SupplyVersionId,TitleList,DynamicDate} = arg;
                 
                 if (!DynamicId) {
                     this.setStartData();//初始化数据
@@ -173,7 +175,7 @@ class SignIndex extends Component {
                 }
                 if(Error){ iss.error(Error)}
                 this.version = {...this.version, versionData: VersionList, versionShow: Boolean(VersionList.length)}
-                this.dynamicTable = {...this.dynamicTable, DynamicId, StartYear, VersionList, Permission,SupplyVersionId,TitleList}
+                this.dynamicTable = {...this.dynamicTable, DynamicId, StartYear, VersionList, Permission,SupplyVersionId,TitleList,DynamicDate}
                 this.PromiseAllAndLockScroll();//调用
                 // return arg
             }).catch(err => {
@@ -584,14 +586,14 @@ class SignIndex extends Component {
      */
     renderHistoryData = () => {
         const {versionData, versionId, editable, dynamicTable, loading} = this.state;
-        const {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow, defaultHeight} = dynamicTable;
+        const {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow, defaultHeight,DynamicDate} = dynamicTable;
 
         return (
             <article className="toTable signPage">
                 <header className="bottom-header-bar">
                     <Row>
                         <Col span={12}>
-                            <span className="header-title">签约计划动态调整版（面积：平方米，货值：万元）</span>
+                            <span className="header-title">签约计划{DynamicDate}动态调整版（面积：平方米，货值：万元）</span>
                         </Col>
                         <Col span={12}>
                             <div className={dynamicEditButtonShow ? "RT" : "hidden"}>

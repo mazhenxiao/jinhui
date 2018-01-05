@@ -50,8 +50,8 @@ class SignIndex extends Component {
             ModalVisible: false,
             dialogContent: [{dateInfo:"2018-01-02",signValue:"测试数据",key:1}],//弹出窗口content 
             dialogColumns: [
-                {field:"dateInfo",align:"center",name:"时间",width:80},
-                {field:"signValue",align:"center",name:"货值",width:80}
+                {field:"dateInfo",align:"center",name:"时间",width:80,key:"dateInfo"},
+                {field:"signValue",align:"center",name:"货值",width:80,key:"signValue"}
             ] //表头
         }
 
@@ -93,10 +93,13 @@ class SignIndex extends Component {
 
     componentDidMount() {
         let {dataKey} = this.props.location.query;
-        this.SetisApproal();
-        if (dataKey) {
-            this.getFetData(true);
-        }
+        let isApproal =this.SetisApproal();
+        this.setApproalDataKeyState(isApproal)
+            .then(arg=>{
+                if (dataKey) {
+                    this.getFetData(true);
+                }
+            });
     }
 
     componentWillUnmount() {
@@ -131,6 +134,19 @@ class SignIndex extends Component {
                 }
             );
         }
+    }
+    /**
+     * 判断如果时审批页面则重新设置id
+     */
+    setApproalDataKeyState=(check)=>{
+        let {dataKey} = this.props.location.query;
+        if(check){
+            return Payment.IGetApprovedInfo(dataKey,"payment")
+        }else{
+            return Promise.resolve("ok非审批");
+        }
+      
+
     }
      /**
      * 当前是否是审批

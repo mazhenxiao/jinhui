@@ -283,8 +283,10 @@ export const ISaveIncomeInfo = (data) => {
 /**
  *  Supply/IGetApprovedInfo?Id=
  * 发起审批转换接口
+ * Id 根据当前url地址上由发起审批带来的dataKey（回款版本id）
+ * str 从哪个页面来的
  */
-export const IGetApprovedInfo=Id=>{
+export const IGetApprovedInfo=(Id,str)=>{
         return iss.fetch({
             url:"/Supply/IGetApprovedInfo",
             data:{
@@ -292,6 +294,15 @@ export const IGetApprovedInfo=Id=>{
             }
         })
         .then(ThenListener)
+        .then(arg=>{
+            let id=""
+            switch(str){
+                case "supply"://供货
+                case "sign": //签约
+                case "payment"://回款
+            }
+            return id
+        })
         .catch(err=>{
             return Promise.reject(err);
         })
