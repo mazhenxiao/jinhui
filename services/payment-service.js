@@ -170,6 +170,17 @@ export const ISubmitSignAContractData = ({signAContractVersionId,dataKey,project
     })
     .catch(err=>{ iss.error(err);Promise.resolve(err)})
 };
+/** 签约弹出窗口数据
+ *    /Supply/ISingSupplyData?supplyid=供货版本id&producttypeid=业态id
+ */
+export const ISingSupplyData=({supplyid,producttypeid})=>{
+     return iss.fetch({
+         url:"/Supply/ISingSupplyData",
+         data:{supplyid,producttypeid}
+     })
+     .then(ThenListener)
+     .catch(err=>{return Promise.reject(err)})
+}
 
 /**
  * 驳回
@@ -285,6 +296,7 @@ export const IGetApprovedInfo=Id=>{
             return Promise.reject(err);
         })
 }
+
 
 /**
  * 统一处理
