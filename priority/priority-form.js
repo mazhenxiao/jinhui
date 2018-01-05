@@ -51,7 +51,6 @@ class PriorityForm extends Component {
          
     }
     componentDidMount() {
-        
         if(this.props.current != undefined){
             var th = this;
             iss.ajax({
@@ -159,7 +158,142 @@ class PriorityForm extends Component {
     }
 
     renderTable = () =>{
-        if(this.props.current != undefined){
+        if(this.props.lookStatus){
+            return (
+                <tbody>
+                <tr>
+                    <th>
+                        <label className="formTableLabel boxSizing redFont">区域</label>
+                    </th>
+                    <td>
+                        <Input readOnly="readOnly" value={this.state.readOnlyData.AREANAME} />
+                    </td>
+                    <th>
+                        <label className="formTableLabel boxSizing redFont">城市公司</label>
+                    </th>
+                    <td>
+                        <Input readOnly="readOnly" value={this.state.readOnlyData.COMPANYNAME} />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label className="formTableLabel boxSizing redFont">项目名称</label>
+                    </th>
+                    <td>
+                        <Input readOnly="readOnly" value={this.state.readOnlyData.PROJECTNAME} />
+                    </td>
+                    <th>
+                        <label className="formTableLabel boxSizing redFont">分期名称</label>
+                    </th>
+                    <td>
+                        <Input readOnly="readOnly" value={this.state.readOnlyData.STAGENAME} />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label className="formTableLabel boxSizing redFont">风险描述</label>
+                    </th>
+                    <td>
+                        <TextArea disabled rows={3} value={this.state.readOnlyData.RISKDESC} onChange={this.TriggerCallback.bind(this,"RISKDESC")} />
+                    </td>
+                    <th>
+                        <label className="formTableLabel boxSizing redFont">风险影响</label>
+                    </th>
+                    <td>
+                        <TextArea disabled rows={3} value={this.state.readOnlyData.RISKEFFECT} onChange={this.TriggerCallback.bind(this,"RISKEFFECT")} />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label className="formTableLabel boxSizing redFont">面前风险解决进展</label>
+                    </th>
+                    <td>
+                        <TextArea disabled rows={3} value={this.state.readOnlyData.PROGRESS} onChange={this.TriggerCallback.bind(this,"PROGRESS")} />
+                    </td>
+                    <th>
+                        <label className="formTableLabel boxSizing">需要集团支持事项</label>
+                    </th>
+                    <td>
+                        <TextArea disabled rows={3} value={this.state.readOnlyData.SUPPORT} onChange={this.TriggerCallback.bind(this,"SUPPORT")} />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label className="formTableLabel boxSizing redFont">重要级别</label>
+                    </th>
+                    <td>
+                        <Select disabled value={this.state.readOnlyData.POINTLEVEL} onChange={this.selectCallback.bind(this,"POINTLEVEL")} defaultValue="请选择" style={{ width: 300 }}>
+                            <Option value="-1">请选择</Option>
+                            <Option value="0">低</Option>
+                            <Option value="1">中</Option>
+                            <Option value="2">高</Option>
+                        </Select>
+                    </td>
+                    <th>
+                        <label className="formTableLabel boxSizing redFont">是否解决</label>
+                    </th>
+                    <td>
+                        <Select disabled value={this.state.readOnlyData.ISOLVE} onChange={this.selectCallback.bind(this,"ISOLVE")} defaultValue="请选择" style={{ width: 300 }}>
+                            <Option value="-1">请选择</Option>
+                            <Option value="1">是</Option>
+                            <Option value="0">否</Option>
+                        </Select> 
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label className="formTableLabel boxSizing redFont">风险报备时间</label>
+                    </th>
+                    <td>
+                        <DatePicker 
+                            disabled
+                            placeholder={this.state.readOnlyData.REPORTTIME}  
+                            onChange={this.TimeCallback.bind(this,"REPORTTIME")} 
+                        />
+                    </td>
+                    <th>
+                        <label className="formTableLabel boxSizing redFont">最迟解决时间</label>
+                    </th>
+                    <td>
+                        <DatePicker
+                         disabled
+                         placeholder={this.state.readOnlyData.SOLVETIME}
+                         onChange={this.TimeCallback.bind(this,"SOLVETIME")} />
+                    </td>
+                </tr>
+                <tr> 
+                    <th>
+                        <label className="formTableLabel boxSizing redFont">责任人</label>
+                    </th>
+                    <td>
+                        <Input disabled value={this.state.chooseToText || this.state.readOnlyData.USERNAME || ""} onClick={this.ChooseCallback.bind(this,"OWNER")} />
+                    </td>
+                    <th>
+                        <label className="formTableLabel boxSizing redFont">责任岗位</label>
+                    </th>
+                    <td>
+                        <Input disabled value={this.state.readOnlyData.POST} onChange={this.TriggerCallback.bind(this,"POST")} />
+                    </td>
+                </tr>
+                {/* <tr>
+                    <th>
+                        <label className="formTableLabel boxSizing">备注</label>
+                    </th>
+                    <td colSpan="5">
+                        <Input />
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label className="formTableLabel boxSizing">附件</label>
+                    </th>
+                    <td colSpan="5">
+                        <Input />
+                    </td>
+                </tr> */}
+                </tbody>
+            );
+        }else if(this.props.current != undefined){
             return (
                         <tbody>
                             <tr>
@@ -416,8 +550,8 @@ class PriorityForm extends Component {
                         <Input />
                     </td>
                 </tr> */}
-            </tbody>
-            )
+                </tbody>
+            );
         }else{
             return (
                 
@@ -551,11 +685,10 @@ class PriorityForm extends Component {
                             </tr> */}
                         </tbody>
                     
-        );
+            );
         } 
     }
     historyTr = () =>{
-        debugger
         if(this.props.historyData !=""){
             return this.props.historyData.map((el, ind) => {
                 if(ind != 0){

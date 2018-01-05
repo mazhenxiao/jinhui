@@ -18,6 +18,7 @@ class Index extends Component {
         dataList:[],
         isApproal:false,
         editStatus:false,
+        lookStatus:false,
         entityJson:{ 
             "ID": null,
             "AREANAME": null,
@@ -90,16 +91,18 @@ class Index extends Component {
             const nextDataKey = location.state.id || "";
             const nextLevel_id = location.state.level_id || "";
             const text = location.state.id || "";
-            var nextProjectID = null,areaID = null, companyID=null;
+            var nextProjectID = null,areaID = null, companyID=null,stageId=null;
             if(nextLevel_id == 2){
                 areaID = text
             }else if(nextLevel_id == 3){
                 companyID = text
             }
             if(nextLevel_id == 5){
-                 nextProjectID = location.state.parentid;
+                 nextProjectID = null;
+                 stageId=location.state.id;
                  this.PriorityFormDat.STAGEID = location.state.id;
             }else if(nextLevel_id == 4){
+                 stageId=null
                  nextProjectID = location.state.id;
                  this.PriorityFormDat.STAGEID = null;
             }else{
@@ -111,6 +114,7 @@ class Index extends Component {
                     level_id:nextLevel_id,
                     projectID:nextProjectID,
                     addAatterStatus: false,
+                    lookStatus:false,
                     editStatus:false
                 },()=>{
                     var entityJson={ 
@@ -121,7 +125,7 @@ class Index extends Component {
                         "COMPANYID":null,
                         "PROJECTID": nextProjectID,
                         "PROJECTNAME": null,
-                        "STAGEID": null,
+                        "STAGEID": stageId,
                         "STAGENAME": null,
                         "RISKDESC": null,
                         "RISKEFFECT": null, 
@@ -166,12 +170,13 @@ class Index extends Component {
         $(".processBar").find(".ant-table-tbody tr").on("click",function(e){
           var index= $(this).index();
           th.index = index;
-          th.setState({editStatus:true})
+          if(e.target.nodeName.toLowerCase() == 'div'){
+              th.editChange("look")
+          }else{
+              th.setState({editStatus:true})
+          }
+          
         })
-        $(".processBar").find(".ant-table-tbody tr").on("click","div",function(e){
-            //var index= $(this).index();
-            console.log(th.index)
-          })
       };
 
     getAjax=(obj)=>{
@@ -225,6 +230,7 @@ class Index extends Component {
                         }
                         if(el.ORGLEVEL == 5){
                             this.formData.stageName = el.ORGNAME
+                            this.PriorityFormDat.STAGEID = el.ID
                         }
                     })
                     this.setState({
@@ -239,7 +245,7 @@ class Index extends Component {
 
     }
     //编辑
-    editChange = () =>{
+    editChange = (look) =>{
         var id=this.state.dataList[this.index].ID;
         var th = this;
         iss.ajax({
@@ -283,12 +289,21 @@ class Index extends Component {
                         el.REPORTTIME=th.getLocalTime(el.REPORTTIME)
                         el.SOLVETIME=th.getLocalTime(el.SOLVETIME)
                         el.LASTUPDATETIME=th.getLocalTime(el.LASTUPDATETIME)
-                        
-                    th.setState({
-                        addAatterStatus:true,
-                        editData : el,
-                        historyData: data.rows
-                    })
+                    if(look == "look"){
+                        th.setState({
+                            addAatterStatus:true,
+                            editData : el,
+                            historyData: data.rows,
+                            lookStatus:true
+                        })
+                    }else{
+                        th.setState({
+                            addAatterStatus:true,
+                            editData : el,
+                            historyData: data.rows
+                        })
+                    }
+                    
                     }
                     
                 }else{
@@ -301,6 +316,14 @@ class Index extends Component {
             }
         })
         
+    }
+    //返回
+    return_Save = () => {
+        this.setState({
+            addAatterStatus:false,
+            lookStatus:false
+        })
+        this.handleLocalSearch();
     }
     //暂存
     BIND_Save = (approval) =>{
@@ -321,7 +344,7 @@ class Index extends Component {
                 }  
             } 
             var userInfo = iss.userInfo;
-            entityJson={ 
+            entityJson={
                 "ID": null,
                 "AREANAME": this.formData.areaName,           //*
                 "COMPANYNAME": this.formData.companyName,       //*
@@ -361,6 +384,14 @@ class Index extends Component {
             }else{
                 entityJson.POINTLEVEL = 2
             }
+            debugger
+            if(entityJson.PROJECTNAME == "" || entityJson.AREANAME =="" || entityJson.COMPANYNAME=="" 
+            || entityJson.RISKDESC=="" || entityJson.RISKEFFECT=="" || entityJson.PROGRESS=="" || entityJson.POINTLEVEL =="" 
+            || entityJson.ISOLVE == "" || entityJson.REPORTTIME=="" || entityJson.SOLVETIME=="" || entityJson.OWNER=="" 
+            || entityJson.POST==""){
+                iss.popover({ content: " * 为必填项！！"});
+                return
+            }
         }
         
         Priority.ProjectKayPointSave({
@@ -376,6 +407,7 @@ class Index extends Component {
             }
             this.setState({
                 addAatterStatus:false,
+                lookStatus:false
             })
             
         })
@@ -409,6 +441,7 @@ class Index extends Component {
             if(addAatterStatus){
                 return(
                     <div>
+                        <button type="button" onClick={this.return_Save} className="jh_btn jh_btn22 jh_btn_add">返回</button>
                         <button type="button" onClick={this.BIND_Save} className="jh_btn jh_btn22 jh_btn_add">暂存</button>
                         <button type="button" onClick={this.BIND_Save.bind(this,"approval")} className="jh_btn jh_btn22 jh_btn_add">发起审批</button>
                     </div>
@@ -500,7 +533,7 @@ class Index extends Component {
                    <Row>
                         <Col span={24}>
                             <article>
-                                <PriorityForm historyData = {this.state.historyData} current={current} editData={this.state.editData} readOnly={dataKey} PriorityFormDat={this.PriorityFormDat} callback = {this.state.editData != ""?this.editDataFormCallback.bind(this):this.PriorityFormCallback.bind(this)}  data={this.formData}  />
+                                <PriorityForm lookStatus={this.state.lookStatus} historyData = {this.state.historyData} current={current} editData={this.state.editData} readOnly={dataKey} PriorityFormDat={this.PriorityFormDat} callback = {this.state.editData != ""?this.editDataFormCallback.bind(this):this.PriorityFormCallback.bind(this)}  data={this.formData}  />
                             </article>
                         </Col>
                     </Row>
