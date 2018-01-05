@@ -22,6 +22,7 @@ const TabPane = Tabs.TabPane;
 class SignIndex extends Component {
 
     state = {
+        supperShow:true,//最高关闭阻断
         loading: true,
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : this.props.location.query.isProOrStage == "2" ? "Stage" : "",//显示模式，项目或者分期
@@ -199,7 +200,7 @@ class SignIndex extends Component {
         return Payment.IGetSignBaseInfo({dataKey, mode})
             .then(arg => {  //进行错误判断
                 let {DynamicId, StartYear, VersionList, Permission, Error,SupplyVersionId,TitleList,DynamicDate} = arg;
-                
+                DynamicDate = DynamicDate.substr(0,5);
                 if (!DynamicId) {
                     this.setStartData();//初始化数据
                     return Promise.reject(Error);
@@ -260,22 +261,25 @@ class SignIndex extends Component {
      * return promise
      */
     getDynamicData = () => {
-        let {dynamicTable, dataKey, mode} = this.state;
+        let {dynamicTable, dataKey, mode,isApproal,supperShow} = this.state;
         let {DynamicId} = this.dynamicTable;
 
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         //瑞涛版数据
+        
         return Payment.IGetSignDataByVersionId({DynamicId, mode})
         .then(dynamicDataSource => {
             
-            let {Permission,TitleList:dynamicHeaderData} = this.dynamicTable;
+            let {Permission,TitleList:dynamicHeaderData,DynamicDate} = this.dynamicTable;
             let  newData = {
+                    DynamicDate,
                     dynamicHeaderData,
                     dynamicDataSource,
                     dynamicEdit: false,
-                    dynamicEditButtonShow: Boolean(Permission ==`edit`&& dynamicDataSource && dynamicDataSource.length),
+                    dynamicEditButtonShow:!isApproal&&Boolean(Permission ==`edit`&& dynamicDataSource["length"]),
                 },
                 dynamicTable = {...this.state.dynamicTable, ...newData};
+                
             this.setState({dynamicTable, loading: false});
         })
     }
@@ -555,6 +559,11 @@ class SignIndex extends Component {
             .then(da => {
                 return Payment.ISubmitSignAContractData({signAContractVersionId,dataKey,projectLevel});
             })
+            .then(arg=>{
+                this.setState({
+                    supperShow:false
+                })
+            })
             .catch(err => {
                 iss.error("提交失败")
             })
@@ -616,9 +625,9 @@ class SignIndex extends Component {
      * 动态调整table
      */
     renderHistoryData = () => {
-        const {versionData, versionId, editable, dynamicTable, loading} = this.state;
-        const {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow, defaultHeight,DynamicDate} = dynamicTable;
-
+        let {versionData, versionId, editable, dynamicTable, loading,supperShow} = this.state;
+        let {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow, defaultHeight,DynamicDate} = dynamicTable;
+        dynamicEditButtonShow = (supperShow&&dynamicEditButtonShow);//保存后不能编辑
         return (
             <article className="toTable signPage">
                 <header className="bottom-header-bar">
@@ -663,13 +672,13 @@ class SignIndex extends Component {
         const {planTable, dynamicTable, version} = this.state;
         const {planHeaderData, planDataSource} = planTable;
         const {versionData, versionShow, versionId, currentVersion} = version;
-        const {dynamicHeaderData, defaultHeight} = dynamicTable;
+        const {dynamicHeaderData, defaultHeight,DynamicDate} = dynamicTable;
         return (
             <article className="pkTable mgT10">
                 <header className="top-header-bar">
                     <Row>
                         <Col span={12}>
-                            <span className="header-title">签约计划考核版（面积：平方米，货值：万元）</span>
+                            <span className="header-title">签约计划{DynamicDate}考核版（面积：平方米，货值：万元）</span>
                         </Col>
                         <Col span={12} className="action-section">
                             <WrapperSelect className={versionShow ? "select-version" : "hide"} labelText="版本:"

@@ -168,6 +168,7 @@ export const ISubmitSignAContractData = ({signAContractVersionId,dataKey,project
             projectLevel
         }
     })
+    .then(ThenListener)
     .catch(err=>{ iss.error(err);Promise.resolve(err)})
 };
 /** 签约弹出窗口数据
