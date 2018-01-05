@@ -187,7 +187,7 @@ class SignIndex extends Component {
                .then(arg=>{  //versionId会再次返回
                 
                    let {isEdit:dynamicEditButtonShow,adjustmentDataStr,versionId}=arg;
-                   adjustmentDataStr = adjustmentDataStr? new Date(adjustmentDataStr).Format("yyyy"):"";
+                   adjustmentDataStr = adjustmentDataStr? new Date(adjustmentDataStr).Format("yyyy年"):"";
                    dynamicEditButtonShow = Boolean(dynamicEditButtonShow);
                     this.dynamicTable={...this.dynamicTable,versionId,dynamicEditButtonShow,adjustmentDataStr}
                    

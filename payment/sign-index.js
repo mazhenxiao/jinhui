@@ -146,6 +146,7 @@ class SignIndex extends Component {
             this.setApproalDataKeyState(isApproal)
             .then(arg=>{
                 if (dataKey) {
+                    debugger
                     this.getFetData();
                 }
             })
@@ -200,7 +201,7 @@ class SignIndex extends Component {
         return Payment.IGetSignBaseInfo({dataKey, mode})
             .then(arg => {  //进行错误判断
                 let {DynamicId, StartYear, VersionList, Permission, Error,SupplyVersionId,TitleList,DynamicDate} = arg;
-                DynamicDate = DynamicDate.substr(0,5);
+                DynamicDate = DynamicDate? DynamicDate.substr(0,5):"";
                 if (!DynamicId) {
                     this.setStartData();//初始化数据
                     return Promise.reject(Error);
