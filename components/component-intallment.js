@@ -158,6 +158,7 @@ class Intallment extends React.Component {
         let th=this;
         let isvalide=$("#stageInforForm").form("validate");
         var intallmentStatus=iss.getEVal("intallmentStatus");
+        
         if(!isvalide) return false;
         if(th.state.landList.length==0){
             iss.popover({content:"请选择分期占用土地"});
@@ -165,11 +166,26 @@ class Intallment extends React.Component {
         }
         th.EVENT_CLICK_SAVE("Submit",arg=>{
             let {final_versionId,areaId,areaName}=arg;
+            iss.ajax({
+                url: "/Stage/ICheckBuildGroup",
+                data:{
+                    "id": final_versionId
+                },
+                success(data) {
+                    if(!data.rows){
+                        iss.popover({content:"请将组团划分中的未分配楼栋全部分配后，再发起审批！"});
+                    }else{
+                        iss.hashHistory.push({
+                            pathname: "/ProcessApproval",
+                            search:'?e='+intallmentStatus+'&dataKey='+final_versionId+'&current=ProcessApproval&areaId='+areaId+'&areaName='+areaName
+                        });
+                    }
+                },
+                error() {
+                    console.log('失败')
+                }
+            })
             
-            iss.hashHistory.push({
-                pathname: "/ProcessApproval",
-                search:'?e='+intallmentStatus+'&dataKey='+final_versionId+'&current=ProcessApproval&areaId='+areaId+'&areaName='+areaName
-            });
 
         })
          

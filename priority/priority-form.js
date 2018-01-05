@@ -107,6 +107,21 @@ class PriorityForm extends Component {
     TimeCallback = (para,e,value) => {
         this.props.callback(value,para)
     }
+    ChoosePostCallback = (para,e) => {
+        let peopleJson={},text=[],userId=[];
+        var th=this;
+        iss.chooseTo({
+            title:"选择岗位<i class='fontRed'>（双击选择岗位）</i>",
+            url:"/ProjectKayPoint/GetPostByOrgID",
+            searchURL:"/ProjectKayPoint/GetPostByName",
+            param: {orgID:"1"},
+            pepole:peopleJson,  //已选人员名单
+            multiple:true,
+            callback(da){
+                console.log(da)
+            }
+        })
+    }
     //选人控件传值
     ChooseCallback = (para,e) =>{
         let peopleJson={},text=[],userId=[];
@@ -141,20 +156,6 @@ class PriorityForm extends Component {
                 })
             }
         })
-        // iss.chooseTo({
-        //     title:"选择人员<i class='fontRed'>（双击选择人员）</i>",
-        //     pepole:peopleJson,  //已选人员名单
-        //     callback(da){
-        //         for(let key in da){
-        //             text.push(da[key].text)
-        //             userId.push(da[key].id)
-        //         }
-        //         th.props.callback(userId[0],para)
-        //        th.setState({
-        //          chooseToText:text[0]
-        //        })
-        //     }
-        // })
     }
 
     renderTable = () =>{
@@ -272,7 +273,7 @@ class PriorityForm extends Component {
                         <label className="formTableLabel boxSizing redFont">责任岗位</label>
                     </th>
                     <td>
-                        <Input disabled value={this.state.readOnlyData.POST} onChange={this.TriggerCallback.bind(this,"POST")} />
+                        <Input disabled value={this.state.readOnlyData.POST} onClick={this.ChoosePostCallback.bind(this,"POST")} />
                     </td>
                 </tr>
                 {/* <tr>
@@ -531,7 +532,7 @@ class PriorityForm extends Component {
                         <label className="formTableLabel boxSizing redFont">责任岗位</label>
                     </th>
                     <td>
-                        <Input value={this.state.readOnlyData.POST} onChange={this.TriggerCallback.bind(this,"POST")} />
+                        <Input value={this.state.readOnlyData.POST} onClick={this.ChoosePostCallback.bind(this,"POST")} />
                     </td>
                 </tr>
                 {/* <tr>
@@ -663,7 +664,7 @@ class PriorityForm extends Component {
                                     <label className="formTableLabel boxSizing redFont">责任岗位</label>
                                 </th>
                                 <td>
-                                    <Input onChange={this.TriggerCallback.bind(this,"POST")} />
+                                    <Input onClick={this.ChoosePostCallback.bind(this,"POST")} />
                                 </td>
                                 
                             </tr>
