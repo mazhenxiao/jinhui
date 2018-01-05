@@ -23,6 +23,7 @@ class Index extends Component {
         supplyType: "",//供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货
         permission: "Show",//权限: Show:只允许查看, Add:新增, Edit:编辑, Upgrade:版本升级
         dynamicId: "",//动态调整版本Id
+        adjustDateShow: "", //供货计划的日期
         versionId: "",//当前选中的计划版本
         versionData: [],//版本数据
         baseInfo: {},//基础数据, 包括 调整月份, 切换年份
@@ -101,7 +102,7 @@ class Index extends Component {
         let nextState = {};
 
         return SupplyService.getBaseData(dataKey, mode)
-            .then(({supplyType, permission, dynamicId, versionId, versionData, baseInfo, error}) => {
+            .then(({supplyType, permission, dynamicId, versionId, versionData, baseInfo, error, adjustDateShow}) => {
                 console.log("supplyType=" + supplyType, "(供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货)");
                 if (error) {
                     iss.error(error);
@@ -113,6 +114,7 @@ class Index extends Component {
                     versionId,
                     versionData,
                     baseInfo,
+                    adjustDateShow,
                 };
 
                 return {
@@ -232,13 +234,13 @@ class Index extends Component {
     };
 
     renderDynamicAdjust = () => {
-        const {adjustData, dataKey, permission} = this.state;
+        const {adjustData, dataKey, permission, adjustDateShow} = this.state;
 
         return (
-            <article>
-                <Row className="toTable top-header">
+            <article className="toTable">
+                <Row className="top-header">
                     <Col span={12}>
-                        <span className="title">供货计划动态调整版（面积：平方米，货值：万元）</span>
+                        <span className="title">供货计划 {adjustDateShow} 动态调整版（面积：平方米，货值：万元）</span>
                     </Col>
                     <Col span={12} className="text-align-right">
                         {
@@ -265,8 +267,8 @@ class Index extends Component {
     renderPlanVersion = () => {
         const {versionId, versionData, planData, dataKey} = this.state;
         return (
-            <article>
-                <Row className="pkTable bottom-header">
+            <article className="pkTable">
+                <Row className="bottom-header">
                     <Col span={12}>
                         <span className="title">供货计划考核版（面积：平方米，货值：万元）</span>
                     </Col>
@@ -318,12 +320,12 @@ class Index extends Component {
                     <p>b、在系统中已创建分期，但未在面积管理中创建楼栋，点击编辑供货，按分期各业态比例排供货计划。</p>
                     <p className="Prompt"> 【按比例供货如下图，红色部分为可操作内容，蓝色部分为查看内容。</p>
                     <p className="Prompt"> 可点击“添加” 按钮将一个业态按比例拆分成多个批次，再设定供货日期，保存时要求必须将每种业态的供货100%全部排完，否则无法保存。】</p>
-                    <img width="90%" src="../img/supply_guide.png" />
+                    <img width="90%" src="../img/supply_guide.png"/>
                     <p>2.2 勾楼供货：已创建分期，已在面积管理中创建楼栋，且已在分期中将楼栋划分至组团，点击编辑供货，按楼栋排供货计划。</p>
                     <p className="Prompt">【勾楼供货如下图，红色部分为可操作内容，蓝色部分为查看内容。</p>
                     <p className="Prompt">可按组团、业态、楼栋进行筛选，并批量设置供货日期；也可按楼栋逐一设置供货日期。</p>
                     <p className="Prompt">点击年份标签可查看月度计划供货的楼栋。】</p>
-                    <img width="90%" src="../img/supply_guide2.png" />
+                    <img width="90%" src="../img/supply_guide2.png"/>
                 </div>
                 <p>3、排完供货计划，点击【提交】按钮，即可排签约计划。</p>
 

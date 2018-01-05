@@ -23,6 +23,7 @@ export const getBaseData = (dataKey, mode) => {
                 permission: data.eSaveType,
                 dynamicId: data.DynamicId,//动态调整板Id
                 versionId: data.ApprovedId,
+                adjustDateShow: data.AdjustDateShow,
                 error: data.Error,
                 versionData: [],
                 baseInfo: {
@@ -34,7 +35,7 @@ export const getBaseData = (dataKey, mode) => {
                 }
             };
 
-            if(data.VersionList){
+            if (data.VersionList) {
                 obj.versionData = data.VersionList.map(version => {
                     return {
                         id: version.ID,
@@ -43,7 +44,7 @@ export const getBaseData = (dataKey, mode) => {
                 });
             }
 
-            if(data.AjuestMonthList){
+            if (data.AjuestMonthList) {
                 obj.baseInfo.switchMonth = data.AjuestMonthList.map(month => {
                     return {
                         id: month.ID,
@@ -60,7 +61,7 @@ export const getBaseData = (dataKey, mode) => {
  * 根据版本获取计划数据
  */
 export const getPlanData = (versionId) => {
-    if(!versionId){
+    if (!versionId) {
         return Promise.resolve({});
     }
     return iss.fetch({
@@ -77,7 +78,7 @@ export const getPlanData = (versionId) => {
  * 根据项目id/分期id, 获取动态调整数据
  */
 export const getDynamicAdjustData = (dynamicId) => {
-    if(!dynamicId){
+    if (!dynamicId) {
         return Promise.resolve({});
     }
     return iss.fetch({
