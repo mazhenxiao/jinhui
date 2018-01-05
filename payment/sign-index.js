@@ -50,9 +50,16 @@ class SignIndex extends Component {
         },
         dialog: { //弹窗
             ModalVisible: false,
-            dialogContent: [],//弹出窗口content
+            dialogContent: [
+                {Time:"2018-01-01",Area:"测试数据",Value:"测试数据",Housecount:"测试数据",key:1}
+            ],//弹出窗口content
             dataSource: [], //数据
-            columns: [] //表头
+            columns: [
+                {field:"Time",name:"日期",width:80},
+                {field:"Area",name:"可售面积（㎡）",width:80},
+                {field:"Value",name:"货值（万元）",width:80},
+                {field:"Housecount",name:"套数（套）",width:80},
+            ] //表头
         }
 
 
@@ -75,8 +82,8 @@ class SignIndex extends Component {
         number: 0,//死循环记录
         dynamicRender: {
             "showName": (text, record) => {
-            let {LEVELS}=record;
-           return LEVELS=="0" ? <a href="javascript:;" onClick={this.clickOpenDialog.bind(this, text, record)}>{text}</a>:{text}
+            let {LEVELS,children}=record;
+           return children? <span>{text}</span>:<a href="javascript:;" onClick={this.clickOpenDialog.bind(this, text, record)}>{text}</a>
         }
 
         }, //动态编辑表格
@@ -186,7 +193,6 @@ class SignIndex extends Component {
 
         return Promise.all([dynamicTable, planTable]).then(arg => {
             //获取弹窗数据如果需要，因为张权说要给一个获取的id不知道依赖在哪里，先放到这,估计需要从动态表获取
-            this.getFetDialogData();
             this.bindScrollLock();
         }).catch(error => {
             this.setState({
@@ -196,30 +202,6 @@ class SignIndex extends Component {
         })
     }
 
-    /**
-     * 获取弹窗数据
-     */
-    getFetDialogData(key) {//获取弹窗及校验数据
-        let title = this.getDynamicTitle(key);
-        let data = this.getDynamicDialogData(key);
-        let {dialog} = this.state;
-        Promise.all([title, data])
-            .then(([title, data]) => {
-                let newData = {
-                    columns: title || [],
-                    dataSource: data || [],
-                    ModalVisible: false
-                };
-                dialog = {...dialog, ...newData};
-
-                this.setState({
-                    dialog
-                })
-            })
-            .catch(err => {
-                iss.error(err);
-            })
-    }
 
     getApprovalState = () => {
 
@@ -235,14 +217,6 @@ class SignIndex extends Component {
      */
     getDynamicTitle(key) {
         return Payment.IGetSupplyVersionTitle(key)
-    }
-
-    /**
-     * 获取弹窗及校验数据
-     * 分开写防止万一数据需要二次编辑
-     */
-    getDynamicDialogData(key) {
-        return Payment.IGetSupplyVersionData(key)
     }
 
     /**
@@ -498,28 +472,13 @@ class SignIndex extends Component {
     }
 
     clickOpenDialog(text, row, index) {
-
-        let {showId} = row;
-        let {dialog} = this.state;
-        let dialogContent = dialog.dataSource.filter(arg => {
-
-            if (arg.showId == showId) {
-                return arg.value;
-            }
-        });
-        for (var i = 0; i < 50; i++) {
-            dialogContent.push(dialog.dataSource[0]["value"]);//有真实数据后删除
-        }
-
-        if (dialogContent.length <= 0) {
-            // iss.info("暂无数据");
-            return
-        }
-        let newData = {
-            dialogContent,
-            ModalVisible: true
-        }
-        dialog = {...dialog, ...newData};
+        let {dialog}=this.state;
+        let {columns,dialogContent}=dialog;
+        columns = columns.map((arg,index)=>{
+            let {field:dataIndex,name:title,width}=arg;
+            return { dataIndex,title,width}
+        })
+        dialog = {...dialog,columns,ModalVisible: true};
         this.setState({
             dialog
         })

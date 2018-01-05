@@ -208,3 +208,13 @@ label {
 .ant-table-thead > tr > th {
   padding: 10px 8px;
 }
+.ant-table-middle .ant-table-footer,
+.ant-table-small .ant-table-footer,
+.ant-table-middle .ant-table-tbody > tr > td,
+.ant-table-small .ant-table-tbody > tr > td,
+.ant-table-middle .ant-table-thead > tr > th,
+.ant-table-small .ant-table-thead > tr > th,
+.ant-table-middle .ant-table-title,
+.ant-table-small .ant-table-title {
+  padding: 5px !important;
+}
