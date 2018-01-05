@@ -92,9 +92,11 @@ class SignIndex extends Component {
     antdTableScrollLock = null;//用来触发卸载原生事件
 
     componentDidMount() {
-        let {dataKey} = this.props.location.query;
+        let {dataKey} = this.state;
         let isApproal =this.SetisApproal();
-        this.pageInit(isApproal);
+        if(dataKey){
+            this.pageInit(isApproal);
+        }
             
     }
 

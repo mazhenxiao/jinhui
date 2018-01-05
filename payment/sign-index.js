@@ -146,7 +146,7 @@ class SignIndex extends Component {
             this.setApproalDataKeyState(isApproal)
             .then(arg=>{
                 if (dataKey) {
-                    debugger
+                    
                     this.getFetData();
                 }
             })
