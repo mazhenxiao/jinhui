@@ -168,6 +168,7 @@ export const ISubmitSignAContractData = ({signAContractVersionId,dataKey,project
             projectLevel
         }
     })
+    .then(ThenListener)
     .catch(err=>{ iss.error(err);Promise.resolve(err)})
 };
 /** 签约弹出窗口数据
@@ -194,7 +195,22 @@ export const ISendBackSignAContractData = signAContractVersionId => {
         }
     })
 };
-
+/**
+ * 张政获取回款基础数据
+ * Income/IGetBaseInomeInfo? dataKey=&projectLevel=&versionId=
+ */
+export const IGetBaseInomeInfo=({dataKey,projectLevel,versionId})=>{
+    return iss.fetch({
+           url:"/Income/IGetBaseInomeInfo",
+           data:{
+            dataKey,
+            projectLevel,
+            versionId
+           }
+    })
+    .then(ThenListener)
+    .catch(err=>Promise.reject(err))
+}
 /**张政
  * 获取回款动态调整版本数据
  * /Income/IGetIncomeListEditForAdjustment?dataKey=32172052-2da4-85c9-c266-81faf2b1f10f&projectLevel=project
@@ -283,8 +299,10 @@ export const ISaveIncomeInfo = (data) => {
 /**
  *  Supply/IGetApprovedInfo?Id=
  * 发起审批转换接口
+ * Id 根据当前url地址上由发起审批带来的dataKey（回款版本id）
+ * str 从哪个页面来的
  */
-export const IGetApprovedInfo=Id=>{
+export const IGetApprovedInfo=(Id,str)=>{
         return iss.fetch({
             url:"/Supply/IGetApprovedInfo",
             data:{
@@ -292,6 +310,20 @@ export const IGetApprovedInfo=Id=>{
             }
         })
         .then(ThenListener)
+        .then(arg=>{
+            let {PaymentId,SingId,SupplyId,datakey:DATAKEY,datalevel:DATALEVEL}=arg;
+            let VERSIONID=""
+            switch(str){
+                case "supply":VERSIONID=SupplyId//供货
+                case "sign":VERSIONID=SingId //签约
+                case "payment":VERSIONID=PaymentId//回款
+            }
+            return {
+                DATAKEY,
+                VERSIONID,
+                DATALEVEL
+            }
+        })
         .catch(err=>{
             return Promise.reject(err);
         })
