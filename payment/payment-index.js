@@ -125,7 +125,8 @@ class SignIndex extends Component {
                     activeTapKey: "plan-quota",
                 }, arg => {
                     if (nextDataKey) {
-                        this.getFetData();
+                        this.pageInit();
+                       // this.getFetData();
                     }
                 }
             );
@@ -134,7 +135,7 @@ class SignIndex extends Component {
     /**
      * 页面初始化入口
      */
-    pageInit=(isApproal)=>{
+    pageInit=(isApproal=false)=>{
         this.setApproalDataKeyState(isApproal)
         .then(arg=>{   //获取基础数据
            return this.getBaseInfo();
@@ -184,8 +185,9 @@ class SignIndex extends Component {
         let {versionId}=this.dynamicTable;  //如果时审批页面已经赋值了
         return Payment.IGetBaseInomeInfo({dataKey,projectLevel,versionId:""})
                .then(arg=>{  //versionId会再次返回
+                
                    let {isEdit:dynamicEditButtonShow,adjustmentDataStr,versionId}=arg;
-                   adjustmentDataStr = new Date(adjustmentDataStr).Format("yyyy")
+                   adjustmentDataStr = adjustmentDataStr? new Date(adjustmentDataStr).Format("yyyy"):"";
                    dynamicEditButtonShow = Boolean(dynamicEditButtonShow);
                     this.dynamicTable={...this.dynamicTable,versionId,dynamicEditButtonShow,adjustmentDataStr}
                    
@@ -268,6 +270,7 @@ class SignIndex extends Component {
         //回款
         //let title,data;
         //获取动态数据头部与数据
+        
        return Payment.IGetIncomeListEditForAdjustment({dataKey,versionId,mode})
                .then(arg=>{
                    let {titleInfo:dynamicHeaderData,incomeDataList:dynamicDataSource}=arg
