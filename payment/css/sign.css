@@ -29,3 +29,18 @@
 .select-version {
   width: 250px;
 }
+.processBar {
+  padding-bottom: 10px;
+  font-size: 14px;
+  color: #2979FF;
+}
+.processBar h3 {
+  color: #2979FF;
+  padding-bottom: 10px;
+}
+.processBar p {
+  padding-bottom: 10px;
+}
+.processBar .Prompt {
+  padding-left: 22px;
+}

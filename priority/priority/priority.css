@@ -11,13 +11,13 @@
   border-bottom: 1px #ccc solid;
   line-height: 36px;
 }
-.processBar .formTable tbody th {
+.priorityData .formTable tbody th {
   width: 180px;
 }
-.processBar .formTable tbody td {
+.priorityData .formTable tbody td {
   width: 300px;
 }
-.processBar .formTable tbody input {
+.priorityData .formTable tbody input {
   width: 300px;
 }
 .PriorityTable {

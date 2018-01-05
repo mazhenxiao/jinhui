@@ -619,7 +619,7 @@ class Index extends Component {
             return this.renderEmpty();
         }
         return (
-            <div className="processBar">
+            <div className="priorityData">
             {this.isApproal()}
                 <article>
 

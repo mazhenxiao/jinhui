@@ -447,7 +447,7 @@ class SignIndex extends Component {
     }
 
     clickOpenDialog(text, row, index) {
-        debugger
+        
         let {dialog}=this.state;
         let {signForIncome:dataSource}=row;
              dialog = {...dialog,dataSource};
@@ -624,7 +624,10 @@ class SignIndex extends Component {
     renderEmpty = () => {
         return (
             <div className="processBar">
-                请点击左侧树，项目/分期
+                <h3>回款计划操作指引</h3>
+                <p>1、前置条件：签约计划已排完，并已提交。</p>
+                <p>2、点击【编辑】按钮，以分期维度填写本月及未来的回款计划。</p>
+                <p>3、排完回款计划，点击【发起审批】按钮，并审批通过。</p>
             </div>
         );
     };

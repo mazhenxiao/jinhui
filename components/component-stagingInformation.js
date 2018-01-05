@@ -306,6 +306,7 @@ class StagingInformation extends React.Component {
             okVal:okVal,
             cancel:"取消",
             ok(da){
+                
                 let checkid="";
                 if(th.props.location.query["dataKey"]){
                     checkid=th.props.location.query["dataKey"];
@@ -359,6 +360,13 @@ class StagingInformation extends React.Component {
                     }
                 })
                 th.checkDataValue(newGroupNumber);
+                th.grupInfo.state.parkingLot.forEach((el,ind)=>{
+                    var oldG = {
+                        "key": el.buildingId,
+                        "value": el.groupId
+                    }
+                    buildingGroupMapping.push(oldG)
+                })
                 let json = {
                     "stageversionid":stageversionid,
                     "newGroup":newGroup,

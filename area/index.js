@@ -785,7 +785,7 @@ class Index extends Component {
      */
     renderEmpty = () => {
         return (
-            <div className="processBar processBar-Prompt">
+            <div className="processBar-Prompt">
                 <h3>面积管理操作指引</h3>
                 <p>1、前置条件：要进行面积填报的项目或分期已审批通过。</p>                
                 <p>2、在面积管理中，选择一个面积填报阶段。</p>

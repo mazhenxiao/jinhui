@@ -4,6 +4,25 @@
 .HeaderBar {
   padding: 10px;
 }
+.processBar {
+  padding-bottom: 10px;
+  font-size: 14px;
+  color: #2979FF;
+}
+.processBar h3 {
+  color: #2979FF;
+  padding-bottom: 10px;
+}
+.processBar p {
+  padding-bottom: 10px;
+}
+.processBar img {
+  border: solid #999 3px;
+  margin-bottom: 10px;
+}
+.processBar .Prompt {
+  padding-left: 22px;
+}
 .supply-wrapper {
   margin-bottom: 20px;
 }
@@ -109,7 +128,7 @@
 .building-adjust .format-operation a:hover {
   text-decoration: none;
 }
-.text-center {
+.wrapper-tree-text-center {
   display: block;
   text-align: center;
 }
