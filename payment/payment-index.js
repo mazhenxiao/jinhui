@@ -50,7 +50,10 @@ class SignIndex extends Component {
             ModalVisible: false,
             dialogContent: [],//弹出窗口content
             dataSource: [], //数据
-            columns: [] //表头
+            columns: [
+                {field:"Time",align:"center",name:"时间",width:80},
+                {field:"Price",align:"center",name:"货值",width:80}
+            ] //表头
         }
 
 
@@ -445,8 +448,12 @@ class SignIndex extends Component {
 
     clickOpenDialog(text, row, index) {
         debugger
-        
-        
+        let {dialog}=this.state;
+        let {signForIncome:dataSource}=row;
+             dialog = {...dialog,dataSource};
+             this.setState({
+                dialog
+             })
       
 
     }
@@ -647,12 +654,13 @@ class SignIndex extends Component {
      */
     goToApplroal = arg => {
         //获取小版本跳转
-        let versionId = this.state.versionId; //;
+       // let versionId = this.state.versionId; //;
         let newProjectStatus = iss.getEVal("payment");
         const {isProOrStage} = this.props.location.query;
+        const {saveId} = this.state.version;//版本id
         iss.hashHistory.push({
             pathname: "/ProcessApproval",
-            search: `?e=${newProjectStatus}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${this.props.location.query["dataKey"]}&isProOrStage=${isProOrStage}`
+            search: `?e=${newProjectStatus}&dataKey=${saveId}&current=ProcessApproval&areaId=&areaName=&isProOrStage=${isProOrStage}`
         });
         /*      price.IGetProVersion(dataKey)
                  .then(arg => {
