@@ -391,16 +391,14 @@ class Index extends Component {
         });
     };
 
-    // /**
-    //  * 当前是否是审批
-    //  */
-    // SetisApproal = arg => {
-    //     let stateData = arg ? arg.query : this.props.location.query;
-    //     this.setState({
-    //         isApproal: Boolean(stateData["current"])
-    //     })
-    //     return Boolean(stateData["current"])
-    // }
+    renderApproval = () => {
+        let searchArg = this.props.location.query;
+        if (this.state.isApproal) {
+            return <section className="padB20">
+                <ProcessApprovalTab current="supply" allSearchArg={searchArg}/>
+            </section>
+        }
+    };
 
     render() {
         const {dataKey, current} = this.props.location.query;
@@ -410,7 +408,7 @@ class Index extends Component {
         }
         return (
             <div className="supply-wrapper">
-                {this.isApproal()}
+                {this.renderApproval()}
                 <Spin size="large" spinning={loading}>
                     <Tabs defaultActiveKey="history">
                         <TabPane tab="供货" key="history">

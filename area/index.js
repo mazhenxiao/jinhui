@@ -805,9 +805,9 @@ class Index extends Component {
     };
 
     renderApproval = () => {
-        let stateData = this.props.location.query;
+        let searchArg = this.props.location.query;
         if (this.getApprovalStatus()) {
-            return <ProcessApprovalTab current="area" allSearchArg={stateData}/>
+            return <ProcessApprovalTab current="area" allSearchArg={searchArg}/>
         }
 
     };
