@@ -183,7 +183,7 @@ class SignIndex extends Component {
      * 获取基础数据
      * dataKey,projectLevel,versionId
      */
-    getBaseInfo=()=>{
+    getBaseInfo=()=>{   
         //let {dataKey} = this.props.location.query;
         let {dataKey,mode:projectLevel} =this.state;
         let {versionId}=this.dynamicTable;  //如果时审批页面已经赋值了
@@ -239,18 +239,7 @@ class SignIndex extends Component {
         }
         return false;
     };
-    /**
-     * 张政=根据isNewVersion==1&&status==0 才显示button
-     */
-    getShowEidtButtonFilter=dataList=>{
-           let lists = dataList.filter(arg=>{
-            let {isNewVersion,status,id}=arg;
-            if(isNewVersion=="1"&&status=="0"){
-               return true
-            }
-        })
-        return lists.length? lists[0]["id"]:""
-    }
+ 
     /**
      * 获取弹窗头部数据
      * 分开写防止万一数据需要二次编辑
@@ -313,7 +302,7 @@ class SignIndex extends Component {
     getPlanData = ({dataKey,mode}) => {
 
         
-        let {dynamicHeaderData} = this.dynamicTable
+        let {dynamicHeaderData,versionId} = this.dynamicTable
         // dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let currentVersion = "", versionData;
@@ -323,7 +312,7 @@ class SignIndex extends Component {
                     this.version = {
                         ...this.version,
                         versionData,
-                        saveId:this.getShowEidtButtonFilter(versionData),//改造成为当前版本id
+                        saveId:versionId,//改造成为当前版本id
                         currentVersion:this.getCurrentVertion(versionData),
                         versionShow:Boolean(versionData.length)
                     }
