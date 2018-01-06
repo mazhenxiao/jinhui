@@ -489,7 +489,6 @@ class SignIndex extends Component {
         
         let {dialog}=this.state;
         let {signForIncome:dialogContent}=row;
-        dialogContent=dialogContent.length? dialogContent:dialog.dialogContent;//测试数据
         if(dialogContent.length<=0){ iss.info(`${text}-暂无可查看信息`);return}
              dialog = {...dialog,dialogContent,ModalVisible:true};
              this.setState({
