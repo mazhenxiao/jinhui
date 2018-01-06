@@ -187,7 +187,7 @@ class SignIndex extends Component {
         //let {dataKey} = this.props.location.query;
         let {dataKey,mode:projectLevel} =this.state;
         let {versionId}=this.dynamicTable;  //如果时审批页面已经赋值了
-        return Payment.IGetBaseInomeInfo({dataKey,projectLevel,versionId:""})
+        return Payment.IGetBaseInomeInfo({dataKey,projectLevel,versionId})
                .then(arg=>{  //versionId会再次返回
                 
                    let {isEdit:dynamicEditButtonShow,adjustmentDataStr,versionId}=arg;
@@ -614,7 +614,7 @@ class SignIndex extends Component {
                 <header className="bottom-header-bar">
                     <Row>
                         <Col span={12}>
-                            <span className="header-title">回款计划{adjustmentDataStr}动态调整版（面积：平方米，货值：万元）</span>
+                            <span className="header-title">回款计划{adjustmentDataStr}动态调整版（单位：万元）</span>
                         </Col>
                         <Col span={12}>
                             <div className={dynamicEditButtonShow ? "RT" : "hidden"}>
@@ -661,7 +661,7 @@ class SignIndex extends Component {
                 <header className="top-header-bar">
                     <Row>
                         <Col span={12}>
-                            <span className="header-title">回款计划考核版（面积：平方米，货值：万元）</span>
+                            <span className="header-title">回款计划考核版（单位：万元）</span>
                         </Col>
                         <Col span={12} className="action-section">
                             <WrapperSelect className={versionShow ? "select-version" : "hide"} labelText="版本:"
