@@ -19,6 +19,7 @@ const TabPane = Tabs.TabPane;
 class SignIndex extends Component {
 
     state = {
+        supperShow:true,
         loading: true,
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : this.props.location.query.isProOrStage == "2" ? "Stage" : "",//显示模式，项目或者分
@@ -121,6 +122,7 @@ class SignIndex extends Component {
 
         if (dataKey != nextDataKey) {
             this.setState({
+                    supperShow:true,
                     loading: true,
                     dataKey: nextDataKey,
                     mode: nextMode,
@@ -189,7 +191,7 @@ class SignIndex extends Component {
                .then(arg=>{  //versionId会再次返回
                 
                    let {isEdit:dynamicEditButtonShow,adjustmentDataStr,versionId}=arg;
-                   adjustmentDataStr = adjustmentDataStr? new Date(adjustmentDataStr).Format("yyyy年"):"";
+                   adjustmentDataStr = adjustmentDataStr? adjustmentDataStr.substr(0,5):"";
                    dynamicEditButtonShow = Boolean(dynamicEditButtonShow);
                     this.dynamicTable={...this.dynamicTable,versionId,dynamicEditButtonShow,adjustmentDataStr}
                    
@@ -268,6 +270,7 @@ class SignIndex extends Component {
         let {current}=this.props.location.query;
         let edit = this.dynamicTable.dynamicEditButtonShow;
         let {versionId}=this.dynamicTable;
+        let {supperShow}=this.state;
         //dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
         //回款
         //let title,data;
@@ -280,7 +283,7 @@ class SignIndex extends Component {
                        ...this.dynamicTable,
                        dynamicHeaderData,
                        dynamicDataSource,
-                       dynamicEditButtonShow:!current&&edit&&Boolean(dynamicDataSource.length)};
+                       dynamicEditButtonShow:supperShow&&!current&&edit&&Boolean(dynamicDataSource.length)};
                    return "动态调整版本ok"
                })
                .catch(err=>{ iss.error(err)})
@@ -559,6 +562,7 @@ class SignIndex extends Component {
                     type: "success",
                     description: "驳回成功"
                 });
+                this.state.supperShow=false;//非法赋值为了不刷新view
                 this.getFetData();
             })
             .catch(err => {
@@ -660,7 +664,7 @@ class SignIndex extends Component {
                 <header className="top-header-bar">
                     <Row>
                         <Col span={12}>
-                            <span className="header-title">回款计划{adjustmentDataStr}考核版（面积：平方米，货值：万元）</span>
+                            <span className="header-title">回款计划考核版（面积：平方米，货值：万元）</span>
                         </Col>
                         <Col span={12} className="action-section">
                             <WrapperSelect className={versionShow ? "select-version" : "hide"} labelText="版本:"

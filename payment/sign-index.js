@@ -129,6 +129,7 @@ class SignIndex extends Component {
 
         if (dataKey != nextDataKey) {
             this.setState({
+                    supperShow:true,
                     loading: true,
                     dataKey: nextDataKey,
                     mode: nextMode,
