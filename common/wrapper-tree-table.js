@@ -329,7 +329,7 @@ class WrapperTreeTable extends Component {
         return (e) => {
             let value = e.target.value;
             if (!numberReg.test(value)) {
-                value = "";
+                value = parseFloat(value).toFixed(2);
             }
             record[key] = value;
             this.props.onDataChange && this.props.onDataChange(record.KEY, key, value, record, column);

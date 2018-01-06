@@ -722,11 +722,11 @@ class SignIndex extends Component {
         //获取小版本跳转
        // let versionId = this.state.versionId; //;
         let newProjectStatus = iss.getEVal("payment");
-        const {isProOrStage} = this.props.location.query;
+        const {isProOrStage,dataKey} = this.props.location.query;  //businessId 用来点击返回时退回
         const {saveId} = this.state.version;//版本id
         iss.hashHistory.push({
             pathname: "/ProcessApproval",
-            search: `?e=${newProjectStatus}&dataKey=${saveId}&current=ProcessApproval&areaId=&areaName=&isProOrStage=${isProOrStage}`
+            search: `?e=${newProjectStatus}&dataKey=${saveId}&businessId=${dataKey}&current=ProcessApproval&areaId=&areaName=&isProOrStage=${isProOrStage}`
         });
         /*      price.IGetProVersion(dataKey)
                  .then(arg => {
