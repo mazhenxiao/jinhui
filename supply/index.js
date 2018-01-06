@@ -49,7 +49,7 @@ class Index extends Component {
         const {location} = nextProps;
         const nextDataKey = location.query.dataKey || "";
         const nextMode = location.query.isProOrStage == "1" ? "Project" : "Stage";
-        this.SetisApproal(location);
+
         //切换路由之后，重新获取数据
         if (nextDataKey != dataKey && !!nextDataKey) {
             this.setState({
