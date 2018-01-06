@@ -121,6 +121,7 @@ class SignIndex extends Component {
         //切换路由之后，重新获取数据
 
         if (dataKey != nextDataKey) {
+            this.dynamicTable.versionId="";
             this.setState({
                     supperShow:true,
                     loading: true,
