@@ -12,7 +12,6 @@ class PlateIframe extends React.Component{
             dataList: [],//总数据
             versionId:this.props.versionId,
             index:0,  //当前推盘
-            parkingLot:[],
             _group:[],
             checked:''
         },
@@ -46,19 +45,11 @@ class PlateIframe extends React.Component{
             scriptCharset: 'utf-8',
             success(data) {
                 if(null != data.rows){
-                    var arr = [],rows=[],parkingLot=[];
+                    var arr = [];
                     data.rows.forEach((el,ind) => {
-                        if(el.groupnumber != 200){
-                            rows.push(el)
-                        }else{
-                            parkingLot.push(el)
-                        }
-                    })
-                    rows.forEach((el,ind) => {
                         arr.push(el.pushPlateNumber)
                     })
                     if(arr.indexOf(1) == -1){
-                       
                         var newId = iss.guid()
                         var addObj = {
                             "pushPlateId": newId,
@@ -68,11 +59,10 @@ class PlateIframe extends React.Component{
                             "buildingName": null,
                             "current": "new"
                         }
-                        rows.push(addObj)
+                        data.rows.push(addObj)
                     }
                     th.setState({
-                        dataList: rows,
-                        parkingLot:parkingLot,
+                        dataList: data.rows,
                         index:data.rows[0]["pushPlateNumber"],
                         _group:th._group
                     });
@@ -264,19 +254,12 @@ class PlateIframe extends React.Component{
     //楼栋
     groupFloor() {
         var th = this;
-        if(th.state.index == 200){
-            return th.state.parkingLot.map((el,ind)=>{
-                return <li key={ind}>
-                            <span className="buildingName">{el.buildingName}</span>
-                    </li>
-            })
-        }else{
         if(th.state.dataList.length != 0){ 
             return th.state.dataList.map((el, ind) => {
                 let id = el.pushPlateNumber; 
             if(el.del==null && el.del != "del"){
             if(el.delete == null|| el.delete == "" || el.Mdel == "Mdel"){
-                if(id == th.state.index && null!=el.buildingName && id != 0 && id !=200){
+                if(id == th.state.index && null!=el.buildingName && id != 0){
                     
                     return <li key={ind} className='toggle-checkbox'>
                                 <input type="checkbox" checked={true} id={"check"+ind} onChange={this.inputChange.bind(this,ind,el)} />
@@ -307,9 +290,7 @@ class PlateIframe extends React.Component{
             }
         }
             })
-        }
-    }
-        
+        }    
     }
 
     //增加推盘
@@ -428,7 +409,6 @@ class PlateIframe extends React.Component{
                         <li className={(this.state.index== 0)? "active":""} onClick={this.EVENT_CLICK_LI.bind(this,0)}>未分配楼栋</li>
                         <li className={(this.state.index== 1)? "active":""} onClick={this.EVENT_CLICK_LI.bind(this,1)}>第 1 批推盘<span onClick={this.delGroup.bind(this,1)}></span></li>
                         {this.pushPlateName()}
-                        <li className={(this.state.index== 200)? "active":""} onClick={this.EVENT_CLICK_LI.bind(this,200)}>未分配车位</li>
                     </ul>
                 </div>
                 <div className='groupFloor'>
