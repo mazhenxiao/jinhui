@@ -585,6 +585,7 @@ class SignIndex extends Component {
                 rowKey="key"
                 bordered={true}
                 size="small"
+                pagination={false}
                 scroll={{x:true,y:100}}
                 dataSource={dialogContent}
                 columns={dialogColumns}/>
@@ -647,7 +648,7 @@ class SignIndex extends Component {
         const {versionData, versionShow, versionId, currentVersion} = version;
         const {dynamicHeaderData, defaultHeight,adjustmentDataStr} = dynamicTable;
         return (
-            <article className="pkTable mgT10">
+            <article className="pkTable mgT10 signPage">
                 <header className="top-header-bar">
                     <Row>
                         <Col span={12}>
