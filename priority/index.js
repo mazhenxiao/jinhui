@@ -164,10 +164,18 @@ class Index extends Component {
     }     
     rowSelection =()=> {
         var th =this;
-        // th.state.dataList.forEach(()=>{
-
-        // })
-        $(".processBar").find(".ant-table-tbody tr").on("click",function(e){
+        
+        var tbody = $(".priorityData").find(".ant-table-tbody tr");
+        this.state.dataList.forEach((el,ind)=>{
+            if(el.APPROVESTATUS == "1"){
+                tbody.eq(ind).find("td:last").addClass("underWay")
+            }else if(el.APPROVESTATUS == "99"){
+                tbody.eq(ind).find("td:last").addClass("success")
+            }else if(el.APPROVESTATUS == 0 || el.APPROVESTATUS == -1){
+                tbody.eq(ind).find("td:last").addClass("edit")
+            }
+        })
+        tbody.on("click",function(e){
           var index= $(this).index();
           th.index = index;
           if(e.target.nodeName.toLowerCase() == 'div'){
@@ -177,7 +185,7 @@ class Index extends Component {
           }
           
         })
-      };
+    };
 
     getAjax=(obj)=>{
         var th = this;
@@ -371,6 +379,7 @@ class Index extends Component {
                 "SELECTEDLEVEL": this.state.level_id
             }
         }else{
+            debugger
             entityJson = this.state.editData;
             if(entityJson.ISOLVE == "是"){
                 entityJson.ISOLVE = 1
@@ -384,10 +393,9 @@ class Index extends Component {
             }else{
                 entityJson.POINTLEVEL = 2
             }
-            debugger
             if(entityJson.PROJECTNAME == "" || entityJson.AREANAME =="" || entityJson.COMPANYNAME=="" 
             || entityJson.RISKDESC=="" || entityJson.RISKEFFECT=="" || entityJson.PROGRESS=="" || entityJson.POINTLEVEL =="" 
-            || entityJson.ISOLVE == "" || entityJson.REPORTTIME=="" || entityJson.SOLVETIME=="" || entityJson.OWNER=="" 
+            || (entityJson.ISOLVE != 0 && entityJson.ISOLVE != 1 && entityJson.ISOLVE != 2) || entityJson.REPORTTIME=="" || entityJson.SOLVETIME=="" || entityJson.OWNER=="" 
             || entityJson.POST==""){
                 iss.popover({ content: " * 为必填项！！"});
                 return
