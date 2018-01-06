@@ -470,7 +470,7 @@ class $iss {
             <button type="button" class="btn btn-info chooseToRemo" >全部移除</button>
         </div>
        
-    </section>`;
+        </section>`;
         let opt = {
             //url:"/Home/GetTreeInfo",//
             url: iss.url("/Common/IGetOrganizationalUsers"),
@@ -521,6 +521,7 @@ class $iss {
                 },
                 onDblClick(node) {
                     if (node.type == 8) {
+                        debugger
                         opt.pepole = opt.multiple ? opt.pepole : {};
                         opt.pepole[node.id] = node;
                         render();

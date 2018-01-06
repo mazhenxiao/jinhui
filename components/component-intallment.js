@@ -169,8 +169,8 @@ class Intallment extends React.Component {
             iss.hashHistory.push({
                 pathname: "/ProcessApproval",
                 search:'?e='+intallmentStatus+'&dataKey='+final_versionId+'&current=ProcessApproval&areaId='+areaId+'&areaName='+areaName
-            }); //后台没有发版先注释
-       /*      iss.ajax({
+          }); 
+         iss.ajax({
                 url: "/Stage/ICheckBuildGroup",
                 data:{
                     "id": final_versionId
@@ -188,7 +188,7 @@ class Intallment extends React.Component {
                 error() {
                     console.log('失败')
                 }
-            }) */
+            }) 
             
 
         })

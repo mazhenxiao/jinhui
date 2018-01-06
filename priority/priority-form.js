@@ -1,7 +1,7 @@
 import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";
 import React, { Component } from 'react';
-import { Table,Input,Progress,Select,Calendar,DatePicker,Row, Col } from 'antd';
+import { Upload,Table,Input,Progress,Select,Calendar,DatePicker,Row, Col,Button,Icon } from 'antd';
 const { TextArea } = Input;
 class PriorityForm extends Component {
 
@@ -9,6 +9,8 @@ class PriorityForm extends Component {
             entityJson:this.props.entityJson,
             chooseToText:"",
             chooseToId:"",
+            chooseTopostId:"",
+            chooseToPost:"",
             readOnlyData:{
                 "key": null,
                 "ID": "",
@@ -107,21 +109,43 @@ class PriorityForm extends Component {
     TimeCallback = (para,e,value) => {
         this.props.callback(value,para)
     }
-    ChoosePostCallback = (para,e) => {
+    //责任岗位
+    ChoosePostCallback = (para,e,arg) => {
         let peopleJson={},text=[],userId=[];
-        var th=this;
+        let th = this;
+        var postIds = this.state.chooseTopostId.trim().split(",")
+        var postNames = this.state.chooseToPost.trim().split(",")
+        postIds.forEach((ell,indd)=>{
+            if(ell != ""){
+                let PrincipalId={
+                    "id":ell,
+                    "text":postNames[indd]
+                }
+                peopleJson[ell]=PrincipalId;
+            }
+        })
         iss.chooseTo({
-            title:"选择岗位<i class='fontRed'>（双击选择岗位）</i>",
+            title:"选择人员<i class='fontRed'>（双击选择人员）</i>",
             url:"/ProjectKayPoint/GetPostByOrgID",
-            searchURL:"/ProjectKayPoint/GetPostByName",
-            param: {orgID:"1"},
+            searchURL: "/ProjectKayPoint/GetPostByName",
+            param: {orgID:1},
             pepole:peopleJson,  //已选人员名单
             multiple:true,
             callback(da){
-                console.log(da)
+                var post = [],postId =[];
+                for(let key in da){
+                    post.push(da[key].text)
+                    postId.push(da[key].id)
+                }
+                th.props.callback(postId.join(","),para)
+                th.setState({
+                    chooseToPost:post.join(","),
+                    chooseTopostId:postId.join(",")
+                })
             }
         })
-    }
+
+}
     //选人控件传值
     ChooseCallback = (para,e) =>{
         let peopleJson={},text=[],userId=[];
@@ -157,7 +181,49 @@ class PriorityForm extends Component {
             }
         })
     }
+    //查看
+    ViewAttachmen = () =>{
 
+    }
+    //上传
+    UploadAttachmen = () =>{
+        const props = {
+            action: '/ProjectKayPoint/Upload',
+            onChange({ file, fileList }) {
+              if (file.status !== 'uploading') {
+                console.log(file, fileList);
+              }
+            },
+            defaultFileList: [{
+              uid: 1,
+              name: 'xxx.png',
+              status: 'done',
+              reponse: 'Server Error 500', // custom error message to show
+              url: 'http://www.baidu.com/xxx.png',
+            }, {
+              uid: 2,
+              name: 'yyy.png',
+              status: 'done',
+              url: 'http://www.baidu.com/yyy.png',
+            }, {
+              uid: 3,
+              name: 'zzz.png',
+              status: 'done',
+              reponse: 'Server Error 500', // custom error message to show
+              url: 'http://www.baidu.com/zzz.png',
+            }],
+          };
+          
+         return (
+             <div>
+                <Upload multiple {...props}>
+                    <Button>
+                        <Icon type="upload" /> Upload
+                    </Button>
+                </Upload>
+            </div>
+         )
+    }   
     renderTable = () =>{
         if(this.props.lookStatus){
             return (
@@ -273,25 +339,18 @@ class PriorityForm extends Component {
                         <label className="formTableLabel boxSizing redFont">责任岗位</label>
                     </th>
                     <td>
-                        <Input disabled value={this.state.readOnlyData.POST} onClick={this.ChoosePostCallback.bind(this,"POST")} />
-                    </td>
-                </tr>
-                {/* <tr>
-                    <th>
-                        <label className="formTableLabel boxSizing">备注</label>
-                    </th>
-                    <td colSpan="5">
-                        <Input />
+                        <Input disabled value={ this.state.chooseToPost || this.state.readOnlyData.POSTNAME || ""} onClick={this.ChoosePostCallback.bind(this,"POST")} />
                     </td>
                 </tr>
                 <tr>
                     <th>
                         <label className="formTableLabel boxSizing">附件</label>
                     </th>
-                    <td colSpan="5">
-                        <Input />
+                    <td>
+                        <Button disabled type="primary">上传</Button>
+                        <Button style={{ marginLeft: 10 }} type="primary">查看</Button>
                     </td>
-                </tr> */}
+                </tr>
                 </tbody>
             );
         }else if(this.props.current != undefined){
@@ -395,26 +454,19 @@ class PriorityForm extends Component {
                                     <label className="formTableLabel boxSizing redFont">责任岗位</label>
                                 </th>
                                 <td>
-                                    <Input value={this.state.readOnlyData.POST} />
+                                    <Input value={ this.state.chooseToPost || this.state.readOnlyData.POSTNAME || ""} />
                                 </td>
                                 
-                            </tr>
-                            {/* <tr>
-                                <th>
-                                    <label className="formTableLabel boxSizing">备注</label>
-                                </th>
-                                <td colSpan="5">
-                                    <Input />
-                                </td>
                             </tr>
                             <tr>
                                 <th>
                                     <label className="formTableLabel boxSizing">附件</label>
                                 </th>
-                                <td colSpan="5">
-                                    <Input />
+                                <td>
+                                    <Button disabled type="primary">上传</Button>
+                                    <Button style={{ marginLeft: 10 }} type="primary">查看</Button>
                                 </td>
-                            </tr> */}
+                            </tr>
                         </tbody>
                    
             );
@@ -532,25 +584,18 @@ class PriorityForm extends Component {
                         <label className="formTableLabel boxSizing redFont">责任岗位</label>
                     </th>
                     <td>
-                        <Input value={this.state.readOnlyData.POST} onClick={this.ChoosePostCallback.bind(this,"POST")} />
-                    </td>
-                </tr>
-                {/* <tr>
-                    <th>
-                        <label className="formTableLabel boxSizing">备注</label>
-                    </th>
-                    <td colSpan="5">
-                        <Input />
+                        <Input value={ this.state.chooseToPost || this.state.readOnlyData.POSTNAME || ""} onClick={this.ChoosePostCallback.bind(this,"POST")} />
                     </td>
                 </tr>
                 <tr>
                     <th>
                         <label className="formTableLabel boxSizing">附件</label>
                     </th>
-                    <td colSpan="5">
-                        <Input />
+                    <td>
+                        <Button onClick={this.UploadAttachmen} type="primary">上传</Button>
+                        <Button onClick={this.ViewAttachmen} style={{ marginLeft: 10 }} type="primary">查看</Button>
                     </td>
-                </tr> */}
+                </tr>
                 </tbody>
             );
         }else{
@@ -664,26 +709,18 @@ class PriorityForm extends Component {
                                     <label className="formTableLabel boxSizing redFont">责任岗位</label>
                                 </th>
                                 <td>
-                                    <Input onClick={this.ChoosePostCallback.bind(this,"POST")} />
+                                    <Input value={ this.state.chooseToPost || this.state.readOnlyData.POSTNAME || ""} onClick={this.ChoosePostCallback.bind(this,"POST")} />
                                 </td>
                                 
-                            </tr>
-                            {/* <tr>
-                                <th>
-                                    <label className="formTableLabel boxSizing">备注</label>
-                                </th>
-                                <td colSpan="5">
-                                    <Input />
-                                </td>
                             </tr>
                             <tr>
                                 <th>
                                     <label className="formTableLabel boxSizing">附件</label>
                                 </th>
-                                <td colSpan="5">
-                                    <Input />
+                                <td>
+                                    {this.UploadAttachmen()}
                                 </td>
-                            </tr> */}
+                            </tr>
                         </tbody>
                     
             );
