@@ -160,7 +160,7 @@ class SignIndex extends Component {
     setApproalDataKeyState=(isApproal)=>{
         let {dataKey} = this.state;
         if(isApproal){
-            return Payment.IGetApprovedInfo(dataKey,"payment")
+            return Payment.IGetApprovedInfo(dataKey,"sign")
                    .then(({VERSIONID,DATAKEY,DATALEVEL})=>{
                        this.state.mode = DATALEVEL;  //非法赋值方式，为了不刷新视图
                        this.state.dataKey = DATAKEY; //非法赋值方式，为了不刷新视图
