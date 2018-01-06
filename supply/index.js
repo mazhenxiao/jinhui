@@ -90,7 +90,7 @@ class Index extends Component {
             .then(baseInfo => {
                 const dataKey = baseInfo["datakey"];
                 const mode = baseInfo["datalevel"];
-                const dynamicId = baseInfo["SignId"];
+                const dynamicId = baseInfo["SupplyId"];
                 this.setState({
                     dataKey,
                     mode,
