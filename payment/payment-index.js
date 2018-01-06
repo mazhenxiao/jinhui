@@ -191,14 +191,11 @@ class SignIndex extends Component {
                .then(arg=>{  //versionId会再次返回
                 
                    let {isEdit:dynamicEditButtonShow,adjustmentDataStr,versionId}=arg;
-                   adjustmentDataStr = adjustmentDataStr? adjustmentDataStr.substr(0,5):"";
+                 
                    dynamicEditButtonShow = Boolean(dynamicEditButtonShow);
                     this.dynamicTable={...this.dynamicTable,versionId,dynamicEditButtonShow,adjustmentDataStr}
                    
-               })
-        
-           
-        
+               }) 
     }
     /**
      * 获取动态数据，获取签约计划数据，获取版本数据

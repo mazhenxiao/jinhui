@@ -4,12 +4,12 @@ import {locale} from 'moment';
  *  瑞涛 获取签约基础数据，用dataKey去换取当前版本id
  * /SignAContract/IGetSignBaseInfo?businessId=f2f29de7-2f36-9947-7c40-808e229f1d8f&type=project
  */
-export const IGetSignBaseInfo=({dataKey:businessId,mode:type})=>{
+export const IGetSignBaseInfo=({dataKey:businessId,versionId,mode:type})=>{
    
     return iss.fetch({
         type:"GET",
         url:"/SignAContract/IGetSignBaseInfo",
-        data:{businessId,type}
+        data:{businessId,type,versionId}
     })
     .then(ThenListener)
 }
