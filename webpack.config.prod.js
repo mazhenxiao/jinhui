@@ -1,11 +1,12 @@
 var path = require("path");
 var webpack = require("webpack");
+var compress = require("webpack/lib/optimize/UglifyJsPlugin"); //压缩
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin"); //thunk
 
 var config = {
     entry: {
         "jinhui-Index": path.join(__dirname, '/js/main.js'), //主入口文件
-       // "jinhui-newOpen":path.join(__dirname, '/js/openmain.js') //暂用open 
+        // "jinhui-newOpen":path.join(__dirname, '/js/openmain.js') //暂用open
     },
     output: {
         path: path.join(__dirname, '/dist/js/'),
@@ -51,11 +52,10 @@ var config = {
         }),
         new webpack.DefinePlugin({
             'process.env': {
-                'NODE_ENV': JSON.stringify('prod')
+                'NODE_ENV': JSON.stringify('production')
             }
         }),
         new compress({
-            include: [/echarts\.min\.js/, /chunk\.js/, /chunk\-component\-echarts\.js/, /jinhui\-Index\.js/],
             output: {
                 comments: false,   // remove all comments
             },
@@ -63,6 +63,7 @@ var config = {
                 warnings: false
             }
         }),
+        new webpack.optimize.AggressiveMergingPlugin(), //合并块
     ],
 };
 

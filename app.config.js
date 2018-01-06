@@ -21,7 +21,7 @@ const config = {
         domain: "http://pocstest.radiance.com.cn:10016",//服务端接口
         port: 10013,//前端项目监听端口
     },
-    'prod': {
+    'production': {
         env: "prod",
         domain: "http://pocs.radiance.com.cn:10013",//服务端接口
         port: 10010,//前端项目监听端口

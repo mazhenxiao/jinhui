@@ -11,6 +11,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var childProcess = require('child_process');
 var process = require("process");
 var NODE_ENV = process.env.NODE_ENV || "dev";
+var CompressionWebpackPlugin = require('compression-webpack-plugin');
 
 var config = {
     entry: {
@@ -66,6 +67,15 @@ var config = {
                 'NODE_ENV': JSON.stringify(NODE_ENV)
             }
         }),
+        // new CompressionWebpackPlugin({ //gzip 压缩
+        //     asset: '[path].gz[query]',
+        //     algorithm: 'gzip',
+        //     test: new RegExp(
+        //         '\\.(js|css)$'    //压缩 js 与 css
+        //     ),
+        //     threshold: 10240,
+        //     minRatio: 0.8
+        // }),
         // new compress({
         //     include: [/echarts\.min\.js/, /chunk\.js/, /chunk\-component\-echarts\.js/, /jinhui\-Index\.js/],
         //     output: {
