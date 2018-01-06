@@ -187,8 +187,12 @@ class PriorityForm extends Component {
     }
     //上传
     UploadAttachmen = () =>{
+
         const props = {
-            action: '/ProjectKayPoint/Upload',
+            action: iss.url('/ProjectKayPoint/Upload'),
+            data:{
+                token:iss.token
+            },
             onChange({ file, fileList }) {
               if (file.status !== 'uploading') {
                 console.log(file, fileList);
