@@ -22,14 +22,16 @@ const TabPane = Tabs.TabPane;
 class SignIndex extends Component {
 
     state = {
+        supperShow:true,//最高关闭阻断
         loading: true,
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : this.props.location.query.isProOrStage == "2" ? "Stage" : "",//显示模式，项目或者分期
-        versionId: "",
-        versionData: [],
         editable: false,//是否可编辑
         isApproal: false, //是否是审批
         dynamicTable: {
+            versionId:"",//新增的通过这个参数去获取数据发起审批相关
+            DynamicDate:"",//title显示
+            SupplyVersionId:"",//在弹出时需要获取的id
             dynamicHeaderData: [],//动态调整版头部
             dynamicDataSource: [],//动态调整版数据
             dynamicEdit: false, //动态调整是否可编辑
@@ -44,21 +46,20 @@ class SignIndex extends Component {
             loading: true
         },
         version: { //版本
+            
             currentVersion: "",//当前版本
             versionData: [], //版本数据
             versionShow: false //是否显示版本
         },
         dialog: { //弹窗
             ModalVisible: false,
-            dialogContent: [
-                {Time:"2018-01-01",Area:"测试数据",Value:"测试数据",Housecount:"测试数据",key:1}
-            ],//弹出窗口content
+            dialogContent: [],//弹出窗口content
             dataSource: [], //数据
             columns: [
-                {field:"Time",name:"日期",width:80},
-                {field:"Area",name:"可售面积（㎡）",width:80},
-                {field:"Value",name:"货值（万元）",width:80},
-                {field:"Housecount",name:"套数（套）",width:80},
+                {dataIndex:"SupplyDate",title:"日期",width:80,key:"SupplyDate"},
+                {dataIndex:"SourceSaleArea",title:"可售面积（㎡）",width:80,key:"SourceSaleArea"},
+                {dataIndex:"SourceMonery",title:"货值（万元）",width:80,key:"SourceMonery"},
+                {dataIndex:"SourceNumber",title:"套数（套）",width:80,key:"SourceNumber"},
             ] //表头
         }
 
@@ -72,34 +73,39 @@ class SignIndex extends Component {
     };
 
     //protected 数据
-    dynamicTable = { //动态表格私有仓储
-        DynamicId: "",//新加入的id，用此id获取动态调整版数据
-        Permission: "",//新加入是否可以编辑
-        Status: "",//新加入当前阶段,接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回
-        Permission:"edit",//瑞涛添加通过是否为edit判断是否可以编辑
-        VersionList: [],//新加入不知道是什么
-        StartYear: "",//新加入起始年份
-        number: 0,//死循环记录
+    dynamicTable = {           //动态表格私有仓储
+        versionId:"",          //新增的通过这个参数去获取数据发起审批相关
+        DynamicDate:"",        //titile显示
+        TitleList:[],          //在inof中获取表头数据
+        SupplyVersionId:"",    //在弹出时需要获取的id
+        DynamicId: "",         //新加入的id，用此id获取动态调整版数据
+        Permission: "",        //新加入是否可以编辑
+        Status: "",            //新加入当前阶段,接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回
+        Permission:"edit",     //瑞涛添加通过是否为edit判断是否可以编辑
+        VersionList: [],       //新加入不知道是什么
+        StartYear: "",         //新加入起始年份
+        number: 0,             //死循环记录
         dynamicRender: {
             "showName": (text, record) => {
             let {LEVELS,children}=record;
            return children? <span>{text}</span>:<a href="javascript:;" onClick={this.clickOpenDialog.bind(this, text, record)}>{text}</a>
         }
 
-        }, //动态编辑表格
-        status: "",//接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回
-        startYear: "",//起始年
-        signAContractVersionId: "",//调整版本id
-        saveData: {}//保存数据临时存储
+        },                           //动态编辑表格
+        status: "",                  //接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回
+        startYear: "",               //起始年
+        signAContractVersionId: "",  //调整版本id
+        saveData: {}                 //保存数据临时存储
     }
     antdTableScrollLock = null;//用来触发卸载原生事件
 
     componentDidMount() {
         let {dataKey} = this.props.location.query;
-        this.SetisApproal();
-        if (dataKey) {
-            this.getFetData(true);
-        }
+        let isApproal = this.SetisApproal();
+        
+        this.pageInt(isApproal)
+        
+     
     }
 
     componentWillUnmount() {
@@ -118,7 +124,7 @@ class SignIndex extends Component {
         const nextDataKey = location.query.dataKey || "";
         let nextMode = location.query.isProOrStage || "";
         nextMode = nextMode == "1" ? "Project" : nextMode == "2" ? "Stage" : "";
-        this.SetisApproal(location);
+        let isApproal = this.SetisApproal(location);
         //切换路由之后，重新获取数据
 
         if (dataKey != nextDataKey) {
@@ -129,11 +135,42 @@ class SignIndex extends Component {
                     activeTapKey: "plan-quota",
                 }, arg => {
                     if (nextDataKey) {
-                        this.getFetData();
+                        this.pageInt(isApproal)
                     }
                 }
             );
         }
+    }
+    pageInt=(isApproal=false)=>{
+        let {dataKey,mode}=this.state;
+            this.setApproalDataKeyState(isApproal)
+            .then(arg=>{
+                if (dataKey) {
+                    
+                    this.getFetData();
+                }
+            })
+     
+      
+    }
+     /**
+     * 判断如果时审批页面则重新设置id
+     * 因为setStage方式直接赋值，会异步和刷新整个视图，此时操作不想惊动到视图，用非标准写法
+     */
+    setApproalDataKeyState=(isApproal)=>{
+        let {dataKey} = this.state;
+        if(isApproal){
+            return Payment.IGetApprovedInfo(dataKey,"payment")
+                   .then(({VERSIONID,DATAKEY,DATALEVEL})=>{
+                       this.state.mode = DATALEVEL;  //非法赋值方式，为了不刷新视图
+                       this.state.dataKey = DATAKEY; //非法赋值方式，为了不刷新视图
+                       this.dynamicTable.versionId=VERSIONID;
+                   })
+        }else{
+            return Promise.resolve("ok非审批");
+        }
+      
+
     }
 
     /**
@@ -154,23 +191,24 @@ class SignIndex extends Component {
     }
 
     /**
-     * 获取动态数据，获取签约计划数据，获取版本数据
-     * first 判断是否第一次加载dom,如果第一次加载返回promise
+     * 获取动态数据，获取签约计划数据，获取版本数
      */
-    getFetData = (first) => {
+    getFetData = () => {
         let {dataKey, mode} = this.state;
+        let {versionId}=this.dynamicTable;
         this.dynamicTable.saveData = {};
         //获取基础数据=瑞涛
-        Payment.IGetSignBaseInfo({dataKey, mode})
+        return Payment.IGetSignBaseInfo({dataKey, mode})
             .then(arg => {  //进行错误判断
-                let {DynamicId, StartYear, VersionList, Permission, Error} = arg;
+                let {DynamicId, StartYear, VersionList, Permission, Error,SupplyVersionId,TitleList,DynamicDate} = arg;
+                DynamicDate = DynamicDate? DynamicDate.substr(0,5):"";
                 if (!DynamicId) {
                     this.setStartData();//初始化数据
                     return Promise.reject(Error);
                 }
                 if(Error){ iss.error(Error)}
                 this.version = {...this.version, versionData: VersionList, versionShow: Boolean(VersionList.length)}
-                this.dynamicTable = {...this.dynamicTable, DynamicId, StartYear, VersionList, Permission}
+                this.dynamicTable = {...this.dynamicTable, DynamicId, StartYear, VersionList, Permission,SupplyVersionId,TitleList,DynamicDate}
                 this.PromiseAllAndLockScroll();//调用
                 // return arg
             }).catch(err => {
@@ -224,43 +262,27 @@ class SignIndex extends Component {
      * return promise
      */
     getDynamicData = () => {
-        let {dynamicTable, dataKey, mode} = this.state;
+        let {dynamicTable, dataKey, mode,isApproal,supperShow} = this.state;
         let {DynamicId} = this.dynamicTable;
 
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
-        let title = Payment.IGetSignAContractTableTitle(dataKey)
-            .then((dynamicColum) => {
-                //this.setDynamicRender(dynamicColum);//创建编辑表
-                return dynamicColum;
-            });
-
-        //张权版数据获取 let data = Payment.IGetSignAContractData(dataKey)
         //瑞涛版数据
-        let data = Payment.IGetSignDataByVersionId({DynamicId, mode});
-        //获取当前版本，当前获取年份提交数据要使用
-        /*  Payment.IGetSignAContractBaseInfo(dataKey).then(arg => {
-             let {signAContractVersionId, startYear, status} = arg;
-             this.dynamicTable.signAContractVersionId = signAContractVersionId; //设置id
-             this.dynamicTable.startYear = startYear; //设置当前年份
-             this.dynamicTable.status = status;//0编制 10提交 -1 驳回
-         }).catch(error => {
-             iss.error(error);
-         }); */
-
-        return Promise.all([title, data])
-            .then(arg => {
-
-                let {Permission} = this.dynamicTable;
-                let [dynamicHeaderData, dynamicDataSource] = arg,
-                    newData = {
-                        dynamicHeaderData,
-                        dynamicDataSource,
-                        dynamicEdit: false,
-                        dynamicEditButtonShow: Boolean(Permission ==`edit`&& dynamicDataSource && dynamicDataSource.length),
-                    },
-                    dynamicTable = {...this.state.dynamicTable, ...newData};
-                this.setState({dynamicTable, loading: false});
-            })
+        
+        return Payment.IGetSignDataByVersionId({DynamicId, mode})
+        .then(dynamicDataSource => {
+            
+            let {Permission,TitleList:dynamicHeaderData,DynamicDate} = this.dynamicTable;
+            let  newData = {
+                    DynamicDate,
+                    dynamicHeaderData,
+                    dynamicDataSource,
+                    dynamicEdit: false,
+                    dynamicEditButtonShow:!isApproal&&Boolean(Permission ==`edit`&& dynamicDataSource["length"]),
+                },
+                dynamicTable = {...this.state.dynamicTable, ...newData};
+                
+            this.setState({dynamicTable, loading: false});
+        })
     }
     /**
      * 返回当前id
@@ -456,14 +478,14 @@ class SignIndex extends Component {
      * 弹出点击取消
      */
     clickModalCancel = () => {
-        let dialog = {...this.state.dialog, ...{ModalVisible: false}}
+        let dialog = {...this.state.dialog,ModalVisible: false}
         this.setState({dialog})
     }
     /**
      * 弹出确定
      */
     clickModalOk = () => {
-        let dialog = {...this.state.dialog, ...{ModalVisible: false}}
+        let dialog = {...this.state.dialog,ModalVisible: false}
         this.setState({dialog})
     }
     renderContent = (arg) => {
@@ -473,15 +495,23 @@ class SignIndex extends Component {
 
     clickOpenDialog(text, row, index) {
         let {dialog}=this.state;
-        let {columns,dialogContent}=dialog;
-        columns = columns.map((arg,index)=>{
-            let {field:dataIndex,name:title,width}=arg;
-            return { dataIndex,title,width}
-        })
-        dialog = {...dialog,columns,ModalVisible: true};
-        this.setState({
-            dialog
-        })
+        let {SupplyVersionId:supplyid}=this.dynamicTable;
+        let {columns}=dialog;
+        //supplyid,producttypeid
+        let {PRODUCTTYPEID:producttypeid}=row;
+        
+        Payment.ISingSupplyData({supplyid,producttypeid})
+               .then(dialogContent=>{
+                    dialog = {...dialog,columns,dialogContent,ModalVisible: true};
+                    this.setState({
+                        dialog
+                    })
+               })
+               .catch(err=>{
+                   iss.error(err);
+               })
+        
+       
 
     }
 
@@ -529,6 +559,11 @@ class SignIndex extends Component {
         this.saveDynamicTableData()
             .then(da => {
                 return Payment.ISubmitSignAContractData({signAContractVersionId,dataKey,projectLevel});
+            })
+            .then(arg=>{
+                this.setState({
+                    supperShow:false
+                })
             })
             .catch(err => {
                 iss.error("提交失败")
@@ -591,15 +626,15 @@ class SignIndex extends Component {
      * 动态调整table
      */
     renderHistoryData = () => {
-        const {versionData, versionId, editable, dynamicTable, loading} = this.state;
-        const {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow, defaultHeight} = dynamicTable;
-
+        let {versionData, versionId, editable, dynamicTable, loading,supperShow} = this.state;
+        let {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow, defaultHeight,DynamicDate} = dynamicTable;
+        dynamicEditButtonShow = (supperShow&&dynamicEditButtonShow);//保存后不能编辑
         return (
             <article className="toTable signPage">
                 <header className="bottom-header-bar">
                     <Row>
                         <Col span={12}>
-                            <span className="header-title">签约计划动态调整版（面积：平方米，货值：万元）</span>
+                            <span className="header-title">签约计划{DynamicDate}动态调整版（面积：平方米，货值：万元）</span>
                         </Col>
                         <Col span={12}>
                             <div className={dynamicEditButtonShow ? "RT" : "hidden"}>
@@ -638,13 +673,13 @@ class SignIndex extends Component {
         const {planTable, dynamicTable, version} = this.state;
         const {planHeaderData, planDataSource} = planTable;
         const {versionData, versionShow, versionId, currentVersion} = version;
-        const {dynamicHeaderData, defaultHeight} = dynamicTable;
+        const {dynamicHeaderData, defaultHeight,DynamicDate} = dynamicTable;
         return (
             <article className="pkTable mgT10">
                 <header className="top-header-bar">
                     <Row>
                         <Col span={12}>
-                            <span className="header-title">签约计划考核版（面积：平方米，货值：万元）</span>
+                            <span className="header-title">签约计划{DynamicDate}考核版（面积：平方米，货值：万元）</span>
                         </Col>
                         <Col span={12} className="action-section">
                             <WrapperSelect className={versionShow ? "select-version" : "hide"} labelText="版本:"
