@@ -157,7 +157,7 @@ class SignIndex extends Component {
         if(isApproal){
             return Payment.IGetApprovedInfo(dataKey,"payment")
                    .then(({VERSIONID:versionId,DATAKEY:dataKey,DATALEVEL:mode})=>{
-                       this.dynamicTable.versionId=versionId;
+                       this.dynamicTable.versionId=versionId||"";
                        this.state.dataKey=dataKey;  //非法赋值不刷新视图只更改状态
                        this.state.mode=mode;//非法赋值不刷新视图只更改状态
 
@@ -187,6 +187,7 @@ class SignIndex extends Component {
         //let {dataKey} = this.props.location.query;
         let {dataKey,mode:projectLevel} =this.state;
         let {versionId}=this.dynamicTable;  //如果时审批页面已经赋值了
+        versionId=versionId||"";
         return Payment.IGetBaseInomeInfo({dataKey,projectLevel,versionId})
                .then(arg=>{  //versionId会再次返回
                 

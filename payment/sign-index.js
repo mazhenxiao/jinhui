@@ -164,7 +164,7 @@ class SignIndex extends Component {
                    .then(({VERSIONID,DATAKEY,DATALEVEL})=>{
                        this.state.mode = DATALEVEL;  //非法赋值方式，为了不刷新视图
                        this.state.dataKey = DATAKEY; //非法赋值方式，为了不刷新视图
-                       this.dynamicTable.versionId=VERSIONID;
+                       this.dynamicTable.versionId=VERSIONID||"";
                    })
         }else{
             return Promise.resolve("ok非审批");
@@ -197,6 +197,7 @@ class SignIndex extends Component {
         let {dataKey, mode} = this.state;
         let {versionId}=this.dynamicTable;
         this.dynamicTable.saveData = {};
+        versionId = versionId||"";
         //获取基础数据=瑞涛
         return Payment.IGetSignBaseInfo({dataKey,versionId,mode})
             .then(arg => {  //进行错误判断
