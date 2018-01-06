@@ -10,6 +10,8 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 //var WebpackDevServer = require('webpack-dev-server');
 var c = require('child_process');
 var process = require("process")
+var CompressionWebpackPlugin = require('compression-webpack-plugin');
+
 var config = {
     entry: {
         //  "WebpackDevServer": "webpack-dev-server/client?http://localhost:5001/",
@@ -73,22 +75,15 @@ var config = {
                 warnings: false
             }
         }),
-        // new DedupePlugin({
-        //     'process.env': { NODE_ENV: '"production"' }
-        // }),
-        /*  new webapck.DefinePlugin({  //热替换
-             'process.env.NODE_ENV': '"development"'
-         }), */
-        // new webapck.HotModuleReplacementPlugin() //热替换
-        /*  new ImageminPlugin({
-             disable: process.env.NODE_ENV !== 'production', // Disable during development
-             pngquant: {
-               quality: '95-100'
-             }
-           }) */
-        /*   new ExtractTextPlugin('[name].bundle.css', {
-            allChunks: true
-          }) */
+        new CompressionWebpackPlugin({ //gzip 压缩
+            asset: '[path].gz[query]',
+            algorithm: 'gzip',
+            test: new RegExp(
+                '\\.(js|css)$'    //压缩 js 与 css
+            ),
+            threshold: 10240,
+            minRatio: 0.8
+        }),
     ],
     resolve: {
         // modules:[path.resolve(__dirname,"/source/"),"node_modules"],

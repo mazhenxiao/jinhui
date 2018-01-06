@@ -2,6 +2,7 @@ var path = require("path");
 var webpack = require("webpack");
 var compress = require("webpack/lib/optimize/UglifyJsPlugin"); //压缩
 var CommonsChunkPlugin = require("webpack/lib/optimize/CommonsChunkPlugin"); //thunk
+var CompressionWebpackPlugin = require('compression-webpack-plugin');
 
 var config = {
     entry: {
@@ -63,7 +64,15 @@ var config = {
                 warnings: false
             }
         }),
-        new webpack.optimize.AggressiveMergingPlugin(), //合并块
+        new CompressionWebpackPlugin({ //gzip 压缩
+            asset: '[path].gz[query]',
+            algorithm: 'gzip',
+            test: new RegExp(
+                '\\.(js|css)$'    //压缩 js 与 css
+            ),
+            threshold: 10240,
+            minRatio: 0.8
+        }),
     ],
 };
 
