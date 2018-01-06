@@ -19,6 +19,7 @@ const TabPane = Tabs.TabPane;
 class SignIndex extends Component {
 
     state = {
+        supperShow:true,
         loading: true,
         dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
         mode: this.props.location.query.isProOrStage == "1" ? "Project" : this.props.location.query.isProOrStage == "2" ? "Stage" : "",//显示模式，项目或者分
@@ -121,6 +122,7 @@ class SignIndex extends Component {
 
         if (dataKey != nextDataKey) {
             this.setState({
+                    supperShow:true,
                     loading: true,
                     dataKey: nextDataKey,
                     mode: nextMode,
@@ -155,7 +157,7 @@ class SignIndex extends Component {
         if(isApproal){
             return Payment.IGetApprovedInfo(dataKey,"payment")
                    .then(({VERSIONID:versionId,DATAKEY:dataKey,DATALEVEL:mode})=>{
-                       this.dynamicTable.versionId=versionId;
+                       this.dynamicTable.versionId=versionId||"";
                        this.state.dataKey=dataKey;  //非法赋值不刷新视图只更改状态
                        this.state.mode=mode;//非法赋值不刷新视图只更改状态
 
@@ -181,22 +183,20 @@ class SignIndex extends Component {
      * 获取基础数据
      * dataKey,projectLevel,versionId
      */
-    getBaseInfo=()=>{
+    getBaseInfo=()=>{   
         //let {dataKey} = this.props.location.query;
         let {dataKey,mode:projectLevel} =this.state;
         let {versionId}=this.dynamicTable;  //如果时审批页面已经赋值了
-        return Payment.IGetBaseInomeInfo({dataKey,projectLevel,versionId:""})
+        versionId=versionId||"";
+        return Payment.IGetBaseInomeInfo({dataKey,projectLevel,versionId})
                .then(arg=>{  //versionId会再次返回
                 
                    let {isEdit:dynamicEditButtonShow,adjustmentDataStr,versionId}=arg;
-                   adjustmentDataStr = adjustmentDataStr? new Date(adjustmentDataStr).Format("yyyy年"):"";
+                 
                    dynamicEditButtonShow = Boolean(dynamicEditButtonShow);
                     this.dynamicTable={...this.dynamicTable,versionId,dynamicEditButtonShow,adjustmentDataStr}
                    
-               })
-        
-           
-        
+               }) 
     }
     /**
      * 获取动态数据，获取签约计划数据，获取版本数据
@@ -239,18 +239,7 @@ class SignIndex extends Component {
         }
         return false;
     };
-    /**
-     * 张政=根据isNewVersion==1&&status==0 才显示button
-     */
-    getShowEidtButtonFilter=dataList=>{
-           let lists = dataList.filter(arg=>{
-            let {isNewVersion,status,id}=arg;
-            if(isNewVersion=="1"&&status=="0"){
-               return true
-            }
-        })
-        return lists.length? lists[0]["id"]:""
-    }
+ 
     /**
      * 获取弹窗头部数据
      * 分开写防止万一数据需要二次编辑
@@ -268,6 +257,7 @@ class SignIndex extends Component {
         let {current}=this.props.location.query;
         let edit = this.dynamicTable.dynamicEditButtonShow;
         let {versionId}=this.dynamicTable;
+        let {supperShow}=this.state;
         //dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
         //回款
         //let title,data;
@@ -280,7 +270,7 @@ class SignIndex extends Component {
                        ...this.dynamicTable,
                        dynamicHeaderData,
                        dynamicDataSource,
-                       dynamicEditButtonShow:!current&&edit&&Boolean(dynamicDataSource.length)};
+                       dynamicEditButtonShow:supperShow&&!current&&edit&&Boolean(dynamicDataSource.length)};
                    return "动态调整版本ok"
                })
                .catch(err=>{ iss.error(err)})
@@ -312,7 +302,7 @@ class SignIndex extends Component {
     getPlanData = ({dataKey,mode}) => {
 
         
-        let {dynamicHeaderData} = this.dynamicTable
+        let {dynamicHeaderData,versionId} = this.dynamicTable
         // dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
         //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
         let currentVersion = "", versionData;
@@ -322,7 +312,7 @@ class SignIndex extends Component {
                     this.version = {
                         ...this.version,
                         versionData,
-                        saveId:this.getShowEidtButtonFilter(versionData),//改造成为当前版本id
+                        saveId:versionId,//改造成为当前版本id
                         currentVersion:this.getCurrentVertion(versionData),
                         versionShow:Boolean(versionData.length)
                     }
@@ -559,6 +549,7 @@ class SignIndex extends Component {
                     type: "success",
                     description: "驳回成功"
                 });
+                this.state.supperShow=false;//非法赋值为了不刷新view
                 this.getFetData();
             })
             .catch(err => {
@@ -613,7 +604,7 @@ class SignIndex extends Component {
                 <header className="bottom-header-bar">
                     <Row>
                         <Col span={12}>
-                            <span className="header-title">回款计划{adjustmentDataStr}动态调整版（面积：平方米，货值：万元）</span>
+                            <span className="header-title">回款计划{adjustmentDataStr}动态调整版（单位：万元）</span>
                         </Col>
                         <Col span={12}>
                             <div className={dynamicEditButtonShow ? "RT" : "hidden"}>
@@ -660,7 +651,7 @@ class SignIndex extends Component {
                 <header className="top-header-bar">
                     <Row>
                         <Col span={12}>
-                            <span className="header-title">回款计划{adjustmentDataStr}考核版（面积：平方米，货值：万元）</span>
+                            <span className="header-title">回款计划考核版（单位：万元）</span>
                         </Col>
                         <Col span={12} className="action-section">
                             <WrapperSelect className={versionShow ? "select-version" : "hide"} labelText="版本:"
@@ -721,11 +712,11 @@ class SignIndex extends Component {
         //获取小版本跳转
        // let versionId = this.state.versionId; //;
         let newProjectStatus = iss.getEVal("payment");
-        const {isProOrStage} = this.props.location.query;
+        const {isProOrStage,dataKey} = this.props.location.query;  //businessId 用来点击返回时退回
         const {saveId} = this.state.version;//版本id
         iss.hashHistory.push({
             pathname: "/ProcessApproval",
-            search: `?e=${newProjectStatus}&dataKey=${saveId}&current=ProcessApproval&areaId=&areaName=&isProOrStage=${isProOrStage}`
+            search: `?e=${newProjectStatus}&dataKey=${saveId}&businessId=${dataKey}&current=ProcessApproval&areaId=&areaName=&isProOrStage=${isProOrStage}`
         });
         /*      price.IGetProVersion(dataKey)
                  .then(arg => {

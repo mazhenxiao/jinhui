@@ -2,16 +2,32 @@
  * 供货模块
  */
 
+import iss from "../js/iss";
+
 /**
- *  获取版本
+ * 根据回款版本id反向查找获取项目信息，包括 项目id/分期id，阶段，mode(项目 or 分期)
  */
-export const getBaseData = (dataKey, mode) => {
+export const getBaseInfoByVersionId = (paymentVersionId) => {
+    return iss.fetch({
+        url: "/Supply/IGetApprovedInfo",
+        type: "get",
+        data: {
+            id: paymentVersionId,
+        },
+    }).then(res => res.rows);
+};
+
+/**
+ *  获取供货的基本信息，包括供货动态调整板Id，供货分类，历史版本信息等
+ */
+export const getBaseData = (dataKey, mode, supplyVersionId) => {
     return iss.fetch({
         url: "/Supply/IGetSupplyBaseInfo",
         type: "get",
         data: {
             id: dataKey,
             datalevel: mode,
+            vid: supplyVersionId ? supplyVersionId : "",//签约版本Id
         },
     })
         .then(res => res.rows)

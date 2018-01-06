@@ -4,12 +4,12 @@ import {locale} from 'moment';
  *  瑞涛 获取签约基础数据，用dataKey去换取当前版本id
  * /SignAContract/IGetSignBaseInfo?businessId=f2f29de7-2f36-9947-7c40-808e229f1d8f&type=project
  */
-export const IGetSignBaseInfo=({dataKey:businessId,mode:type})=>{
+export const IGetSignBaseInfo=({dataKey:businessId,versionId,mode:type})=>{
    
     return iss.fetch({
         type:"GET",
         url:"/SignAContract/IGetSignBaseInfo",
-        data:{businessId,type}
+        data:{businessId,type,versionId}
     })
     .then(ThenListener)
 }
@@ -311,12 +311,12 @@ export const IGetApprovedInfo=(Id,str)=>{
         })
         .then(ThenListener)
         .then(arg=>{
-            let {PaymentId,SingId,SupplyId,datakey:DATAKEY,datalevel:DATALEVEL}=arg;
+            let {PaymentId,SignId,SupplyId,datakey:DATAKEY,datalevel:DATALEVEL}=arg;
             let VERSIONID=""
             switch(str){
-                case "supply":VERSIONID=SupplyId//供货
-                case "sign":VERSIONID=SingId //签约
-                case "payment":VERSIONID=PaymentId//回款
+                case "supply":VERSIONID=SupplyId;break;//供货
+                case "sign":VERSIONID=SignId;break; //签约
+                case "payment":VERSIONID=PaymentId;break;//回款
             }
             return {
                 DATAKEY,

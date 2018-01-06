@@ -100,7 +100,7 @@ class SignIndex extends Component {
     antdTableScrollLock = null;//用来触发卸载原生事件
 
     componentDidMount() {
-        let {dataKey} = this.props.location.query;
+        let {dataKey} = this.state;
         let isApproal = this.SetisApproal();
         
         this.pageInt(isApproal)
@@ -129,6 +129,7 @@ class SignIndex extends Component {
 
         if (dataKey != nextDataKey) {
             this.setState({
+                    supperShow:true,
                     loading: true,
                     dataKey: nextDataKey,
                     mode: nextMode,
@@ -146,7 +147,6 @@ class SignIndex extends Component {
             this.setApproalDataKeyState(isApproal)
             .then(arg=>{
                 if (dataKey) {
-                    
                     this.getFetData();
                 }
             })
@@ -160,11 +160,11 @@ class SignIndex extends Component {
     setApproalDataKeyState=(isApproal)=>{
         let {dataKey} = this.state;
         if(isApproal){
-            return Payment.IGetApprovedInfo(dataKey,"payment")
+            return Payment.IGetApprovedInfo(dataKey,"sign")
                    .then(({VERSIONID,DATAKEY,DATALEVEL})=>{
                        this.state.mode = DATALEVEL;  //非法赋值方式，为了不刷新视图
                        this.state.dataKey = DATAKEY; //非法赋值方式，为了不刷新视图
-                       this.dynamicTable.versionId=VERSIONID;
+                       this.dynamicTable.versionId=VERSIONID||"";
                    })
         }else{
             return Promise.resolve("ok非审批");
@@ -197,11 +197,11 @@ class SignIndex extends Component {
         let {dataKey, mode} = this.state;
         let {versionId}=this.dynamicTable;
         this.dynamicTable.saveData = {};
+        versionId = versionId||"";
         //获取基础数据=瑞涛
-        return Payment.IGetSignBaseInfo({dataKey, mode})
+        return Payment.IGetSignBaseInfo({dataKey,versionId,mode})
             .then(arg => {  //进行错误判断
                 let {DynamicId, StartYear, VersionList, Permission, Error,SupplyVersionId,TitleList,DynamicDate} = arg;
-                DynamicDate = DynamicDate? DynamicDate.substr(0,5):"";
                 if (!DynamicId) {
                     this.setStartData();//初始化数据
                     return Promise.reject(Error);
@@ -213,7 +213,7 @@ class SignIndex extends Component {
                 // return arg
             }).catch(err => {
 
-            err && iss.Info(err);
+            err && iss.error(err);
             this.setState({
                 loading: false
             })
@@ -229,14 +229,18 @@ class SignIndex extends Component {
         //获取比对版数据   
         let planTable = this.getPlanData();
 
-        return Promise.all([dynamicTable, planTable]).then(arg => {
+        return Promise.all([dynamicTable, planTable])
+                      .then(arg => {
             //获取弹窗数据如果需要，因为张权说要给一个获取的id不知道依赖在哪里，先放到这,估计需要从动态表获取
             this.bindScrollLock();
-        }).catch(error => {
+                             })
+                    .catch(error => {
+            let {message}=error
+            iss.error(message);
             this.setState({
                 loading: false,
             });
-            iss.error(error);
+            
         })
     }
 
@@ -679,7 +683,7 @@ class SignIndex extends Component {
                 <header className="top-header-bar">
                     <Row>
                         <Col span={12}>
-                            <span className="header-title">签约计划{DynamicDate}考核版（面积：平方米，货值：万元）</span>
+                            <span className="header-title">签约计划考核版（面积：平方米，货值：万元）</span>
                         </Col>
                         <Col span={12} className="action-section">
                             <WrapperSelect className={versionShow ? "select-version" : "hide"} labelText="版本:"

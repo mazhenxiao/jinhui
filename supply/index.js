@@ -5,7 +5,7 @@ import BuildingAdjust from './building-adjust';
 import PercentAdjust from './percent-adjust';
 import {Spin, Tabs, Row, Col, Button, Select, Table, Modal} from 'antd';
 import {WrapperSelect, WrapperTreeTable} from '../common';
-import {SupplyService} from "../services";
+import {AreaService, SupplyService} from "../services";
 import {knife} from '../utils';
 import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
 import "../css/button.less";
@@ -36,14 +36,12 @@ class Index extends Component {
     antdTableScrollLock = null;
 
     componentDidMount() {
-        //判断是否是审批, 真:审批状态; 假:普通状态
-        // if (this.getApprovalStatus()) {
-        //     this.changeVersionIdToDataKey();
-        // } else {
-        //     this.loadVersionData();
-        // }
-        this.SetisApproal();
-        this.loadBaseData();
+        // 判断是否是审批, 真:审批状态; 假:普通状态
+        if (this.getApprovalStatus()) {
+            this.changeVersionIdToDataKey();
+        } else {
+            this.loadBaseData();
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -51,7 +49,7 @@ class Index extends Component {
         const {location} = nextProps;
         const nextDataKey = location.query.dataKey || "";
         const nextMode = location.query.isProOrStage == "1" ? "Project" : "Stage";
-        this.SetisApproal(location);
+
         //切换路由之后，重新获取数据
         if (nextDataKey != dataKey && !!nextDataKey) {
             this.setState({
@@ -84,11 +82,34 @@ class Index extends Component {
     };
 
     /**
+     * 转换数据: 回款版本id → 项目Id/分期Id
+     */
+    changeVersionIdToDataKey = () => {
+        const versionId = this.props.location.query.dataKey;
+        SupplyService.getBaseInfoByVersionId(versionId)
+            .then(baseInfo => {
+                const dataKey = baseInfo["datakey"];
+                const mode = baseInfo["datalevel"];
+                const dynamicId = baseInfo["SupplyId"];
+                this.setState({
+                    dataKey,
+                    mode,
+                    dynamicId,
+                });
+
+                this.loadBaseData(dataKey, mode, dynamicId);
+            })
+            .catch(error => {
+                iss.error(error);
+            });
+    };
+
+    /**
      * 加载版本数据
      * @param dataKey
      * @param mode
      */
-    loadBaseData = (dataKey, mode) => {
+    loadBaseData = (dataKey, mode, dynamicId) => {
         if (dataKey === undefined) {
             dataKey = this.state.dataKey;
             mode = this.state.mode;
@@ -101,7 +122,7 @@ class Index extends Component {
         //变量, 延迟setState
         let nextState = {};
 
-        return SupplyService.getBaseData(dataKey, mode)
+        return SupplyService.getBaseData(dataKey, mode, dynamicId)
             .then(({supplyType, permission, dynamicId, versionId, versionData, baseInfo, error, adjustDateShow}) => {
                 console.log("supplyType=" + supplyType, "(供货分类: Building:楼栋供货, Land:项目比例供货, Stage:分期比例供货)");
                 if (error) {
@@ -235,6 +256,8 @@ class Index extends Component {
 
     renderDynamicAdjust = () => {
         const {adjustData, dataKey, permission, adjustDateShow} = this.state;
+        //非审批状态下 并且 permission不等于Show时，才可以编辑
+        const buttonPermission = !this.getApprovalStatus() && permission.toLowerCase() != "show";
 
         return (
             <article className="toTable">
@@ -244,7 +267,7 @@ class Index extends Component {
                     </Col>
                     <Col span={12} className="text-align-right">
                         {
-                            permission != "Show" ?
+                            buttonPermission ?
                                 <div>
                                     <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick}>
                                         编辑供货
@@ -332,52 +355,15 @@ class Index extends Component {
             </div>
         );
     };
-    /**
-     * 发起审批
-     */
-    isApproal = arg => {
-        let stateData = this.props.location.query;
-        if (this.state.isApproal) {
+
+    renderApproval = () => {
+        let searchArg = this.props.location.query;
+        if (this.getApprovalStatus()) {
             return <section className="padB20">
-                <ProcessApprovalTab current="supply" allSearchArg={stateData}/>
+                <ProcessApprovalTab current="supply" allSearchArg={searchArg}/>
             </section>
         }
-
-    }
-    /**
-     * 发起审批
-     */
-    handleApproval = params => {
-        this.saveDynamicTableData()
-            .then(arg => {
-                this.goToApplroal();
-            })
-
-    }
-    /**
-     * 审批跳转
-     */
-    goToApplroal = arg => {
-        //获取小版本跳转
-        let versionId = this.state.versionId; //;
-        let newProjectStatus = iss.getEVal("payment");
-        const {isProOrStage} = this.props.location.query;
-        iss.hashHistory.push({
-            pathname: "/ProcessApproval",
-            search: `?e=${newProjectStatus}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${this.props.location.query["dataKey"]}&isProOrStage=${isProOrStage}`
-        });
-    }
-    /**
-     * 当前是否是审批
-     */
-    SetisApproal = arg => {
-
-        let stateData = arg ? arg.query : this.props.location.query;
-        this.setState({
-            isApproal: Boolean(stateData["current"])
-        })
-        return Boolean(stateData["current"])
-    }
+    };
 
     render() {
         const {dataKey, current} = this.props.location.query;
@@ -387,7 +373,7 @@ class Index extends Component {
         }
         return (
             <div className="supply-wrapper">
-                {this.isApproal()}
+                {this.renderApproval()}
                 <Spin size="large" spinning={loading}>
                     <Tabs defaultActiveKey="history">
                         <TabPane tab="供货" key="history">

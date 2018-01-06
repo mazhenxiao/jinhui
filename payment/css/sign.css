@@ -44,3 +44,10 @@
 .processBar .Prompt {
   padding-left: 22px;
 }
+.toTable .ant-table-body tr th input,
+.pkTable .ant-table-body tr th input,
+.toTable .ant-table-body tr td input,
+.pkTable .ant-table-body tr td input {
+  height: auto;
+  padding: 0 7px;
+}

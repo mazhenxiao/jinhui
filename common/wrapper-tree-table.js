@@ -328,8 +328,9 @@ class WrapperTreeTable extends Component {
     handleInputChange = (record, key, column) => {
         return (e) => {
             let value = e.target.value;
-            if (!numberReg.test(value)) {
-                value = "";
+                value = value.replace(/\s*/ig,"");
+            if (value&&!numberReg.test(value)) {
+                value = parseFloat(value).toFixed(2);
             }
             record[key] = value;
             this.props.onDataChange && this.props.onDataChange(record.KEY, key, value, record, column);

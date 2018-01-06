@@ -370,7 +370,10 @@ class ApprovalControlNode extends React.Component {
                 break;//面积
             case iss.getEVal("priority"):
                 url = "AreaInfo/priority";
-                break;//面积
+                break;//关键指标
+            case iss.getEVal("payment"):
+                url = "AreaInfo/payment";
+                break
         }
         sessionStorage.removeItem("currentApprovalText");//清楚临时历史数据存储，解决路由切换不能记录用户输入内容问题
         sessionStorage.removeItem("currentApprovalList");//清楚临时历史数据存储，解决路由切换不能记录用户选择内容问题
@@ -381,7 +384,7 @@ class ApprovalControlNode extends React.Component {
                 search: `?status=edit&dataKey=${this.props.allSearchArg.newId}&e=${this.props.allSearchArg.e}&isProOrStage=${this.props.allSearchArg.isProOrStage}`
             }); 
            // location.href = `${location.origin}${location.pathname.replace(/\/$/ig, "")}/#/${url}?status=edit&dataKey=${this.props.allSearchArg.newId}&e=${this.props.allSearchArg.e}&isProOrStage=${this.props.allSearchArg.isProOrStage}`
-                                                                                                //status=edit&dataKey=${this.props.allSearchArg.newId}&e=${this.props.allSearchArg.e}&isProOrStage=${this.props.allSearchArg.isProOrStage}
+           //status=edit&dataKey=${this.props.allSearchArg.newId}&e=${this.props.allSearchArg.e}&isProOrStage=${this.props.allSearchArg.isProOrStage}
         } else if (businessId) {
              iss.hashHistory.replace({
                 pathname: `/${url}`,
