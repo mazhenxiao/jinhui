@@ -355,45 +355,10 @@ class Index extends Component {
             </div>
         );
     };
-    /**
-     * 发起审批
-     */
-    isApproal = arg => {
-        let stateData = this.props.location.query;
-        if (this.state.isApproal) {
-            return <section className="padB20">
-                <ProcessApprovalTab current="supply" allSearchArg={stateData}/>
-            </section>
-        }
-
-    }
-    /**
-     * 发起审批
-     */
-    handleApproval = params => {
-        this.saveDynamicTableData()
-            .then(arg => {
-                this.goToApplroal();
-            })
-
-    }
-    /**
-     * 审批跳转
-     */
-    goToApplroal = arg => {
-        //获取小版本跳转
-        let versionId = this.state.versionId; //;
-        let newProjectStatus = iss.getEVal("payment");
-        const {isProOrStage} = this.props.location.query;
-        iss.hashHistory.push({
-            pathname: "/ProcessApproval",
-            search: `?e=${newProjectStatus}&dataKey=${versionId}&current=ProcessApproval&areaId=&areaName=&businessId=${this.props.location.query["dataKey"]}&isProOrStage=${isProOrStage}`
-        });
-    };
 
     renderApproval = () => {
         let searchArg = this.props.location.query;
-        if (this.state.isApproal) {
+        if (this.getApprovalStatus()) {
             return <section className="padB20">
                 <ProcessApprovalTab current="supply" allSearchArg={searchArg}/>
             </section>
