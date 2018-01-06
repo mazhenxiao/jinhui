@@ -311,12 +311,12 @@ export const IGetApprovedInfo=(Id,str)=>{
         })
         .then(ThenListener)
         .then(arg=>{
-            let {PaymentId,SingId,SupplyId,datakey:DATAKEY,datalevel:DATALEVEL}=arg;
+            let {PaymentId,SignId,SupplyId,datakey:DATAKEY,datalevel:DATALEVEL}=arg;
             let VERSIONID=""
             switch(str){
-                case "supply":VERSIONID=SupplyId//供货
-                case "sign":VERSIONID=SingId //签约
-                case "payment":VERSIONID=PaymentId//回款
+                case "supply":VERSIONID=SupplyId;break;//供货
+                case "sign":VERSIONID=SignId;break; //签约
+                case "payment":VERSIONID=PaymentId;break;//回款
             }
             return {
                 DATAKEY,
