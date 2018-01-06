@@ -680,7 +680,7 @@ class SignIndex extends Component {
                 <header className="top-header-bar">
                     <Row>
                         <Col span={12}>
-                            <span className="header-title">签约计划{DynamicDate}考核版（面积：平方米，货值：万元）</span>
+                            <span className="header-title">签约计划考核版（面积：平方米，货值：万元）</span>
                         </Col>
                         <Col span={12} className="action-section">
                             <WrapperSelect className={versionShow ? "select-version" : "hide"} labelText="版本:"
