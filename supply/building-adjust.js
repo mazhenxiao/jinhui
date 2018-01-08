@@ -547,6 +547,11 @@ class BuildingAdjust extends Component {
         }
 
         filterSupplyData.forEach(row => {
+            //IsSaleLincenseStr 是否取得预售证
+            //IsResidence 业态是否是住宅类型
+            if (row["IsSaleLincenseStr"] === "Yes" || row["PlanSaleDate"] === "有" || row["IsResidence"] === "Yes") {
+                return;
+            }
             row["SupplyDate"] = batchDate;
             const changeData = this.changeDataArray.filter(item => item["PRODUCTTYPEREFID"] === row["PRODUCTTYPEREFID"])[0];
             //保存变更的供货日期
@@ -596,10 +601,15 @@ class BuildingAdjust extends Component {
 
     disabledDate = (row, current) => {
         //IsResidence 业态是否是住宅类型
-        if (row["PlanSaleDate"] === "无" || row["IsResidence"] === "No") {
+        if (row) {
+            if (row["PlanSaleDate"] === "无" || row["IsResidence"] === "No") {
+                return current && current.valueOf() < (Date.now() - 24 * 60 * 60 * 1000);
+            } else {
+                return current && current.valueOf() > ((new Date(row["PlanSaleDate"]).valueOf()));
+            }
+        }
+        else {
             return current && current.valueOf() < (Date.now() - 24 * 60 * 60 * 1000);
-        } else {
-            return current && current.valueOf() > ((new Date(row["PlanSaleDate"]).valueOf()));
         }
     };
 
@@ -656,7 +666,7 @@ class BuildingAdjust extends Component {
                     </div>
                     <div className="date-picker-wrapper">
                         <DatePicker onChange={this.handleDateChange} allowClear={false}
-                                    disabledDate={this.disabledDate}
+                                    disabledDate={this.disabledDate.bind(this, null)}
                                     value={batchDate ? moment(batchDate, 'YYYY-MM-DD') : null}></DatePicker>
                     </div>
                     <div className="batch-set-date">
