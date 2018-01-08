@@ -2,20 +2,25 @@ import iss from '../js/iss';
 
 /**
  * 参数
- * id/
+ * KPI/IGetTargetBaseInfo?id=
  */
-const getColumns = (step, mode, versionId, descType = "Building") => {
+export const IGetTargetBaseInfo = (id) => {
         return iss.fetch({
-            url: "",
+            url: "/KPI/IGetTargetBaseInfo",
             type: "get",
             data: {
-                // step: step.code,
-                // projectLevel: mode,
-                // versionId,
-                // descType: descType,
-            },
-        }).then(res => res.rows);
+                id
+            }
+        })
+        .then(ThenListener)
+        .catch(err=>Promise.reject(err))
     };
-    export{
-        getColumns
-    }
+
+
+/**
+ * 统一处理
+ * @param {*} arg 
+ */
+const ThenListener=(arg)=>{
+    return arg.rows;
+}
