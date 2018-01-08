@@ -121,6 +121,7 @@ class SignIndex extends Component {
         //切换路由之后，重新获取数据
 
         if (dataKey != nextDataKey) {
+            this.dynamicTable.versionId="";
             this.setState({
                     supperShow:true,
                     loading: true,
@@ -489,7 +490,6 @@ class SignIndex extends Component {
         
         let {dialog}=this.state;
         let {signForIncome:dialogContent}=row;
-        dialogContent=dialogContent.length? dialogContent:dialog.dialogContent;//测试数据
         if(dialogContent.length<=0){ iss.info(`${text}-暂无可查看信息`);return}
              dialog = {...dialog,dialogContent,ModalVisible:true};
              this.setState({
@@ -509,26 +509,24 @@ class SignIndex extends Component {
      * 版本下拉菜单事件
      */
     selectChangeVersion = params => {
+        
         // let _da= this.getCurrentVertion(params);
-        let versionId = params; // _da.length? _da[0].id:"";
-        let {version} = this.state;
+        let currentVersion = params; // _da.length? _da[0].id:"";
+        let {version,dataKey,mode,planTable} = this.state;
         let {dynamicHeaderData} = this.state.dynamicTable
         version = {...version, currentVersion: params}
-        if (versionId) {
-
-            this.getCurrentVersionPlanData(versionId)
-                .then((planDataSource) => {
-
-                    let {planTable} = this.state;
-                    let newData = {
-                        dynamicHeaderData,
-                        planDataSource
-                    }
-                    planTable = {...planTable, ...newData};
+        if (currentVersion) {
+            Payment.IGetIncomeListEditForCheck({dataKey,currentVersion,mode})
+                    .then(({incomeDataList:planDataSource}) => {
+                        let newData = {
+                            dynamicHeaderData,
+                            planDataSource
+                        }
+                        planTable = {...planTable, ...newData};
                     this.setState({
                         planTable,
                         version
-                    })
+                    }) 
 
                 })
                 .catch(error => {
@@ -585,6 +583,7 @@ class SignIndex extends Component {
                 rowKey="key"
                 bordered={true}
                 size="small"
+                pagination={false}
                 scroll={{x:true,y:100}}
                 dataSource={dialogContent}
                 columns={dialogColumns}/>
@@ -647,7 +646,7 @@ class SignIndex extends Component {
         const {versionData, versionShow, versionId, currentVersion} = version;
         const {dynamicHeaderData, defaultHeight,adjustmentDataStr} = dynamicTable;
         return (
-            <article className="pkTable mgT10">
+            <article className="pkTable mgT10 signPage">
                 <header className="top-header-bar">
                     <Row>
                         <Col span={12}>

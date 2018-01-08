@@ -164,15 +164,16 @@ class $knife {
         headerData.forEach((da,ind)=>{
             let {field,exec,children,regExps}=da;
             let _regExps = regExps? eval(`(${regExps})`) :"";
-            
-            
             if(exec){
-                let regExp = exec.match(/\{.*?\}/ig),replaceText = exec; 
+                let regExp = exec.match(/\{.*?\}/ig),replaceText; 
+              
                 dataSource.forEach((ds)=>{
+                    replaceText= exec;
                     regExp.forEach((arg)=>{
                         let txt = arg.replace(/[{}]/ig,"");
                             //type = 
-                        replaceText = replaceText.replace(arg,(ds[txt]||0));
+                            replaceText = replaceText.replace(arg,(ds[txt]||0));
+                        
                     });
                     ds[field]="";  //可能有NaN
                     let num="";
@@ -180,9 +181,12 @@ class $knife {
                             let _num = (/\d+/ig).exec(_regExps.type);
                             num = _num? _num[0]:"";
                     }
+                
                     let number = eval(replaceText);
                         number = number=="Infinity"? 0:number;
+                       
                         ds[field]= num==""? number:number.toFixed(num);
+                      //  console.log(ind+":"+ds.PRODUCTNAME+"=",ds[field])
                 })
               
                 
