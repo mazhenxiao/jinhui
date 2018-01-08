@@ -11,6 +11,7 @@ class PriorityForm extends Component {
             chooseToId:"",
             chooseTopostId:"",
             chooseToPost:"",
+            defaultData:[],
             readOnlyData:{
                 "key": null,
                 "ID": "",
@@ -44,7 +45,10 @@ class PriorityForm extends Component {
          PROJECTNAME= this.props.data.projectName||"";
          AREANAME=this.props.data.areaName||"";
          COMPANYNAME=this.props.data.companyName||"";
-         STAGENAME=this.props.data.stageName||""
+         STAGENAME=this.props.data.stageName||"";
+         uploadData = [];
+         arr=[];
+         
          
     componentWillReceiveProps(nextProps) {
         
@@ -78,10 +82,24 @@ class PriorityForm extends Component {
                         el.REPORTTIME=th.getLocalTime(el.REPORTTIME)
                         el.SOLVETIME=th.getLocalTime(el.SOLVETIME)
                         el.LASTUPDATETIME=th.getLocalTime(el.LASTUPDATETIME)
+                    var defaultData = [];
+                    if( el.ATTACHMENT != null){
+                        el.ATTACHMENT.forEach((el,ind)=>{
+                            var obj={
+                                uid:ind+1,
+                                status:'done',
+                                reponse:'Server Error 500',
+                                name : el.FILENAME,
+                                url : iss.url(el.FILEURL)
+                            }
+                            defaultData.push(obj) 
+                        })
+                    }
                      th.setState({
                          readOnlyData:el,
                          chooseToText:el.USERNAME,
-                         chooseToId:el.OWNER
+                         chooseToId:el.OWNER,
+                         defaultData:defaultData,
                     })
                 },
                 error() {
@@ -89,7 +107,21 @@ class PriorityForm extends Component {
                 }
             })
         }else if(this.props.editData != ""){
-            this.setState({readOnlyData:this.props.editData})         
+            var defaultData = [];
+            this.props.editData.ATTACHMENT.forEach((el,ind)=>{
+                var obj={
+                    uid:ind+1,
+                    status:'done',
+                    reponse:'Server Error 500',
+                    name : el.FILENAME,
+                    url : iss.url(el.FILEURL)
+                }
+                defaultData.push(obj) 
+            }) 
+            this.setState({
+                readOnlyData:this.props.editData,
+                defaultData:defaultData,
+            })
         }
     }
 
@@ -186,47 +218,75 @@ class PriorityForm extends Component {
 
     }
     //上传
-    UploadAttachmen = () =>{
-
-        const props = {
+    UploadAttachmen = (readOnly) =>{
+        var th=this;
+        if(this.state.readOnlyData.ATTACHMENT != null){
+            th.arr=this.state.readOnlyData.ATTACHMENT;
+        }
+        
+        
+        var props = {
             action: iss.url('/ProjectKayPoint/Upload'),
             data:{
                 token:iss.token
             },
-            onChange({ file, fileList }) {
-              if (file.status !== 'uploading') {
-                console.log(file, fileList);
-              }
+            onChange({ file, fileList,event }) {
+             // if (file.status !== 'uploading') {
+                //console.log(file, fileList);
+               // console.log(th.state.readOnlyData)
+               if(file.status == "done"){
+                th.arr.push(file.response.rows[0]) 
+               }
+                
+                 let defaultData = th.state.defaultData;
+                     defaultData.push(file)
+                    th.setState({
+                        defaultData
+                   })
+                   console.log(th.arr)
+                th.props.callback(th.arr,"ATTACHMENT")
+            // }
             },
-            defaultFileList: [{
-              uid: 1,
-              name: 'xxx.png',
-              status: 'done',
-              reponse: 'Server Error 500', // custom error message to show
-              url: 'http://www.baidu.com/xxx.png',
-            }, {
-              uid: 2,
-              name: 'yyy.png',
-              status: 'done',
-              url: 'http://www.baidu.com/yyy.png',
-            }, {
-              uid: 3,
-              name: 'zzz.png',
-              status: 'done',
-              reponse: 'Server Error 500', // custom error message to show
-              url: 'http://www.baidu.com/zzz.png',
-            }],
-          };
-          
-         return (
-             <div>
-                <Upload multiple {...props}>
-                    <Button>
-                        <Icon type="upload" /> Upload
-                    </Button>
-                </Upload>
-            </div>
-         )
+            fileList:th.state.defaultData,
+            onRemove(file){
+                iss.ajax({
+                    url: "/ProjectKayPoint/DeleteAttachment",
+                    data:{
+                        "id": file.response.rows.ID
+                    },
+                    success(data) {
+                        console.log(data)
+                    },
+                    error() {
+                        console.log('失败')
+                    }
+                })
+            }
+        };
+        console.log(props.defaultFileList)
+       
+        if(readOnly){
+            return (
+                <div>
+                   <Upload multiple {...props}>
+                       <Button disabled>
+                           <Icon type="upload" /> 上传
+                       </Button>
+                   </Upload>
+               </div>
+            )
+        }else{
+            return (
+                <div>
+                   <Upload multiple {...props}>
+                       <Button>
+                           <Icon type="upload" /> 上传
+                       </Button>
+                   </Upload>
+               </div>
+            )
+        }
+         
     }   
     renderTable = () =>{
         if(this.props.lookStatus){
@@ -351,8 +411,7 @@ class PriorityForm extends Component {
                         <label className="formTableLabel boxSizing">附件</label>
                     </th>
                     <td>
-                        <Button disabled type="primary">上传</Button>
-                        <Button style={{ marginLeft: 10 }} type="primary">查看</Button>
+                         {this.UploadAttachmen("readOnly")}
                     </td>
                 </tr>
                 </tbody>
@@ -467,8 +526,7 @@ class PriorityForm extends Component {
                                     <label className="formTableLabel boxSizing">附件</label>
                                 </th>
                                 <td>
-                                    <Button disabled type="primary">上传</Button>
-                                    <Button style={{ marginLeft: 10 }} type="primary">查看</Button>
+                                    {this.UploadAttachmen("readOnly")}
                                 </td>
                             </tr>
                         </tbody>
@@ -596,8 +654,7 @@ class PriorityForm extends Component {
                         <label className="formTableLabel boxSizing">附件</label>
                     </th>
                     <td>
-                        <Button onClick={this.UploadAttachmen} type="primary">上传</Button>
-                        <Button onClick={this.ViewAttachmen} style={{ marginLeft: 10 }} type="primary">查看</Button>
+                        {this.UploadAttachmen()}
                     </td>
                 </tr>
                 </tbody>

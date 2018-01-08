@@ -43,7 +43,8 @@ class Index extends Component {
             "APPROVESTATUS":-1,
             "SELECTEDID": null,
             "SELECTEDLEVEL": 1,
-            "CONTENTID":null
+            "CONTENTID":null,
+            "ATTACHMENT":null
         },
         editData:"",
         historyData:"",
@@ -76,7 +77,8 @@ class Index extends Component {
         POST:"",          //*
         SOLVETIME:"",     //*
         PROJECTID:"",     //*
-        STAGEID:null
+        STAGEID:null,
+        ATTACHMENT:null,
     }
 
     /**
@@ -340,7 +342,7 @@ class Index extends Component {
         if(this.state.editData == ""){
            
             for(let key in this.PriorityFormDat){
-                if(key != "SUPPORT" && key != "STAGEID"){
+                if(key != "SUPPORT" && key != "STAGEID" && key != "ATTACHMENT"){
                     if(this.PriorityFormDat[key] == ""){
                         iss.popover({ content: " * 为必填项！！"});
                         // iss.tip({
@@ -376,10 +378,10 @@ class Index extends Component {
                 "APPROVESTATUS":0,
                 "CONTENTID":null,
                 "SELECTEDID": this.state.sundryId,
-                "SELECTEDLEVEL": this.state.level_id
+                "SELECTEDLEVEL": this.state.level_id,
+                "ATTACHMENT": this.PriorityFormDat.ATTACHMENT
             }
         }else{
-            debugger
             entityJson = this.state.editData;
             if(entityJson.ISOLVE == "是"){
                 entityJson.ISOLVE = 1
