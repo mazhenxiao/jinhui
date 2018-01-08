@@ -32,6 +32,14 @@
   background: url("../../img/under_way.png") no-repeat center left 5px;
   padding-left: 18px;
 }
+.priorityData .ant-upload-list-item {
+  float: left;
+}
+.priorityData .ant-upload-list-item .anticon-cross {
+  position: absolute;
+  top: 2px;
+  right: 1px;
+}
 .PriorityTable {
   padding-top: 5px;
 }
