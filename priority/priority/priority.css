@@ -22,12 +22,15 @@
 }
 .priorityData .ant-table .ant-table-tbody .success {
   background: url("../../img/success.png") no-repeat center left 5px;
+  padding-left: 18px;
 }
 .priorityData .ant-table .ant-table-tbody .edit {
   background: url("../../img/edit.png") no-repeat center left 5px;
+  padding-left: 18px;
 }
 .priorityData .ant-table .ant-table-tbody .underWay {
   background: url("../../img/under_way.png") no-repeat center left 5px;
+  padding-left: 18px;
 }
 .PriorityTable {
   padding-top: 5px;
