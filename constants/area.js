@@ -24,39 +24,8 @@ const Legend = [
     {"guid": "l4", "text": "审批通过", "class": "legend-green"},
 ];
 
-/**
- * 产权属性
- */
-const RightsProperty = [
-    {id: "1", name: "仅包含有产权"},
-    {id: "2", name: "仅包含无产权"},
-    {id: "3", name: "包含有产权及无产权"}
-];
-
-/**
- * 精装属性
- */
-const HardcoverProperty = [
-    {id: "1", name: "全部精装"},
-    {id: "2", name: "全部毛坯"},
-    {id: "3", name: "部分精装部分毛坯"}
-];
-
-/**
- * 层高属性
- */
-const LayerProperty = [
-    {id: "1", name: "平层"},
-    {id: "2", name: "跃层"},
-    {id: "3", name: "LOFT"}
-];
-
-
 export {
     AreaManageStep,
     Legend,
-    RightsProperty,
-    HardcoverProperty,
-    LayerProperty,
 }
 

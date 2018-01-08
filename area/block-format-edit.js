@@ -90,7 +90,7 @@ class BlockFormatEdit extends Component {
             key: 'ishaveproperty',
             width: 200,
             render: (text, record) => {
-                const matchProperty = AreaConstants.RightsProperty.filter(item => item.id == text)[0];
+                const matchProperty = this.props.conditionData.rightsProperty.filter(item => item.id == text)[0];
                 if (matchProperty) {
                     return matchProperty.name;
                 }
@@ -103,7 +103,7 @@ class BlockFormatEdit extends Component {
             key: 'isdecoration',
             width: 200,
             render: (text, record) => {
-                const matchProperty = AreaConstants.HardcoverProperty.filter(item => item.id == text)[0];
+                const matchProperty = this.props.conditionData.hardcoverProperty.filter(item => item.id == text)[0];
                 if (matchProperty) {
                     return matchProperty.name;
                 }
@@ -116,7 +116,7 @@ class BlockFormatEdit extends Component {
             key: 'storeyheight',
             width: 200,
             render: (text, record) => {
-                const matchProperty = AreaConstants.LayerProperty.filter(item => item.id == text)[0];
+                const matchProperty = this.props.conditionData.layerProperty.filter(item => item.id == text)[0];
                 if (matchProperty) {
                     return matchProperty.name;
                 }
@@ -314,18 +314,22 @@ class BlockFormatEdit extends Component {
                     <Row>
                         <Col span={5}>
                             <WrapperModalSelect labelText="住宅:" multiple={false} dataSource={conditionData.residence}
+                                                conditionData={conditionData}
                                                 onSelectChange={this.handleModalSelectChange("residence")}/>
                         </Col>
                         <Col span={5}>
                             <WrapperModalSelect labelText="商办:" multiple={false} dataSource={conditionData.commercial}
+                                                conditionData={conditionData}
                                                 onSelectChange={this.handleModalSelectChange("commercial")}/>
                         </Col>
                         <Col span={5}>
                             <WrapperModalSelect labelText="商业:" dataSource={conditionData.business}
+                                                conditionData={conditionData}
                                                 onSelectChange={this.handleModalSelectChange("business")}/>
                         </Col>
                         <Col span={8}>
                             <WrapperModalSelect labelText="车位、配套及其他可售:" dataSource={conditionData.parkAndSupport}
+                                                conditionData={conditionData}
                                                 labelSpan={9} inputSpan={15}
                                                 onSelectChange={this.handleModalSelectChange("parkAndSupport")}/>
                         </Col>

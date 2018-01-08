@@ -134,7 +134,7 @@ const getVersion = (stepInfo, dataKey, mode, dataType = "Area") => {
                     name: item["versioncode"],
                     statusName: item["statusname"],
                     statusCode: item["statusCode"],
-                    status:item["status"]
+                    status: item["status"]
                 };
             });
         });
@@ -165,14 +165,49 @@ const getCreateCondition = (stepInfo, dataKey, mode) => {
         },
     })
         .then(res => res.rows)
-        .then(({serchList}) => {
+        .then(({serchList, selectOptions}) => {
+
             const result = {
                 land: [],//地块
                 residence: [],//住宅
                 commercial: [],//商办
                 business: [],//商业
                 parkAndSupport: [],//车位以及配套
+                rightsProperty: [],//产权属性
+                hardcoverProperty: [],//精装属性
+                layerProperty: [],//层高属性
             };
+
+            const rightsObj = selectOptions.filter(item => item.typecode === "PROPERTY")[0];
+            const hardcoverObj = selectOptions.filter(item => item.typecode === "COVER")[0];
+            const layerObj = selectOptions.filter(item => item.typecode === "FLOORHEIGHT")[0];
+            if (rightsObj && Array.isArray(rightsObj.selectOption)) {
+                const filterOption = rightsObj.selectOption.filter(item => !!item.val);
+                result.rightsProperty = filterOption.map(item => {
+                    return {
+                        id: item["val"],
+                        name: item["label"],
+                    };
+                });
+            }
+            if (hardcoverObj && Array.isArray(hardcoverObj.selectOption)) {
+                const filterOption = hardcoverObj.selectOption.filter(item => !!item.val);
+                result.hardcoverProperty = filterOption.map(item => {
+                    return {
+                        id: item["val"],
+                        name: item["label"],
+                    };
+                });
+            }
+            if (layerObj && Array.isArray(layerObj.selectOption)) {
+                const filterOption = layerObj.selectOption.filter(item => !!item.val);
+                result.layerProperty = filterOption.map(item => {
+                    return {
+                        id: item["val"],
+                        name: item["label"],
+                    };
+                });
+            }
 
             const land = serchList.filter(item => item.typeCode === "land")[0];
             const residence = serchList.filter(item => item.typeCode === "residence")[0];

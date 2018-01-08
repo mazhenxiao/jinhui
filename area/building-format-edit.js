@@ -118,7 +118,7 @@ class BuildingFormatEdit extends Component {
                 if (record["levelId"] == "1") {
                     return "-";
                 }
-                const matchProperty = AreaConstants.RightsProperty.filter(item => item.id == text)[0];
+                const matchProperty = this.props.conditionData.rightsProperty.filter(item => item.id == text)[0];
                 if (matchProperty) {
                     return matchProperty.name;
                 }
@@ -134,7 +134,7 @@ class BuildingFormatEdit extends Component {
                 if (record["levelId"] == "1") {
                     return "-";
                 }
-                const matchProperty = AreaConstants.HardcoverProperty.filter(item => item.id == text)[0];
+                const matchProperty = this.props.conditionData.hardcoverProperty.filter(item => item.id == text)[0];
                 if (matchProperty) {
                     return matchProperty.name;
                 }
@@ -150,7 +150,7 @@ class BuildingFormatEdit extends Component {
                 if (record["levelId"] == "1") {
                     return "-";
                 }
-                const matchProperty = AreaConstants.LayerProperty.filter(item => item.id == text)[0];
+                const matchProperty = this.props.conditionData.layerProperty.filter(item => item.id == text)[0];
                 if (matchProperty) {
                     return matchProperty.name;
                 }

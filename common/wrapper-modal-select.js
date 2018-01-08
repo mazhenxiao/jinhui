@@ -196,6 +196,7 @@ class WrapperModalSelect extends Component {
 
     renderPropertyModal = () => {
         const {visible} = this.state;
+        const {conditionData} = this.props;
         if (!visible) {
             return null;
         }
@@ -210,17 +211,17 @@ class WrapperModalSelect extends Component {
                 width="360px"
             >
                 <Row style={{height: "35px"}}>
-                    <WrapperSelect labelText="产权属性：" dataSource={AreaConstants.RightsProperty}
+                    <WrapperSelect labelText="产权属性：" dataSource={conditionData.rightsProperty}
                                    showRequired={this.checkPropertyValue("ishaveproperty")}
                                    onChange={this.handlePropertyChange("ishaveproperty")}/>
                 </Row>
                 <Row style={{height: "35px"}}>
-                    <WrapperSelect labelText="精装属性：" dataSource={AreaConstants.HardcoverProperty}
+                    <WrapperSelect labelText="精装属性：" dataSource={conditionData.hardcoverProperty}
                                    showRequired={this.checkPropertyValue("isdecoration")}
                                    onChange={this.handlePropertyChange("isdecoration")}/>
                 </Row>
                 <Row style={{height: "35px"}}>
-                    <WrapperSelect labelText="层高属性：" dataSource={AreaConstants.LayerProperty}
+                    <WrapperSelect labelText="层高属性：" dataSource={conditionData.layerProperty}
                                    showRequired={this.checkPropertyValue("storeyheight")}
                                    onChange={this.handlePropertyChange("storeyheight")}/>
                 </Row>

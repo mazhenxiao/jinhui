@@ -787,10 +787,10 @@ class Index extends Component {
         return (
             <div className="processBar-Prompt">
                 <h3>面积管理操作指引</h3>
-                <p>1、前置条件：要进行面积填报的项目或分期已审批通过。</p>                
+                <p>1、前置条件：要进行面积填报的项目或分期已审批通过。</p>
                 <p>2、在面积管理中，选择一个面积填报阶段。</p>
                 <p className="Prompt"> 项目只有拿地版，分期可选择拿地版、项目定位会版、启动会版、工规证版、决策书版。</p>
-                <div className="imgBorder borWidth"><img src="../img/area.png" /></div>
+                <div className="imgBorder borWidth"><img src="../img/area.png"/></div>
                 <p>3、点击【生成新版本】,生成所选阶段的面积指标。</p>
                 <p className="Prompt"> 生成新版本的前置条件：各阶段的面积填报状态均为未编制或全部审批通过才可以生成新版本。</p>
                 <p className="Prompt"> 若有编制中或审批中的状态，不能生成新版本。</p>
