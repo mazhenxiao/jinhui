@@ -36,7 +36,7 @@ class BuildingAdjust extends Component {
         filterGroup: "",//筛选组团
         filterFormat: "",//筛选业态
         filterBuilding: "",//筛选楼栋
-        bordered:false
+        bordered: false
     };
 
     innerSupplyData = [];
@@ -70,13 +70,13 @@ class BuildingAdjust extends Component {
                     loading: false,
                     supplyId,
                     supplyData,
-                   
+
                 });
             })
-            .then(arg=>{
-                 this.setState({
-                        bordered:true
-                    }) 
+            .then(arg => {
+                this.setState({
+                    bordered: true
+                })
             })
             .catch(error => {
                 this.setState({
@@ -462,7 +462,7 @@ class BuildingAdjust extends Component {
                     if (record["mode"] === "Summary")
                         return text;
                     return <DatePicker allowClear={false} onChange={this.handleRowDataChange.bind(this, record)}
-                                       disabledDate={this.disabledDate}
+                                       disabledDate={this.disabledDate.bind(this, record)}
                                        value={text ? moment(text, 'YYYY-MM-DD') : null}></DatePicker>;
                 },
                 width: 120,
@@ -593,8 +593,12 @@ class BuildingAdjust extends Component {
         });
     };
 
-    disabledDate = (current) => {
-        return current && current.valueOf() < (Date.now() - 24 * 60 * 60 * 1000);
+    disabledDate = (row, current) => {
+        if (row["PlanSaleDate"] === "无") {
+            return current && current.valueOf() < (Date.now() - 24 * 60 * 60 * 1000);
+        } else {
+            return current && current.valueOf() < ((new Date(row["PlanSaleDate"]).valueOf()) + 24 * 60 * 60 * 1000);
+        }
     };
 
     renderColumnContent = (value, row, index) => {
@@ -630,7 +634,7 @@ class BuildingAdjust extends Component {
     };
 
     renderContent = () => {
-        const {batchDate, currentMonth, currentYear, supplyData,bordered} = this.state;
+        const {batchDate, currentMonth, currentYear, supplyData, bordered} = this.state;
         const {switchMonth, switchYear, isCheck} = this.props.baseInfo;
         const lastYear = switchYear.indexOf(currentYear) === 3 ? true : false;
         const filterSupplyData = this.getFilterSupplyData();
