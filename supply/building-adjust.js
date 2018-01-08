@@ -599,7 +599,7 @@ class BuildingAdjust extends Component {
         if (row["PlanSaleDate"] === "无" || row["IsResidence"] === "No") {
             return current && current.valueOf() < (Date.now() - 24 * 60 * 60 * 1000);
         } else {
-            return current && current.valueOf() > ((new Date(row["PlanSaleDate"]).valueOf()) + 24 * 60 * 60 * 1000);
+            return current && current.valueOf() > ((new Date(row["PlanSaleDate"]).valueOf()));
         }
     };
 
