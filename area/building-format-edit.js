@@ -433,18 +433,22 @@ class BuildingFormatEdit extends Component {
                     <Row gutter={16}>
                         <Col span={5}>
                             <WrapperModalSelect labelText="住宅:" multiple={false} dataSource={conditionData.residence}
+                                                conditionData={conditionData}
                                                 onSelectChange={this.handleModalSelectChange("residence")}/>
                         </Col>
                         <Col span={5}>
                             <WrapperModalSelect labelText="商办:" multiple={false} dataSource={conditionData.commercial}
+                                                conditionData={conditionData}
                                                 onSelectChange={this.handleModalSelectChange("commercial")}/>
                         </Col>
                         <Col span={5}>
                             <WrapperModalSelect labelText="商业:" dataSource={conditionData.business}
+                                                conditionData={conditionData}
                                                 onSelectChange={this.handleModalSelectChange("business")}/>
                         </Col>
                         <Col span={8}>
                             <WrapperModalSelect labelText="车位、配套及其他可售:" dataSource={conditionData.parkAndSupport}
+                                                conditionData={conditionData}
                                                 labelSpan={9} inputSpan={15}
                                                 onSelectChange={this.handleModalSelectChange("parkAndSupport")}/>
                         </Col>
