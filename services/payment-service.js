@@ -1,5 +1,5 @@
 import iss from '../js/iss'
-import {locale} from 'moment';
+
 /** 张权-瑞涛
  *  瑞涛 获取签约基础数据，用dataKey去换取当前版本id
  * /SignAContract/IGetSignBaseInfo?businessId=f2f29de7-2f36-9947-7c40-808e229f1d8f&type=project

@@ -6,12 +6,14 @@ const { TextArea } = Input;
 class PriorityForm extends Component {
 
         state = {
+           
             entityJson:this.props.entityJson,
             chooseToText:"",
             chooseToId:"",
             chooseTopostId:"",
             chooseToPost:"",
             defaultData:[],
+            currentUpload:{},//当前上传文件
             readOnlyData:{
                 "key": null,
                 "ID": "",
@@ -49,6 +51,9 @@ class PriorityForm extends Component {
          uploadData = [];
          arr=[];
          
+         upload={
+            defaultFileList:[],
+         }
          
     componentWillReceiveProps(nextProps) {
         
@@ -86,9 +91,9 @@ class PriorityForm extends Component {
                     if( el.ATTACHMENT != null){
                         el.ATTACHMENT.forEach((el,ind)=>{
                             var obj={
-                                uid:ind+1,
+                                uid: el.ID,
                                 status:'done',
-                                reponse:'Server Error 500',
+                                thumbUrl:iss.url(el.FILEURL),
                                 name : el.FILENAME,
                                 url : iss.url(el.FILEURL)
                             }
@@ -110,9 +115,9 @@ class PriorityForm extends Component {
             var defaultData = [];
             this.props.editData.ATTACHMENT.forEach((el,ind)=>{
                 var obj={
-                    uid:ind+1,
+                    uid:el.ID,
                     status:'done',
-                    reponse:'Server Error 500',
+                    thumbUrl:iss.url(el.FILEURL),
                     name : el.FILENAME,
                     url : iss.url(el.FILEURL)
                 }
@@ -223,58 +228,67 @@ class PriorityForm extends Component {
         if(this.state.readOnlyData.ATTACHMENT != null){
             th.arr=this.state.readOnlyData.ATTACHMENT;
         }
-        
-        
+        let {defaultData}=this.state;
+        let {defaultFileList}=this.upload;
+        let ud = defaultFileList.concat(defaultData);
         var props = {
+            
             action: iss.url('/ProjectKayPoint/Upload'),
             data:{
                 token:iss.token
             },
-            onChange({ file, fileList,event }) {
-             // if (file.status !== 'uploading') {
-                //console.log(file, fileList);
-               // console.log(th.state.readOnlyData)
-               if(file.status == "done"){
-                th.arr.push(file.response.rows[0]) 
-               }
-                
-                 let defaultData = th.state.defaultData;
-                     defaultData.push(file)
-                    th.setState({
-                        defaultData
-                   })
-                   console.log(th.arr)
-                th.props.callback(th.arr,"ATTACHMENT")
-            // }
+            onChange({ file,fileList }) {
+
+                  th.setState({
+                    defaultData:fileList
+                  })
+                  if(file.response){
+                    th.arr.push(file.response.rows[0])
+                    th.props.callback(th.arr,"ATTACHMENT")
+                  }
             },
-            fileList:th.state.defaultData,
+            
+            fileList:ud,
             onRemove(file){
-                iss.ajax({
-                    url: "/ProjectKayPoint/DeleteAttachment",
+                 console.log(appConfig.domain)
+                 if(readOnly){
+                    return false
+                 }
+                 var fileID = "",fileUrl = "";
+                 if(file.response){
+                    fileID = file.response.rows[0].ID,
+                    fileUrl = file.response.rows[0].FILEURL        
+                 }else{
+                    fileID = file.uid,
+                    fileUrl = file.url
+                 }
+                 iss.ajax({
+                    url: "ProjectKayPoint/DeleteAttachment",
                     data:{
-                        "id": file.response.rows.ID
+                        id: fileID,
+                        url: fileUrl.replace(iss.url(),"")
                     },
                     success(data) {
-                        console.log(data)
+                        console.log(`删除`+data)
                     },
                     error() {
                         console.log('失败')
                     }
                 })
-            }
+             }
         };
-        console.log(props.defaultFileList)
        
         if(readOnly){
-            return (
-                <div>
-                   <Upload multiple {...props}>
-                       <Button disabled>
-                           <Icon type="upload" /> 上传
-                       </Button>
-                   </Upload>
-               </div>
-            )
+                return (
+                    <div>
+                       <Upload multiple {...props}>
+                           <Button disabled>
+                               <Icon type="upload" /> 上传
+                           </Button>
+                       </Upload>
+                   </div>
+                )
+            
         }else{
             return (
                 <div>
@@ -285,6 +299,7 @@ class PriorityForm extends Component {
                    </Upload>
                </div>
             )
+        
         }
          
     }   
@@ -314,7 +329,7 @@ class PriorityForm extends Component {
                         <Input readOnly="readOnly" value={this.state.readOnlyData.PROJECTNAME} />
                     </td>
                     <th>
-                        <label className="formTableLabel boxSizing redFont">分期名称</label>
+                        <label className="formTableLabel boxSizing">分期名称</label>
                     </th>
                     <td>
                         <Input readOnly="readOnly" value={this.state.readOnlyData.STAGENAME} />
@@ -410,7 +425,7 @@ class PriorityForm extends Component {
                     <th>
                         <label className="formTableLabel boxSizing">附件</label>
                     </th>
-                    <td>
+                    <td colSpan={3}>
                          {this.UploadAttachmen("readOnly")}
                     </td>
                 </tr>
@@ -441,7 +456,7 @@ class PriorityForm extends Component {
                                     <Input readOnly="readOnly" value={this.state.readOnlyData.PROJECTNAME} />
                                 </td>
                                 <th>
-                                    <label className="formTableLabel boxSizing redFont">分期名称</label>
+                                    <label className="formTableLabel boxSizing">分期名称</label>
                                 </th>
                                 <td>
                                     <Input readOnly="readOnly" value={this.state.readOnlyData.STAGENAME} />
@@ -525,7 +540,7 @@ class PriorityForm extends Component {
                                 <th>
                                     <label className="formTableLabel boxSizing">附件</label>
                                 </th>
-                                <td>
+                                <td colSpan={3}>
                                     {this.UploadAttachmen("readOnly")}
                                 </td>
                             </tr>
@@ -557,7 +572,7 @@ class PriorityForm extends Component {
                         <Input readOnly="readOnly" value={this.state.readOnlyData.PROJECTNAME} />
                     </td>
                     <th>
-                        <label className="formTableLabel boxSizing redFont">分期名称</label>
+                        <label className="formTableLabel boxSizing">分期名称</label>
                     </th>
                     <td>
                         <Input readOnly="readOnly" value={this.state.readOnlyData.STAGENAME} />
@@ -653,7 +668,7 @@ class PriorityForm extends Component {
                     <th>
                         <label className="formTableLabel boxSizing">附件</label>
                     </th>
-                    <td>
+                    <td colSpan={3}>
                         {this.UploadAttachmen()}
                     </td>
                 </tr>
@@ -778,7 +793,7 @@ class PriorityForm extends Component {
                                 <th>
                                     <label className="formTableLabel boxSizing">附件</label>
                                 </th>
-                                <td>
+                                <td colSpan={3}>
                                     {this.UploadAttachmen()}
                                 </td>
                             </tr>
