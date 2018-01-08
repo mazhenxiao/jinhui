@@ -462,6 +462,7 @@ class BuildingAdjust extends Component {
                     if (record["mode"] === "Summary")
                         return text;
                     return <DatePicker allowClear={false} onChange={this.handleRowDataChange.bind(this, record)}
+                                       disabled={record["IsSaleLincenseStr"] === "Yes"}
                                        disabledDate={this.disabledDate.bind(this, record)}
                                        value={text ? moment(text, 'YYYY-MM-DD') : null}></DatePicker>;
                 },
@@ -594,7 +595,8 @@ class BuildingAdjust extends Component {
     };
 
     disabledDate = (row, current) => {
-        if (row["PlanSaleDate"] === "无") {
+        //IsResidence 业态是否是住宅类型
+        if (row["PlanSaleDate"] === "无" || row["IsResidence"] === "No") {
             return current && current.valueOf() < (Date.now() - 24 * 60 * 60 * 1000);
         } else {
             return current && current.valueOf() > ((new Date(row["PlanSaleDate"]).valueOf()) + 24 * 60 * 60 * 1000);
