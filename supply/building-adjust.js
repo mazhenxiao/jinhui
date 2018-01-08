@@ -128,10 +128,13 @@ class BuildingAdjust extends Component {
         const options = [];
         const dataSource = [{id: "", name: "全部组团"}];
         supplyData.forEach(item => {
-            dataSource.push({
-                id: item["GROUPID"],
-                name: item["GROUPNAME"],
-            });
+            if (!dataSource.some(s => s.id === item["GROUPID"])) {
+                dataSource.push({
+                    id: item["GROUPID"],
+                    name: item["GROUPNAME"],
+                });
+            }
+
         });
         dataSource.forEach(item => {
             options.push(<Option key={item.id} value={item.id}>{item.name}</Option>);
