@@ -5,9 +5,9 @@ import { Spin, Tabs, Row, Col, Button, Select,Input, Popconfirm  } from 'antd';
 import { AreaService } from '../services';
 import {WrapperSelect} from '../common';
 import TableBlock from './table-block';
-require("../css/tools-processBar.less");
-require("../css/button.less");
-require("../area/areaCss/areaManage.less");
+import "../css/tools-processBar.less";
+import "../css/button.less";
+import "../area/areaCss/areaManage.less";
 class Index extends Component {
     state = {
         loading: false,
@@ -41,9 +41,17 @@ class Index extends Component {
         }
     }
     componentDidMount(){
-
+        this.PageInit();    
     };
-    
+    PageInit=()=>{
+       this.IGetTargetBaseInfo()
+    }
+    /**
+     * 获取基础数据
+     */
+    IGetTargetBaseInfo=()=>{
+
+    }
     //获取数据
     BIND_TableBlockDATA = (data)=> {  //NewProjectCountDATA={this.BIND_NewProjectCountDATA.bind(this)}
             //console.log(data);
@@ -162,9 +170,25 @@ class Index extends Component {
             
         );
     }
-    render() {
+    /**
+     *  渲染空页面
+     */
+    renderEmpty = () => {
         return (
             <div className="processBar">
+                请点击项目或分期
+            </div>
+        );
+    };
+    render() {
+        const {dataKey, current} = this.props.location.query;
+        const {loading}=this.state;
+        if (!dataKey && !current) {
+            return this.renderEmpty();
+        }
+        return (
+            <div className="processBar">
+                <Spin size="large" spinning={loading} tip="加载中请稍后。。。">
                     <Row>
                         <Col span={24}>
                             <article> 
@@ -180,6 +204,7 @@ class Index extends Component {
                             </article>
                         </Col>
                     </Row>
+                    </Spin>
             </div>
         );
     }
