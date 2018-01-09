@@ -44,7 +44,7 @@ class Index extends Component {
             "SELECTEDID": null,
             "SELECTEDLEVEL": 1,
             "CONTENTID":null,
-            "ATTACHMENT":null,
+            "ATTACHMENT":[],
         },
         editData:"",
         historyData:"",
@@ -80,7 +80,7 @@ class Index extends Component {
         SOLVETIME:"0001-01-01",     //*
         PROJECTID:"",     //*
         STAGEID:null,
-        ATTACHMENT:null,
+        ATTACHMENT:[],
     }
 
     /**
@@ -153,7 +153,6 @@ class Index extends Component {
                     this.getAjax(entityJson);
                 });
         }
-        
 
     }
     componentWillMount() {
@@ -169,10 +168,9 @@ class Index extends Component {
     }     
     rowSelection =()=> {
         var th =this;
-        
         var tbody = $(".priorityData").find(".ant-table-tbody tr");
         this.state.dataList.forEach((el,ind)=>{
-            debugger
+           
             if(el.APPROVESTATUS == 1){
                 tbody.eq(ind).find("td:last").addClass("underWay")
             }else if(el.APPROVESTATUS == 99){
