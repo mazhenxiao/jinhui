@@ -36,7 +36,7 @@ class PercentAdjust extends Component {
         batchDate: "",//批量设置的日期
         summarySaleArea: 0,
         summaryMonery: 0,
-        bordered:false
+        bordered: false
     };
 
     componentWillMount() {
@@ -72,16 +72,16 @@ class PercentAdjust extends Component {
                     loading: false,
                     supplyId,
                     supplyData,
-                    
+
                     summarySaleArea,
                     summaryMonery,
                 });
             })
-            .then(arg=>{
+            .then(arg => {
                 this.setState({
-                       bordered:true
-                   }) 
-           })
+                    bordered: true
+                })
+            })
             .catch(error => {
                 this.setState({
                     loading: false,
@@ -110,18 +110,24 @@ class PercentAdjust extends Component {
         const percentData = {};
         supplyData.forEach(row => {
             if (percentData[row["PRODUCTTYPENAME"]]) {
-                percentData[row["PRODUCTTYPENAME"]] += parseFloat(row["Proportion"]);
+                percentData[row["PRODUCTTYPENAME"]] = this.FloatAdd(percentData[row["PRODUCTTYPENAME"]], parseFloat(row["Proportion"]));
             } else {
-                percentData[row["PRODUCTTYPENAME"]] = parseFloat(row["Proportion"]);
+                percentData[row["PRODUCTTYPENAME"]] = this.FloatAdd(0, parseFloat(row["Proportion"]));
             }
         });
 
+        console.log("percentData", percentData);
+        let message;
         const keys = Object.keys(percentData);
         for (let i = 0; i < keys.length; i++) {
             if (percentData[keys[i]] != 100) {
-                iss.error(`业态 [${keys[i]}] 的供货比例不等于100%`);
-                return;
+                message = `业态 [${keys[i]}] 的供货比例不等于100%`;
+                break;
             }
+        }
+        if (message) {
+            iss.error(message);
+            return;
         }
 
         this.setState({
@@ -244,6 +250,22 @@ class PercentAdjust extends Component {
         return columns;
     };
 
+    FloatAdd = (arg1, arg2) => {
+        var r1, r2, m;
+        try {
+            r1 = arg1.toString().split(".")[1].length
+        } catch (e) {
+            r1 = 0
+        }
+        try {
+            r2 = arg2.toString().split(".")[1].length
+        } catch (e) {
+            r2 = 0
+        }
+        m = Math.pow(10, Math.max(r1, r2));
+        return (arg1 * m + arg2 * m) / m;
+    };
+
     /**
      * 供货比例改变事件
      * @param record
@@ -253,15 +275,18 @@ class PercentAdjust extends Component {
         const {supplyData} = this.state;
         //同名称的业态
         const formatGroup = supplyData.filter(item => item["PRODUCTTYPENAME"].trim() === record["PRODUCTTYPENAME"]);
-        //TODO 校验
         let sumPercent = 0;
         formatGroup.forEach(row => {
             if (record.ID === row.ID) {
-                sumPercent += parseFloat(nextValue);
+                sumPercent = this.FloatAdd(sumPercent, parseFloat(nextValue));
             } else {
-                sumPercent += parseFloat(row.Proportion) || 0;
+                sumPercent = this.FloatAdd(sumPercent, parseFloat(row.Proportion) || 0);
             }
         });
+
+        if (!sumPercent) {
+            sumPercent = 0;
+        }
         if (sumPercent > 100) {
             iss.error(`业态 [${record["PRODUCTTYPENAME"]}] 供货比例不能超过100%!`);
             return;
@@ -379,7 +404,7 @@ class PercentAdjust extends Component {
     };
 
     renderContent = () => {
-        const {batchDate, currentMonth, currentYear, supplyData, summarySaleArea, summaryMonery,bordered} = this.state;
+        const {batchDate, currentMonth, currentYear, supplyData, summarySaleArea, summaryMonery, bordered} = this.state;
         const {switchMonth, switchYear, isCheck} = this.props.baseInfo;
         const lastYear = switchYear.indexOf(currentYear) === 3 ? true : false;
         const columns = this.getColumns();

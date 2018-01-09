@@ -239,8 +239,8 @@ class BuildingAdjust extends Component {
             for (let i = 1; i <= 12; i++) {
                 let areaSummary = this.getAreaSummary("month", filterSupplyData, currentYear, i);
                 let monerySummary = this.getMonerySummary("month", filterSupplyData, currentYear, i);
-                totalAreaSummary += areaSummary;
-                totalMonerySummary += monerySummary;
+                totalAreaSummary = this.FloatAdd(totalAreaSummary, areaSummary);
+                totalMonerySummary = this.FloatAdd(totalMonerySummary, monerySummary);
                 areaRow[`${currentYear}-${i}`] = areaSummary;
                 moneryRow[`${currentYear}-${i}`] = monerySummary;
             }
@@ -248,16 +248,16 @@ class BuildingAdjust extends Component {
             for (let i = 1; i <= 4; i++) {
                 let areaSummary = this.getAreaSummary("quarter", filterSupplyData, currentYear, i);
                 let monerySummary = this.getMonerySummary("quarter", filterSupplyData, currentYear, i);
-                totalAreaSummary += areaSummary;
-                totalMonerySummary += monerySummary;
+                totalAreaSummary = this.FloatAdd(totalAreaSummary, areaSummary);
+                totalMonerySummary = this.FloatAdd(totalMonerySummary, monerySummary);
                 areaRow[`${currentYear}-quarter-${i}`] = areaSummary;
                 moneryRow[`${currentYear}-quarter-${i}`] = monerySummary;
             }
         } else {
             let areaSummary = this.getAreaSummary("year", filterSupplyData, currentYear);
             let monerySummary = this.getMonerySummary("year", filterSupplyData, currentYear);
-            totalAreaSummary += areaSummary;
-            totalMonerySummary += monerySummary;
+            totalAreaSummary = this.FloatAdd(totalAreaSummary, areaSummary);
+            totalMonerySummary = this.FloatAdd(totalMonerySummary, monerySummary);
             areaRow[`future-year`] = areaSummary;
             moneryRow[`future-year`] = monerySummary;
         }
@@ -272,6 +272,22 @@ class BuildingAdjust extends Component {
 
         this.innerSupplyData = filterSupplyData;
         return filterSupplyData;
+    };
+
+    FloatAdd = (arg1, arg2) => {
+        var r1, r2, m;
+        try {
+            r1 = arg1.toString().split(".")[1].length
+        } catch (e) {
+            r1 = 0
+        }
+        try {
+            r2 = arg2.toString().split(".")[1].length
+        } catch (e) {
+            r2 = 0
+        }
+        m = Math.pow(10, Math.max(r1, r2));
+        return (arg1 * m + arg2 * m) / m;
     };
 
     fillMonthColor = (year, month) => {
@@ -302,23 +318,22 @@ class BuildingAdjust extends Component {
                 if (date.getFullYear() != currentYear || (date.getMonth() + 1) != num) {
                     return;
                 }
-                summary += parseFloat(row["SourceSaleArea"]);
-
+                summary = this.FloatAdd(summary.toFixed(2), parseFloat(row["SourceSaleArea"]));
             } else if (mode == "quarter") {
                 const month = date.getMonth() + 1;
                 if (date.getFullYear() == currentYear) {
                     if (month > (num - 1) * 3 && month <= num * 3) {
-                        summary += parseFloat(row["SourceSaleArea"]);
+                        summary = this.FloatAdd(summary.toFixed(2), parseFloat(row["SourceSaleArea"]));
                     }
                 }
             } else if (mode == "year") {
                 if (date.getFullYear() >= currentYear) {
-                    summary += parseFloat(row["SourceSaleArea"]);
+                    summary = this.FloatAdd(summary.toFixed(2), parseFloat(row["SourceSaleArea"]));
                 }
             }
         });
 
-        return summary;
+        return summary.toFixed(2);
     };
     getMonerySummary = (mode, filterSupplyData, currentYear, num) => {
         let summary = 0;
@@ -332,22 +347,23 @@ class BuildingAdjust extends Component {
                 if (date.getFullYear() != currentYear || (date.getMonth() + 1) != num) {
                     return;
                 }
-                summary += parseFloat(row["SourceMonery"]);
+                summary = this.FloatAdd(summary.toFixed(2), parseFloat(row["SourceMonery"]));
+
 
             } else if (mode == "quarter") {
                 const month = date.getMonth() + 1;
                 if (date.getFullYear() == currentYear) {
                     if (month > (num - 1) * 3 && month <= num * 3) {
-                        summary += parseFloat(row["SourceMonery"]);
+                        summary = this.FloatAdd(summary.toFixed(2), parseFloat(row["SourceMonery"]));
                     }
                 }
             } else if (mode == "year") {
                 if (date.getFullYear() >= currentYear) {
-                    summary += parseFloat(row["SourceMonery"]);
+                    summary = this.FloatAdd(summary.toFixed(2), parseFloat(row["SourceMonery"]));
                 }
             }
         });
-        return summary;
+        return summary.toFixed(2);
     };
 
     fillQuarterColor = (year, quarter) => {
