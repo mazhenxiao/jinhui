@@ -401,6 +401,9 @@ class BuildingFormatEdit extends Component {
                         <div>2.【车库】应作为单独楼栋进行创建，所有车位归属到【车库】楼栋下，按交付时间或组团进行【车库】楼栋的划分。
                             例如；车库楼栋的名称可填写为【车库】、【XX号车库】、【XX组团车库】等
                         </div>
+                        <div>
+                            3. 请将不能划入楼栋或车位的配套业态，单独创建楼栋，楼栋名称必须为【配套】，不能更改为其他楼栋名称
+                        </div>
                     </Row>
                     <Row gutter={16} className="padding-bottom-6">
                         <Col span={6}>

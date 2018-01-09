@@ -430,6 +430,10 @@ class ToolsCity extends React.Component {
             });
 
     }
+    EVENT_CLOSE_CLICK(){ //关闭
+      let  ToolsCity= this.refs.ToolsCity;
+        ToolsCity.className+=" hide";
+    }
     setCity() {
         let sd = this.db[this.state.current];
         let list = Object.keys(sd).sort();
@@ -454,6 +458,7 @@ class ToolsCity extends React.Component {
                 <li className=""  onClick={this.EVENT_HEADER_CLICK.bind(this,"HIJKL")}>HIJKL</li>
                 <li className=""  onClick={this.EVENT_HEADER_CLICK.bind(this,"MNOPQRST")}>MNOPQRST</li>
                 <li className=""  onClick={this.EVENT_HEADER_CLICK.bind(this,"WXYZ")}>WXYZ</li>
+                <li className="close" onClick={this.EVENT_CLOSE_CLICK.bind(this)}>X</li>
             </ul>
             <div className="tc-body" ref="tcBody">
                 <ul>
