@@ -46,6 +46,10 @@
   background: url("../../img/under_way.png") no-repeat center left 5px;
   padding-left: 18px;
 }
+.priorityData .ant-table-tbody > tr > td,
+.priorityData .ant-table-thead > tr > th {
+  padding: 10px 0px;
+}
 .priorityData .ant-upload-list-item {
   float: left;
 }
@@ -70,8 +74,12 @@
 .PriorityTable .ant-progress-text {
   width: 3em;
 }
+.PriorityTable .ant-calendar-picker .ant-calendar-picker-input {
+  display: inline-block;
+}
 .PriorityTable .ant-input {
   width: 100px;
+  display: inline-block !important;
 }
 .PriorityTable .ant-progress-status-success .ant-progress-bg {
   background-color: #f04134;
