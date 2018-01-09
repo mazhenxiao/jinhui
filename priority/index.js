@@ -169,19 +169,20 @@ class Index extends Component {
     rowSelection =()=> {
         var th =this;
         var tbody = $(".priorityData").find(".ant-table-tbody tr");
-        this.state.dataList.forEach((el,ind)=>{
+        // this.state.dataList.forEach((el,ind)=>{
            
-            if(el.APPROVESTATUS == 1){
-                tbody.eq(ind).find("td:last").addClass("underWay")
-            }else if(el.APPROVESTATUS == 99){
-                tbody.eq(ind).find("td:last").addClass("success")
-            }else if(el.APPROVESTATUS == 0 || el.APPROVESTATUS == -1){
-                tbody.eq(ind).find("td:last").addClass("edit")
-            }
-        })
+        //     // if(el.APPROVESTATUS == 1){
+        //     //     tbody.eq(ind).find("td:last").addClass("underWay")
+        //     // }else if(el.APPROVESTATUS == 99){
+        //     //     tbody.eq(ind).find("td:last").addClass("success")
+        //     // }else if(el.APPROVESTATUS == 0 || el.APPROVESTATUS == -1){
+        //     //     tbody.eq(ind).find("td:last").addClass("edit")
+        //     // }
+        // })
         tbody.on("click",function(e){
           var index= $(this).index();
           th.index = index;
+          $(this).addClass("tr-bg").siblings().removeClass("tr-bg");
           if(e.target.nodeName.toLowerCase() == 'div'){
               th.editChange("look")
           }else{

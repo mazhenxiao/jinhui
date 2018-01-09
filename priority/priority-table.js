@@ -166,6 +166,7 @@ class PriorityTable extends Component {
           // pagination 是否分页，columns头部标题数据，dataSource表内容数据
           return (
               <Table 
+                  rowClassName={(record, index) => record.APPROVESTATUS == "1" ? "underWay" : record.APPROVESTATUS == "99" ? "success":"edit"}
                   columns={this.columns||[]}
                   dataSource={this.state.data||[]} 
                   bordered={true}

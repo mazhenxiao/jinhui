@@ -31,15 +31,18 @@
 .priorityData .formTable tbody input {
   width: 300px;
 }
-.priorityData .ant-table .ant-table-tbody .success {
+.priorityData .ant-table .ant-table-tbody .tr-bg {
+  background: #f5f5f5;
+}
+.priorityData .ant-table .ant-table-tbody .success td:last-child {
   background: url("../../img/success.png") no-repeat center left 5px;
   padding-left: 18px;
 }
-.priorityData .ant-table .ant-table-tbody .edit {
+.priorityData .ant-table .ant-table-tbody .edit td:last-child {
   background: url("../../img/edit.png") no-repeat center left 5px;
   padding-left: 18px;
 }
-.priorityData .ant-table .ant-table-tbody .underWay {
+.priorityData .ant-table .ant-table-tbody .underWay td:last-child {
   background: url("../../img/under_way.png") no-repeat center left 5px;
   padding-left: 18px;
 }
