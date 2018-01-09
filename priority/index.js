@@ -381,7 +381,7 @@ class Index extends Component {
                 "ATTACHMENT": this.PriorityFormDat.ATTACHMENT,
             }
         }else{
-            debugger
+            // debugger
             entityJson = this.state.editData;
             if(entityJson.ISOLVE == "是"){
                 entityJson.ISOLVE = "1"
@@ -399,7 +399,7 @@ class Index extends Component {
             || entityJson.RISKDESC=="" || entityJson.RISKEFFECT=="" || entityJson.PROGRESS=="" || entityJson.POINTLEVEL == "" 
             || (entityJson.ISOLVE != 0 && entityJson.ISOLVE != 1 && entityJson.ISOLVE != 2) || entityJson.REPORTTIME=="" || entityJson.SOLVETIME=="" || entityJson.OWNER=="" 
             || entityJson.POST==""){
-                debugger
+                // debugger
                 iss.popover({ content: " * 为必填项！！"});
                 return
             }

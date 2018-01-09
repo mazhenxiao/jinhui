@@ -65,7 +65,7 @@ export const IGetProVersion=(arg)=>{
  * @param (stageversionId) 项目id或分期版本id
  */
 export const GetPriceNewEdit=(dataKey)=>{
-    debugger
+    // debugger
     return iss.fetch({
         type:`GET`,
         url:`/Price/GetPriceNewEdit`,
@@ -74,6 +74,6 @@ export const GetPriceNewEdit=(dataKey)=>{
         }
     })
     .then(params=>{
-        debugger
+        // debugger
     })
 }

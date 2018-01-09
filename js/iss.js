@@ -426,7 +426,7 @@ class $iss {
 
     checkLogin(callback) { //判断是否登陆过期
         let url = "/Account/ICheckLoginStatus";
-        debugger
+        // debugger
         iss.ajax({
             url: url,
             success(da) {
@@ -521,7 +521,7 @@ class $iss {
                 },
                 onDblClick(node) {
                     if (node.type == 8) {
-                        debugger
+                        // debugger
                         opt.pepole = opt.multiple ? opt.pepole : {};
                         opt.pepole[node.id] = node;
                         render();

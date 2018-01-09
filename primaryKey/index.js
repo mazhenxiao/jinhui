@@ -68,7 +68,7 @@ class Index extends Component {
         let {dataKey:id}=this.state;
         PrimaryKey.IGetTargetBaseInfo(id)
                   .then(arg=>{
-                      debugger
+                      // debugger
                   })
                  
     }
