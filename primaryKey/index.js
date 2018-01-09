@@ -44,7 +44,8 @@ class Index extends Component {
         this.PageInit();    
     };
     PageInit=()=>{
-       this.IGetTargetBaseInfo()
+        let {dataKey:id}=this.state;
+       this.IGetTargetBaseInfo(id)
     }
     /**
      * 获取基础数据
