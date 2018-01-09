@@ -179,9 +179,9 @@ export default class ToolsList extends React.Component {
                                             onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "sign")}>签约</a></li>
                         <li className=""><a href="javascript:void(0);"
                                             onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "payment")}>回款</a></li>
-                        <li className="hide"><a href="javascript:void(0);"
+                        <li className=""><a href="javascript:void(0);"
                                             onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "priority")}>重点事项</a></li>
-                        <li className="hide"><a href="javascript:void(0);"
+                        <li className=""><a href="javascript:void(0);"
                                             onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "primarykey")}>关键指标</a>
                         </li>
                         <li><a href="javascript:void(0);"

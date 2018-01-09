@@ -81,6 +81,11 @@
   background: #97a5ab;
   color: #fff;
 }
+.groupName .pad {
+  padding-left: 20px;
+  padding-right: 20px;
+  line-height: 20px;
+}
 .groupFloor {
   width: 80%;
   height: 100%;
