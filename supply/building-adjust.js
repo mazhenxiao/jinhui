@@ -32,7 +32,7 @@ class BuildingAdjust extends Component {
         currentMonth: "",
         currentYear: 0,
         supplyData: [],
-        batchDate: "",//批量设置的日期
+        // batchDate: "",//批量设置的日期
         filterGroup: "",//筛选组团
         filterFormat: "",//筛选业态
         filterBuilding: "",//筛选楼栋
@@ -521,60 +521,42 @@ class BuildingAdjust extends Component {
         });
     };
 
-    handleDateChange = (value, dateString) => {
-        this.setState({
-            batchDate: dateString,
-        });
-    };
+    // handleDateChange = (value, dateString) => {
+    //     this.setState({
+    //         batchDate: dateString,
+    //     });
+    // };
+
     /**
-     * 批量设置供货日期
+     * 是否禁用日期
+     * @param row
+     * @param current
+     * @returns {*|boolean}
      */
-    handleBatchSetDate = () => {
-        const {batchDate, supplyData} = this.state;
+    disabledDate = (row, current) => {
+        //1.已经有实际取证时间，不能修改供货日期
+        //2.修改住宅业态的时候,不能修改到系统当前时间之前，不能晚于预售证时间. 修改非住宅业态的时候,只要不修改到系统当前时间之前都行
+        //3.没有计划时间不分业态, 只能选择今天和今天之后的日期
 
-        if (!batchDate) {
-            iss.error("请先选择日期!");
-            return;
+        if (!current) {
+            return true;
         }
 
-        if (supplyData.length === 0) {
-            iss.error("暂无数据!");
-            return;
+        if (row["PlanSaleDate"] === "无") {
+            //没有计划时间不分业态, 禁用昨天和昨天之前的日期
+            return current.valueOf() < (Date.now() - 24 * 60 * 60 * 1000);
         }
 
-        const filterSupplyData = this.getFilterSupplyData();
-
-        if (filterSupplyData.length === 0) {
-            iss.error("当前筛选条件下 没有数据!");
-            return;
+        if (row["IsResidence"] != "Yes") {
+            //非主业态(非住宅业态), 禁用昨天和昨天之前的日期
+            return current.valueOf() < (Date.now() - 24 * 60 * 60 * 1000);
         }
 
-        filterSupplyData.forEach(row => {
-            //IsSaleLincenseStr 是否取得预售证
-            //IsResidence 业态是否是住宅类型
-            if (row["IsSaleLincenseStr"] === "Yes" || row["PlanSaleDate"] === "有" || row["IsResidence"] === "Yes") {
-                return;
-            }
-            row["SupplyDate"] = batchDate;
-            const changeData = this.changeDataArray.filter(item => item["PRODUCTTYPEREFID"] === row["PRODUCTTYPEREFID"])[0];
-            //保存变更的供货日期
-            if (changeData) {
-                changeData.SupplyDate = batchDate;
-            } else {
-                this.changeDataArray.push({
-                    PRODUCTTYPEREFID: row["PRODUCTTYPEREFID"],
-                    SupplyDate: batchDate,
-                    BUILDID: row["BUILDID"],
-                    PRODUCTTYPEID: row["PRODUCTTYPEID"],
-                });
-            }
-        });
-
-        iss.info("批量设置供货日期成功!");
-
-        this.setState({
-            batchDate: "",
-        });
+        if (row["IsResidence"] === "Yes") {
+            //主业态(住宅业态), 禁用昨天和昨天之前的日期 和 禁用预售证之后的日期
+            return current.valueOf() > (new Date(row["PlanSaleDate"]).valueOf()) ||
+                current.valueOf() < (Date.now() - 24 * 60 * 60 * 1000);
+        }
     };
 
     handleRowDataChange = (row, value, dateString) => {
@@ -600,20 +582,6 @@ class BuildingAdjust extends Component {
         this.setState({
             [key]: value
         });
-    };
-
-    disabledDate = (row, current) => {
-        //IsResidence 业态是否是住宅类型
-        if (row) {
-            if (row["PlanSaleDate"] === "无" || row["IsResidence"] === "No") {
-                return current && current.valueOf() < (Date.now() - 24 * 60 * 60 * 1000);
-            } else {
-                return current && current.valueOf() > ((new Date(row["PlanSaleDate"]).valueOf()));
-            }
-        }
-        else {
-            return current && current.valueOf() < (Date.now() - 24 * 60 * 60 * 1000);
-        }
     };
 
     renderColumnContent = (value, row, index) => {
@@ -649,7 +617,7 @@ class BuildingAdjust extends Component {
     };
 
     renderContent = () => {
-        const {batchDate, currentMonth, currentYear, supplyData, bordered} = this.state;
+        const {currentMonth, currentYear, bordered} = this.state;
         const {switchMonth, switchYear, isCheck} = this.props.baseInfo;
         const lastYear = switchYear.indexOf(currentYear) === 3 ? true : false;
         const filterSupplyData = this.getFilterSupplyData();
@@ -666,14 +634,6 @@ class BuildingAdjust extends Component {
                     </div>
                     <div className="chk-wrapper">
                         <Checkbox disabled={true} className="chk" checked={isCheck}>考核版</Checkbox>
-                    </div>
-                    <div className="date-picker-wrapper">
-                        <DatePicker onChange={this.handleDateChange} allowClear={false}
-                                    disabledDate={this.disabledDate.bind(this, null)}
-                                    value={batchDate ? moment(batchDate, 'YYYY-MM-DD') : null}></DatePicker>
-                    </div>
-                    <div className="batch-set-date">
-                        <Button onClick={this.handleBatchSetDate}>设置供货日期</Button>
                     </div>
                     <div className="switch-year">
                         {this.renderSwitchYear()}
