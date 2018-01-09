@@ -169,16 +169,6 @@ class Index extends Component {
     rowSelection =()=> {
         var th =this;
         var tbody = $(".priorityData").find(".ant-table-tbody tr");
-        // this.state.dataList.forEach((el,ind)=>{
-           
-        //     // if(el.APPROVESTATUS == 1){
-        //     //     tbody.eq(ind).find("td:last").addClass("underWay")
-        //     // }else if(el.APPROVESTATUS == 99){
-        //     //     tbody.eq(ind).find("td:last").addClass("success")
-        //     // }else if(el.APPROVESTATUS == 0 || el.APPROVESTATUS == -1){
-        //     //     tbody.eq(ind).find("td:last").addClass("edit")
-        //     // }
-        // })
         tbody.on("click",function(e){
           var index= $(this).index();
           th.index = index;
@@ -391,24 +381,25 @@ class Index extends Component {
                 "ATTACHMENT": this.PriorityFormDat.ATTACHMENT,
             }
         }else{
+            debugger
             entityJson = this.state.editData;
-            entityJson.isSave=1;
             if(entityJson.ISOLVE == "是"){
-                entityJson.ISOLVE = 1
+                entityJson.ISOLVE = "1"
             }else if(entityJson.ISOLVE == "否") {
-                entityJson.ISOLVE = 0
+                entityJson.ISOLVE = "0"
             }
             if(entityJson.POINTLEVEL == "低"){
-                entityJson.POINTLEVEL = 0
+                entityJson.POINTLEVEL = "0"
             }else if(entityJson.POINTLEVEL == "中"){
-                entityJson.POINTLEVEL = 1
+                entityJson.POINTLEVEL = "1"
             }else if(entityJson.POINTLEVEL == "高"){
-                entityJson.POINTLEVEL = 2
+                entityJson.POINTLEVEL = "2"
             }
             if(entityJson.PROJECTNAME == "" || entityJson.AREANAME =="" || entityJson.COMPANYNAME=="" 
-            || entityJson.RISKDESC=="" || entityJson.RISKEFFECT=="" || entityJson.PROGRESS=="" || entityJson.POINTLEVEL =="" 
+            || entityJson.RISKDESC=="" || entityJson.RISKEFFECT=="" || entityJson.PROGRESS=="" || entityJson.POINTLEVEL == "" 
             || (entityJson.ISOLVE != 0 && entityJson.ISOLVE != 1 && entityJson.ISOLVE != 2) || entityJson.REPORTTIME=="" || entityJson.SOLVETIME=="" || entityJson.OWNER=="" 
             || entityJson.POST==""){
+                debugger
                 iss.popover({ content: " * 为必填项！！"});
                 return
             }

@@ -245,7 +245,7 @@ class PriorityForm extends Component {
                 token:iss.token
             },
             onChange({ file,fileList }) {
-                const isLt50M = file.size / 1024 / 1024 < 2;
+                const isLt50M = file.size / 1024 / 1024 < 50;
                   if (!isLt50M) {
                     message.error('文件不能大于50MB!');
                     return
