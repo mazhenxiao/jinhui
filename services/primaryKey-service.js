@@ -13,7 +13,7 @@ export const IGetTargetBaseInfo = (id) => {
             }
         })
         .then(ThenListener)
-        .catch(err=>Promise.reject(err))
+        .catch(ERROR)
     };
 
 
@@ -23,4 +23,8 @@ export const IGetTargetBaseInfo = (id) => {
  */
 const ThenListener=(arg)=>{
     return arg.rows;
+}
+const ERROR=e=>{
+    iss.error(e.message);
+    return Promise.reject(e)
 }
