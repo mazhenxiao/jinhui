@@ -368,7 +368,7 @@ class GroupIframe extends React.Component{
                         <li className={(this.state.index== 0)? "active":""} onClick={this.EVENT_CLICK_LI.bind(this,0)}>未分配楼栋</li>
                         <li className={(this.state.index== 1)? "active":""} onClick={this.EVENT_CLICK_LI.bind(this,1)}>1组团<span onClick={this.delGroup.bind(this,1)}></span></li>
                         {this.groupName()}
-                        <li className={(this.state.index== 200)? "active":""} onClick={this.EVENT_CLICK_LI.bind(this,200)}>未分配车位</li>
+                        <li className={(this.state.index== 200)? "active":""} onClick={this.EVENT_CLICK_LI.bind(this,200)}>未划入组团车位及配套</li>
                     </ul>
                 </div>
                 <div className='groupFloor'>

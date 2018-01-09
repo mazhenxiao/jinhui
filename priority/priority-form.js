@@ -96,15 +96,18 @@ class PriorityForm extends Component {
                                 thumbUrl:iss.url(el.FILEURL),
                                 name : el.FILENAME,
                                 url : iss.url(el.FILEURL)
-                            }
-                            defaultData.push(obj) 
+                            } 
+                            defaultData.push(obj)
                         })
+                        console.log(defaultData)
                     }
-                     th.setState({
+                    th.setState({
                          readOnlyData:el,
                          chooseToText:el.USERNAME,
                          chooseToId:el.OWNER,
                          defaultData:defaultData,
+                         chooseTopostId:el.POST,
+                         chooseToPost:el.POSTNAME,
                     })
                 },
                 error() {
@@ -112,6 +115,7 @@ class PriorityForm extends Component {
                 }
             })
         }else if(this.props.editData != ""){
+            
             var defaultData = [];
             this.props.editData.ATTACHMENT.forEach((el,ind)=>{
                 var obj={
@@ -124,6 +128,10 @@ class PriorityForm extends Component {
                 defaultData.push(obj) 
             }) 
             this.setState({
+                chooseToText:this.props.editData.USERNAME,
+                chooseToId:this.props.editData.OWNER,
+                chooseTopostId:this.props.editData.POST,
+                chooseToPost:this.props.editData.POSTNAME,
                 readOnlyData:this.props.editData,
                 defaultData:defaultData,
             })
@@ -232,7 +240,6 @@ class PriorityForm extends Component {
         let {defaultFileList}=this.upload;
         let ud = defaultFileList.concat(defaultData);
         var props = {
-            
             action: iss.url('/ProjectKayPoint/Upload'),
             data:{
                 token:iss.token
@@ -250,7 +257,6 @@ class PriorityForm extends Component {
             
             fileList:ud,
             onRemove(file){
-                 console.log(appConfig.domain)
                  if(readOnly){
                     return false
                  }
@@ -277,7 +283,6 @@ class PriorityForm extends Component {
                 })
              }
         };
-       
         if(readOnly){
                 return (
                     <div>
@@ -802,6 +807,13 @@ class PriorityForm extends Component {
             );
         } 
     }
+
+    historyAttachment = (obj) =>{
+        return obj.map((el,ind) =>{
+            var url = iss.url(el.FILEURL)
+            return <a href={url}>{el.FILENAME}</a>
+        })
+    }
     historyTr = () =>{
         if(this.props.historyData !=""){
             return this.props.historyData.map((el, ind) => {
@@ -810,14 +822,15 @@ class PriorityForm extends Component {
                                 <td>{el.USERNAME}</td>
                                 <td>{el.PROGRESS}</td>
                                 <td>{this.getLocalTime(el.LASTUPDATETIME)}</td>
-                                <td>附件</td>
+                                <td>{this.historyAttachment(el.ATTACHMENT)}</td>
                             </tr>
                 }
             })
         }
     }
     renderHistory = () =>{
-        if(this.props.historyData !=""){
+    
+        if(this.props.historyData !="" && this.props.historyData.length >1 ){
             return (
                 <div>
                     <table className="historyTable" width="100%">

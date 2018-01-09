@@ -3,12 +3,23 @@
     padding-top:10px;
 }
 .historyTable{
-    margin-left: 30px;
+    margin: 0 auto;
     width:88%;
     text-align: center;
+    border: 1px #ccc solid;
+    thead{
+        background: #f5f5f5;
+    }
     td{
         border-bottom: 1px #ccc solid;
         line-height: 36px;
+        &:last-child{
+            width: 250px;
+            a{
+                float: left;
+                padding-left: 10px;
+            }
+        }
     }
 }
 .priorityData{
@@ -45,6 +56,9 @@
             top: 2px;
             right: 1px;
         }
+    }
+    .ant-upload,.ant-upload-list {
+        float: left;
     }
 }
 
