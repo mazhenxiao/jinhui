@@ -40,11 +40,11 @@ class Index extends Component {
             "SOLVETIME": '0001-01-01', 
             "CREATETIME": '0001-01-01', 
             "CREATEUSER": null, 
-            "APPROVESTATUS":-1,
+            "APPROVESTATUS":-2,
             "SELECTEDID": null,
             "SELECTEDLEVEL": 1,
             "CONTENTID":null,
-            "ATTACHMENT":null
+            "ATTACHMENT":null,
         },
         editData:"",
         historyData:"",
@@ -65,18 +65,19 @@ class Index extends Component {
     USERNAME=null; //负责人
     POINTLEVEL=-1; //重要级别
     ISOLVE=-1; //是否解决
+    APPROVESTATUS=-2;
     SOLVETIME='0001-01-01'; //最迟解决时间
     PriorityFormDat={
         RISKDESC:"",    //*
         RISKEFFECT:"",  //*
         PROGRESS:"",    //*
         SUPPORT:"",
-        POINTLEVEL:"",   //*
-        ISOLVE:"",       //*
-        REPORTTIME:"",    //*
+        POINTLEVEL:-1,   //*
+        ISOLVE:-1,       //*
+        REPORTTIME:"0001-01-01",    //*
         OWNER:"",         //*
         POST:"",          //*
-        SOLVETIME:"",     //*
+        SOLVETIME:"0001-01-01",     //*
         PROJECTID:"",     //*
         STAGEID:null,
         ATTACHMENT:null,
@@ -144,7 +145,7 @@ class Index extends Component {
                         "SOLVETIME": '0001-01-01', 
                         "CREATETIME": '0001-01-01', 
                         "CREATEUSER": null, 
-                        "APPROVESTATUS":-1,
+                        "APPROVESTATUS":-2,
                         "CONTENTID":null,
                         "SELECTEDID": this.state.sundryId,
                         "SELECTEDLEVEL": this.state.level_id
@@ -347,19 +348,20 @@ class Index extends Component {
         
         var entityJson="";
         if(this.state.editData == ""){
-           
-            for(let key in this.PriorityFormDat){
-                if(key != "SUPPORT" && key != "STAGEID" && key != "ATTACHMENT"){
-                    if(this.PriorityFormDat[key] == ""){
-                        iss.popover({ content: " * 为必填项！！"});
-                        // iss.tip({
-                        //     type: "error",
-                        //     description: "*为必填项！！"
-                        // })
-                         return 
-                    }
-                }  
-            } 
+            if(approval=="approval"){
+                for(let key in this.PriorityFormDat){
+                    if(key != "SUPPORT" && key != "STAGEID" && key != "ATTACHMENT"){
+                        if(this.PriorityFormDat[key] == ""){
+                            iss.popover({ content: " * 为必填项！！"});
+                            // iss.tip({
+                            //     type: "error",
+                            //     description: "*为必填项！！"
+                            // })
+                            return 
+                        }
+                    }  
+                }
+            }
             var userInfo = iss.userInfo;
             entityJson={
                 "ID": null,
@@ -386,20 +388,21 @@ class Index extends Component {
                 "CONTENTID":null,
                 "SELECTEDID": this.state.sundryId,
                 "SELECTEDLEVEL": this.state.level_id,
-                "ATTACHMENT": this.PriorityFormDat.ATTACHMENT
+                "ATTACHMENT": this.PriorityFormDat.ATTACHMENT,
             }
         }else{
             entityJson = this.state.editData;
+            entityJson.isSave=1;
             if(entityJson.ISOLVE == "是"){
                 entityJson.ISOLVE = 1
-            }else{
+            }else if(entityJson.ISOLVE == "否") {
                 entityJson.ISOLVE = 0
             }
             if(entityJson.POINTLEVEL == "低"){
                 entityJson.POINTLEVEL = 0
             }else if(entityJson.POINTLEVEL == "中"){
                 entityJson.POINTLEVEL = 1
-            }else{
+            }else if(entityJson.POINTLEVEL == "高"){
                 entityJson.POINTLEVEL = 2
             }
             if(entityJson.PROJECTNAME == "" || entityJson.AREANAME =="" || entityJson.COMPANYNAME=="" 
@@ -410,9 +413,15 @@ class Index extends Component {
                 return
             }
         }
-        
+        var isSave = 0;
+        if(approval){
+            isSave = 1
+        }else{
+            isSave = 0
+        }
         Priority.ProjectKayPointSave({
-           "entityJson":JSON.stringify(entityJson)
+           "entityJson":JSON.stringify(entityJson),
+           "isSave":isSave
         })
         .then(data=>{
             var status = iss.getEVal("priority");
@@ -531,9 +540,12 @@ class Index extends Component {
     ISOLVE_FN = (value) =>{
         this.ISOLVE = value;
     }
+    APPROVESTATUS_FN = (value) =>{
+        this.APPROVESTATUS = value;
+    }
     handleLocalSearch = () =>{
-        let {PROJECTNAME,POINTLEVEL,ISOLVE,USERNAME,SOLVETIME}=this;
-        let obj = {...this.state.entityJson,...{PROJECTNAME,POINTLEVEL,ISOLVE,USERNAME,SOLVETIME}}
+        let {PROJECTNAME,POINTLEVEL,ISOLVE,USERNAME,SOLVETIME,APPROVESTATUS}=this;
+        let obj = {...this.state.entityJson,...{PROJECTNAME,POINTLEVEL,ISOLVE,USERNAME,SOLVETIME,APPROVESTATUS}}
         obj.SELECTEDID=  this.state.sundryId;
         obj.SELECTEDLEVEL= this.state.level_id;
         this.getAjax(obj);
@@ -569,14 +581,14 @@ class Index extends Component {
             return(
                 <div className="PriorityTable">
                     <Row>
-                        <Col span={4}>
-                            项目：<Input onChange={this.projectValue_FN} />
+                        <Col span={3}>
+                            项目：<Input onChange={this.projectValue_FN} style={{ width: 80 }} />
+                        </Col>
+                        <Col span={3}>
+                            责任人：<Input onChange={this.ownerValue_FN} style={{ width: 80 }} />
                         </Col>
                         <Col span={4}>
-                            责任人：<Input onChange={this.ownerValue_FN} />
-                        </Col>
-                        <Col span={4}>
-                            重要级别：<Select onChange={this.POINTLEVEL_FN} defaultValue="请选择" style={{ width: 100 }}>
+                            重要级别：<Select onChange={this.POINTLEVEL_FN} defaultValue="请选择" style={{ width: 80 }}>
                                 <Option value="-1">请选择</Option>
                                 <Option value="0">低</Option>
                                 <Option value="1">中</Option>
@@ -584,16 +596,24 @@ class Index extends Component {
                             </Select>
                         </Col>
                         <Col span={4}>
-                            是否解决：<Select onChange={this.ISOLVE_FN} defaultValue="请选择" style={{ width: 100 }}>
+                            是否解决：<Select onChange={this.ISOLVE_FN} defaultValue="请选择" style={{ width: 80 }}>
                                 <Option value="-1">请选择</Option>
                                 <Option value="1">是</Option>
                                 <Option value="0">否</Option>
                             </Select> 
                         </Col>
+                        <Col span={3}>
+                            状态：<Select onChange={this.APPROVESTATUS_FN} defaultValue="全部" style={{ width: 80 }}>
+                                <Option value="-2">全部</Option>
+                                <Option value="0">编制中</Option>
+                                <Option value="1">审批中</Option>
+                                <Option value="99">审批通过</Option>
+                            </Select> 
+                        </Col>
                         <Col span={5}>
                             最迟解决时间：<DatePicker onChange={this.SOLVETIME_FN} />
                         </Col>
-                        <Col span={3} style={{textAlign: "left", paddingLeft: "10px"}}>
+                        <Col span={2} style={{textAlign: "left", paddingLeft: "10px"}}>
                             <Button onClick={this.handleLocalSearch}>查询</Button>
                         </Col>
                     </Row>
