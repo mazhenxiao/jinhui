@@ -90,12 +90,16 @@ class $tree {
             		var me=element;
             		var node=th.ele.tree("getNode",me);
             		$(me).attr("title",node.text||"");
-            	});
+                });
+                let ele = $("#mCSB_1_container");
+                    if(!ele.length){
+                        setTimeout(arg=>{
+                            th.bindScroll();
+                        });
+                    }  
             }
         });
-        setTimeout(arg=>{
-            th.bindScroll();
-        });
+     
 
         $(window).on("treeLoad",arg=>{
             th.getAjax();

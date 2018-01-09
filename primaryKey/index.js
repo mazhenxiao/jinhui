@@ -2,7 +2,7 @@ import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";
 import React, { Component } from 'react';
 import { Spin, Tabs, Row, Col, Button, Select,Input, Popconfirm  } from 'antd';
-import { AreaService } from '../services';
+import { AreaService, PrimaryKey } from '../services';
 import {WrapperSelect} from '../common';
 import TableBlock from './table-block';
 import "../css/tools-processBar.less";
@@ -10,12 +10,23 @@ import "../css/button.less";
 import "../area/areaCss/areaManage.less";
 class Index extends Component {
     state = {
+        dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
+        mode: this.props.location.query.isProOrStage == "1" ? "Project" : this.props.location.query.isProOrStage == "2" ? "Stage" : "",//显示模式，项目或者分
+        isApproal: false, //是否是审批
         loading: false,
         editstatus:false,
         savestatus:false,
         TableBlockDATA: {},//数据
     };//绑定数据
-
+    //私有数据
+    baseInfo={
+        ID:"",
+        StepList:[]
+    }
+    baselist={
+        headerData:[],
+        dataSource:[]
+    }
     /**
      * 在组件接收到一个新的prop时被调用,这个方法在初始化render时不会被调用
      * param nextProps 下一阶段的props
@@ -36,6 +47,8 @@ class Index extends Component {
                     dataKey: nextDataKey,
                     mode: nextMode,
                     activeTapKey: "plan-quota",
+                },()=>{
+                    this.PageInit();  
                 }
             );
         }
@@ -44,14 +57,20 @@ class Index extends Component {
         this.PageInit();    
     };
     PageInit=()=>{
-        let {dataKey:id}=this.state;
-       this.IGetTargetBaseInfo(id)
+       this.IGetTargetBaseInfo()
+        
+           
     }
     /**
      * 获取基础数据
      */
     IGetTargetBaseInfo=()=>{
-
+        let {dataKey:id}=this.state;
+        PrimaryKey.IGetTargetBaseInfo(id)
+                  .then(arg=>{
+                      debugger
+                  })
+                 
     }
     //获取数据
     BIND_TableBlockDATA = (data)=> {  //NewProjectCountDATA={this.BIND_NewProjectCountDATA.bind(this)}
