@@ -1,7 +1,7 @@
 import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";
 import React, { Component } from 'react';
-import { Upload,Table,Input,Progress,Select,Calendar,DatePicker,Row, Col,Button,Icon } from 'antd';
+import { Upload,Table,Input,Progress,Select,Calendar,DatePicker,Row, Col,Button,Icon,message } from 'antd';
 const { TextArea } = Input;
 class PriorityForm extends Component {
 
@@ -243,6 +243,13 @@ class PriorityForm extends Component {
             action: iss.url('/ProjectKayPoint/Upload'),
             data:{
                 token:iss.token
+            },
+            beforeUpload(file) {
+                const isLt2M = file.size / 1024 / 1024 < 2;
+                if (!isLt2M) {
+                  message.error('Image must smaller than 2MB!');
+                }
+                return isLt2M;
             },
             onChange({ file,fileList }) {
 

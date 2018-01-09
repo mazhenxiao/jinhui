@@ -172,9 +172,10 @@ class Index extends Component {
         
         var tbody = $(".priorityData").find(".ant-table-tbody tr");
         this.state.dataList.forEach((el,ind)=>{
-            if(el.APPROVESTATUS == "1"){
+            debugger
+            if(el.APPROVESTATUS == 1){
                 tbody.eq(ind).find("td:last").addClass("underWay")
-            }else if(el.APPROVESTATUS == "99"){
+            }else if(el.APPROVESTATUS == 99){
                 tbody.eq(ind).find("td:last").addClass("success")
             }else if(el.APPROVESTATUS == 0 || el.APPROVESTATUS == -1){
                 tbody.eq(ind).find("td:last").addClass("edit")
@@ -414,7 +415,7 @@ class Index extends Component {
             }
         }
         var isSave = 0;
-        if(approval){
+        if(approval=="approval"){
             isSave = 1
         }else{
             isSave = 0
