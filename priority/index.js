@@ -51,6 +51,7 @@ class Index extends Component {
         sundryId:this.props.location.state==undefined?"":this.props.location.state.id||"",
         level_id:this.props.location.state==undefined?"":this.props.location.state.level_id||"",
         projectID:"",
+        stageId:"",
         index:0
     }
 
@@ -115,6 +116,7 @@ class Index extends Component {
                     sundryId: nextDataKey,
                     level_id:nextLevel_id,
                     projectID:nextProjectID,
+                    stageId:stageId,
                     addAatterStatus: false,
                     lookStatus:false,
                     editStatus:false
@@ -223,9 +225,14 @@ class Index extends Component {
     }
     BIND_AddAatter = () =>{
         
-        var th=this;
-        let {projectID} = this.state;
-        Priority.GetOrganization({projectID})
+        var th=this,id='';
+        let {projectID,stageId} = this.state;
+        if(projectID == null){
+            id = stageId
+        }else{
+            id = projectID
+        }
+        Priority.GetOrganization({projectID:id})
                 .then(data=>{
                     data.forEach((el,ind) => {
                         if(el.ORGLEVEL == 4){
