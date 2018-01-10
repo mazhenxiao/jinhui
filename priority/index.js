@@ -457,7 +457,7 @@ class Index extends Component {
             isSave = 0
         }
         Priority.ProjectKayPointSave({
-           "entityJson":JSON.stringify(entityJson),
+           "entityJson":encodeURIComponent(JSON.stringify(entityJson)),
            "isSave":isSave
         })
         .then(data=>{
