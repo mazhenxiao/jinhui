@@ -62,12 +62,21 @@ class PriorityForm extends Component {
          
     }
     componentDidMount() {
-        if(this.props.current != undefined){
+        
+        var cancel = this.GetQueryString("cancel")
+        if(this.props.current != undefined || cancel == "cancel"){
+            
+            var dataID = ""; 
             var th = this;
+            if(cancel == "cancel"){
+                dataID = th.GetQueryString("dataKey")
+            }else{
+                dataID = th.props.readOnly
+            }
             iss.ajax({
                 url: "/ProjectKayPoint/GetProjectKeyPoint",
                 data:{
-                    "id": th.props.readOnly
+                    "id":dataID
                 },
                 success(data) {
                         var el = data.rows;
@@ -99,7 +108,6 @@ class PriorityForm extends Component {
                             } 
                             defaultData.push(obj)
                         })
-                        console.log(defaultData)
                     }
                     th.setState({
                          readOnlyData:el,
@@ -115,7 +123,6 @@ class PriorityForm extends Component {
                 }
             })
         }else if(this.props.editData != ""){
-            
             var defaultData = [];
             this.props.editData.ATTACHMENT.forEach((el,ind)=>{
                 var obj={
@@ -137,10 +144,18 @@ class PriorityForm extends Component {
             })
         }
     }
-
+    GetQueryString(name){
+         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+         var r = window.location.search.substr(1).match(reg);
+         if(r!=null)return  unescape(r[2]); return null;
+    }
     getLocalTime(nS) {
-        return new Date(parseInt((/\d+/ig).exec(nS)[0])).Format("yyyy-MM-dd")     
-    }   
+        if(nS == "/Date(-62135596800000)/"){
+            return "0001-01-01"
+        }else{
+            return new Date(parseInt((/\d+/ig).exec(nS)[0])).Format("yyyy-MM-dd")
+        }
+    }  
     //输入框传值
     TriggerCallback = (para,e) => {
         const { value } = e.target;
@@ -156,10 +171,14 @@ class PriorityForm extends Component {
     }
     //责任岗位
     ChoosePostCallback = (para,e,arg) => {
-        let peopleJson={},text=[],userId=[];
+        let peopleJson={},postIds="",postNames="";
         let th = this;
-        var postIds = this.state.chooseTopostId.trim().split(",")
-        var postNames = this.state.chooseToPost.trim().split(",")
+        if(this.state.chooseTopostId != null){
+            postIds = this.state.chooseTopostId
+            postNames = this.state.chooseToPost
+        }
+         postIds = postIds.trim().split(",")
+         postNames = postNames.trim().split(",")
         postIds.forEach((ell,indd)=>{
             if(ell != ""){
                 let PrincipalId={
@@ -194,10 +213,14 @@ class PriorityForm extends Component {
     //选人控件传值
     ChooseCallback = (para,e) =>{
         let peopleJson={},text=[],userId=[];
-        var th=this;
+        var th=this,UserIds="",UserNames="";
+        if(this.state.chooseToId != null){
+            UserIds = this.state.chooseToId
+            UserNames = this.state.chooseToText
+        }
+        UserIds = UserIds.trim().split(",")
+        UserNames = UserNames.trim().split(",")
         
-        var UserIds = this.state.chooseToId.trim().split(",")
-        var UserNames = this.state.chooseToText.trim().split(",")
         UserIds.forEach((ell,indd)=>{
             if(ell != ""){
                 let PrincipalId={
@@ -404,7 +427,7 @@ class PriorityForm extends Component {
                     <td>
                         <DatePicker 
                             disabled
-                            placeholder={this.state.readOnlyData.REPORTTIME}  
+                            placeholder={this.state.readOnlyData.REPORTTIME == "0001-01-01"?"请选择日期":this.state.readOnlyData.REPORTTIME}  
                             onChange={this.TimeCallback.bind(this,"REPORTTIME")} 
                         />
                     </td>
@@ -414,7 +437,7 @@ class PriorityForm extends Component {
                     <td>
                         <DatePicker
                          disabled
-                         placeholder={this.state.readOnlyData.SOLVETIME}
+                         placeholder={this.state.readOnlyData.SOLVETIME == "0001-01-01"?"请选择日期":this.state.readOnlyData.SOLVETIME}
                          onChange={this.TimeCallback.bind(this,"SOLVETIME")} />
                     </td>
                 </tr>
@@ -594,13 +617,23 @@ class PriorityForm extends Component {
                         <label className="formTableLabel boxSizing redFont">风险描述</label>
                     </th>
                     <td>
-                        <TextArea disabled rows={3} value={this.state.readOnlyData.RISKDESC} onChange={this.TriggerCallback.bind(this,"RISKDESC")} />
+                        {
+                            this.props.editData.APPROVESTATUS == 99 ? 
+                            <TextArea disabled rows={3} value={this.state.readOnlyData.RISKDESC} onChange={this.TriggerCallback.bind(this,"RISKDESC")} /> :
+                            <TextArea rows={3} value={this.state.readOnlyData.RISKDESC} onChange={this.TriggerCallback.bind(this,"RISKDESC")} />
+                        }
+                        
                     </td>
                     <th>
                         <label className="formTableLabel boxSizing redFont">风险影响</label>
                     </th>
                     <td>
-                        <TextArea disabled rows={3} value={this.state.readOnlyData.RISKEFFECT} onChange={this.TriggerCallback.bind(this,"RISKEFFECT")} />
+                        {
+                            this.props.editData.APPROVESTATUS == 99 ? 
+                            <TextArea disabled rows={3} value={this.state.readOnlyData.RISKEFFECT} onChange={this.TriggerCallback.bind(this,"RISKEFFECT")} /> :
+                            <TextArea rows={3} value={this.state.readOnlyData.RISKEFFECT} onChange={this.TriggerCallback.bind(this,"RISKEFFECT")} />
+                        }
+                        
                     </td>
                 </tr>
                 <tr>
@@ -645,20 +678,35 @@ class PriorityForm extends Component {
                         <label className="formTableLabel boxSizing redFont">风险报备时间</label>
                     </th>
                     <td>
-                        <DatePicker 
+                        {
+                            this.props.editData.APPROVESTATUS == 99 ? 
+                            <DatePicker 
                             disabled
-                            placeholder={this.state.readOnlyData.REPORTTIME}  
+                            placeholder={this.state.readOnlyData.REPORTTIME == "0001-01-01"?"请选择日期":this.state.readOnlyData.REPORTTIME}  
                             onChange={this.TimeCallback.bind(this,"REPORTTIME")} 
-                        />
+                            /> :
+                            <DatePicker
+                            placeholder={this.state.readOnlyData.REPORTTIME == "0001-01-01"?"请选择日期":this.state.readOnlyData.REPORTTIME}  
+                            onChange={this.TimeCallback.bind(this,"REPORTTIME")} 
+                            />
+                        }
+                        
                     </td>
                     <th>
                         <label className="formTableLabel boxSizing redFont">最迟解决时间</label>
                     </th>
                     <td>
-                        <DatePicker
-                         disabled
-                         placeholder={this.state.readOnlyData.SOLVETIME}
-                         onChange={this.TimeCallback.bind(this,"SOLVETIME")} />
+                        {
+                            this.props.editData.APPROVESTATUS == 99 ? 
+                            <DatePicker
+                            disabled
+                            placeholder={this.state.readOnlyData.SOLVETIME == "0001-01-01"?"请选择日期":this.state.readOnlyData.SOLVETIME}
+                            onChange={this.TimeCallback.bind(this,"SOLVETIME")} /> :
+                            <DatePicker
+                            placeholder={this.state.readOnlyData.SOLVETIME == "0001-01-01"?"请选择日期":this.state.readOnlyData.SOLVETIME}
+                            onChange={this.TimeCallback.bind(this,"SOLVETIME")} />
+                        }
+                        
                     </td>
                 </tr>
                 <tr> 
@@ -688,127 +736,127 @@ class PriorityForm extends Component {
         }else{
             return (
                 
-                        <tbody width="100%">
-                            <tr>
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">区域</label>
-                                </th>
-                                <td>
-                                    <Input readOnly="readOnly" value={this.AREANAME} />
-                                </td>
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">城市公司</label>
-                                </th>
-                                <td>
-                                    <Input readOnly="readOnly" value={this.COMPANYNAME} />
-                                </td>
-                            </tr>
-                            <tr>    
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">项目名称</label>
-                                </th>
-                                <td>
-                                    <Input readOnly="readOnly" value={this.PROJECTNAME} />
-                                </td>
-                                <th>
-                                    <label className="formTableLabel boxSizing">分期名称</label>
-                                </th>
-                                <td>
-                                    <Input readOnly="readOnly" value={this.STAGENAME} />
-                                </td>
-                                
-                            </tr>
-                            <tr>
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">风险描述</label>
-                                </th>
-                                <td>
-                                    <TextArea rows={3} onChange={this.TriggerCallback.bind(this,"RISKDESC")} />
-                                </td>
-                            
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">风险影响</label>
-                                </th>
-                                <td>
-                                    <TextArea rows={3}  onChange={this.TriggerCallback.bind(this,"RISKEFFECT")} />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">面前风险解决进展</label>
-                                </th>
-                                <td>
-                                    <TextArea rows={3} onChange={this.TriggerCallback.bind(this,"PROGRESS")} />
-                                </td>
-                            
-                                <th>
-                                    <label className="formTableLabel boxSizing">需要集团支持事项</label>
-                                </th>
-                                <td>
-                                    <TextArea rows={3}  onChange={this.TriggerCallback.bind(this,"SUPPORT")} />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">重要级别</label>
-                                </th>
-                                <td>
-                                    <Select onChange={this.selectCallback.bind(this,"POINTLEVEL")} defaultValue="请选择" style={{ width: 300 }}>
-                                        <Option value="-1">请选择</Option>
-                                        <Option value="0">低</Option>
-                                        <Option value="1">中</Option>
-                                        <Option value="2">高</Option>
-                                    </Select>
-                                </td>
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">是否解决</label>
-                                </th>
-                                <td>
-                                    <Select onChange={this.selectCallback.bind(this,"ISOLVE")} defaultValue="请选择" style={{ width: 300 }}>
-                                        <Option value="-1">请选择</Option>
-                                        <Option value="1">是</Option>
-                                        <Option value="0">否</Option>
-                                    </Select> 
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">风险报备时间</label>
-                                </th>
-                                <td>
-                                    <DatePicker onChange={this.TimeCallback.bind(this,"REPORTTIME")} />
-                                </td>
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">最迟解决时间</label>
-                                </th>
-                                <td>
-                                    <DatePicker onChange={this.TimeCallback.bind(this,"SOLVETIME")} />
-                                </td>
-                            </tr>
-                            <tr>  
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">责任人</label>
-                                </th>
-                                <td>
-                                    <Input value={this.state.chooseToText || ""} onClick={this.ChooseCallback.bind(this,"OWNER")} />
-                                </td>
-                                <th>
-                                    <label className="formTableLabel boxSizing redFont">责任岗位</label>
-                                </th>
-                                <td>
-                                    <Input value={ this.state.chooseToPost || this.state.readOnlyData.POSTNAME || ""} onClick={this.ChoosePostCallback.bind(this,"POST")} />
-                                </td>
-                                
-                            </tr>
-                            <tr>
-                                <th>
-                                    <label className="formTableLabel boxSizing">附件</label>
-                                </th>
-                                <td colSpan={3}>
-                                    {this.UploadAttachmen()}
-                                </td>
-                            </tr>
-                        </tbody>
+                <tbody width="100%">
+                    <tr>
+                        <th>
+                            <label className="formTableLabel boxSizing redFont">区域</label>
+                        </th>
+                        <td>
+                            <Input readOnly="readOnly" value={this.AREANAME} />
+                        </td>
+                        <th>
+                            <label className="formTableLabel boxSizing redFont">城市公司</label>
+                        </th>
+                        <td>
+                            <Input readOnly="readOnly" value={this.COMPANYNAME} />
+                        </td>
+                    </tr>
+                    <tr>    
+                        <th>
+                            <label className="formTableLabel boxSizing redFont">项目名称</label>
+                        </th>
+                        <td>
+                            <Input readOnly="readOnly" value={this.PROJECTNAME} />
+                        </td>
+                        <th>
+                            <label className="formTableLabel boxSizing">分期名称</label>
+                        </th>
+                        <td>
+                            <Input readOnly="readOnly" value={this.STAGENAME} />
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <th>
+                            <label className="formTableLabel boxSizing redFont">风险描述</label>
+                        </th>
+                        <td>
+                            <TextArea rows={3} onChange={this.TriggerCallback.bind(this,"RISKDESC")} />
+                        </td>
+                    
+                        <th>
+                            <label className="formTableLabel boxSizing redFont">风险影响</label>
+                        </th>
+                        <td>
+                            <TextArea rows={3}  onChange={this.TriggerCallback.bind(this,"RISKEFFECT")} />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label className="formTableLabel boxSizing redFont">面前风险解决进展</label>
+                        </th>
+                        <td>
+                            <TextArea rows={3} onChange={this.TriggerCallback.bind(this,"PROGRESS")} />
+                        </td>
+                    
+                        <th>
+                            <label className="formTableLabel boxSizing">需要集团支持事项</label>
+                        </th>
+                        <td>
+                            <TextArea rows={3}  onChange={this.TriggerCallback.bind(this,"SUPPORT")} />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label className="formTableLabel boxSizing redFont">重要级别</label>
+                        </th>
+                        <td>
+                            <Select onChange={this.selectCallback.bind(this,"POINTLEVEL")} defaultValue="请选择" style={{ width: 300 }}>
+                                <Option value="-1">请选择</Option>
+                                <Option value="0">低</Option>
+                                <Option value="1">中</Option>
+                                <Option value="2">高</Option>
+                            </Select>
+                        </td>
+                        <th>
+                            <label className="formTableLabel boxSizing redFont">是否解决</label>
+                        </th>
+                        <td>
+                            <Select onChange={this.selectCallback.bind(this,"ISOLVE")} defaultValue="请选择" style={{ width: 300 }}>
+                                <Option value="-1">请选择</Option>
+                                <Option value="1">是</Option>
+                                <Option value="0">否</Option>
+                            </Select> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            <label className="formTableLabel boxSizing redFont">风险报备时间</label>
+                        </th>
+                        <td>
+                            <DatePicker onChange={this.TimeCallback.bind(this,"REPORTTIME")} />
+                        </td>
+                        <th>
+                            <label className="formTableLabel boxSizing redFont">最迟解决时间</label>
+                        </th>
+                        <td>
+                            <DatePicker onChange={this.TimeCallback.bind(this,"SOLVETIME")} />
+                        </td>
+                    </tr>
+                    <tr>  
+                        <th>
+                            <label className="formTableLabel boxSizing redFont">责任人</label>
+                        </th>
+                        <td>
+                            <Input value={this.state.chooseToText || ""} onClick={this.ChooseCallback.bind(this,"OWNER")} />
+                        </td>
+                        <th>
+                            <label className="formTableLabel boxSizing redFont">责任岗位</label>
+                        </th>
+                        <td>
+                            <Input value={ this.state.chooseToPost || this.state.readOnlyData.POSTNAME || ""} onClick={this.ChoosePostCallback.bind(this,"POST")} />
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <th>
+                            <label className="formTableLabel boxSizing">附件</label>
+                        </th>
+                        <td colSpan={3}>
+                            {this.UploadAttachmen()}
+                        </td>
+                    </tr>
+                </tbody>
                     
             );
         } 
