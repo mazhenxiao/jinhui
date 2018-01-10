@@ -201,15 +201,15 @@ class Index extends Component {
             dataList.forEach((el,ind) => {
                 if(el.ISOLVE == 1){
                     el.ISOLVE = "是"
-                }else{
-                 el.ISOLVE = "否"
+                }else if(el.ISOLVE == 0){
+                    el.ISOLVE = "否"
                 }
                 if(el.POINTLEVEL == 0){
-                 el.POINTLEVEL = "低"
+                    el.POINTLEVEL = "低"
                 }else if(el.POINTLEVEL == 1){
-                 el.POINTLEVEL = "中"
-                }else{
-                 el.POINTLEVEL = "高"
+                    el.POINTLEVEL = "中"
+                }else if(el.POINTLEVEL == 2){
+                    el.POINTLEVEL = "高"
                 }
 
                 el.REPORTTIME=th.getLocalTime(el.REPORTTIME)
@@ -292,6 +292,8 @@ class Index extends Component {
                         var el = data.rows[0];
                         if(el.ISOLVE == 1){
                             el.ISOLVE = "是"
+                        }else if(el.ISOLVE == 0){
+                            el.ISOLVE = "否"
                         }else{
                             el.ISOLVE = "否"
                         }
@@ -299,7 +301,7 @@ class Index extends Component {
                             el.POINTLEVEL = "低"
                         }else if(el.POINTLEVEL == 1){
                             el.POINTLEVEL = "中"
-                        }else{
+                        }else if(el.POINTLEVEL == 2){
                             el.POINTLEVEL = "高"
                         }
         
@@ -404,16 +406,18 @@ class Index extends Component {
             }else if(entityJson.POINTLEVEL == "高"){
                 entityJson.POINTLEVEL = "2"
             }
-            if(entityJson.PROJECTNAME == "" || entityJson.AREANAME =="" || entityJson.COMPANYNAME=="" 
-            || entityJson.RISKDESC==""||entityJson.RISKDESC == null || entityJson.RISKEFFECT==""||entityJson.RISKEFFECT==null
-            || entityJson.PROGRESS==""||entityJson.PROGRESS==null || entityJson.POINTLEVEL == "" 
-            || (entityJson.ISOLVE != 0 && entityJson.ISOLVE != 1 && entityJson.ISOLVE != 2) 
-            || entityJson.REPORTTIME=="" || entityJson.REPORTTIME =="0001-01-01" || entityJson.SOLVETIME=="0001-01-01"
-            || entityJson.SOLVETIME=="" || entityJson.OWNER=="" ||entityJson.OWNER==null
-            || entityJson.POST=="" || entityJson.POST==null ){
-                // debugger
-                iss.popover({ content: " * 为必填项！！"});
-                return
+            if(approval=="approval"){
+                if(entityJson.PROJECTNAME == "" || entityJson.AREANAME =="" || entityJson.COMPANYNAME=="" 
+                || entityJson.RISKDESC==""||entityJson.RISKDESC == null || entityJson.RISKEFFECT==""||entityJson.RISKEFFECT==null
+                || entityJson.PROGRESS==""||entityJson.PROGRESS==null || entityJson.POINTLEVEL == "" 
+                || (entityJson.ISOLVE != 0 && entityJson.ISOLVE != 1 && entityJson.ISOLVE != 2) 
+                || entityJson.REPORTTIME=="" || entityJson.REPORTTIME =="0001-01-01" || entityJson.SOLVETIME=="0001-01-01"
+                || entityJson.SOLVETIME=="" || entityJson.OWNER=="" ||entityJson.OWNER==null
+                || entityJson.POST=="" || entityJson.POST==null ){
+                    // debugger
+                    iss.popover({ content: " * 为必填项！！"});
+                    return
+                }
             }
         }
         var isSave = 0;

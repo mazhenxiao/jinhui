@@ -28,6 +28,12 @@ class PriorityTable extends Component {
         if(el.SOLVETIME == "0001-01-01"){
           el.SOLVETIME = ""
         }
+        if(el.ISOLVE == "-1"){
+          el.ISOLVE = ""
+        }
+        if(el.POINTLEVEL == "-1"){
+          el.POINTLEVEL = ""
+        }
       })
       this.setState({
         data:dataL

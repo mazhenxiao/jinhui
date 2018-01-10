@@ -146,7 +146,7 @@ class PriorityForm extends Component {
     }
     GetQueryString(name){
          var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-         var r = window.location.search.substr(1).match(reg);
+         var r = window.location.href.substr(1).match(reg);
          if(r!=null)return  unescape(r[2]); return null;
     }
     getLocalTime(nS) {
@@ -338,6 +338,7 @@ class PriorityForm extends Component {
          
     }   
     renderTable = () =>{
+        var cancel = this.GetQueryString("cancel");
         if(this.props.lookStatus){
             return (
                 <tbody>
@@ -581,7 +582,7 @@ class PriorityForm extends Component {
                         </tbody>
                    
             );
-        }else if(this.props.editData != ""){
+        }else if(this.props.editData != "" || cancel == "cancel" ){
             return (
                 <tbody>
                 <tr>
