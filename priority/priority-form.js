@@ -29,8 +29,8 @@ class PriorityForm extends Component {
                 "RISKEFFECT": null,
                 "PROGRESS": null,
                 "SUPPORT": null,
-                "POINTLEVEL": 1,
-                "ISOLVE": 1,
+                "POINTLEVEL": -1,
+                "ISOLVE": -1,
                 "REPORTTIME": "0001-01-01",
                 "OWNER": null,
                 "USERNAME": null,
@@ -82,14 +82,14 @@ class PriorityForm extends Component {
                         var el = data.rows;
                         if(el.ISOLVE == 1){
                             el.ISOLVE = "是"
-                        }else{
+                        }else if(el.ISOLVE == 0){
                          el.ISOLVE = "否"
                         }
                         if(el.POINTLEVEL == 0){
                          el.POINTLEVEL = "低"
                         }else if(el.POINTLEVEL == 1){
                          el.POINTLEVEL = "中"
-                        }else{
+                        }else if(el.POINTLEVEL == 2){
                          el.POINTLEVEL = "高"
                         }
         
@@ -403,7 +403,7 @@ class PriorityForm extends Component {
                         <label className="formTableLabel boxSizing redFont">重要级别</label>
                     </th>
                     <td>
-                        <Select disabled value={this.state.readOnlyData.POINTLEVEL} onChange={this.selectCallback.bind(this,"POINTLEVEL")} defaultValue="请选择" style={{ width: 300 }}>
+                        <Select disabled value={this.state.readOnlyData.POINTLEVEL=="-1" ? "请选择":this.state.readOnlyData.POINTLEVEL} onChange={this.selectCallback.bind(this,"POINTLEVEL")} defaultValue="请选择" style={{ width: 300 }}>
                             <Option value="-1">请选择</Option>
                             <Option value="0">低</Option>
                             <Option value="1">中</Option>
@@ -533,7 +533,7 @@ class PriorityForm extends Component {
                                     <label className="formTableLabel boxSizing redFont">重要级别</label>
                                 </th>
                                 <td>
-                                    <Input  value={this.state.readOnlyData.POINTLEVEL} style={{ width: 300 }} />
+                                    <Input  value={this.state.readOnlyData.POINTLEVEL=="-1" ? "请选择":this.state.readOnlyData.POINTLEVEL} style={{ width: 300 }} />
                                 </td>
                                 <th>
                                     <label className="formTableLabel boxSizing redFont">是否解决</label>
@@ -656,7 +656,7 @@ class PriorityForm extends Component {
                         <label className="formTableLabel boxSizing redFont">重要级别</label>
                     </th>
                     <td>
-                        <Select value={this.state.readOnlyData.POINTLEVEL} onChange={this.selectCallback.bind(this,"POINTLEVEL")} defaultValue="请选择" style={{ width: 300 }}>
+                        <Select value={this.state.readOnlyData.POINTLEVEL=="-1" ? "请选择":this.state.readOnlyData.POINTLEVEL} onChange={this.selectCallback.bind(this,"POINTLEVEL")} defaultValue="请选择" style={{ width: 300 }}>
                             <Option value="-1">请选择</Option>
                             <Option value="0">低</Option>
                             <Option value="1">中</Option>
@@ -667,7 +667,7 @@ class PriorityForm extends Component {
                         <label className="formTableLabel boxSizing redFont">是否解决</label>
                     </th>
                     <td>
-                        <Select value={this.state.readOnlyData.ISOLVE} onChange={this.selectCallback.bind(this,"ISOLVE")} defaultValue="请选择" style={{ width: 300 }}>
+                        <Select value={this.state.readOnlyData.ISOLVE=="-1" ? "请选择":this.state.readOnlyData.ISOLVE} onChange={this.selectCallback.bind(this,"ISOLVE")} defaultValue="请选择" style={{ width: 300 }}>
                             <Option value="-1">请选择</Option>
                             <Option value="1">是</Option>
                             <Option value="0">否</Option>

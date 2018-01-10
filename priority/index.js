@@ -294,8 +294,6 @@ class Index extends Component {
                             el.ISOLVE = "是"
                         }else if(el.ISOLVE == 0){
                             el.ISOLVE = "否"
-                        }else{
-                            el.ISOLVE = "否"
                         }
                         if(el.POINTLEVEL == 0){
                             el.POINTLEVEL = "低"
