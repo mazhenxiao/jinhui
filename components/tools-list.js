@@ -3,6 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
+import appConfig from '../app.config';
+
 export default class ToolsList extends React.Component {
     constructor(arg) {
         super(arg);
@@ -179,11 +181,19 @@ export default class ToolsList extends React.Component {
                                             onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "sign")}>签约</a></li>
                         <li className=""><a href="javascript:void(0);"
                                             onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "payment")}>回款</a></li>
-                        <li className=""><a href="javascript:void(0);"
-                                            onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "priority")}>重点事项</a></li>
-                        <li className=""><a href="javascript:void(0);"
-                                            onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "primarykey")}>关键指标</a>
-                        </li>
+                        {
+                            appConfig["env"] != "prod" ?
+                                <li className=""><a href="javascript:void(0);"
+                                                    onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "priority")}>重点事项</a>
+                                </li> : null
+                        }
+                        {
+                            appConfig["env"] != "prod" ?
+                                <li className=""><a href="javascript:void(0);"
+                                                    onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "primarykey")}>关键指标</a>
+                                </li> : null
+                        }
+
                         <li><a href="javascript:void(0);"
                                onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "groupbuild")}>项目团队维护</a>
 
@@ -192,7 +202,7 @@ export default class ToolsList extends React.Component {
                 </li>
                 <li>
                     <a href="javascript:void(0);">报表管理</a>
-                    <ol className="subMenu"  style={{minWidth:"260px"}}>
+                    <ol className="subMenu" style={{minWidth: "260px"}}>
                         <li className=""><a href="javascript:void(0);">年度供销存计划汇总(建设中)</a></li>
                         <li className=""><a href="javascript:void(0);">三年销售目标汇总(建设中)</a></li>
                         <li className=""><a href="javascript:void(0);">三年投资计划汇总(建设中)</a></li>
@@ -203,17 +213,18 @@ export default class ToolsList extends React.Component {
 
                 <li>
                     <a href="javascript:void(0);">基础设置</a>
-                    <ol className="subMenu" style={{minWidth:"225px"}}>
+                    <ol className="subMenu" style={{minWidth: "225px"}}>
                         <li className=""><a href={this.state.toURL} target="_blank"
                                             className={this.state.toURL ? "" : "hide"}>标准角色授权</a>
                         </li>
                         <li className=""><a href="javascript:void(0);"
-                                            onClick={this.EVENT_CLICK.bind(this, "basicSetting", "assessmentVersion")}>考核版本设置(建设中)</a></li>
+                                            onClick={this.EVENT_CLICK.bind(this, "basicSetting", "assessmentVersion")}>考核版本设置(建设中)</a>
+                        </li>
                         <li className=""><a href="javascript:void(0);">组织架构维护(建设中)</a></li>
                         <li className=""><a href="javascript:void(0);">字典维护(建设中)</a></li>
                     </ol>
                 </li>
-                 {/* <li className="hide"> 
+                {/* <li className="hide">
                     <a href="#">报表管理</a>
                 </li> */}
 
