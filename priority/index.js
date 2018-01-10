@@ -92,7 +92,39 @@ class Index extends Component {
         const {location} = nextProps;
         const {dataKey,cancel} = nextProps.location.query;
         if(cancel == "cancel"){
-            this.setState({addAatterStatus:true})
+            var th = this;
+            iss.ajax({
+                url: "/ProjectKayPoint/GetProjectKeyPoint",
+                data:{
+                    "id":dataKey
+                },
+                success(data) {
+                        var el = data.rows;
+                        if(el.ISOLVE == 1){
+                            el.ISOLVE = "是"
+                        }else if(el.ISOLVE == 0){
+                         el.ISOLVE = "否"
+                        }
+                        if(el.POINTLEVEL == 0){
+                         el.POINTLEVEL = "低"
+                        }else if(el.POINTLEVEL == 1){
+                         el.POINTLEVEL = "中"
+                        }else if(el.POINTLEVEL == 2){
+                         el.POINTLEVEL = "高"
+                        }
+        
+                        el.REPORTTIME=th.getLocalTime(el.REPORTTIME)
+                        el.SOLVETIME=th.getLocalTime(el.SOLVETIME)
+                        el.LASTUPDATETIME=th.getLocalTime(el.LASTUPDATETIME)
+                    th.setState({
+                        addAatterStatus:true,
+                        editData : el,
+                    })
+                },
+                error() {
+                    message.error('请求失败');
+                }
+            })
         }
         this.SetisApproal(location);
         if(location.state != undefined){

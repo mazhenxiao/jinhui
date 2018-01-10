@@ -63,20 +63,13 @@ class PriorityForm extends Component {
     }
     componentDidMount() {
         
-        var cancel = this.GetQueryString("cancel")
-        if(this.props.current != undefined || cancel == "cancel"){
-            
+        if(this.props.current != undefined){
             var dataID = ""; 
             var th = this;
-            if(cancel == "cancel"){
-                dataID = th.GetQueryString("dataKey")
-            }else{
-                dataID = th.props.readOnly
-            }
             iss.ajax({
                 url: "/ProjectKayPoint/GetProjectKeyPoint",
                 data:{
-                    "id":dataID
+                    "id":th.props.readOnly
                 },
                 success(data) {
                         var el = data.rows;
@@ -874,7 +867,7 @@ class PriorityForm extends Component {
             return this.props.historyData.map((el, ind) => {
                 if(ind != 0){
                     return <tr>
-                                <td>{el.USERNAME}</td>
+                                <td>{el.LASTUPDATENAME}</td>
                                 <td>{el.PROGRESS}</td>
                                 <td>{this.getLocalTime(el.LASTUPDATETIME)}</td>
                                 <td>{this.historyAttachment(el.ATTACHMENT)}</td>
