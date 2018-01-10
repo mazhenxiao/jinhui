@@ -257,7 +257,11 @@ class Index extends Component {
     renderDynamicAdjust = () => {
         const {adjustData, dataKey, permission, adjustDateShow} = this.state;
         //非审批状态下 并且 permission不等于Show时，才可以编辑
-        const buttonPermission = !this.getApprovalStatus() && permission.toLowerCase() != "show";
+        let buttonPermission = !this.getApprovalStatus() && permission.toLowerCase() != "show";
+
+        if (Array.isArray(adjustData.dataSource) && adjustData.dataSource.length === 0) {
+            buttonPermission = false;
+        }
 
         return (
             <article className="toTable">
