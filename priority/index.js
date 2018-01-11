@@ -2,7 +2,7 @@
 import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";
 import React, { Component } from 'react';
-import { Spin, Tabs, Row, Col, Button, Select,Input,Progress,Alert,DatePicker} from 'antd';
+import { Spin, Tabs, Row, Col, Button, Select,Input,Progress,Alert,DatePicker,message} from 'antd';
 import { AreaService,Priority } from '../services';
 import PriorityTable from './priority-table.js';
 import PriorityForm from './priority-form.js';
@@ -90,6 +90,42 @@ class Index extends Component {
     componentWillReceiveProps(nextProps) {
         
         const {location} = nextProps;
+        const {dataKey,cancel} = nextProps.location.query;
+        if(cancel == "cancel"){
+            var th = this;
+            iss.ajax({
+                url: "/ProjectKayPoint/GetProjectKeyPoint",
+                data:{
+                    "id":dataKey
+                },
+                success(data) {
+                        var el = data.rows;
+                        if(el.ISOLVE == 1){
+                            el.ISOLVE = "是"
+                        }else if(el.ISOLVE == 0){
+                         el.ISOLVE = "否"
+                        }
+                        if(el.POINTLEVEL == 0){
+                         el.POINTLEVEL = "低"
+                        }else if(el.POINTLEVEL == 1){
+                         el.POINTLEVEL = "中"
+                        }else if(el.POINTLEVEL == 2){
+                         el.POINTLEVEL = "高"
+                        }
+        
+                        el.REPORTTIME=th.getLocalTime(el.REPORTTIME)
+                        el.SOLVETIME=th.getLocalTime(el.SOLVETIME)
+                        el.LASTUPDATETIME=th.getLocalTime(el.LASTUPDATETIME)
+                    th.setState({
+                        addAatterStatus:true,
+                        editData : el,
+                    })
+                },
+                error() {
+                    message.error('请求失败');
+                }
+            })
+        }
         this.SetisApproal(location);
         if(location.state != undefined){
             const nextDataKey = location.state.id || "";
@@ -163,8 +199,13 @@ class Index extends Component {
         this.rowSelection()
     };
 
-    getLocalTime(nS) {     
-        return new Date(parseInt((/\d+/ig).exec(nS)[0])).Format("yyyy-MM-dd")     
+    getLocalTime(nS) {
+        if(nS == "/Date(-62135596800000)/" || nS == "/Date(62135596800000)/"){
+            return "0001-01-01"
+        }else{
+            return new Date(parseInt((/\d+/ig).exec(nS)[0])).Format("yyyy-MM-dd")
+        }
+           
     }     
     rowSelection =()=> {
         var th =this;
@@ -192,15 +233,15 @@ class Index extends Component {
             dataList.forEach((el,ind) => {
                 if(el.ISOLVE == 1){
                     el.ISOLVE = "是"
-                }else{
-                 el.ISOLVE = "否"
+                }else if(el.ISOLVE == 0){
+                    el.ISOLVE = "否"
                 }
                 if(el.POINTLEVEL == 0){
-                 el.POINTLEVEL = "低"
+                    el.POINTLEVEL = "低"
                 }else if(el.POINTLEVEL == 1){
-                 el.POINTLEVEL = "中"
-                }else{
-                 el.POINTLEVEL = "高"
+                    el.POINTLEVEL = "中"
+                }else if(el.POINTLEVEL == 2){
+                    el.POINTLEVEL = "高"
                 }
 
                 el.REPORTTIME=th.getLocalTime(el.REPORTTIME)
@@ -279,18 +320,18 @@ class Index extends Component {
                             }
                             data.rows[0].ID = null
                         }
-                        data.rows[0].APPROVESTATUS = 0
+                        
                         var el = data.rows[0];
                         if(el.ISOLVE == 1){
                             el.ISOLVE = "是"
-                        }else{
+                        }else if(el.ISOLVE == 0){
                             el.ISOLVE = "否"
                         }
                         if(el.POINTLEVEL == 0){
                             el.POINTLEVEL = "低"
                         }else if(el.POINTLEVEL == 1){
                             el.POINTLEVEL = "中"
-                        }else{
+                        }else if(el.POINTLEVEL == 2){
                             el.POINTLEVEL = "高"
                         }
         
@@ -381,8 +422,8 @@ class Index extends Component {
                 "ATTACHMENT": this.PriorityFormDat.ATTACHMENT,
             }
         }else{
-            // debugger
             entityJson = this.state.editData;
+            entityJson.APPROVESTATUS = 0
             if(entityJson.ISOLVE == "是"){
                 entityJson.ISOLVE = "1"
             }else if(entityJson.ISOLVE == "否") {
@@ -395,13 +436,18 @@ class Index extends Component {
             }else if(entityJson.POINTLEVEL == "高"){
                 entityJson.POINTLEVEL = "2"
             }
-            if(entityJson.PROJECTNAME == "" || entityJson.AREANAME =="" || entityJson.COMPANYNAME=="" 
-            || entityJson.RISKDESC=="" || entityJson.RISKEFFECT=="" || entityJson.PROGRESS=="" || entityJson.POINTLEVEL == "" 
-            || (entityJson.ISOLVE != 0 && entityJson.ISOLVE != 1 && entityJson.ISOLVE != 2) || entityJson.REPORTTIME=="" || entityJson.SOLVETIME=="" || entityJson.OWNER=="" 
-            || entityJson.POST==""){
-                // debugger
-                iss.popover({ content: " * 为必填项！！"});
-                return
+            if(approval=="approval"){
+                if(entityJson.PROJECTNAME == "" || entityJson.AREANAME =="" || entityJson.COMPANYNAME=="" 
+                || entityJson.RISKDESC==""||entityJson.RISKDESC == null || entityJson.RISKEFFECT==""||entityJson.RISKEFFECT==null
+                || entityJson.PROGRESS==""||entityJson.PROGRESS==null || entityJson.POINTLEVEL == "" 
+                || (entityJson.ISOLVE != 0 && entityJson.ISOLVE != 1 && entityJson.ISOLVE != 2) 
+                || entityJson.REPORTTIME=="" || entityJson.REPORTTIME =="0001-01-01" || entityJson.SOLVETIME=="0001-01-01"
+                || entityJson.SOLVETIME=="" || entityJson.OWNER=="" ||entityJson.OWNER==null
+                || entityJson.POST=="" || entityJson.POST==null ){
+                    // debugger
+                    iss.popover({ content: " * 为必填项！！"});
+                    return
+                }
             }
         }
         var isSave = 0;
@@ -411,15 +457,16 @@ class Index extends Component {
             isSave = 0
         }
         Priority.ProjectKayPointSave({
-           "entityJson":JSON.stringify(entityJson),
+           "entityJson":encodeURIComponent(JSON.stringify(entityJson)),
            "isSave":isSave
         })
         .then(data=>{
             var status = iss.getEVal("priority");
             if(approval=="approval"){
                 $(window).trigger("treeLoad");
-                location.href=`/Index/#/ProcessApproval?e=`+status+`&dataKey=`+data+`&current=ProcessApproval&areaId=&areaName=&readOnly=`+data+`&cancel`;    
+                location.href=`/Index/#/ProcessApproval?e=`+status+`&dataKey=`+data+`&current=ProcessApproval&areaId=&areaName=&readOnly=`+data+`&cancel=cancel`;    
             }else{
+                iss.popover({ content: "保存成功", type: 2 });
                 this.handleLocalSearch()
             }
             this.setState({
@@ -429,7 +476,7 @@ class Index extends Component {
             
         })
         .catch(err=>{
-            console.log("失败")
+            message.error('请求失败');
         })
 
         
@@ -653,7 +700,10 @@ class Index extends Component {
     render() {
         let {state,current,dataKey,readOnly,cancel}=this.props.location.query;
         if (this.props.location.state == undefined && !current) {
-            return this.renderEmpty();
+            
+            if(cancel != "cancel"){
+                return this.renderEmpty();
+            }
         }
         return (
             <div className="priorityData">

@@ -19,8 +19,24 @@ class PriorityTable extends Component {
          
     }
     componentWillReceiveProps(nextProps) {
+      
+      var dataL = nextProps.dataList
+      dataL.forEach((el,ind)=>{
+        if(el.REPORTTIME == "0001-01-01"){
+          el.REPORTTIME = ""
+        }
+        if(el.SOLVETIME == "0001-01-01"){
+          el.SOLVETIME = ""
+        }
+        if(el.ISOLVE == "-1"){
+          el.ISOLVE = ""
+        }
+        if(el.POINTLEVEL == "-1"){
+          el.POINTLEVEL = ""
+        }
+      })
       this.setState({
-        data:nextProps.dataList
+        data:dataL
       })
       
     }
@@ -156,16 +172,25 @@ class PriorityTable extends Component {
               }]; 
             return columns
       }
-      getData =()=>{ //表格内容数据
-            var data = this.props.dataList;
-            return data
-      }
+      // getData =()=>{ //表格内容数据
+      //       var data = this.props.dataList;
+      //       console.log(data)
+      //       data.forEech((el,ind)=>{
+      //         if(el.REPORTTIME == "0001-01-01"){
+      //           el.REPORTTIME = ""
+      //         }
+      //         if(el.SOLVETIME == "0001-01-01"){
+      //           el.SOLVETIME = ""
+      //         }
+      //       })
+      //       return data
+      // }
 
       
       render() {
           // pagination 是否分页，columns头部标题数据，dataSource表内容数据
           return (
-              <Table 
+              <Table
                   rowClassName={(record, index) => record.APPROVESTATUS == "1" ? "underWay" : record.APPROVESTATUS == "99" ? "success":"edit"}
                   columns={this.columns||[]}
                   dataSource={this.state.data||[]} 

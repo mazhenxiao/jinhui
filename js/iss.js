@@ -59,7 +59,7 @@ class $iss {
             cache: 'no-cache',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
             }
         };
         let _URL = url.replace(/^\\/ig, "");

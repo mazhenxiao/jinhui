@@ -391,10 +391,10 @@ class ApprovalControlNode extends React.Component {
                 search: `?status=edit&dataKey=${businessId}&e=${e}&isProOrStage=${this.props.allSearchArg.isProOrStage}`
             }); 
            // location.href = `${location.origin}${location.pathname.replace(/\/$/ig, "")}/#/${url}?status=edit&dataKey=${businessId}&e=${e}&isProOrStage=${this.props.allSearchArg.isProOrStage}`
-        }else if (cancel==null) {
+        }else if (cancel=="cancel") {
             iss.hashHistory.replace({
                pathname: `/${url}`,
-               search: `?status=edit&dataKey=${this.props.allSearchArg.dataKey}&e=${this.props.allSearchArg.e}&cancel`
+               search: `?status=edit&dataKey=${this.props.allSearchArg.dataKey}&e=${this.props.allSearchArg.e}&cancel=cancel`
            }); 
           // location.href = `${location.origin}${location.pathname.replace(/\/$/ig, "")}/#/${url}?status=edit&dataKey=${businessId}&e=${e}&isProOrStage=${this.props.allSearchArg.isProOrStage}`
         }else {

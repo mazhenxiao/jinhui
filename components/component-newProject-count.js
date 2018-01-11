@@ -25,7 +25,8 @@ class NewProjectCount extends React.Component {
             "iframeURL1":"",/*地理位置*/
             "iframeURL2":"",/*项目总图*/
             "checkName": false,   //项目名称冲突
-            "CREATETIME":""//项目创建时间
+            "CREATETIME":"",//项目创建时间
+            "PROJECTGETSTATE":[]
             // "cityCompany":iss.id.text,
         }
         iss.hashHistory.listen((local, next) => {});
@@ -79,6 +80,7 @@ class NewProjectCount extends React.Component {
                 let {
                     PRINCIPALNAME,ObtainStatusName,CompanyAreaId,CompanyAreaName,CompanyCityName,APPROVETIME
                     }=res.rows.BaseFormInfo;
+                let {PROJECTGETSTATE}=res.rows.SelectOptions;
                     th.editProjectOldName=(PROJECTNAME||"").toString()
                 th.setState({
                     "PROJECTNAME": PROJECTNAME,//项目名称
@@ -98,6 +100,7 @@ class NewProjectCount extends React.Component {
                     "CITY": CITY,
                     "CREATETIME":CREATETIME,//项目创建时间
                     "APPROVETIME":APPROVETIME,//审批通过时间
+                    "PROJECTGETSTATE":PROJECTGETSTATE
                     //"ID":res.rows.BaseFormInfo.Project.ID,
                 }, arg => {
                     th.bind_combobox(res);
@@ -458,7 +461,12 @@ class NewProjectCount extends React.Component {
                                     <th>
                                         <label className="formTableLabel boxSizing">获取状态</label>
                                     </th>
-                                    <td id="ObtainStatusName">{this.state.ObtainStatusName}</td>
+                                    {
+                                        this.state.ObtainStatusName!= "拟获取"?
+                                        <td id="ObtainStatusName">{this.state.ObtainStatusName}</td>:
+                                        <td id="PROJECTGETSTATE"><input type="text" id="PROJECTGETSTATE" className="easyui-combobox easyui-validatebox" data-options="validType:'selected'" /></td>
+                                    }
+                                    
                                 </tr>
                                 <tr>
                                     <th>
