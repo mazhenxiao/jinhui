@@ -2,8 +2,6 @@ import {message, notification,Calendar } from 'antd';
 import "babel-polyfill";  //兼容ie  
 import 'whatwg-fetch';//兼容ie fetch
 import appConfig from '../app.config';
-import "../css/antd.min.css";
-
 class $iss {
     constructor() {
         this.pagination();
