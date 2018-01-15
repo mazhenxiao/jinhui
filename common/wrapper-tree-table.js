@@ -328,14 +328,21 @@ class WrapperTreeTable extends Component {
     handleInputChange = (record, key, column) => {
         return (e) => {
             let value = e.target.value;
-                value = value.replace(/\s*/ig,"");
-            if (value&&!numberReg.test(value)) {
+            value = value.replace(/\s*/ig, "");
+            if (value && !numberReg.test(value)) {
                 value = parseFloat(value).toFixed(2);
             }
             record[key] = value;
             this.props.onDataChange && this.props.onDataChange(record.KEY, key, value, record, column);
             this.forceUpdate();
         };
+    };
+
+    formatToFixed = (value) => {
+        if (!!value && !isNaN(value) && value.toString().indexOf(".") > -1) {
+            return parseFloat(value).toFixed(2)
+        }
+        return value;
     };
 
     getColumns = (headerData) => {
@@ -356,26 +363,14 @@ class WrapperTreeTable extends Component {
             //render
             if (index != 0) {
                 column.render = (text, record) => {
-                    return <span className="wrapper-tree-text-center">{text ? text : "-"}</span>
+                    let formatText = this.formatToFixed(text);
+                    return <span className="wrapper-tree-text-center">{formatText ? formatText : "-"}</span>
                 };
             }
 
             if (columnRender && columnRender[headerItem.field]) {
                 column.render = columnRender[headerItem.field];
             }
-
-            // column.render = (text, record) => {
-            //     if (headerItem.edit !== "+w") {
-            //         return text;
-            //     }
-            //
-            //     if (editMode) {
-            //         editMode === "LastLevel"
-            //     }
-            //
-            //     return <Input onChange={this.handleInputChange(record, headerItem.field, headerItem)}
-            //                   value={text}/>;
-            // };
 
             if (headerItem.children && Array.isArray(headerItem.children) && headerItem.children.length > 0) {
                 column.children = this.getChildColumns(columnArray, headerItem);
@@ -416,7 +411,8 @@ class WrapperTreeTable extends Component {
             };
 
             childColumn.render = (text, record) => {
-                return <span className="wrapper-tree-text-center">{text ? text : "-"}</span>
+                let formatText = this.formatToFixed(text);
+                return <span className="wrapper-tree-text-center">{formatText ? formatText : "-"}</span>
             };
 
             if (columnRender && columnRender[childHeaderItem.field]) {
@@ -425,8 +421,10 @@ class WrapperTreeTable extends Component {
 
             if (editState) {
                 childColumn.render = (text, record) => {
+                    let formatText = this.formatToFixed(text);
+
                     if (childHeaderItem.edit !== "+w") {
-                        return text;
+                        return formatText;
                     }
 
                     //如果是末级编辑模式
@@ -434,14 +432,14 @@ class WrapperTreeTable extends Component {
                         if (!record.children) {
                             return <Input
                                 onChange={this.handleInputChange(record, childHeaderItem.field, childHeaderItem)}
-                                value={text}/>;
+                                value={formatText}/>;
                         } else {
-                            return text;
+                            return formatText;
                         }
                     }
 
                     return <Input onChange={this.handleInputChange(record, childHeaderItem.field, childHeaderItem)}
-                                  value={text}/>;
+                                  value={formatText}/>;
                 };
             }
 
@@ -466,6 +464,8 @@ class WrapperTreeTable extends Component {
     };
 
     render() {
+
+        console.log("render..........................................................");
 
         const {headerData, dataSource, rowKey, defaultHeight, showHeader} = this.props;
         let tableColumns = this.getColumns(headerData);
