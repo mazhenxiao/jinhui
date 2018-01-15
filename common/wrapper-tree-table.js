@@ -464,9 +464,6 @@ class WrapperTreeTable extends Component {
     };
 
     render() {
-
-        console.log("render..........................................................");
-
         const {headerData, dataSource, rowKey, defaultHeight, showHeader} = this.props;
         let tableColumns = this.getColumns(headerData);
         // if (dataSource && dataSource.length > 0) {
