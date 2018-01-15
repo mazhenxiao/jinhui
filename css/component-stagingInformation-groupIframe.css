@@ -1,3 +1,6 @@
+/*
+划分组团component-stagingInformation-groupiframe    `
+*/
 .addGroup {
   padding: 5px;
   border-bottom: 1px #eee solid;
@@ -91,6 +94,7 @@
   height: 100%;
   float: left;
   padding-right: 10px;
+  overflow: auto;
 }
 .groupFloor li {
   float: left;
