@@ -70,7 +70,6 @@ var config = {
             // include: [/echarts\.min\.js/, /chunk\.js/, /chunk\-component\-echarts\.js/, /jinhui\-Index\.js/],
             output: {
                 comments: false,   // remove all comments
-                warnings: false,
                 drop_debugger: true,
                 drop_console: true
             },

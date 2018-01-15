@@ -60,7 +60,6 @@ var config = {
         new compress({
             output: {
                 comments: false,   // remove all comments
-                warnings: false,
                 drop_debugger: true,
                 drop_console: true
             },
