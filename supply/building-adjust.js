@@ -502,7 +502,7 @@ class BuildingAdjust extends Component {
                     title: this.setAlignCenter(`${i}月`),
                     dataIndex: `${currentYear}-${i}`,
                     key: `${currentYear}-${i}`,
-                    width: 60,
+                    width: 80,
                     render: this.fillMonthColor(currentYear, i),
                 });
             }
