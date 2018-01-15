@@ -171,6 +171,13 @@ class PercentAdjust extends Component {
         return <span className="header-center">{name}</span>;
     };
 
+    formatToFixed = (value) => {
+        if (!!value && !isNaN(value) && value.toString().indexOf(".") > -1) {
+            return parseFloat(value).toFixed(2)
+        }
+        return value;
+    };
+
     /**
      * 动态获取列信息
      */
@@ -213,12 +220,20 @@ class PercentAdjust extends Component {
                 dataIndex: 'SaleArea',
                 key: 'SaleArea',
                 width: 120,
+                render: (text, record, index) => {
+                    let formatText = this.formatToFixed(text);
+                    return formatText;
+                }
             },
             {
                 title: this.setAlignCenter("已选可售货值(万元)"),
                 dataIndex: 'Monery',
                 key: 'Monery',
                 width: 120,
+                render: (text, record, index) => {
+                    let formatText = this.formatToFixed(text);
+                    return formatText;
+                }
             },
             {
                 title: this.setAlignCenter("供货日期"),
