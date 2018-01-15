@@ -74,7 +74,7 @@ var config = {
             compress: {
                 warnings: false,
                 drop_debugger: true,
-                drop_console: true
+                // drop_console: true
             }
         }),
         new CompressionWebpackPlugin({ //gzip 压缩
