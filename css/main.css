@@ -962,6 +962,7 @@ a:hover {
   overflow: initial;
 }
 .JH-Content .JH-Nav .JH-LeftNav .treeBox {
+  min-height: 460px;
   overflow: hidden;
   position: relative;
   top: 0;
