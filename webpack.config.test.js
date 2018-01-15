@@ -70,10 +70,11 @@ var config = {
             // include: [/echarts\.min\.js/, /chunk\.js/, /chunk\-component\-echarts\.js/, /jinhui\-Index\.js/],
             output: {
                 comments: false,   // remove all comments
-                drop_console: true
             },
             compress: {
-                warnings: false
+                warnings: false,
+                drop_debugger: true,
+                drop_console: true
             }
         }),
         new CompressionWebpackPlugin({ //gzip 压缩
