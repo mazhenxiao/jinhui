@@ -90,8 +90,8 @@ export default class WrapperGroupTable extends Component {
             }
 
             if (editState && !column.render) {
-                let formatText = this.formatToFixed(text);
                 column.render = (text, record) => {
+                    let formatText = this.formatToFixed(text);
                     if (item.edit !== "+w") {
                         return formatText;
                     }
