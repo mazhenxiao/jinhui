@@ -39,15 +39,15 @@
 }
 .priorityData .ant-table .ant-table-tbody .success td:last-child {
   background: url("../../img/success.png") no-repeat center left 5px;
-  padding-left: 18px;
+  padding-left: 5px;
 }
 .priorityData .ant-table .ant-table-tbody .edit td:last-child {
   background: url("../../img/edit.png") no-repeat center left 5px;
-  padding-left: 18px;
+  padding-left: 5px;
 }
 .priorityData .ant-table .ant-table-tbody .underWay td:last-child {
   background: url("../../img/under_way.png") no-repeat center left 5px;
-  padding-left: 18px;
+  padding-left: 5px;
 }
 .priorityData .ant-table-tbody > tr > td,
 .priorityData .ant-table-thead > tr > th {
