@@ -80,7 +80,7 @@ class GroupIframe extends React.Component{
         const target = ev.currentTarget;
     
         delAr.forEach((el,ind) =>{
-            if(arr.indexOf(el.groupnumber) == -1){
+            if(arr.indexOf(el.groupnumber) == -1 && el.groupnumber!=200){
                 arr.push(el.groupnumber)
             }
         })
@@ -92,7 +92,7 @@ class GroupIframe extends React.Component{
                     el.delete = "del";
                 }
             }
-            if(el.groupnumber > da){
+            if(el.groupnumber > da  && el.groupnumber!=200){
                 el.groupnumber = el.groupnumber - 1;
 
             }
@@ -167,13 +167,12 @@ class GroupIframe extends React.Component{
              if(th._group.indexOf(th.state.dataList[i].groupnumber)==-1){ 
                  th._group.push(th.state.dataList[i].groupnumber);
              }
-             if(th._group.indexOf(th.state.dataList[i].groupId)==-1){
                 var obj = {
                     "groupId":th.state.dataList[i].groupId,
                     "groupnumber":th.state.dataList[i].groupnumber
                 };
                 th._nData.push(obj)
-            }
+            
          }
          th._group.sort(function sortNumber(a,b)
          {
@@ -196,7 +195,6 @@ class GroupIframe extends React.Component{
 
     //复选框
     inputChange(ind,el,ev){
-   
         const target = ev.target;
         var th = this,
             domType = target.type === 'checkbox' ? target.checked : target.value,
@@ -207,6 +205,7 @@ class GroupIframe extends React.Component{
             th._nData.forEach((el,ind) => {
                 if(n==el.groupnumber){
                     idN = el.groupId
+                    return
                 }
             })
             if(domType){
@@ -236,7 +235,6 @@ class GroupIframe extends React.Component{
             }else{
                 brr.forEach((el,ind) =>{
                     if(el.buildingName == text){
-
                         el.groupName = "nomapping",
                         el.groupnumber = el.iscartproducttype == 1 ? 200 : 0,
                         el.groupId = null;
@@ -245,6 +243,7 @@ class GroupIframe extends React.Component{
                 brr.forEach((el,ind) =>{
                     newBr.push(el.groupnumber)
                 })
+                console.log(brr)
                 if(newBr.indexOf(n) == -1){
                     var kongId = "";
                     th._nData.forEach((el,ind) => {
@@ -274,7 +273,7 @@ class GroupIframe extends React.Component{
             if(th.state.dataList.length != 0){ 
                 return th.state.dataList.map((el, ind) => {
                     let id = el.groupnumber; 
-                    if(id == th.state.index && null!=el.buildingName && id != 0 && id !=200){
+                    if(id == th.state.index && null!=el.buildingName && id != 0 && id!=200){
                         
                         return <li key={ind} className='toggle-checkbox'>
                                     <input type="checkbox" checked={true} id={"check"+ind} onChange={this.inputChange.bind(this,ind,el)} />
@@ -285,13 +284,12 @@ class GroupIframe extends React.Component{
                                     
                             </li>
                     }else if(id == 0 && null!=el.buildingName){
-    
+                        
                         if(th.state.index == 0){
                             return <li key={ind}>
                                         <span className="buildingName">{el.buildingName}</span>
                                 </li>
                         }else{
-                            if(th.state.index != 200){
                                 return <li key={ind} className='toggle-checkbox'>
                                         <input type="checkbox" id={"check"+ind} checked={false} onChange={this.inputChange.bind(this,ind,el)} />
                                         <label className="track" htmlFor={"check"+ind}>
@@ -300,28 +298,38 @@ class GroupIframe extends React.Component{
                                         </label>
                                         
                                         </li>
-                            }
                             
                         }   
                     }else if(id == 200 && null!=el.buildingName){
-                        if(th.state.index == 200){
-                            return <li key={ind}>
-                                        <span className="buildingName">{el.buildingName}</span>
-                                </li>
-                        }else{
-                            if(th.state.index != 0){
-                            return <li key={ind} className='toggle-checkbox'>
-                                        <input type="checkbox" id={"check"+ind} checked={false} onChange={this.inputChange.bind(this,ind,el)} />
+                            
+                                if(th.state.index != 0){
+                                    if(th.state.index == 200){
+                                        return <li key={ind} className='toggle-checkbox'>
+                                        <input type="checkbox" id={"check"+ind} checked={el.groupId == null?false:true} onChange={this.inputChange.bind(this,ind,el)} />
                                         <label className="track" htmlFor={"check"+ind}>
                                             <span className="icon"></span>
                                             <span className="buildingName">{el.buildingName}</span>
                                         </label>
                                         
-                                </li>
-                            }
-                        }  
-                    }
-                    
+                                        </li>
+                                    }else{
+                                        if(el.groupId == null){
+                                            return <li key={ind} className='toggle-checkbox'>
+                                            <input type="checkbox" id={"check"+ind} checked={false} onChange={this.inputChange.bind(this,ind,el)} />
+                                            <label className="track" htmlFor={"check"+ind}>
+                                                <span className="icon"></span>
+                                                <span className="buildingName">{el.buildingName}</span>
+                                            </label>
+                                            
+                                            </li>
+                                        }
+                                        
+                                    }
+                                    
+                                }
+                                    
+                            
+                        }
                 })
             
             }
@@ -343,7 +351,7 @@ class GroupIframe extends React.Component{
             newAr = [],
             newId = iss.guid()
         for(var i=0;i<_len;i++){
-            if(newAr.indexOf(this.state.dataList[i].groupnumber)==-1){
+            if(newAr.indexOf(this.state.dataList[i].groupnumber)==-1 && this.state.dataList[i].groupnumber!=200){
                 newAr.push(this.state.dataList[i].groupnumber)
             }
         }
