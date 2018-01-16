@@ -46,9 +46,9 @@ export default class WrapperGroupTable extends Component {
         return (e) => {
             const {headerData, dataSource} = this.props;
             let value = e.target.value;
-            value = value.replace(/\s*/ig,"");
-            if (value&&!numberReg.test(value)) {
-                value = parseFloat(value).toFixed(2);;
+            value = value.replace(/\s*/ig, "");
+            if (value && !numberReg.test(value)) {
+                value = parseFloat(value).toFixed(2);
             }
             record[key] = value;
             knife.setTableExec(column, headerData, dataSource);
@@ -56,6 +56,13 @@ export default class WrapperGroupTable extends Component {
             this.props.onDataChange && this.props.onDataChange(record.KEY, key, value);
             this.forceUpdate();
         };
+    };
+
+    formatToFixed = (value) => {
+        if (!!value && !isNaN(value) && value.toString().indexOf(".") > -1) {
+            return parseFloat(value).toFixed(2)
+        }
+        return value;
     };
 
     getColumns = (headerData) => {
@@ -83,14 +90,16 @@ export default class WrapperGroupTable extends Component {
             }
 
             if (editState && !column.render) {
+                let formatText = this.formatToFixed(text);
                 column.render = (text, record) => {
                     if (item.edit !== "+w") {
-                        return text;
+                        return formatText;
                     }
                     //是否是停车场
                     const isPark = record.ISPARK == "1" ? true : false;
                     return <Input placeholder={isPark ? tipMessage : ""}
-                                  onChange={this.handleInputChange(record, item.field, item)} value={text}/>;
+                                  onChange={this.handleInputChange(record, item.field, item)}
+                                  value={formatText}/>;
                 };
             }
             if (item.children && Array.isArray(item.children) && item.children.length > 0) {
@@ -125,14 +134,20 @@ export default class WrapperGroupTable extends Component {
             //提示信息
             const tipMessage = childItem.tig;
 
+            childColumn.render = (text, record) => {
+                let formatText = this.formatToFixed(text);
+                return formatText;
+            };
+
             if (editState) {
                 childColumn.render = (text, record) => {
+                    let formatText = this.formatToFixed(text);
                     if (childItem.edit !== "+w") {
-                        return text;
+                        return formatText;
                     }
 
-
-                    return <Input onChange={this.handleInputChange(record, childItem.field)} value={text}/>;
+                    return <Input onChange={this.handleInputChange(record, childItem.field)}
+                                  value={formatText}/>;
                 };
             }
 

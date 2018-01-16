@@ -196,6 +196,13 @@ class BuildingAdjust extends Component {
         return <span className="header-center">{name}</span>;
     };
 
+    formatToFixed = (value) => {
+        if (!!value && !isNaN(value) && value.toString().indexOf(".") > -1) {
+            return parseFloat(value).toFixed(2)
+        }
+        return value;
+    };
+
     /**
      * 根据筛选条件, 筛选数据源
      * filterGroup: "",//筛选组团
@@ -446,10 +453,10 @@ class BuildingAdjust extends Component {
                 dataIndex: 'SourceSaleArea',
                 key: 'SourceSaleArea',
                 width: 100,
-                // render: this.renderColumnContent.bind(this)
                 render: (text, row, index) => {
+                    let formatText = this.formatToFixed(text);
                     if (index < this.innerSupplyData.length - 2) {
-                        return text;
+                        return formatText;
                     }
                     return {
                         children: <span></span>,
@@ -495,7 +502,7 @@ class BuildingAdjust extends Component {
                     title: this.setAlignCenter(`${i}月`),
                     dataIndex: `${currentYear}-${i}`,
                     key: `${currentYear}-${i}`,
-                    width: 60,
+                    width: 80,
                     render: this.fillMonthColor(currentYear, i),
                 });
             }
@@ -601,8 +608,9 @@ class BuildingAdjust extends Component {
     };
 
     renderColumnContent = (value, row, index) => {
+        let formatValue = this.formatToFixed(value);
         const obj = {
-            children: value,
+            children: formatValue,
             props: {},
         };
         if (index === this.innerSupplyData.length - 1 || index === this.innerSupplyData.length - 2) {
