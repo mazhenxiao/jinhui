@@ -298,6 +298,7 @@ class StagingInformation extends React.Component {
         		iss.popover({ content: "请先暂存分期信息"});
         		return false;
         }
+        
         iss.Alert({
             title:"组团划分",
             width:600,
@@ -306,14 +307,12 @@ class StagingInformation extends React.Component {
             okVal:okVal,
             cancel:"取消",
             ok(da){
-                
                 let checkid="";
                 if(th.props.location.query["dataKey"]){
                     checkid=th.props.location.query["dataKey"];
                 }else{
                     checkid = th.state.STAGEVERSIONID
                 }
-                //var stageversionid = th.state.STAGEVERSIONID,
                 var stageversionid = checkid,
                     newGroup = [],
                     buildingGroupMapping = [],
@@ -355,7 +354,7 @@ class StagingInformation extends React.Component {
                         buildingGroupMapping.push(oldG)
                     }
                     
-                    if(valueNumber.indexOf(el.groupnumber) == -1){
+                    if(valueNumber.indexOf(el.groupnumber) == -1 && el.groupnumber!=200){
                         valueNumber.push(el.groupnumber)
                     }
                 })

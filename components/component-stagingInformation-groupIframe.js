@@ -45,13 +45,6 @@ class GroupIframe extends React.Component{
                 if(null != data.rows){
                     var arr = [],rows=[],parkingLot=[]
                     data.rows.forEach((el,ind) => {
-                        if(el.groupnumber != 200){
-                            rows.push(el)
-                        }else{
-                            parkingLot.push(el)
-                        }
-                    })
-                    rows.forEach((el,ind) => {
                         arr.push(el.groupnumber)
                     })
                     if(arr.indexOf(1) == -1){
@@ -64,10 +57,10 @@ class GroupIframe extends React.Component{
                             "buildingName": null,
                             "current": "new"
                         }
-                        rows.push(addObj)
+                        data.rows.push(addObj)
                     }
                     th.setState({
-                        dataList: rows,
+                        dataList: data.rows,
                         parkingLot:parkingLot,
                         _group:th._group
                     });
@@ -243,8 +236,9 @@ class GroupIframe extends React.Component{
             }else{
                 brr.forEach((el,ind) =>{
                     if(el.buildingName == text){
+
                         el.groupName = "nomapping",
-                        el.groupnumber = 0,
+                        el.groupnumber = el.iscartproducttype == 1 ? 200 : 0,
                         el.groupId = null;
                     }
                 })
@@ -276,13 +270,7 @@ class GroupIframe extends React.Component{
     //楼栋
     groupFloor() {
         var th = this;
-        if(th.state.index == 200){
-            return th.state.parkingLot.map((el,ind)=>{
-                return <li key={ind}>
-                            <span className="buildingName">{el.buildingName}</span>
-                    </li>
-            })
-        }else{
+        
             if(th.state.dataList.length != 0){ 
                 return th.state.dataList.map((el, ind) => {
                     let id = el.groupnumber; 
@@ -303,6 +291,25 @@ class GroupIframe extends React.Component{
                                         <span className="buildingName">{el.buildingName}</span>
                                 </li>
                         }else{
+                            if(th.state.index != 200){
+                                return <li key={ind} className='toggle-checkbox'>
+                                        <input type="checkbox" id={"check"+ind} checked={false} onChange={this.inputChange.bind(this,ind,el)} />
+                                        <label className="track" htmlFor={"check"+ind}>
+                                            <span className="icon"></span>
+                                            <span className="buildingName">{el.buildingName}</span>
+                                        </label>
+                                        
+                                        </li>
+                            }
+                            
+                        }   
+                    }else if(id == 200 && null!=el.buildingName){
+                        if(th.state.index == 200){
+                            return <li key={ind}>
+                                        <span className="buildingName">{el.buildingName}</span>
+                                </li>
+                        }else{
+                            if(th.state.index != 0){
                             return <li key={ind} className='toggle-checkbox'>
                                         <input type="checkbox" id={"check"+ind} checked={false} onChange={this.inputChange.bind(this,ind,el)} />
                                         <label className="track" htmlFor={"check"+ind}>
@@ -311,14 +318,14 @@ class GroupIframe extends React.Component{
                                         </label>
                                         
                                 </li>
-                        }
-                        
+                            }
+                        }  
                     }
                     
                 })
             
             }
-        }
+        
         
         
         

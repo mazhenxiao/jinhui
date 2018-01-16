@@ -7,10 +7,10 @@ import { AreaService,Priority } from '../services';
 import PriorityTable from './priority-table.js';
 import PriorityForm from './priority-form.js';
 import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
-require("../css/tools-processBar.less");
-require("../css/button.less");
-require("../area/areaCss/areaManage.less");
-
+import "../css/tools-processBar.less";
+import "../css/button.less";
+import "../area/areaCss/areaManage.less";
+import "../css/antd.min.css"
 
 class Index extends Component {
     state = {
