@@ -142,7 +142,7 @@ class $iss {
         }
         $.support.cors = true;
         return $.ajax(arg).done((da) => {
-
+           
             var _da = da;
             if (typeof da == "string") {
                 _da = JSON.parse(da);
@@ -161,11 +161,12 @@ class $iss {
                 iss.popover({content: "操作失败，请联系后台工作人员！"});
                 return false;
             }else if(_da["errorcode"]=="500"){
-                opt["error"] && opt.error(_da,_da);
-             /*    iss.tip({
-                    type:"error",
-                    description:`未获取到页面数据`
-                }); */
+                if(opt["error"]){
+                    opt.error(_da,_da);
+                }else{
+                    iss.error(`${_da["message"]? _da["message"]:"操作失败，请联系后台工作人员!"}`);
+                }
+           
                 console.log("ajaxError500",_da)
               //  $.Deferred().reject(_da);
             } else if (_da) {
