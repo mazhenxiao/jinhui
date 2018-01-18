@@ -4,18 +4,39 @@ import iss from '../js/iss';
  * 参数
  * KPI/IGetTargetBaseInfo?id=
  */
-export const IGetTargetBaseInfo = (id) => {
+export const IGetTargetBaseInfo = (stageVersionId) => {
         return iss.fetch({
             url: "/KPI/IGetTargetBaseInfo",
             type: "get",
             data: {
-                id
+                stageVersionId
             }
         })
         .then(ThenListener)
         .catch(ERROR)
     };
 
+//目标保存
+export const ISaveTargetInfo = (data) => {
+    return iss.fetch({
+        url: "/KPI/ISaveTargetInfo",
+        type: "post",
+        data,
+    })
+    .then(ThenListener)
+    .catch(ERROR)
+};
+
+
+export const IGetDynamicBaseInfo = (data) => {
+    return iss.fetch({
+        url: "/KPI/IGetDynamicBaseInfo",
+        type: "get",
+        data,
+    })
+    .then(ThenListener)
+    .catch(ERROR)
+};
 
 /**
  * 统一处理

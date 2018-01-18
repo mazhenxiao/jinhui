@@ -37,7 +37,9 @@ class ProcessApprovalTab extends React.Component {
                 {id: "priority", url: "/AreaInfo/priority"},//重点事项6
                 {id: "supply", url: "/AreaInfo/supply"},//供货7
                 {id: "sign", url: "/AreaInfo/sign"},//签约8
-                {id: "payment", url: "/AreaInfo/payment"}//回款9
+                {id: "payment", url: "/AreaInfo/payment"},//回款9
+                {id: "primarykeyTarget", url: "/AreaInfo/primarykeyTarget"},//关键指标目标10
+                {id: "primarykey", url: "/AreaInfo/primarykey"}//关键指标目标11
             ],
             id = th.state.allSearchArg['e'];
         switch (id) {
@@ -78,6 +80,16 @@ class ProcessApprovalTab extends React.Component {
                     TapList: [list[0], list[7],list[8],list[9]]
                 });
                 break;
+            case iss.getEVal("primarykeyTarget"):
+                this.setState({ // 关键指标目标
+                    TapList: [list[0], list[10]]
+                });
+                break;
+            case iss.getEVal("primarykey"):
+                this.setState({ // 关键指标
+                    TapList: [list[0], list[11]]
+                });
+                break;
         }
 
     }
@@ -116,6 +128,12 @@ class ProcessApprovalTab extends React.Component {
                     break;
                 case "payment":
                     str = "回款";
+                    break;
+                case "primarykeyTarget":
+                    str = "关键指标目标";
+                    break;
+                case "primarykey":
+                    str = "关键指标";
                     break;
             }
             return <li className={this.props.current == el.id ? "active" : ""} key={id}

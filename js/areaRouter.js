@@ -44,6 +44,17 @@ export const areaRouter = [
         }
 
     },
+    {
+        /*关键指标*/
+        path: "/AreaInfo/primarykeyTarget",
+        getComponent: function (next, callback) {
+            require.ensure([], function (require) {
+                var app = require('../primarykeyTarget/index.js');
+                callback(null, app.default);
+            }, "primarykeyTarget-index");
+        }
+
+    },
     {//*重点事项*/
         path: "/AreaInfo/priority",
         getComponent: function (next, callback) {

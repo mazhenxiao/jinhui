@@ -921,7 +921,7 @@ class StagingInformation extends React.Component {
                                 </tr>
                                 <tr>
                                     <th>
-                                        <label className="formTableLabel boxSizing redFont">分期状态</label>
+                                        <label className="formTableLabel boxSizing redFont">分期开发状态</label>
                                     </th>
                                     <td>
                                         <input type="text" id="STATUS" className="easyui-combobox easyui-validatebox" data-options="validType:'selected'"/>

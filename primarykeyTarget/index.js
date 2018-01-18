@@ -5,6 +5,7 @@ import { Spin, Tabs, Row, Col, Button, Select,Input, Popconfirm  } from 'antd';
 import { AreaService, PrimaryKey } from '../services';
 import {WrapperSelect} from '../common';
 import TableBlock from './table-block';
+import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
 import "../css/tools-processBar.less";
 import "../css/button.less";
 import "../area/areaCss/areaManage.less";
@@ -16,6 +17,7 @@ class Index extends Component {
         loading: false,
         editstatus:false,
         savestatus:false,
+        isApproal:false,
         TableBlockDATA: {},//数据
         tableDate:""
     };//绑定数据
@@ -57,7 +59,7 @@ class Index extends Component {
         
     }
     componentWillMount() {
-        
+        this.SetisApproal();
      }
     componentDidMount(){
         if (this.props.location.query.isProOrStage ==2) {
@@ -66,23 +68,20 @@ class Index extends Component {
         
     };
     PageInit=()=>{
-       this.IGetDynamicBaseInfo()  
+       this.IGetTargetBaseInfo()  
     }
     /**
      * 获取基础数据
      */
-    IGetDynamicBaseInfo=()=>{
+    IGetTargetBaseInfo=()=>{
         
-        let {dataKey}=this.state;
-        PrimaryKey.IGetDynamicBaseInfo({
-            stageVersionId:dataKey,
-            quart:""
-        })
-        .then(tableDate=>{
-            this.setState({
-                tableDate
-            })
-        })
+        let {dataKey:stageVersionId}=this.state;
+        PrimaryKey.IGetTargetBaseInfo(stageVersionId)
+                .then(tableDate=>{
+                    this.setState({
+                        tableDate
+                    })
+                })
                  
     }
     //获取数据
@@ -128,41 +127,77 @@ class Index extends Component {
                 editstatus:false,
             });
         })
-        
-        
     }
 
     //发起审批
     BIND_ROUTERCHANGE = () =>{
-        console.log("发起审批")
+        PrimaryKey.ISaveTargetInfo({
+            baseinfo:JSON.stringify(this.state.tableDate.baseinfo),
+            data:JSON.stringify(this.state.tableDate.baselist.dataSource)
+        })
+        .then(arg=>{
+            const {dataKey} = this.state;
+            var status = iss.getEVal("primarykeyTarget");
+            $(window).trigger("treeLoad");
+            location.href=`/Index/#/ProcessApproval?e=`+status+`&dataKey=`+dataKey+`&current=ProcessApproval&areaId=&areaName=&primarykeyTarget=primarykeyTarget&isProOrStage=2`;
+            this.setState({
+                editstatus:false,
+            });
+        })
     }
 
-    
+    GetQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.href.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
     
     
     
     /*渲染button*/
     renderButtonList = () => {
+        var primarykeyTarget = this.GetQueryString("primarykeyTarget")
         const editstatus = this.state.editstatus;
         //判断是否是编辑状态  编辑状态
-        if(!editstatus){
-            return (
-                <div>
-                    <button type="button" onClick={this.handleBindEdit} className="jh_btn jh_btn22 jh_btn_add">编辑</button>
-                    <button type="button" onClick={this.BIND_ROUTERCHANGE} className="jh_btn jh_btn22 jh_btn_apro">发起审批</button>
-                </div>
-            );
-        }else{
-            return (
-                <div>
-                        <button type="button" onClick={this.handleBindSave} className="jh_btn jh_btn22 jh_btn_add">保存</button>
-                        <button type="button" onClick={this.handleBindCancel} className="jh_btn jh_btn22 jh_btn_add">取消</button>
+        if(!primarykeyTarget){
+            if(!editstatus){
+                return (
+                    <div>
+                        <button type="button" onClick={this.handleBindEdit} className="jh_btn jh_btn22 jh_btn_add">编辑</button>
                         <button type="button" onClick={this.BIND_ROUTERCHANGE} className="jh_btn jh_btn22 jh_btn_apro">发起审批</button>
-                </div>  
-            );
-        } 
+                    </div>
+                );
+            }else{
+                return (
+                    <div>
+                            <button type="button" onClick={this.handleBindSave} className="jh_btn jh_btn22 jh_btn_add">保存</button>
+                            <button type="button" onClick={this.handleBindCancel} className="jh_btn jh_btn22 jh_btn_add">取消</button>
+                            <button type="button" onClick={this.BIND_ROUTERCHANGE} className="jh_btn jh_btn22 jh_btn_apro">发起审批</button>
+                    </div>  
+                );
+            }
+        }
     };
-    
+
+    SetisApproal = arg => {
+        
+                let stateData = arg ? arg.query : this.props.location.query;
+                this.setState({
+                    isApproal: Boolean(stateData["current"])
+                })
+                return Boolean(stateData["current"])
+    }
+
+    isApproal = arg => {
+        let stateData = this.props.location.query;
+        if (this.state.isApproal) {
+            return <section className="padB20">
+                <ProcessApprovalTab current="primarykeyTarget" allSearchArg={stateData}/>
+            </section>
+        }
+
+    }
+
     renderHeader = () => {
         return (
             <div>
@@ -199,6 +234,7 @@ class Index extends Component {
         }
         return (
             <div className="processBar">
+                {this.isApproal()}
                 <Spin size="large" spinning={loading} tip="加载中请稍后。。。">
                     <Row>
                         <Col span={24}>
@@ -209,7 +245,7 @@ class Index extends Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Col span={24}>
+                        <Col span={18}>
                             <article>
                                 <TableBlock tableDate={this.state.tableDate} editstatus={this.state.editstatus} callback={this.BIND_TableBlockDATA.bind(this)} />
                             </article>

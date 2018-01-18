@@ -195,6 +195,7 @@ class PriorityTable extends Component {
                   columns={this.columns||[]}
                   dataSource={this.state.data||[]} 
                   bordered={true}
+                  pagination={false}
               />
           );
          

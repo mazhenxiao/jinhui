@@ -24,47 +24,6 @@ export default class Index extends Component{
         lev ="5"; //5
     componentWillMount() {
 
-        // if(this.state.allSearchArg["isProOrStage"]==this.number){
-        //     var leid = "";
-        //     const lev = this.lev;
-        //     if(this.state.allSearchArg["readOnly"]){
-        //         iss.fetch({
-        //             type:"GET",
-        //             async: true,
-        //             url: "/ProjectTeam/IGetTrInfo",
-        //             data:{
-        //                 id:this.state.allSearchArg["dataKey"]
-        //             }
-        //         })
-        //         .then(data=>{
-        //              leid = data.rows.Id
-        //              this.setState({
-        //                     level_id: lev,
-        //                     id:leid 
-        //                 },()=>{
-        //                     this.getAjax();
-        //                 })
-        //         })
-        //         .catch(err=>{
-        //             console.log("请求失败")
-        //         })
-        //     }else{
-        //          leid = this.state.allSearchArg["dataKey"];
-        //          this.setState({
-        //             level_id: lev,
-        //             id:leid 
-        //         },()=>{
-        //             this.getAjax();
-        //         })
-        //     }
-    
-        //     // if(this.state.allSearchArg["newId"]){
-        //     //     var leid = this.state.allSearchArg["newId"];
-        //     // }else{
-                
-        //     //})
-        // }
-
         this.setState({
             readOnly:this.GetQueryString("readOnly")
         })

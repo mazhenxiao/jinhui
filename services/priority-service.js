@@ -46,5 +46,5 @@ export const GetProjectKeyPoint =(data)=>{
      .then(ServiceCount)
  }
 const ServiceCount=(arg)=>{
-    return arg.rows;
+    return arg;
 }   

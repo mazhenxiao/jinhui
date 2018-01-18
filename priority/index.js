@@ -2,7 +2,7 @@
 import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";
 import React, { Component } from 'react';
-import { Spin, Tabs, Row, Col, Button, Select,Input,Progress,Alert,DatePicker,message} from 'antd';
+import { Spin, Tabs, Row, Col, Button, Select,Input,Progress,Alert,DatePicker,message,Pagination} from 'antd';
 import { AreaService,Priority } from '../services';
 import PriorityTable from './priority-table.js';
 import PriorityForm from './priority-form.js';
@@ -52,9 +52,11 @@ class Index extends Component {
         level_id:this.props.location.state==undefined?"":this.props.location.state.level_id||"",
         projectID:"",
         stageId:"",
-        index:0
+        index:0,
+        total:0,
+        pageIndex:1,
     }
-
+    ;
     formData={
         projectName:"",
         areaName:"",
@@ -81,7 +83,8 @@ class Index extends Component {
         PROJECTID:"",     //*
         STAGEID:null,
         ATTACHMENT:[],
-    }
+    };
+    obj = {}
 
     /**
      * 在组件接收到一个新的prop时被调用,这个方法在初始化render时不会被调用
@@ -156,7 +159,8 @@ class Index extends Component {
                     stageId:stageId,
                     addAatterStatus: false,
                     lookStatus:false,
-                    editStatus:false
+                    editStatus:false,
+                    pageIndex:1,
                 },()=>{
                     var entityJson={ 
                         "ID": null,
@@ -186,14 +190,16 @@ class Index extends Component {
                         "SELECTEDID": this.state.sundryId,
                         "SELECTEDLEVEL": this.state.level_id
                     }
-                    this.getAjax(entityJson);
+                    this.obj = entityJson
+                    this.getAjax(this.obj,this.state.pageIndex);
                 });
         }
 
     }
     componentWillMount() {
         this.SetisApproal();
-        this.getAjax(this.state.entityJson);
+        this.obj = this.state.entityJson
+        this.getAjax(this.obj,this.state.pageIndex);
     }
     componentDidMount(){
         this.rowSelection()
@@ -223,14 +229,14 @@ class Index extends Component {
         })
     };
 
-    getAjax=(obj)=>{
+    getAjax=(obj,page)=>{
         var th = this;
         let {sundryId:SELECTEDID,level_id:SELECTEDLEVEL}=this.state;
         
         Priority.GetListPage({
-            "pageIndex":1,"pageSize":100,"entityJson":JSON.stringify(obj)
+            "pageIndex":page,"pageSize":5,"entityJson":JSON.stringify(obj)
         }).then(dataList=>{
-            dataList.forEach((el,ind) => {
+            dataList.rows.forEach((el,ind) => {
                 if(el.ISOLVE == 1){
                     el.ISOLVE = "是"
                 }else if(el.ISOLVE == 0){
@@ -248,7 +254,10 @@ class Index extends Component {
                 el.SOLVETIME=th.getLocalTime(el.SOLVETIME)
                 el.LASTUPDATETIME=th.getLocalTime(el.LASTUPDATETIME)
              })
-             th.setState({dataList},()=>{
+             th.setState({
+                 dataList:dataList.rows,
+                 total:dataList.total
+                },()=>{
                 this.rowSelection()
               })
         }).catch(err=>{
@@ -266,7 +275,7 @@ class Index extends Component {
         }
         Priority.GetOrganization({projectID:id})
                 .then(data=>{
-                    data.forEach((el,ind) => {
+                    data.rows.forEach((el,ind) => {
                         if(el.ORGLEVEL == 4){
                             this.formData.projectName = el.ORGNAME
                             this.PriorityFormDat.PROJECTID = el.ID
@@ -372,7 +381,7 @@ class Index extends Component {
             addAatterStatus:false,
             lookStatus:false
         })
-        this.handleLocalSearch();
+        this.getAjax(this.obj,this.state.pageIndex);
     }
     //暂存
     BIND_Save = (approval) =>{
@@ -464,7 +473,7 @@ class Index extends Component {
             var status = iss.getEVal("priority");
             if(approval=="approval"){
                 $(window).trigger("treeLoad");
-                location.href=`/Index/#/ProcessApproval?e=`+status+`&dataKey=`+data+`&current=ProcessApproval&areaId=&areaName=&readOnly=`+data+`&cancel=cancel`;    
+                location.href=`/Index/#/ProcessApproval?e=`+status+`&dataKey=`+data.rows+`&current=ProcessApproval&areaId=&areaName=&readOnly=`+data+`&cancel=cancel`;    
             }else{
                 iss.popover({ content: "保存成功", type: 2 });
                 this.handleLocalSearch()
@@ -491,7 +500,7 @@ class Index extends Component {
         Priority.Export({
             "entityJson":JSON.stringify(obj)
         }).then(data=>{
-            window.location.href="http://39.106.71.187:8000"+data; 
+            window.location.href="http://39.106.71.187:8000"+data.rows; 
         }).catch(err=>{
             console.log("导出请求错误")
         })
@@ -586,7 +595,8 @@ class Index extends Component {
         let obj = {...this.state.entityJson,...{PROJECTNAME,POINTLEVEL,ISOLVE,USERNAME,SOLVETIME,APPROVESTATUS}}
         obj.SELECTEDID=  this.state.sundryId;
         obj.SELECTEDLEVEL= this.state.level_id;
-        this.getAjax(obj);
+        this.obj = obj
+        this.getAjax(this.obj,this.state.pageIndex);
     }
     PriorityFormCallback = (value,para) =>{
         this.PriorityFormDat[para] = value;
@@ -598,6 +608,14 @@ class Index extends Component {
             this.setState({editData:obj})
         }
         
+    }
+    //翻页
+    pageChange = (page,pageSize) =>{
+        console.log(page)
+        this.setState({
+            pageIndex:page
+        })
+        this.getAjax(this.obj,page);
     }
     renderContent = () =>{
         const addAatterStatus=this.state.addAatterStatus;
@@ -659,6 +677,13 @@ class Index extends Component {
                         <Col span={24}>
                             <article>
                                 <PriorityTable dataList={this.state.dataList}/>
+                            </article>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={24}>
+                            <article>
+                                <Pagination pageSize={5} total={this.state.total} onChange={this.pageChange} />
                             </article>
                         </Col>
                     </Row>

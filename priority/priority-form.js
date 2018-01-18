@@ -867,9 +867,9 @@ class PriorityForm extends Component {
             return this.props.historyData.map((el, ind) => {
                 if(ind != 0){
                     return <tr>
-                                <td>{el.LASTUPDATENAME}</td>
+                                <td width="200px">{el.LASTUPDATENAME}</td>
                                 <td>{el.PROGRESS}</td>
-                                <td>{this.getLocalTime(el.LASTUPDATETIME)}</td>
+                                <td width="200px">{this.getLocalTime(el.LASTUPDATETIME)}</td>
                                 <td>{this.historyAttachment(el.ATTACHMENT)}</td>
                             </tr>
                 }

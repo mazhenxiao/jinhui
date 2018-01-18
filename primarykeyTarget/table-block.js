@@ -116,47 +116,30 @@ class TableBlock extends Component {
 
     tableRender =()=>{
         //表头数据
-        var columns=[{
-              title: '序号',
-              colSpan: 1,
-              dataIndex: 'key',
-              width:60,
-              render:(value, row,ind) => this.renderContent(value, row,'key',ind),
-            }];
-        if(this.props.tableDate != "" && this.props.tableDate !=null){
-          this.props.tableDate.baselist.headerData.forEach((el,ind)=>{
-            var obj = {
-              "title": el.name,
-              "dataIndex": el.field,
-            }
-            columns.push(obj)
-          })
-        }
-        console.log("columns",columns)
-        // const columns = [{
-        //     title: '序号',
-        //     colSpan: 1,
-        //     dataIndex: 'key',
-        //     width:60,
-        //     render:(value, row,ind) => this.renderContent(value, row,'key',ind),
-        //   },{
-        //     title: '指标名称',
-        //     colSpan: 2,//合并单元格
-        //     dataIndex: 'Fquotaname',
-        //     width:150,
-        //     render:(value, row,ind) => this.renderContentTable(value, row,"Fquotaname",ind),//合并列
-        //   },{
-        //     title: '指标名称',
-        //     colSpan: 0,
-        //     dataIndex: 'quotaname',
-        //     width:200,
-        //     render:(value, row,ind) => this.renderContent(value, row,"quotaname",ind),
-        //   },{
-        //     title: this.quarterSelect(),
-        //     colSpan: 1,
-        //     dataIndex: 'PLANVAL',
-        //     render:(value, row,ind) => this.renderContentInput(value, row,"PLANVAL",ind),
-        // }];
+        const columns = [{
+            title: '序号',
+            colSpan: 1,
+            dataIndex: 'key',
+            width:60,
+            render:(value, row,ind) => this.renderContent(value, row,'key',ind),
+          },{
+            title: '指标名称',
+            colSpan: 2,//跨两列
+            dataIndex: 'Fquotaname',
+            width:150,
+            render:(value, row,ind) => this.renderContentTable(value, row,"Fquotaname",ind),//合并列
+          },{
+            title: '指标名称',
+            colSpan: 0,
+            dataIndex: 'quotaname',
+            width:200,
+            render:(value, row,ind) => this.renderContent(value, row,"quotaname",ind),
+          },{
+            title: this.quarterSelect(),
+            colSpan: 1,
+            dataIndex: 'PLANVAL',
+            render:(value, row,ind) => this.renderContentInput(value, row,"PLANVAL",ind),
+        }];
         
         //表格详细数据
         var dataSource=[];
@@ -166,16 +149,16 @@ class TableBlock extends Component {
         dataSource.forEach((el,ind)=>{
           el.key = ind+1
         })
-        console.log(dataSource)
+
       return (
         <Spin spinning={this.state.loading}>
-          <Table 
-              columns={columns} 
-              pagination={false} 
-              dataSource={dataSource} 
-              bordered={true} 
-          />
-      </Spin>
+            <Table 
+                columns={columns} 
+                pagination={false} 
+                dataSource={dataSource} 
+                bordered={true} 
+            />
+        </Spin>
       )
     }
     

@@ -193,7 +193,12 @@ export default class ToolsList extends React.Component {
                                                     onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "primarykey")}>关键指标</a>
                                 </li> : null
                         }
-
+                        {
+                            appConfig["env"] != "prod" ?
+                                <li className=""><a href="javascript:void(0);"
+                                                    onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "primarykeyTarget")}>关键指标目标</a>
+                                </li> : null
+                        }
                         <li><a href="javascript:void(0);"
                                onClick={this.EVENT_CLICK.bind(this, "AreaInfo", "groupbuild")}>项目团队维护</a>
 

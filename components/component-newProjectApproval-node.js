@@ -350,7 +350,7 @@ class ApprovalControlNode extends React.Component {
  * isProOrStage 【项目1 分期2】信息填报所需
  */
     Event_click_cancel() { //取消
-        const {businessId, e,cancel} = this.props.allSearchArg;
+        const {businessId, e,cancel,primarykeyTarget} = this.props.allSearchArg;
         var url = "";
         switch (this.props.allSearchArg.e) {
             case iss.getEVal("intallmentStatus"):
@@ -374,6 +374,12 @@ class ApprovalControlNode extends React.Component {
             case iss.getEVal("payment"):
                 url = "AreaInfo/payment";
                 break
+            case iss.getEVal("primarykeyTarget"):
+                url = "AreaInfo/primarykeyTarget";
+                break;
+            case iss.getEVal("primarykey"):
+                url = "AreaInfo/primarykey";
+                break;
         }
         sessionStorage.removeItem("currentApprovalText");//清楚临时历史数据存储，解决路由切换不能记录用户输入内容问题
         sessionStorage.removeItem("currentApprovalList");//清楚临时历史数据存储，解决路由切换不能记录用户选择内容问题
@@ -395,6 +401,12 @@ class ApprovalControlNode extends React.Component {
             iss.hashHistory.replace({
                pathname: `/${url}`,
                search: `?status=edit&dataKey=${this.props.allSearchArg.dataKey}&e=${this.props.allSearchArg.e}&cancel=cancel`
+           }); 
+          // location.href = `${location.origin}${location.pathname.replace(/\/$/ig, "")}/#/${url}?status=edit&dataKey=${businessId}&e=${e}&isProOrStage=${this.props.allSearchArg.isProOrStage}`
+        }else if (primarykeyTarget) {
+            iss.hashHistory.replace({
+               pathname: `/${url}`,
+               search: `?status=edit&dataKey=${this.props.allSearchArg.dataKey}&e=${this.props.allSearchArg.e}&isProOrStage=${this.props.allSearchArg.isProOrStage}`
            }); 
           // location.href = `${location.origin}${location.pathname.replace(/\/$/ig, "")}/#/${url}?status=edit&dataKey=${businessId}&e=${e}&isProOrStage=${this.props.allSearchArg.isProOrStage}`
         }else {
