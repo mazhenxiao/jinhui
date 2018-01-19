@@ -66,26 +66,26 @@ var config = {
                 'NODE_ENV': JSON.stringify('test')
             }
         }),
-        new compress({
-            // include: [/echarts\.min\.js/, /chunk\.js/, /chunk\-component\-echarts\.js/, /jinhui\-Index\.js/],
-            output: {
-                comments: false,   // remove all comments
-            },
-            compress: {
-                warnings: false,
-                drop_debugger: true,
-                // drop_console: true
-            }
-        }),
-        new CompressionWebpackPlugin({ //gzip 压缩
-            asset: '[path].gz[query]',
-            algorithm: 'gzip',
-            test: new RegExp(
-                '\\.(js|css)$'    //压缩 js 与 css
-            ),
-            threshold: 10240,
-            minRatio: 0.8
-        }),
+        // new compress({
+        //     // include: [/echarts\.min\.js/, /chunk\.js/, /chunk\-component\-echarts\.js/, /jinhui\-Index\.js/],
+        //     output: {
+        //         comments: false,   // remove all comments
+        //     },
+        //     compress: {
+        //         warnings: false,
+        //         drop_debugger: true,
+        //         // drop_console: true
+        //     }
+        // }),
+        // new CompressionWebpackPlugin({ //gzip 压缩
+        //     asset: '[path].gz[query]',
+        //     algorithm: 'gzip',
+        //     test: new RegExp(
+        //         '\\.(js|css)$'    //压缩 js 与 css
+        //     ),
+        //     threshold: 10240,
+        //     minRatio: 0.8
+        // }),
     ],
     resolve: {
         // modules:[path.resolve(__dirname,"/source/"),"node_modules"],
