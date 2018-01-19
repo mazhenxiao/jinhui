@@ -37,6 +37,12 @@ class ApproalHistory extends React.Component{
             case iss.getEVal("priority"):
                 search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover`;
                 break;//面积
+            case iss.getEVal("primarykeyTarget"): //信息填报-关键指标目标
+                search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover&primarykeyTarget=primarykeyTarget&isProOrStage=2`;
+                break;
+            case iss.getEVal("primarykey"): //信息填报-关键指标
+                search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover&primarykey=primarykey&isProOrStage=2`;
+                break;
             default:
             	search ="";
         }

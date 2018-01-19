@@ -941,6 +941,12 @@ class $iss {
             case "priority":
                 eVal = "10113";
                 break;//重点事项
+            case "primarykeyTarget":
+                eVal = "10115";
+                break;//重点事项
+            case "primarykey":
+                eVal = "10111";
+                break;//重点事项
         }
         return eVal;
     }
@@ -957,6 +963,8 @@ class $iss {
             case "10106":url="AreaInfo/payment";break;//供销存
             case "10105":url="AreaInfo/priceControl";break; //价格
             case "10113":url="AreaInfo/priority";break; //重点事项
+            case "10115":url="AreaInfo/primarykeyTarget";break; //重点事项
+            case "10111":url="AreaInfo/primarykey";break; //重点事项
             default:console.error("iss.js里没有配置convertURL");break;
         }
         return url;

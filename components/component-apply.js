@@ -48,6 +48,12 @@ class Apply extends React.Component {
             case iss.getEVal("priority"): //信息填报-组团
                 search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover&readOnly=readOnly`;
                 break;
+            case iss.getEVal("primarykeyTarget"): //信息填报-关键指标目标
+                search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover&primarykeyTarget=primarykeyTarget&isProOrStage=2`;
+                break;
+            case iss.getEVal("primarykey"): //信息填报-关键指标
+                search = `?e=${da.entiid}&dataKey=${da.runtrecordid}&current=ProcessApprover&primarykey=primarykey&isProOrStage=2`;
+                break;
             default: iss.tip({ type: "error", description: "url地址未带出，请联系后台工作人员。" }); break
         }
         iss.hashHistory.push({

@@ -88,6 +88,7 @@ class Index extends Component {
     //获取数据
     BIND_TableBlockDATA = (value,key,keyName)=> {
         var obj = this.state.tableDate;
+        let {dataKey}=this.state;
         if(key != undefined){
             obj.baselist.dataSource.forEach((el,ind)=>{
                 if(el.key == key){
@@ -97,6 +98,15 @@ class Index extends Component {
             })
         }else{
             obj.baseinfo.Step = value
+            PrimaryKey.IGetDynamicEditData({
+                stageVersionId:dataKey,
+                quart:"201701"
+            })
+            .then(tableDate=>{
+                obj.baselist.dataSource.forEach((el,ind)=>{
+                    el.QUARTVAL = tableDate[el[QUOTAID]]
+                })
+            })
         }
         this.setState({
             tableDate:obj
@@ -119,7 +129,7 @@ class Index extends Component {
 
     //点击保存
     handleBindSave = () =>{
-        PrimaryKey.ISaveTargetInfo({
+        PrimaryKey.ISaveDynamciInfo({
             baseinfo:JSON.stringify(this.state.tableDate.baseinfo),
             data:JSON.stringify(this.state.tableDate.baselist.dataSource)
         })

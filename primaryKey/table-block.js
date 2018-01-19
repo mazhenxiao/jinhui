@@ -123,16 +123,39 @@ class TableBlock extends Component {
               width:60,
               render:(value, row,ind) => this.renderContent(value, row,'key',ind),
             }];
+        const editstatus=this.props.editstatus;//获取编辑状态
         if(this.props.tableDate != "" && this.props.tableDate !=null){
+          
           this.props.tableDate.baselist.headerData.forEach((el,ind)=>{
-            var obj = {
-              "title": el.name,
-              "dataIndex": el.field,
+            var obj={}
+            if(el.field=="PLANVAL"){
+              if(!editstatus){
+                return
+              }
+              obj = {
+                title:this.quarterSelect(),
+                dataIndex: el.field,
+                colSpan:Number(el.colSpan == null ? 1:el.colSpan),
+                render:(value, row,ind) => this.renderContentInput(value, row,"PLANVAL",ind),
+              }
+            }else if(el.field=="FQUOTANAME"){
+              obj = {
+                title: el.name,
+                dataIndex: el.field,
+                colSpan:Number(el.colSpan == null ? 1:el.colSpan),
+                render:(value, row,ind) => this.renderContentTable(value, row,"Fquotaname",ind),
+              }
+            }else{
+              obj = {
+                title: el.name,
+                dataIndex: el.field,
+                colSpan:Number(el.colSpan == null ? 1:el.colSpan)
+              }
             }
+            
             columns.push(obj)
           })
         }
-        console.log("columns",columns)
         // const columns = [{
         //     title: '序号',
         //     colSpan: 1,
@@ -159,14 +182,16 @@ class TableBlock extends Component {
         // }];
         
         //表格详细数据
-        var dataSource=[];
+        var dataSource=[],headName=[]
         if(this.props.tableDate != "" && this.props.tableDate !=null){
           dataSource=this.props.tableDate.baselist.dataSource
         }
         dataSource.forEach((el,ind)=>{
           el.key = ind+1
+          if(headName.indexOf(el.FQUOTANAME)==-1){
+            headName.push(el.FQUOTANAME)
+          }
         })
-        console.log(dataSource)
       return (
         <Spin spinning={this.state.loading}>
           <Table 

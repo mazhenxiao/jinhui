@@ -38,6 +38,26 @@ export const IGetDynamicBaseInfo = (data) => {
     .catch(ERROR)
 };
 
+//目标保存
+export const ISaveDynamciInfo = (data) => {
+    return iss.fetch({
+        url: "/KPI/ISaveDynamciInfo",
+        type: "post",
+        data,
+    })
+    .then(ThenListener)
+    .catch(ERROR)
+};
+
+export const IGetDynamicEditData = (data) => {
+    return iss.fetch({
+        url: "/KPI/IGetDynamicEditData",
+        type: "post",
+        data,
+    })
+    .then(ThenListener)
+    .catch(ERROR)
+};
 /**
  * 统一处理
  * @param {*} arg 

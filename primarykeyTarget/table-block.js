@@ -14,6 +14,7 @@ class TableBlock extends Component {
         childDate:"",
         selectData:""
        };//绑定数据
+       step=0;
     componentWillReceiveProps(nextProps) {
       //console.log(nextProps)
         
@@ -103,14 +104,14 @@ class TableBlock extends Component {
     }
     //渲染select
     quarterSelect = () =>{
-        
         return(
             <div>目标：
-                <Select defaultValue="请选择" style={{ width: 110 }} onChange={this.quarterSelectChange}>
+                <Select value={this.props.step} style={{ width: 110 }} onChange={this.quarterSelectChange}>
                    {this.selectOption()}
                 </Select>
           </div>
         )
+      
     }
 
 

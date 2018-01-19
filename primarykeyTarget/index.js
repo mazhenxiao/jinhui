@@ -19,7 +19,8 @@ class Index extends Component {
         savestatus:false,
         isApproal:false,
         TableBlockDATA: {},//数据
-        tableDate:""
+        tableDate:"",
+        step:"请选择"
     };//绑定数据
     //私有数据
     baseInfo={
@@ -78,15 +79,23 @@ class Index extends Component {
         let {dataKey:stageVersionId}=this.state;
         PrimaryKey.IGetTargetBaseInfo(stageVersionId)
                 .then(tableDate=>{
+                    var sttep="";
+                    var step = tableDate.baseinfo.Step;
+                    tableDate.baseinfo.StepList.forEach((el,i)=>{
+                            if(step == el.key){
+                                sttep = el.value
+                            }
+                    })
                     this.setState({
-                        tableDate
+                        tableDate,
+                        step:sttep
                     })
                 })
                  
     }
-    //获取数据
+    //子页面回调
     BIND_TableBlockDATA = (value,key,keyName)=> {
-        var obj = this.state.tableDate;
+        var obj = this.state.tableDate,sttep="";
         if(key != undefined){
             obj.baselist.dataSource.forEach((el,ind)=>{
                 if(el.key == key){
@@ -98,7 +107,7 @@ class Index extends Component {
             obj.baseinfo.Step = value
         }
         this.setState({
-            tableDate:obj
+            tableDate:obj,
         })
     }
     
@@ -247,7 +256,7 @@ class Index extends Component {
                     <Row>
                         <Col span={18}>
                             <article>
-                                <TableBlock tableDate={this.state.tableDate} editstatus={this.state.editstatus} callback={this.BIND_TableBlockDATA.bind(this)} />
+                                <TableBlock step={this.state.step} tableDate={this.state.tableDate} editstatus={this.state.editstatus} callback={this.BIND_TableBlockDATA.bind(this)} />
                             </article>
                         </Col>
                     </Row>
