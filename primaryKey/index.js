@@ -129,6 +129,7 @@ class Index extends Component {
 
     //点击保存
     handleBindSave = () =>{
+        
         PrimaryKey.ISaveDynamciInfo({
             baseinfo:JSON.stringify(this.state.tableDate.baseinfo),
             data:JSON.stringify(this.state.tableDate.baselist.dataSource)

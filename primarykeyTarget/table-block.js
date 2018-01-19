@@ -53,13 +53,17 @@ class TableBlock extends Component {
     // 修改当前input框的值
     EventhandleChangeInput =(key, keyName,event)=>{
       
-      let target = event.target.value;
-      var reg=/^\d+(\.\d{1,2})?$/;
-      var length = target.length;
-      if (!reg.test(target)) {
-        target = target.substring(0,length-1)
+      let val = event.target.value;
+      var _reg = new RegExp("^\\d+(\.\\d{0,2})?$");
+      let _reg2 = /(?:\d{1}|\.{1})$/;
+      //var length = target.length;
+      // knife.CHECK_InputValue()
+      // if (!reg.test(target)) {
+      //   target = target.substring(0,length-1)
+      // }
+      if(_reg.test(val) && _reg2.test(val)){
+        this.props.callback(val,key,keyName);
       }
-      this.props.callback(target,key,keyName);
     }
 
     renderContentTable=(value, row, index,ind) => {

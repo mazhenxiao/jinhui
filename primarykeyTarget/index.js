@@ -79,7 +79,7 @@ class Index extends Component {
         let {dataKey:stageVersionId}=this.state;
         PrimaryKey.IGetTargetBaseInfo(stageVersionId)
                 .then(tableDate=>{
-                    var sttep="";
+                    var sttep="请选择";
                     var step = tableDate.baseinfo.Step;
                     tableDate.baseinfo.StepList.forEach((el,i)=>{
                             if(step == el.key){
@@ -95,7 +95,7 @@ class Index extends Component {
     }
     //子页面回调
     BIND_TableBlockDATA = (value,key,keyName)=> {
-        var obj = this.state.tableDate,sttep="";
+        var obj = this.state.tableDate,sttep="请选择";
         if(key != undefined){
             obj.baselist.dataSource.forEach((el,ind)=>{
                 if(el.key == key){
@@ -105,9 +105,16 @@ class Index extends Component {
             })
         }else{
             obj.baseinfo.Step = value
+            var step = value;
+            obj.baseinfo.StepList.forEach((el,i)=>{
+                    if(step == el.key){
+                        sttep = el.value
+                    }
+            })
         }
         this.setState({
             tableDate:obj,
+            step:sttep
         })
     }
     
@@ -125,8 +132,25 @@ class Index extends Component {
         });
     }
 
+    //校验是否数据完整
+
+    TestData = (arr) =>{
+        var bool = true;
+        arr.forEach((el,ind)=>{
+            if(el.PLANVAL == null || el.PLANVAL == ""){
+                bool = false
+                return
+            }
+        })
+        return bool
+    }
+
     //点击保存
     handleBindSave = () =>{
+        if(!this.TestData(this.state.tableDate.baselist.dataSource)){
+            iss.error("请完善数据！！");
+            return
+        }
         PrimaryKey.ISaveTargetInfo({
             baseinfo:JSON.stringify(this.state.tableDate.baseinfo),
             data:JSON.stringify(this.state.tableDate.baselist.dataSource)
@@ -140,6 +164,10 @@ class Index extends Component {
 
     //发起审批
     BIND_ROUTERCHANGE = () =>{
+        if(!this.TestData(this.state.tableDate.baselist.dataSource)){
+            iss.error("请完善数据！！");
+            return
+        }
         PrimaryKey.ISaveTargetInfo({
             baseinfo:JSON.stringify(this.state.tableDate.baseinfo),
             data:JSON.stringify(this.state.tableDate.baselist.dataSource)
@@ -148,7 +176,7 @@ class Index extends Component {
             const {dataKey} = this.state;
             var status = iss.getEVal("primarykeyTarget");
             $(window).trigger("treeLoad");
-            location.href=`/Index/#/ProcessApproval?e=`+status+`&dataKey=`+dataKey+`&current=ProcessApproval&areaId=&areaName=&primarykeyTarget=primarykeyTarget&isProOrStage=2`;
+            location.href=`/Index/#/ProcessApproval?e=`+status+`&dataKey=`+this.state.tableDate.baseinfo.ID+`&vid=`+dataKey+`&current=ProcessApproval&areaId=&areaName=&primarykeyTarget=primarykeyTarget&isProOrStage=2`;
             this.setState({
                 editstatus:false,
             });
