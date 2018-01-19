@@ -21,6 +21,7 @@ class $tree {
                 dataKey:dataKey
             },
             success(da){
+                
             	th.setTreeState.call(th,da)
                 
             },
@@ -30,14 +31,22 @@ class $tree {
         }); 
     }
     setTreeState(da){
+        let th = this;
         let top = document.querySelector("#mCSB_1_container");
             top = top? top.style.top:"0px";
-        this.ele.tree("loadData",da);
+        const {id,parentid} = iss.id;
+        th.ele.tree("loadData",da);
         var Height = $(window).height()-80;
         $(".treeBox").height(Height)
         $(".JH-RightBox .JH-Content").height(Height);
         setTimeout(arg=>{
-          document.querySelector("#mCSB_1_container").style.top=top;   
+          document.querySelector("#mCSB_1_container").style.top=top;
+          let me = th.ele.tree("find",id);
+            if(me&&me["target"]){
+                  th.ele.tree("expandTo",me.target).tree("select",me.target)
+            }    
+          
+                 
         },1000)
     }
     getDataKey(){

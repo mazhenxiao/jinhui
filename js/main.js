@@ -7,7 +7,7 @@ import rootRout from "./router";//路由
 import ToolsList from "../components/tools-list.js";//头部
 import ToolsTree from "../components/tools-leftTree.js";//左侧树形
 import appConfig from '../app.config';
-import { setTimeout } from "timers";
+
 
 iss.use({Router, Route, hashHistory});
 
