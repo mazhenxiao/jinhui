@@ -865,20 +865,26 @@ class PriorityForm extends Component {
     historyTr = () =>{
         if(this.props.historyData !=""){
             return this.props.historyData.map((el, ind) => {
-                if(ind != 0){
+                if(el.APPROVESTATUS == 99){
                     return <tr>
-                                <td width="200px">{el.LASTUPDATENAME}</td>
-                                <td>{el.PROGRESS}</td>
-                                <td width="200px">{this.getLocalTime(el.LASTUPDATETIME)}</td>
-                                <td>{this.historyAttachment(el.ATTACHMENT)}</td>
-                            </tr>
+                            <td width="200px">{el.LASTUPDATENAME}</td>
+                            <td>{el.PROGRESS}</td>
+                            <td width="200px">{this.getLocalTime(el.LASTUPDATETIME)}</td>
+                            <td>{this.historyAttachment(el.ATTACHMENT)}</td>
+                        </tr>
                 }
             })
         }
     }
+    historyKong = () =>{
+        return  <div>
+                    暂无历史进程...
+                </div>
+    }
     renderHistory = () =>{
-    
-        if(this.props.historyData !="" && this.props.historyData.length >1 ){
+        var historyDa= this.historyTr()
+        
+        if(this.props.historyData !="" && typeof historyDa[0] != "undefined"){
             return (
                 <div>
                     <table className="historyTable" width="100%">

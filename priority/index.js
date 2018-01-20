@@ -316,21 +316,21 @@ class Index extends Component {
                     if(data.rows[0].APPROVESTATUS==1 && !onlyLook){
                         iss.popover({ content: "审批中，不能编辑！！"});
                     }else{
+                        var el = data.rows[0];
                         
-                        if(data.rows[0].APPROVESTATUS == 99){
+                        if(el.APPROVESTATUS == 99){
                             if(data.rows.length>1){
                                 if(data.rows[1].CONTENTID != null){
-                                    data.rows[0].CONTENTID = data.rows[1].CONTENTID
+                                    el.CONTENTID = data.rows[1].CONTENTID
                                 }else{
-                                    data.rows[0].CONTENTID = data.rows[1].ID 
+                                    el.CONTENTID = data.rows[1].ID 
                                 }
                             }else{
-                                data.rows[0].CONTENTID = data.rows[0].ID 
+                                el.CONTENTID = el.ID 
                             }
-                            data.rows[0].ID = null
+                            el.ID = null
                         }
                         
-                        var el = data.rows[0];
                         if(el.ISOLVE == 1){
                             el.ISOLVE = "是"
                         }else if(el.ISOLVE == 0){

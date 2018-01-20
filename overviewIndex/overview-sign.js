@@ -1,282 +1,567 @@
-//签约
 import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";
-import React, {Component} from 'react';
-import {Spin, Menu, Table, Input, Dropdown, Icon, Tabs, Row, Col, Button, Select} from 'antd';
-import {WrapperTreeTable} from '../common';
-import {AreaService} from '../services';
+import React, {Component, Children} from 'react';
+import {Spin, Tabs, Row, Col, Button, Select, Modal, Table, Popconfirm, message} from 'antd';
+import {WrapperTreeTable, WrapperSelect} from '../common';
+import {Payment} from '../services';
+import {knife} from '../utils';
+import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
+import "../css/antd.min.css";
+import "../css/payment.css";
+import "../css/tools-processBar.less";
+import "../css/button.less";
+import "../area/areaCss/areaManage.less";
+import "../payment/css/sign.less";
+import '../source/jquery-easyui-1.5.2/themes/bootstrap/dialog.css';
+import '../source/jquery-easyui-1.5.2/themes/gray/dialog.css';
+import '../source/jquery-easyui-1.5.2/themes/default/dialog.css';
+import '../common/css/view.css';
 
-require("../css/antd.min.css");
-require("../css/payment.css");
-require("../area/areaCss/areaManage.less");
+const TabPane = Tabs.TabPane;
 
-class OverviewSign extends Component {
+class SignIndex extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: [{
-                key: 1,
-                sign: '项目1—分期1-地块1',
-                totalArea: '34543',
-                saleableArea: '22342',
-                money: '12323',
-                setNumber: '24345',
-                beginPeriodArea: '23435',
-                beginPeriodValue: '12634',
-                overArea: '12734',
-                monthSaleableArea1: '12823',
-                monthMoney1: '12239',
-                monthSetNumber1: '10123',
-                monthSaleableArea2: '12301',
-                monthMoney2: '10002',
-                monthSetNumber2: '11230',
-                children: [{
-                    key: 11,
-                    sign: '1组团',
-                    totalArea: '1124',
-                    saleableArea: '2234',
-                    money: '3324',
-                    setNumber: '4125',
-                    beginPeriodArea: '1235',
-                    beginPeriodValue: '1236',
-                    overArea: '1237',
-                    monthSaleableArea1: '8123',
-                    monthMoney1: '9123',
-                    monthSetNumber1: '1023',
-                    monthSaleableArea2: '1231',
-                    monthMoney2: '1022',
-                    monthSetNumber2: '1270',
-                    children: [{
-                        key: 111,
-                        sign: '叠拼别墅',
-                        totalArea: '1121',
-                        saleableArea: '2236',
-                        money: '3434',
-                        setNumber: '4123',
-                        beginPeriodArea: '1235',
-                        beginPeriodValue: '6123',
-                        overArea: '7123',
-                        monthSaleableArea1: '1238',
-                        monthMoney1: '1349',
-                        monthSetNumber1: '1210',
-                        monthSaleableArea2: '1211',
-                        monthMoney2: '1212',
-                        monthSetNumber2: '2310',
-                    }],
-                }, {
-                    key: 12,
-                    sign: '未分配车位',
-                    totalArea: '1234',
-                    saleableArea: '2123',
-                    money: '3123',
-                    setNumber: '4334',
-                    beginPeriodArea: '5344',
-                    beginPeriodValue: '6244',
-                    overArea: '1347',
-                    monthSaleableArea1: '3458',
-                    monthMoney1: '3459',
-                    monthSetNumber1: '2310',
-                    monthSaleableArea2: '2311',
-                    monthMoney2: '2312',
-                    monthSetNumber2: '2310',
-                    children: [{
-                        key: 112,
-                        sign: '可售楼栋',
-                        totalArea: '1234',
-                        saleableArea: '2234',
-                        money: '1233',
-                        setNumber: '2344',
-                        beginPeriodArea: '1235',
-                        beginPeriodValue: '1236',
-                        overArea: '1347',
-                        monthSaleableArea1: '1248',
-                        monthMoney1: '1249',
-                        monthSetNumber1: '1210',
-                        monthSaleableArea2: '1211',
-                        monthMoney2: '1132',
-                        monthSetNumber2: '1230',
-                    }],
-                }],
-            }],
-            loading: false,
-            editstatu: false
+    state = {
+        supperShow:true,//最高关闭阻断
+        loading: true,
+        dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
+        mode: this.props.location.query.isProOrStage == "1" ? "Project" : this.props.location.query.isProOrStage == "2" ? "Stage" : "",//显示模式，项目或者分期
+        editable: false,//是否可编辑
+        dynamicTable: {
+            versionId:"",//新增的通过这个参数去获取数据发起审批相关
+            DynamicDate:"",//title显示
+            SupplyVersionId:"",//在弹出时需要获取的id
+            dynamicHeaderData: [],//动态调整版头部
+            dynamicDataSource: [],//动态调整版数据
+            dynamicEdit: false, //动态调整是否可编辑
+            dynamicEditButtonShow: false,
+            loading: true,
+            defaultHeight: 200
+        },
+        planTable: { //同上
+            planHeaderData: [],
+            planDataSource: [],
+            planEdit: false,
+            loading: true
+        },
+        version: { //版本
+            
+            currentVersion: "",//当前版本
+            versionData: [], //版本数据
+            versionShow: false //是否显示版本
+        },
+        dialog: { //弹窗
+            ModalVisible: false,
+            dialogContent: [],//弹出窗口content
+            dataSource: [], //数据
+            columns: [
+                {dataIndex:"SupplyDate",title:"日期",width:80,key:"SupplyDate"},
+                {dataIndex:"SourceSaleArea",title:"可售面积（㎡）",width:80,key:"SourceSaleArea"},
+                {dataIndex:"SourceMonery",title:"货值（万元）",width:80,key:"SourceMonery"},
+                {dataIndex:"SourceNumber",title:"套数（套）",width:80,key:"SourceNumber"},
+            ] //表头
         }
-        this.columns = [{
-            title: '签约',
-            dataIndex: 'sign',
-            key: 'sign',
-            width: 200,
-            fixed: 'left'
-        }, {
-            title: '截止当月1日零点期初库存',
-            children: [{
-                title: '总建筑面积',
-                key: "totalArea",
-                dataIndex: 'totalArea',
-                width: 100,
-            }, {
-                title: '已签约',
-                children: [{
-                    title: '可售面积',
-                    dataIndex: 'saleableArea',
-                    key: 'saleableArea',
-                    width: 100,
-                }, {
-                    title: '金额',
-                    dataIndex: 'money',
-                    key: 'money',
-                    width: 100,
-                }, {
-                    title: '套数',
-                    dataIndex: 'setNumber',
-                    key: 'setNumber',
-                    width: 100,
-                }]
-            }, {
-                title: '存货',
-                children: [{
-                    title: '期初存货可售面积',
-                    dataIndex: 'beginPeriodArea',
-                    key: 'beginPeriodArea',
-                    width: 100,
-                }, {
-                    title: '期初存货货值',
-                    dataIndex: 'beginPeriodValue',
-                    key: 'beginPeriodValue',
-                    width: 100,
-                }, {
-                    title: '18个月以上可售面积',
-                    dataIndex: 'overArea',
-                    key: 'overArea',
-                    width: 100,
-                }]
-            }]
-        }, {
-            title: '当年-1月',
-            key: 2222,
-            children: [{
-                title: '',
-                children: [{
-                    title: '可售面积',
-                    dataIndex: 'monthSaleableArea1',
-                    key: 'monthSaleableArea1',
-                    width: 100,
-                    //render: (text, record) => this.renderColumns(text, record, 'monthSaleableArea1')
-                }, {
-                    title: '金额',
-                    dataIndex: 'monthMoney1',
-                    key: 'monthMoney1',
-                    width: 100,
-                    //render: (text, record) => this.renderColumns(text, record, 'monthMoney1')
-                }, {
-                    title: '套数',
-                    dataIndex: 'monthSetNumber1',
-                    key: 'monthSetNumber1',
-                    width: 100,
-                    // render: (text, record) => this.renderColumns(text, record, 'monthSetNumber1')
-                }]
-            }]
-        }, {
-            title: '当年-2月',
-            key: 222,
-            children: [{
-                title: '',
-                children: [{
-                    title: '可售面积',
-                    dataIndex: 'monthSaleableArea2',
-                    key: 'monthSaleableArea2',
-                    width: 100,
-                }, {
-                    title: '金额',
-                    dataIndex: 'monthMoney2',
-                    key: 'monthMoney2',
-                    width: 100,
-                }, {
-                    title: '套数',
-                    dataIndex: 'monthSetNumber2',
-                    key: 'monthSetNumber2',
-                    width: 100,
-                }]
-            }]
-        }],
-            this.oldData = this.state.data,
-            this.scrollWidth = 0;
+
+
+    };
+    //版本信息私有数据
+    version = { //版本
+        currentVersion: "",//当前版本
+        versionData: [], //版本数据
+        versionShow: false //是否显示版本
+    };
+
+    //protected 数据
+    dynamicTable = {           //动态表格私有仓储
+        versionId:"",          //新增的通过这个参数去获取数据发起审批相关
+        DynamicDate:"",        //titile显示
+        TitleList:[],          //在inof中获取表头数据
+        SupplyVersionId:"",    //在弹出时需要获取的id
+        DynamicId: "",         //新加入的id，用此id获取动态调整版数据
+        Permission: "",        //新加入是否可以编辑
+        Status: "",            //新加入当前阶段,接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回
+        Permission:"edit",     //瑞涛添加通过是否为edit判断是否可以编辑
+        VersionList: [],       //新加入不知道是什么
+        StartYear: "",         //新加入起始年份
+        number: 0,             //死循环记录
+        dynamicRender: {
+            "showName": (text, record) => {
+            let {LEVELS,children}=record;
+           return children? <span>{text}</span>:<a href="javascript:;" onClick={this.clickOpenDialog.bind(this, text, record)}>{text}</a>
+        }
+
+        },                           //动态编辑表格
+        status: "",                  //接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回
+        startYear: "",               //起始年
+        signAContractVersionId: "",  //调整版本id
+        saveData: {}                 //保存数据临时存储
+    }
+    antdTableScrollLock = null;//用来触发卸载原生事件
+
+    componentDidMount() {
+        let {dataKey} = this.state;
+        
+        this.pageInt()
+        
+     
     }
 
-    componentWillMount() {
-        this.addWidth(this.columns)
+    componentWillUnmount() {
+        if (this.antdTableScrollLock) {
+            this.antdTableScrollLock.remove();//注销双向绑定
+        }
     }
 
-    //设置宽度
-    addWidth = (data) => {
-        var th = this;
-        data.forEach((val, ind) => {
-            if (val.width) {
-                this.scrollWidth += val.width
-            } else if (val.children) {
-                th.addWidth(val.children)
+    /**
+     * 在组件接收到一个新的prop时被调用,这个方法在初始化render时不会被调用
+     * param nextProps 下一阶段的props
+     */
+    componentWillReceiveProps(nextProps) {
+        const {dataKey} = this.state;
+        const {location} = nextProps;
+        const nextDataKey = location.query.dataKey || "";
+        let nextMode = location.query.isProOrStage || "";
+        nextMode = nextMode == "1" ? "Project" : nextMode == "2" ? "Stage" : "";
+        //切换路由之后，重新获取数据
+
+        if (dataKey != nextDataKey) {
+            this.setState({
+                    supperShow:true,
+                    loading: true,
+                    dataKey: nextDataKey,
+                    mode: nextMode,
+                    activeTapKey: "plan-quota",
+                }, arg => {
+                    if (nextDataKey) {
+                        this.pageInt()
+                    }
+                }
+            );
+        }
+    }
+    pageInt=()=>{
+        this.getFetData()
+    }
+
+    /**
+     * 初始化数据
+     */
+    setStartData = () => {
+        let {dynamicTable, planTable, version,dialog} = this.state;
+        dynamicTable = {...dynamicTable, dynamicDataSource: [], dynamicEditButtonShow: false}
+        planTable = {...planTable, planDataSource: []}
+        version = {...version, versionData: [], versionShow: false}
+        dialog = {...dialog,ModalVisible:false}
+        this.setState({
+            dynamicTable,
+            planTable,
+            version,
+            dialog
+        });
+    }
+
+    /**
+     * 获取动态数据，获取签约计划数据，获取版本数
+     */
+    getFetData = () => {
+        let {dataKey, mode} = this.state;
+        let {versionId}=this.dynamicTable;
+        this.dynamicTable.saveData = {};
+        versionId = versionId||"";
+        //获取基础数据=瑞涛
+        return Payment.IGetSignBaseInfo({dataKey,versionId,mode})
+            .then(arg => {  //进行错误判断
+                let {DynamicId, StartYear, VersionList, Permission, Error,SupplyVersionId,TitleList,DynamicDate} = arg;
+                if (!DynamicId) {
+                    this.setStartData();//初始化数据
+                    return Promise.reject(Error);
+                }
+                if(Error){ iss.error(Error)}
+                this.version = {...this.version, versionData: VersionList, versionShow: Boolean(VersionList.length)}
+                this.dynamicTable = {...this.dynamicTable, DynamicId, StartYear, VersionList, Permission,SupplyVersionId,TitleList,DynamicDate}
+                this.PromiseAllAndLockScroll();//调用
+                // return arg
+            }).catch(err => {
+
+            err && iss.error(err);
+            this.setState({
+                loading: false
+            })
+        })
+
+    }
+    /**
+     * 获取动态数据、比对数据并锁定表格
+     */
+    PromiseAllAndLockScroll = params => {
+        //获取动态调整表格数据
+        let dynamicTable = this.getDynamicData();
+        //获取比对版数据   
+        let planTable = this.getPlanData();
+
+        return Promise.all([dynamicTable, planTable])
+                      .then(arg => {
+            //获取弹窗数据如果需要，因为张权说要给一个获取的id不知道依赖在哪里，先放到这,估计需要从动态表获取
+            this.bindScrollLock();
+                             })
+                    .catch(error => {
+            let {message}=error
+            iss.error(message);
+            this.setState({
+                loading: false,
+            });
+            
+        })
+    }
+
+    /**
+     * 获取动态调整版数据
+     * return promise
+     */
+    getDynamicData = () => {
+        let {dynamicTable, dataKey, mode,supperShow} = this.state;
+        let {DynamicId} = this.dynamicTable;
+
+        //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
+        //瑞涛版数据
+        
+        return Payment.IGetSignDataByVersionId({DynamicId, mode})
+        .then(dynamicDataSource => {
+            
+            let {Permission,TitleList:dynamicHeaderData,DynamicDate} = this.dynamicTable;
+            let  newData = {
+                    DynamicDate,
+                    dynamicHeaderData,
+                    dynamicDataSource,
+                    dynamicEdit: false,
+                    dynamicEditButtonShow:!isApproal&&Boolean(Permission ==`edit`&& dynamicDataSource["length"]),
+                },
+                dynamicTable = {...this.state.dynamicTable, ...newData};
+                
+            this.setState({dynamicTable, loading: false});
+        })
+    }
+    /**
+     * 返回当前id
+     * AList 返回当前版本
+     */
+    getCurrentVertion = AList => {
+        if (typeof AList == "string") {
+            return this.state.version.versionData.filter(arg => arg.id == AList);
+
+        } else {
+            return AList && AList.length ? AList[0].id : ""
+        }
+    }
+    /**
+     * 获取当前版本下比对版本数据
+     * currentVersion 当前版本 返回Promise
+     */
+    getCurrentVersionPlanData = currentVersion => {
+        let {mode} = this.state;
+        return Payment.IGetSignDataByVersionId({DynamicId: currentVersion, mode}); //获取数据
+
+    }
+    /**
+     * 获取计划版数据
+     * return promise 884dd5a6-ff48-4628-f4fa-294472d49b37
+     */
+    getPlanData = () => {
+
+        let {planTable, version, dynamicTable, dataKey, mode} = this.state;
+        let {dynamicHeaderData} = dynamicTable;
+        let {versionData} = this.version;
+        // dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
+        //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
+        let currentVersion = this.getCurrentVertion(versionData);
+
+        //瑞涛获取数据版本
+        return Payment.IGetSignDataByVersionId({DynamicId: currentVersion, mode})
+            .then((planDataSource) => {
+                let newData = { //table数据
+                        dynamicHeaderData,
+                        planDataSource,
+                        // planEditButtonShow:Boolean(planDataSource&&planDataSource.length)
+                    },
+                    newVersion = { //版本数据
+                        currentVersion,
+                        versionData,
+                        versionShow: true
+                    }
+                planTable = {...planTable, ...newData};
+                version = {...version, ...newVersion};
+
+                this.setState({planTable, version});
+
+            })
+    }
+
+    /**
+     * 是否编辑行
+     * 递归查询此处如果数据有问题容易出现bug目前先不用
+     */
+    setDynamicRender(text, record, index) {
+
+
+        /* if (this.dynamicTable.number += 1, this.dynamicTable.number > 1000) {
+            console.log("强制判断如果列数据大于1000或死循环强制推出防止如果后台数据有误造成的死循环");
+            return
+        }
+
+        dynamicColum.forEach(arg => {
+            if (arg.children) {
+                this.setDynamicRender(arg.children);
+            } else {
+                this.dynamicTable.dynamicRender[arg.field] = this.setDynamicColumns;
+            }
+        }) */
+
+    }
+
+    /**
+     * 动态编辑数据
+     */
+    setDynamicColumns(text, value, index) {
+
+        return text;
+    }
+
+    handleEdit = () => {
+        let {dynamicTable} = this.state;
+        let dynamicEdit = !dynamicTable.dynamicEdit;
+        dynamicTable = {...dynamicTable, ...{dynamicEdit}}
+        this.setState({
+
+            dynamicTable
+        });
+        if (!dynamicEdit) { //保存
+            this.setState({
+                loading: true
+            })
+
+        }
+
+    };
+
+  
+    /**
+     * 返回数据
+     */
+    filterSaveData = da => {
+        da.map(arg => {
+            if (arg.children && arg.children.length) {
+                this.filterSaveData(arg.children)
+            } else if(!arg.children) {
+                //console.log(`${arg.GROUPNAME}=>${arg.PROJECTNAME}=>${arg.TYPENAME}`)
+               // debugger
+                for (let key in arg) {
+                    let reg = /^Y\d{3}/ig,mon=key.substr(2, 2),reg3=/Y3\d{2}Q\w/,yearNum=key.substr(1,1);
+                     if(yearNum=="3"&&!reg3.test(key)){ //用来处理第三年非带Q字段不获取-瑞涛版
+                        continue 
+                    } 
+                    if (reg.test(key) && arg[key] !== "") {
+                        let {StartYear} = this.dynamicTable;
+                        StartYear = eval(StartYear + "-1+" + yearNum)
+                        let _da = {
+                            dataType: key.substr(4),
+                            titlename: `${StartYear}-${mon}-01`,
+                            productTypeID: arg["showId"] || "",
+                            GROUPID: arg["GROUPID"],
+                            val: arg[key]
+                        }
+                        this.dynamicTable.saveData[_da.titlename + "-" + key + "-" + arg.key] = _da;
+                    }
+                }
+
             }
         })
     }
-   
-    
-    //表格
-    paymentTable1 = () => {
-        //this.addWidth(columns)
-        return (
-            <div className="">
-                <Table columns={this.columns} pagination={false} bordered scroll={{x: this.scrollWidth, y: "100%"}}
-                       dataSource={this.state.data}/>
-            </div>
 
-        );
+
+    /**
+     * 绑定双向滚动
+     */
+    bindScrollLock() {
+
+        let toTable = document.querySelector(".toTable .ant-table-body"),
+            pkTable = document.querySelector(".pkTable .ant-table-body");
+        if (toTable && pkTable) {
+            toTable.scrollTop = toTable.scrollLeft = 0;
+            pkTable.scrollTop = pkTable.scrollLeft = 0;
+            this.antdTableScrollLock = knife.AntdTable_ScrollLock(toTable, pkTable);
+        }
+
+
     }
 
-    paymentTable2 = () => {
-        //this.addWidth(columns)
-        return (
-            <div className="">
-                <Table columns={this.columns} pagination={false} bordered scroll={{x: this.scrollWidth, y: "100%"}}
-                       dataSource={this.state.data}/>
-            </div>
-
-        );
+    /**
+     * 弹出点击取消
+     */
+    clickModalCancel = () => {
+        let dialog = {...this.state.dialog,ModalVisible: false}
+        this.setState({dialog})
     }
-    /*渲染button*/
-    
+    /**
+     * 弹出确定
+     */
+    clickModalOk = () => {
+        let dialog = {...this.state.dialog,ModalVisible: false}
+        this.setState({dialog})
+    }
+    renderContent = (arg) => {
+        let {dialogContent} = this.state.dialog;
+
+    }
+
+    clickOpenDialog(text, row, index) {
+        let {dialog}=this.state;
+        let {SupplyVersionId:supplyid}=this.dynamicTable;
+        let {columns}=dialog;
+        //supplyid,producttypeid
+        let {PRODUCTTYPEID:producttypeid}=row;
+        
+        Payment.ISingSupplyData({supplyid,producttypeid})
+               .then(dialogContent=>{
+                    dialog = {...dialog,columns,dialogContent,ModalVisible: true};
+                    this.setState({
+                        dialog
+                    })
+               })
+               .catch(err=>{
+                   iss.error(err);
+               })
+        
+       
+
+    }
+
+    /**
+     * 版本下拉菜单事件
+     */
+    selectChangeVersion = params => {
+        // let _da= this.getCurrentVertion(params);
+        let versionId = params; // _da.length? _da[0].id:"";
+        let {version, planTable} = this.state;
+        let {dynamicHeaderData} = this.state.dynamicTable
+        version = {...version, currentVersion: params}
+        if (versionId) {
+
+            this.getCurrentVersionPlanData(versionId)
+                .then((planDataSource) => {
+                    let {planTable} = this.state;
+                    let newData = {
+                        dynamicHeaderData,
+                        planDataSource
+                    }
+                    planTable = {...planTable, ...newData};
+                    this.setState({
+                        planTable,
+                        version
+                    })
+
+                })
+                .catch(error => {
+                    iss.error(error);
+                })
+        } else {
+            planTable = {...planTable, planDataSource: []};
+            this.setState({planTable, version})
+        }
+
+    }
+
+    /**
+     * 动态调整table
+     */
+    renderHistoryData = () => {
+        let {versionData, versionId, editable, dynamicTable, loading,supperShow} = this.state;
+        let {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow, defaultHeight,DynamicDate} = dynamicTable;
+        dynamicEditButtonShow = (supperShow&&dynamicEditButtonShow);//保存后不能编辑
+        return (
+            <article className="toTable signPage">
+                <header className="bottom-header-bar">
+                    <Row>
+                        <Col span={12}>
+                            <span className="header-title">签约计划{DynamicDate}动态调整版（面积：平方米，货值：万元）</span>
+                        </Col>
+                        <Col span={12}>
+                            <div className={dynamicEditButtonShow ? "RT" : "hidden"}>
+                                <Popconfirm placement="top" title={"确定提交吗？"} >
+                                    <button className="jh_btn jh_btn22 jh_btn_apro mgR20">提交</button>
+                                </Popconfirm>
+                                <Popconfirm placement="top" title={"确定退回吗？"} >
+                                    <button className="jh_btn jh_btn22 refresh-icon mgR20">退回</button>
+                                </Popconfirm>
+                                <button className="jh_btn jh_btn22 jh_btn_edit"
+                                        onClick={this.handleEdit}>{dynamicEdit ? "保存" : "编辑"}
+                                </button>
+                            </div>
+                        </Col>
+                    </Row>
+                </header>
+
+                <WrapperTreeTable
+                    loading={loading}
+                    size="small"
+                    defaultHeight={defaultHeight}
+                    //  onDataChange={this.onDataChangeDynamic}
+                    headerData={dynamicHeaderData || []}
+                    editState={dynamicEdit}
+                    editMode="LastLevel"
+                    dataSource={dynamicDataSource || []}
+                    columnRender={this.dynamicTable.dynamicRender}
+                />
+            </article>
+        );
+    };
+    /**
+     * 比对table
+     */
+    renderCurrentData = () => {
+        const {planTable, dynamicTable, version} = this.state;
+        const {planHeaderData, planDataSource} = planTable;
+        const {versionData, versionShow, versionId, currentVersion} = version;
+        const {dynamicHeaderData, defaultHeight,DynamicDate} = dynamicTable;
+        return (
+            <article className="pkTable mgT10 signPage">
+                <header className="top-header-bar">
+                    <Row>
+                        <Col span={12}>
+                            <span className="header-title">签约计划考核版（面积：平方米，货值：万元）</span>
+                        </Col>
+                        <Col span={12} className="action-section">
+                            <WrapperSelect className={versionShow ? "select-version" : "hide"} labelText="版本:"
+                                           dataSource={versionData}
+                                           value={currentVersion}
+                                           defaultHeight={defaultHeight}
+                                           onChange={this.selectChangeVersion}></WrapperSelect>
+                        </Col>
+                    </Row>
+                </header>
+                <WrapperTreeTable
+                    headerData={dynamicHeaderData || []}
+                    dataSource={planDataSource || []}/>
+            </article>
+        );
+    };
+
 
     render() {
         return (
-            <div className="stateNodeBox">
-            <Row>
-                <Col span={24}>
-                    <b>签约计划版（面积：平方米，货值：万元）</b>
-                </Col>
-            </Row>
-            <Row>
-                <Col span={24}>
+            <div className="sign-wrapper">
+                <Spin size="large" spinning={this.state.loading} tip="加载中请稍后。。。">
                     <article>
-                        {this.paymentTable1()}
+                        <Tabs defaultActiveKey="sign">
+                            <TabPane tab="签约" key="sign">
+                                {this.renderHistoryData()}
+                                {this.renderCurrentData()}
+                            </TabPane>
+                        </Tabs>
                     </article>
-                </Col>
-            </Row>
-            <Row style={{marginTop:"20px"}}>
-                <Col span={24}>
-                    <b>签约动态调整版（面积：平方米，货值：万元）</b>
-                </Col>
-            </Row>
-            <Row>
-                <Col span={24}>
-                    <article>
-                        {this.paymentTable2()}
-                    </article>
-                </Col>
-            </Row>
-        </div>
+                </Spin>
+            </div>
         );
-
     }
 }
 
-export default OverviewSign;
+export default SignIndex;
