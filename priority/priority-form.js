@@ -883,9 +883,12 @@ class PriorityForm extends Component {
     }
     renderHistory = () =>{
         var historyDa= this.historyTr(),flag = true;
-        if(historyDa.length == 1 && typeof historyDa[0] == "undefined"){
-            flag = false;
+        if(typeof historyDa != "undefined"){
+            if(historyDa.length == 1 && typeof historyDa[0] == "undefined"){
+                flag = false;
+            }
         }
+        
         if(this.props.historyData !="" && flag){
             return (
                 <div>
