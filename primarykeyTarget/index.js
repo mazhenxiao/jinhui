@@ -49,6 +49,7 @@ class Index extends Component {
             this.setState({
                     dataKey: nextDataKey,
                     mode: nextMode,
+                    editstatus:false,
                     activeTapKey: "plan-quota",
                 },()=>{
                     if (nextProps.location.query.isProOrStage ==2) {

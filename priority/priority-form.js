@@ -143,6 +143,7 @@ class PriorityForm extends Component {
          if(r!=null)return  unescape(r[2]); return null;
     }
     getLocalTime(nS) {
+        debugger
         if(nS == "/Date(-62135596800000)/"){
             return "0001-01-01"
         }else{
@@ -865,22 +866,19 @@ class PriorityForm extends Component {
     historyTr = () =>{
         if(this.props.historyData !=""){
             return this.props.historyData.map((el, ind) => {
+                debugger
                 if(el.APPROVESTATUS == 99){
                     return <tr>
                             <td width="200px">{el.LASTUPDATENAME}</td>
                             <td>{el.PROGRESS}</td>
-                            <td width="200px">{this.getLocalTime(el.LASTUPDATETIME)}</td>
+                            <td width="200px">{el.LASTUPDATETIME}</td>
                             <td>{this.historyAttachment(el.ATTACHMENT)}</td>
                         </tr>
                 }
             })
         }
     }
-    historyKong = () =>{
-        return  <div>
-                    暂无历史进程...
-                </div>
-    }
+
     renderHistory = () =>{
         var historyDa= this.historyTr(),flag = true;
         if(typeof historyDa != "undefined"){

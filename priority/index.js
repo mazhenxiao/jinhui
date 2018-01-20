@@ -316,48 +316,52 @@ class Index extends Component {
                     if(data.rows[0].APPROVESTATUS==1 && !onlyLook){
                         iss.popover({ content: "审批中，不能编辑！！"});
                     }else{
-                        var el = data.rows[0];
+
+                        data.rows.forEach((el,ind)=>{
+                            if(el.ISOLVE == 1){
+                                el.ISOLVE = "是"
+                            }else if(el.ISOLVE == 0){
+                                el.ISOLVE = "否"
+                            }
+                            if(el.POINTLEVEL == 0){
+                                el.POINTLEVEL = "低"
+                            }else if(el.POINTLEVEL == 1){
+                                el.POINTLEVEL = "中"
+                            }else if(el.POINTLEVEL == 2){
+                                el.POINTLEVEL = "高"
+                            }
+            
+                            el.REPORTTIME=th.getLocalTime(el.REPORTTIME)
+                            el.SOLVETIME=th.getLocalTime(el.SOLVETIME)
+                            el.LASTUPDATETIME=th.getLocalTime(el.LASTUPDATETIME)
+                        })
+                        var ell = data.rows[0];
                         
-                        if(el.APPROVESTATUS == 99){
+                        if(ell.APPROVESTATUS == 99){
                             if(data.rows.length>1){
                                 if(data.rows[1].CONTENTID != null){
-                                    el.CONTENTID = data.rows[1].CONTENTID
+                                    ell.CONTENTID = data.rows[1].CONTENTID
                                 }else{
-                                    el.CONTENTID = data.rows[1].ID 
+                                    ell.CONTENTID = data.rows[1].ID 
                                 }
                             }else{
-                                el.CONTENTID = el.ID 
+                                ell.CONTENTID = ell.ID 
                             }
-                            el.ID = null
+                            ell.ID = null
                         }
                         
-                        if(el.ISOLVE == 1){
-                            el.ISOLVE = "是"
-                        }else if(el.ISOLVE == 0){
-                            el.ISOLVE = "否"
-                        }
-                        if(el.POINTLEVEL == 0){
-                            el.POINTLEVEL = "低"
-                        }else if(el.POINTLEVEL == 1){
-                            el.POINTLEVEL = "中"
-                        }else if(el.POINTLEVEL == 2){
-                            el.POINTLEVEL = "高"
-                        }
-        
-                        el.REPORTTIME=th.getLocalTime(el.REPORTTIME)
-                        el.SOLVETIME=th.getLocalTime(el.SOLVETIME)
-                        el.LASTUPDATETIME=th.getLocalTime(el.LASTUPDATETIME)
+                        
                     if(look == "look"){
                         th.setState({
                             addAatterStatus:true,
-                            editData : el,
+                            editData : ell,
                             historyData: data.rows,
                             lookStatus:true
                         })
                     }else{
                         th.setState({
                             addAatterStatus:true,
-                            editData : el,
+                            editData : ell,
                             historyData: data.rows
                         })
                     }
