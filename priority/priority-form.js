@@ -143,7 +143,6 @@ class PriorityForm extends Component {
          if(r!=null)return  unescape(r[2]); return null;
     }
     getLocalTime(nS) {
-        debugger
         if(nS == "/Date(-62135596800000)/"){
             return "0001-01-01"
         }else{
@@ -152,6 +151,7 @@ class PriorityForm extends Component {
     }  
     //输入框传值
     TriggerCallback = (para,e) => {
+
         const { value } = e.target;
         this.props.callback(value,para)
     }
@@ -866,7 +866,6 @@ class PriorityForm extends Component {
     historyTr = () =>{
         if(this.props.historyData !=""){
             return this.props.historyData.map((el, ind) => {
-                debugger
                 if(el.APPROVESTATUS == 99){
                     return <tr>
                             <td width="200px">{el.LASTUPDATENAME}</td>

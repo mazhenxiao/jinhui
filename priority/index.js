@@ -312,12 +312,11 @@ class Index extends Component {
                 "id": id
             },
             success(data) {
-                if(data.rows.length>0){
-                    if(data.rows[0].APPROVESTATUS==1 && !onlyLook){
+                    if(data.rows.viewdata.APPROVESTATUS==1 && !onlyLook){
                         iss.popover({ content: "审批中，不能编辑！！"});
                     }else{
 
-                        data.rows.forEach((el,ind)=>{
+                        data.rows.list.forEach((el,ind)=>{
                             if(el.ISOLVE == 1){
                                 el.ISOLVE = "是"
                             }else if(el.ISOLVE == 0){
@@ -335,42 +334,55 @@ class Index extends Component {
                             el.SOLVETIME=th.getLocalTime(el.SOLVETIME)
                             el.LASTUPDATETIME=th.getLocalTime(el.LASTUPDATETIME)
                         })
-                        var ell = data.rows[0];
+                        var ell = data.rows.viewdata;
                         
                         if(ell.APPROVESTATUS == 99){
-                            if(data.rows.length>1){
-                                if(data.rows[1].CONTENTID != null){
-                                    ell.CONTENTID = data.rows[1].CONTENTID
+                            if(data.rows.list.length>1){
+                                if(data.rows.list[1].CONTENTID != null){
+                                    ell.CONTENTID = data.rows.list[1].CONTENTID
                                 }else{
-                                    ell.CONTENTID = data.rows[1].ID 
+                                    ell.CONTENTID = data.rows.list[1].ID 
                                 }
                             }else{
                                 ell.CONTENTID = ell.ID 
                             }
                             ell.ID = null
                         }
-                        
+                        if(ell.ISOLVE == 1){
+                            ell.ISOLVE = "是"
+                        }else if(ell.ISOLVE == 0){
+                            ell.ISOLVE = "否"
+                        }
+                        if(ell.POINTLEVEL == 0){
+                            ell.POINTLEVEL = "低"
+                        }else if(ell.POINTLEVEL == 1){
+                            ell.POINTLEVEL = "中"
+                        }else if(ell.POINTLEVEL == 2){
+                            ell.POINTLEVEL = "高"
+                        }
+        
+                        ell.REPORTTIME=th.getLocalTime(ell.REPORTTIME)
+                        ell.SOLVETIME=th.getLocalTime(ell.SOLVETIME)
+                        ell.LASTUPDATETIME=th.getLocalTime(ell.LASTUPDATETIME)
                         
                     if(look == "look"){
                         th.setState({
                             addAatterStatus:true,
                             editData : ell,
-                            historyData: data.rows,
+                            historyData: data.rows.list,
                             lookStatus:true
                         })
                     }else{
                         th.setState({
                             addAatterStatus:true,
                             editData : ell,
-                            historyData: data.rows
+                            historyData: data.rows.list
                         })
                     }
                     
                     }
                     
-                }else{
-                    iss.popover({ content: "数据为空，联系后台人员"});
-                }
+              
                     
             },
             error() {
@@ -606,6 +618,7 @@ class Index extends Component {
         this.PriorityFormDat[para] = value;
     }
     editDataFormCallback = (value,para) =>{
+        debugger
         if(this.state.editData !=""){
             var obj = this.state.editData;
             obj[para] = value;
@@ -615,7 +628,6 @@ class Index extends Component {
     }
     //翻页
     pageChange = (page,pageSize) =>{
-        console.log(page)
         this.setState({
             pageIndex:page
         })
