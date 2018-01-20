@@ -121,7 +121,7 @@ class TableBlock extends Component {
               dataIndex: 'key',
               render:(value, row,ind) => this.renderContent(value, row,'key',ind),
               width:60,
-              fixed:"left"
+              //fixed:"left"
             }];
         const editstatus=this.props.editstatus;//获取编辑状态
         if(this.props.tableDate != "" && this.props.tableDate !=null){
@@ -138,7 +138,7 @@ class TableBlock extends Component {
                 colSpan:Number(el.colSpan == null ? 1:el.colSpan),
                 render:(value, row,ind) => this.renderContentInput(value, row,"QUARTVAL",ind),
                 width:180,
-                fixed:"left"
+                //fixed:"left"
               }
             }else if(el.field=="FQUOTANAME"){
               obj = {
@@ -147,14 +147,14 @@ class TableBlock extends Component {
                 colSpan:Number(el.colSpan == null ? 1:el.colSpan),
                 render:(value, row,ind) => this.renderContentTable(value, row,"Fquotaname",ind),
                 width:100,
-                fixed:"left"
+                //fixed:"left"
               }
             }else if(el.field=="PLANVAL"){
               obj = {
                 title: el.name,
                 dataIndex: el.field,
                 width:115,
-                fixed:"left"
+                //fixed:"left"
               }
             }else if(el.field=="QUOTANAME"){
               obj = {
@@ -162,14 +162,14 @@ class TableBlock extends Component {
                 dataIndex: el.field,
                 colSpan:Number(el.colSpan == null ? 1:el.colSpan),
                 width:190,
-                fixed:"left"
+                //fixed:"left"
               }
             }else{
               obj = {
                 title: el.name,
                 dataIndex: el.field,
                 colSpan:Number(el.colSpan == null ? 1:el.colSpan),
-                width:100
+                //width:100
               }
             }
             
