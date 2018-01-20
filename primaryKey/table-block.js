@@ -5,7 +5,7 @@ import { Table,Input,Select,Spin } from 'antd';
 import knife from '../utils/knife'
 // In the fifth row, other columns are merged into first column
 // by setting it's colSpan to be 0
-
+//import "./css/primaryKey.less"
 class TableBlock extends Component {
 
       state = {
@@ -56,8 +56,7 @@ class TableBlock extends Component {
       let val = event.target.value;
       var _reg = new RegExp("^\\d+(\.\\d{0,2})?$");
       let _reg2 = /(?:\d{1}|\.{1})$/;
-      
-      if(_reg.test(val) && _reg2.test(val)){
+      if((_reg.test(val) && _reg2.test(val)) || val==""){
         this.props.callback(val,key,keyName);
       }
       
@@ -93,24 +92,21 @@ class TableBlock extends Component {
     }
 
     //渲染Option
-    selectOption =()=>{
+    selectOption =(obj)=>{
       const children = [];
       const Option = Select.Option;
 
-      if(this.props.tableDate!="" && this.props.tableDate !=null){
-        this.props.tableDate.baseinfo.StepList.forEach((el,i)=>{
-          children.push(<Option key={i} value={el.key}>{el.value}</Option>);
+      obj.forEach((el,i)=>{
+          children.push(<Option key={i} value={el.val}>{el.label}</Option>);
         })
-      }
       return children
     }
     //渲染select
-    quarterSelect = () =>{
-        
+    quarterSelect = (obj) =>{
         return(
-            <div>目标：
-                <Select defaultValue="请选择" style={{ width: 110 }} onChange={this.quarterSelectChange}>
-                   {this.selectOption()}
+            <div>
+                <Select defaultValue={this.props.step} style={{ width: 110 }} onChange={this.quarterSelectChange}>
+                   {this.selectOption(obj)}
                 </Select>
           </div>
         )
@@ -123,23 +119,26 @@ class TableBlock extends Component {
               title: '序号',
               colSpan: 1,
               dataIndex: 'key',
-              width:60,
               render:(value, row,ind) => this.renderContent(value, row,'key',ind),
+              width:60,
+              fixed:"left"
             }];
         const editstatus=this.props.editstatus;//获取编辑状态
         if(this.props.tableDate != "" && this.props.tableDate !=null){
           
           this.props.tableDate.baselist.headerData.forEach((el,ind)=>{
             var obj={}
-            if(el.field=="PLANVAL"){
+            if(el.field=="QUARTVAL"){
               if(!editstatus){
                 return
               }
               obj = {
-                title:this.quarterSelect(),
+                title:this.quarterSelect(el.data),
                 dataIndex: el.field,
                 colSpan:Number(el.colSpan == null ? 1:el.colSpan),
-                render:(value, row,ind) => this.renderContentInput(value, row,"PLANVAL",ind),
+                render:(value, row,ind) => this.renderContentInput(value, row,"QUARTVAL",ind),
+                width:180,
+                fixed:"left"
               }
             }else if(el.field=="FQUOTANAME"){
               obj = {
@@ -147,18 +146,40 @@ class TableBlock extends Component {
                 dataIndex: el.field,
                 colSpan:Number(el.colSpan == null ? 1:el.colSpan),
                 render:(value, row,ind) => this.renderContentTable(value, row,"Fquotaname",ind),
+                width:100,
+                fixed:"left"
+              }
+            }else if(el.field=="PLANVAL"){
+              obj = {
+                title: el.name,
+                dataIndex: el.field,
+                width:115,
+                fixed:"left"
+              }
+            }else if(el.field=="QUOTANAME"){
+              obj = {
+                title: el.name,
+                dataIndex: el.field,
+                colSpan:Number(el.colSpan == null ? 1:el.colSpan),
+                width:190,
+                fixed:"left"
               }
             }else{
               obj = {
                 title: el.name,
                 dataIndex: el.field,
-                colSpan:Number(el.colSpan == null ? 1:el.colSpan)
+                colSpan:Number(el.colSpan == null ? 1:el.colSpan),
+                width:100
               }
             }
             
             columns.push(obj)
           })
         }
+        var Xwidth = 0;
+        columns.forEach((el,ind)=>{
+          Xwidth+=el.width == undefined?100:el.width;
+        })
         // const columns = [{
         //     title: '序号',
         //     colSpan: 1,
@@ -201,7 +222,8 @@ class TableBlock extends Component {
               columns={columns} 
               pagination={false} 
               dataSource={dataSource} 
-              bordered={true} 
+              bordered={true}
+              scroll={{ x: Xwidth }}
           />
       </Spin>
       )
@@ -211,7 +233,7 @@ class TableBlock extends Component {
       
         // pagination 是否分页，columns头部标题数据，dataSource表内容数据
         return (
-          <div>
+          <div className="tableRender">
             {this.tableRender()}
           </div>
         );

@@ -379,7 +379,7 @@ class PriorityForm extends Component {
                 </tr>
                 <tr>
                     <th>
-                        <label className="formTableLabel boxSizing redFont">面前风险解决进展</label>
+                        <label className="formTableLabel boxSizing redFont">面临风险解决进展</label>
                     </th>
                     <td>
                         <TextArea disabled rows={3} value={this.state.readOnlyData.PROGRESS} onChange={this.TriggerCallback.bind(this,"PROGRESS")} />
@@ -508,7 +508,7 @@ class PriorityForm extends Component {
 
                             <tr>
                                 <th>
-                                    <label className="formTableLabel boxSizing redFont">面前风险解决进展</label>
+                                    <label className="formTableLabel boxSizing redFont">面临风险解决进展</label>
                                 </th>
                                 <td>
                                     <TextArea rows={3} value={this.state.readOnlyData.PROGRESS} />
@@ -632,7 +632,7 @@ class PriorityForm extends Component {
                 </tr>
                 <tr>
                     <th>
-                        <label className="formTableLabel boxSizing redFont">面前风险解决进展</label>
+                        <label className="formTableLabel boxSizing redFont">面临风险解决进展</label>
                     </th>
                     <td>
                         <TextArea rows={3} value={this.state.readOnlyData.PROGRESS} onChange={this.TriggerCallback.bind(this,"PROGRESS")} />
@@ -777,7 +777,7 @@ class PriorityForm extends Component {
                     </tr>
                     <tr>
                         <th>
-                            <label className="formTableLabel boxSizing redFont">面前风险解决进展</label>
+                            <label className="formTableLabel boxSizing redFont">面临风险解决进展</label>
                         </th>
                         <td>
                             <TextArea rows={3} onChange={this.TriggerCallback.bind(this,"PROGRESS")} />

@@ -221,7 +221,7 @@ class Index extends Component {
           th.index = index;
           $(this).addClass("tr-bg").siblings().removeClass("tr-bg");
           if(e.target.nodeName.toLowerCase() == 'div'){
-              th.editChange("look")
+              th.editChange("look","onlyLook")
           }else{
               th.setState({editStatus:true})
           }
@@ -303,7 +303,7 @@ class Index extends Component {
 
     }
     //编辑
-    editChange = (look) =>{
+    editChange = (look,onlyLook) =>{
         var id=this.state.dataList[this.index].ID;
         var th = this;
         iss.ajax({
@@ -313,7 +313,7 @@ class Index extends Component {
             },
             success(data) {
                 if(data.rows.length>0){
-                    if(data.rows[0].APPROVESTATUS==1){
+                    if(data.rows[0].APPROVESTATUS==1 && !onlyLook){
                         iss.popover({ content: "审批中，不能编辑！！"});
                     }else{
                         

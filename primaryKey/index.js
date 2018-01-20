@@ -5,6 +5,7 @@ import { Spin, Tabs, Row, Col, Button, Select,Input, Popconfirm  } from 'antd';
 import { AreaService, PrimaryKey } from '../services';
 import {WrapperSelect} from '../common';
 import TableBlock from './table-block';
+import ProcessApprovalTab from "../components/component-ProcessApproval-Tab.js"; //导航信息
 import "../css/tools-processBar.less";
 import "../css/button.less";
 import "../area/areaCss/areaManage.less";
@@ -17,7 +18,8 @@ class Index extends Component {
         editstatus:false,
         savestatus:false,
         TableBlockDATA: {},//数据
-        tableDate:""
+        tableDate:"",
+        step:"请选择"
     };//绑定数据
     //私有数据
     baseInfo={
@@ -48,6 +50,7 @@ class Index extends Component {
                     dataKey: nextDataKey,
                     mode: nextMode,
                     activeTapKey: "plan-quota",
+                    editstatus:false,
                 },()=>{
                     if (nextProps.location.query.isProOrStage ==2) {
                         this.PageInit();
@@ -57,7 +60,7 @@ class Index extends Component {
         
     }
     componentWillMount() {
-        
+        this.SetisApproal();
      }
     componentDidMount(){
         if (this.props.location.query.isProOrStage ==2) {
@@ -73,14 +76,37 @@ class Index extends Component {
      */
     IGetDynamicBaseInfo=()=>{
         
-        let {dataKey}=this.state;
-        PrimaryKey.IGetDynamicBaseInfo({
-            stageVersionId:dataKey,
-            quart:""
-        })
+        let {dataKey}=this.state,json={}
+        if (this.state.isApproal) {
+            json = {
+                stageVersionId:"",
+                vid:dataKey,
+                quart:""
+            }
+        }else{
+            json = {
+                stageVersionId:dataKey,
+                quart:""
+            }
+        }
+        PrimaryKey.IGetDynamicBaseInfo(json)
         .then(tableDate=>{
+            var sttep="请选择";
+            var step = tableDate.baseinfo.FillQuart;
+            tableDate.baselist.headerData.forEach((el,i)=>{
+                if(el.field == "QUARTVAL"){
+                    el.data.forEach((e,i)=>{
+                        if(step == e.val){
+                            sttep = e.label
+                        }
+                    })
+                    return
+                }
+                    
+            })
             this.setState({
-                tableDate
+                tableDate,
+                step:sttep
             })
         })
                  
@@ -96,21 +122,39 @@ class Index extends Component {
                     return
                 }
             })
+            this.setState({
+                tableDate:obj
+            })
         }else{
-            obj.baseinfo.Step = value
+            var sttep="请选择";
+            var step = obj.baseinfo.FillQuart;
+            obj.baselist.headerData.forEach((el,i)=>{
+                if(el.field == "QUARTVAL"){
+                    el.data.forEach((e,i)=>{
+                        if(step == e.val){
+                            sttep = e.label
+                        }
+                    })
+                    return
+                }     
+            })
             PrimaryKey.IGetDynamicEditData({
                 stageVersionId:dataKey,
-                quart:"201701"
+                quart: value
             })
             .then(tableDate=>{
+                obj.baseinfo = tableDate.baseinfo;
+                obj.baseinfo.FillQuart = value
                 obj.baselist.dataSource.forEach((el,ind)=>{
-                    el.QUARTVAL = tableDate[el[QUOTAID]]
+                    el.QUARTVAL = tableDate.baselist.dataSource[el.QUOTAID]
+                })
+                this.setState({
+                    tableDate:obj,
+                    step:sttep
                 })
             })
         }
-        this.setState({
-            tableDate:obj
-        })
+        
     }
     
     //点击编辑
@@ -126,15 +170,36 @@ class Index extends Component {
             editstatus:false,
         });
     }
+    //校验是否数据完整
+    TestData = (arr) =>{
+        var bool = true;
+        arr.forEach((el,ind)=>{
+            if(el.QUARTVAL == null || el.QUARTVAL == ""){
+                bool = false
+                return
+            }
+        })
+        return bool
+    }
 
     //点击保存
     handleBindSave = () =>{
-        
+        if(this.state.editstatus){
+            if(!this.TestData(this.state.tableDate.baselist.dataSource)){
+                iss.error("请完善数据！！");
+                return
+            }
+        }
+        if(this.state.tableDate.baseinfo.SaveType ==3){
+            iss.error("审批中不能编辑！！");
+            return            
+        }
         PrimaryKey.ISaveDynamciInfo({
             baseinfo:JSON.stringify(this.state.tableDate.baseinfo),
             data:JSON.stringify(this.state.tableDate.baselist.dataSource)
         })
         .then(arg=>{
+            this.PageInit();
             this.setState({
                 editstatus:false,
             });
@@ -145,7 +210,30 @@ class Index extends Component {
 
     //发起审批
     BIND_ROUTERCHANGE = () =>{
-        console.log("发起审批")
+        if(this.state.editstatus){
+            if(!this.TestData(this.state.tableDate.baselist.dataSource)){
+                iss.error("请完善数据！！");
+                return
+            }
+        }
+        
+        if(this.state.tableDate.baseinfo.SaveType ==3){
+            iss.error("审批中不能编辑！！");
+            return
+        }
+        PrimaryKey.ISaveDynamciInfo({
+            baseinfo:JSON.stringify(this.state.tableDate.baseinfo),
+            data:JSON.stringify(this.state.tableDate.baselist.dataSource)
+        })
+        .then(arg=>{
+            const {dataKey} = this.state;
+            var status = iss.getEVal("primarykey");
+            $(window).trigger("treeLoad");
+            location.href=`/Index/#/ProcessApproval?e=`+status+`&dataKey=`+this.state.tableDate.baseinfo.ID+`&current=ProcessApproval&areaId=&areaName=&primarykeyTarget=primarykeyTarget&isProOrStage=2`;
+            this.setState({
+                editstatus:false,
+            });
+        })
     }
 
     
@@ -192,6 +280,24 @@ class Index extends Component {
             
         );
     }
+    SetisApproal = arg => {
+        
+                let stateData = arg ? arg.query : this.props.location.query;
+                this.setState({
+                    isApproal: Boolean(stateData["current"])
+                })
+                return Boolean(stateData["current"])
+    }
+
+    isApproal = arg => {
+        let stateData = this.props.location.query;
+        if (this.state.isApproal) {
+            return <section className="padB20">
+                <ProcessApprovalTab current="primarykey" allSearchArg={stateData}/>
+            </section>
+        }
+
+    }
     /**
      *  渲染空页面
      */
@@ -210,6 +316,7 @@ class Index extends Component {
         }
         return (
             <div className="processBar">
+            {this.isApproal()}
                 <Spin size="large" spinning={loading} tip="加载中请稍后。。。">
                     <Row>
                         <Col span={24}>
@@ -222,7 +329,7 @@ class Index extends Component {
                     <Row>
                         <Col span={24}>
                             <article>
-                                <TableBlock tableDate={this.state.tableDate} editstatus={this.state.editstatus} callback={this.BIND_TableBlockDATA.bind(this)} />
+                                <TableBlock step={this.state.step} tableDate={this.state.tableDate} editstatus={this.state.editstatus} callback={this.BIND_TableBlockDATA.bind(this)} />
                             </article>
                         </Col>
                     </Row>

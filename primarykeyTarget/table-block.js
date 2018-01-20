@@ -56,11 +56,7 @@ class TableBlock extends Component {
       let val = event.target.value;
       var _reg = new RegExp("^\\d+(\.\\d{0,2})?$");
       let _reg2 = /(?:\d{1}|\.{1})$/;
-      //var length = target.length;
-      // knife.CHECK_InputValue()
-      // if (!reg.test(target)) {
-      //   target = target.substring(0,length-1)
-      // }
+
       if(_reg.test(val) && _reg2.test(val)){
         this.props.callback(val,key,keyName);
       }

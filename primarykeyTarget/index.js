@@ -17,7 +17,6 @@ class Index extends Component {
         loading: false,
         editstatus:false,
         savestatus:false,
-        isApproal:false,
         TableBlockDATA: {},//数据
         tableDate:"",
         step:"请选择"
@@ -103,6 +102,9 @@ class Index extends Component {
                     return
                 }
             })
+            this.setState({
+                tableDate:obj
+            })
         }else{
             obj.baseinfo.Step = value
             var step = value;
@@ -111,11 +113,12 @@ class Index extends Component {
                         sttep = el.value
                     }
             })
+            this.setState({
+                tableDate:obj,
+                step:sttep
+            })
         }
-        this.setState({
-            tableDate:obj,
-            step:sttep
-        })
+        
     }
     
     //点击编辑

@@ -1,0 +1,9 @@
+.tableRender .ant-table-bordered .ant-table-tbody > tr > td {
+  width: 100px;
+}
+.tableRender .ant-table-bordered .ant-table-tbody > tr > td:first-child {
+  width: 60px;
+}
+.tableRender .ant-table-bordered .ant-table-tbody > tr > td:nth-child(3) {
+  width: 180px;
+}
