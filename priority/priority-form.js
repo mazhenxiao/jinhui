@@ -577,6 +577,7 @@ class PriorityForm extends Component {
                    
             );
         }else if(this.props.editData != "" || cancel == "cancel" ){
+            
             return (
                 <tbody>
                 <tr>
@@ -613,7 +614,7 @@ class PriorityForm extends Component {
                     </th>
                     <td>
                         {
-                            this.props.editData.APPROVESTATUS == 99 ? 
+                            this.props.editS? 
                             <TextArea disabled rows={3} value={this.state.readOnlyData.RISKDESC} onChange={this.TriggerCallback.bind(this,"RISKDESC")} /> :
                             <TextArea rows={3} value={this.state.readOnlyData.RISKDESC} onChange={this.TriggerCallback.bind(this,"RISKDESC")} />
                         }
@@ -624,7 +625,7 @@ class PriorityForm extends Component {
                     </th>
                     <td>
                         {
-                            this.props.editData.APPROVESTATUS == 99 ? 
+                            this.props.editS? 
                             <TextArea disabled rows={3} value={this.state.readOnlyData.RISKEFFECT} onChange={this.TriggerCallback.bind(this,"RISKEFFECT")} /> :
                             <TextArea rows={3} value={this.state.readOnlyData.RISKEFFECT} onChange={this.TriggerCallback.bind(this,"RISKEFFECT")} />
                         }
@@ -674,7 +675,7 @@ class PriorityForm extends Component {
                     </th>
                     <td>
                         {
-                            this.props.editData.APPROVESTATUS == 99 ? 
+                            this.props.editS ? 
                             <DatePicker 
                             disabled
                             placeholder={this.state.readOnlyData.REPORTTIME == "0001-01-01"?"请选择日期":this.state.readOnlyData.REPORTTIME}  
@@ -692,7 +693,7 @@ class PriorityForm extends Component {
                     </th>
                     <td>
                         {
-                            this.props.editData.APPROVESTATUS == 99 ? 
+                            this.props.editS ? 
                             <DatePicker
                             disabled
                             placeholder={this.state.readOnlyData.SOLVETIME == "0001-01-01"?"请选择日期":this.state.readOnlyData.SOLVETIME}

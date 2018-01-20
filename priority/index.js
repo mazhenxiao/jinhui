@@ -55,8 +55,9 @@ class Index extends Component {
         index:0,
         total:0,
         pageIndex:1,
+        editS:false
     }
-    ;
+    
     formData={
         projectName:"",
         areaName:"",
@@ -315,7 +316,7 @@ class Index extends Component {
                     if(data.rows.viewdata.APPROVESTATUS==1 && !onlyLook){
                         iss.popover({ content: "审批中，不能编辑！！"});
                     }else{
-
+                        var flag = false;
                         data.rows.list.forEach((el,ind)=>{
                             if(el.ISOLVE == 1){
                                 el.ISOLVE = "是"
@@ -329,7 +330,9 @@ class Index extends Component {
                             }else if(el.POINTLEVEL == 2){
                                 el.POINTLEVEL = "高"
                             }
-            
+                            if(el.APPROVESTATUS == 99){
+                                flag = true
+                            }
                             el.REPORTTIME=th.getLocalTime(el.REPORTTIME)
                             el.SOLVETIME=th.getLocalTime(el.SOLVETIME)
                             el.LASTUPDATETIME=th.getLocalTime(el.LASTUPDATETIME)
@@ -347,6 +350,7 @@ class Index extends Component {
                                 ell.CONTENTID = ell.ID 
                             }
                             ell.ID = null
+                            flag = true
                         }
                         if(ell.ISOLVE == 1){
                             ell.ISOLVE = "是"
@@ -370,13 +374,15 @@ class Index extends Component {
                             addAatterStatus:true,
                             editData : ell,
                             historyData: data.rows.list,
-                            lookStatus:true
+                            lookStatus:true,
+                            
                         })
                     }else{
                         th.setState({
                             addAatterStatus:true,
                             editData : ell,
-                            historyData: data.rows.list
+                            historyData: data.rows.list,
+                            editS:flag
                         })
                     }
                     
@@ -618,7 +624,6 @@ class Index extends Component {
         this.PriorityFormDat[para] = value;
     }
     editDataFormCallback = (value,para) =>{
-        debugger
         if(this.state.editData !=""){
             var obj = this.state.editData;
             obj[para] = value;
@@ -643,7 +648,7 @@ class Index extends Component {
                    <Row>
                         <Col span={24}>
                             <article>
-                                <PriorityForm lookStatus={this.state.lookStatus} historyData = {this.state.historyData} current={current} editData={this.state.editData} readOnly={dataKey} PriorityFormDat={this.PriorityFormDat} callback = {this.state.editData != ""?this.editDataFormCallback.bind(this):this.PriorityFormCallback.bind(this)}  data={this.formData}  />
+                                <PriorityForm editS = {this.state.editS} lookStatus={this.state.lookStatus} historyData = {this.state.historyData} current={current} editData={this.state.editData} readOnly={dataKey} PriorityFormDat={this.PriorityFormDat} callback = {this.state.editData != ""?this.editDataFormCallback.bind(this):this.PriorityFormCallback.bind(this)}  data={this.formData}  />
                             </article>
                         </Col>
                     </Row>
