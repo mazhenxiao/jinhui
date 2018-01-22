@@ -173,7 +173,7 @@ class TableBlock extends Component {
                 title: el.name,
                 dataIndex: el.field,
                 colSpan:Number(el.colSpan == null ? 1:el.colSpan),
-                //width:100
+                width:100
               }
             }
             

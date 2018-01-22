@@ -4,13 +4,11 @@ import iss from '../js/iss';
  * 参数
  * KPI/IGetTargetBaseInfo?id=
  */
-export const IGetTargetBaseInfo = (stageVersionId) => {
+export const IGetTargetBaseInfo = (data) => {
         return iss.fetch({
             url: "/KPI/IGetTargetBaseInfo",
             type: "get",
-            data: {
-                stageVersionId
-            }
+            data,
         })
         .then(ThenListener)
         .catch(ERROR)

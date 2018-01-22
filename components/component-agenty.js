@@ -57,6 +57,8 @@ class Agenty extends React.Component {
                     search="?"+pageUrlArr[1]+"&readOnly=readOnly&isProOrStage=2";
                 }else if(da.ENTIID =="10111"){
                     search="?"+pageUrlArr[1]+"&primarykey=primarykey&isProOrStage=2";
+                }else if(da.ENTIID =="10115"){
+                    search="?"+pageUrlArr[1]+"&primarykeyTarget=primarykeyTarget&isProOrStage=2";
                 }else{
                     search="?"+pageUrlArr[1];
                 }
