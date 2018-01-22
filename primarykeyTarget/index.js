@@ -75,8 +75,11 @@ class Index extends Component {
      * 获取基础数据
      */
     IGetTargetBaseInfo=()=>{
-        
+        console.log(this.props)
         let {dataKey:stageVersionId}=this.state;
+        if(this.props.location.query.vid){
+            stageVersionId = this.props.location.query.vid
+        }
         PrimaryKey.IGetTargetBaseInfo(stageVersionId)
                 .then(tableDate=>{
                     var sttep="请选择";

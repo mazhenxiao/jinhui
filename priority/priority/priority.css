@@ -22,6 +22,9 @@
   float: left;
   padding-left: 10px;
 }
+.priorityData .pagination {
+  float: right;
+}
 .priorityData .formTable tbody th {
   width: 180px;
 }

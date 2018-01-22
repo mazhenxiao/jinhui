@@ -384,6 +384,7 @@ class Index extends Component {
                             historyData: data.rows.list,
                             editS:flag
                         })
+                        console.log(ell)
                     }
                     
                     }
@@ -407,10 +408,10 @@ class Index extends Component {
     }
     //暂存
     BIND_Save = (approval) =>{
-        
         var entityJson="";
         if(this.state.editData == ""){
             if(approval=="approval"){
+                
                 for(let key in this.PriorityFormDat){
                     if(key != "SUPPORT" && key != "STAGEID" && key != "ATTACHMENT"){
                         if(this.PriorityFormDat[key] == ""){
@@ -703,8 +704,8 @@ class Index extends Component {
                     </Row>
                     <Row>
                         <Col span={24}>
-                            <article>
-                                <Pagination pageSize={5} total={this.state.total} onChange={this.pageChange} />
+                            <article className="pagination">
+                                <Pagination current={this.state.pageIndex} pageSize={5} total={this.state.total} onChange={this.pageChange} />
                             </article>
                         </Col>
                     </Row>

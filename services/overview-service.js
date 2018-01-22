@@ -2,31 +2,41 @@ import iss from '../js/iss';
 
 /**
  * 参数
- * KPI/IGetTargetBaseInfo?id=
+ * /Report/GetSignSummary
  */
-export const IGetTargetBaseInfo = (stageVersionId) => {
-        return iss.fetch({
-            url: "/KPI/IGetTargetBaseInfo",
-            type: "get",
-            data: {
-                stageVersionId
-            }
-        })
-        .then(ThenListener)
-        .catch(ERROR)
-    };
-
-//目标保存
-export const ISaveDynamciInfo = (data) => {
+//签约
+export const GetSignSummary = (data) => {
     return iss.fetch({
-        url: "/KPI/ISaveDynamciInfo",
-        type: "post",
-        data,
+        url: "/Report/GetSignSummary",
+        type: "get",
+        data
     })
     .then(ThenListener)
     .catch(ERROR)
 };
 
+//供货
+
+export const GetSupplySummary = (data) => {
+    return iss.fetch({
+        url: "/Report/GetSupplySummary",
+        type: "get",
+        data
+    })
+    .then(ThenListener)
+    .catch(ERROR)
+};
+
+//回款
+export const GetIncomeSummary = (data) => {
+    return iss.fetch({
+        url: "/Report/GetIncomeSummary",
+        type: "get",
+        data
+    })
+    .then(ThenListener)
+    .catch(ERROR)
+};
 
 /**
  * 统一处理

@@ -75,9 +75,9 @@ class Index extends Component {
      * 获取基础数据
      */
     IGetDynamicBaseInfo=()=>{
-        
+        var primarykey = this.GetQueryString("primarykey")
         let {dataKey}=this.state,json={}
-        if (this.state.isApproal) {
+        if (primarykey) {
             json = {
                 stageVersionId:"",
                 vid:dataKey,
@@ -229,7 +229,7 @@ class Index extends Component {
             const {dataKey} = this.state;
             var status = iss.getEVal("primarykey");
             $(window).trigger("treeLoad");
-            location.href=`/Index/#/ProcessApproval?e=`+status+`&dataKey=`+this.state.tableDate.baseinfo.ID+`&current=ProcessApproval&areaId=&areaName=&primarykeyTarget=primarykeyTarget&isProOrStage=2`;
+            location.href=`/Index/#/ProcessApproval?e=`+status+`&dataKey=`+this.state.tableDate.baseinfo.ID+`&vid=`+dataKey+`&current=ProcessApproval&areaId=&areaName=&primarykey=primarykey&isProOrStage=2`;
             this.setState({
                 editstatus:false,
             });
@@ -238,28 +238,35 @@ class Index extends Component {
 
     
     
-    
+    GetQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.href.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
     
     /*渲染button*/
     renderButtonList = () => {
+        var primarykey = this.GetQueryString("primarykey")
         const editstatus = this.state.editstatus;
         //判断是否是编辑状态  编辑状态
-        if(!editstatus){
-            return (
-                <div>
-                    <button type="button" onClick={this.handleBindEdit} className="jh_btn jh_btn22 jh_btn_add">编辑</button>
-                    <button type="button" onClick={this.BIND_ROUTERCHANGE} className="jh_btn jh_btn22 jh_btn_apro">发起审批</button>
-                </div>
-            );
-        }else{
-            return (
-                <div>
-                        <button type="button" onClick={this.handleBindSave} className="jh_btn jh_btn22 jh_btn_add">保存</button>
-                        <button type="button" onClick={this.handleBindCancel} className="jh_btn jh_btn22 jh_btn_add">取消</button>
+        if(!primarykey){
+            if(!editstatus){
+                return (
+                    <div>
+                        <button type="button" onClick={this.handleBindEdit} className="jh_btn jh_btn22 jh_btn_add">编辑</button>
                         <button type="button" onClick={this.BIND_ROUTERCHANGE} className="jh_btn jh_btn22 jh_btn_apro">发起审批</button>
-                </div>  
-            );
-        } 
+                    </div>
+                );
+            }else{
+                return (
+                    <div>
+                            <button type="button" onClick={this.handleBindSave} className="jh_btn jh_btn22 jh_btn_add">保存</button>
+                            <button type="button" onClick={this.handleBindCancel} className="jh_btn jh_btn22 jh_btn_add">取消</button>
+                            <button type="button" onClick={this.BIND_ROUTERCHANGE} className="jh_btn jh_btn22 jh_btn_apro">发起审批</button>
+                    </div>  
+                );
+            } 
+        }
     };
     
     renderHeader = () => {

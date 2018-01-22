@@ -106,7 +106,7 @@ class TableBlock extends Component {
     quarterSelect = () =>{
         return(
             <div>目标：
-                <Select value={this.props.step} style={{ width: 110 }} onChange={this.quarterSelectChange}>
+                <Select disabled = {!this.props.editstatus}  value={this.props.step} style={{ width: 110 }} onChange={this.quarterSelectChange}>
                    {this.selectOption()}
                 </Select>
           </div>
