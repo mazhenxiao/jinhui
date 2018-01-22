@@ -77,3 +77,25 @@ export const GetPriceNewEdit=(dataKey)=>{
         // debugger
     })
 }
+
+/**
+ * 价格生版
+ */
+export const CreatePriceVersion=(stageversionId)=>{
+    return iss.fetch({
+        type:`GET`,
+        url:"/Price/CreatePriceVersion",
+        data:{
+            stageversionId, //当前最新价格版本id
+            isPricePage:1 //张权说传死值就行了
+        }
+    })
+    .then(Success)
+    .catch(Error)
+}
+const Success=(row)=>{
+    return row.rows;
+}
+const Error=(err)=>{
+    return Promise.reject(err)
+} 

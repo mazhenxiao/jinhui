@@ -2,7 +2,7 @@
  * 价格
  */
 import React from 'react';
-import "../js/iss.js";
+import iss from "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import ProcessBar from "../components/tools-processBar.js";
 import ExchangeButton from "../components/tools-exchangeButton.js";
@@ -451,7 +451,6 @@ class PriceControl extends React.Component {
                 step = step ? step : stepData[0];
 
                 this.setState({
-
                     stepData,
                     step: step,
                 });
@@ -662,6 +661,34 @@ class PriceControl extends React.Component {
         this.sessionCurrentData = opt;//暂存当前数据
         this.Fetch_GetPriceList(opt)
     }
+    /**
+     * 新增事件
+     */
+    BIND_ButtonBuild=()=>{
+        //let stageversionId;
+        //price.CreatePriceVersion()
+        let {versionId,versionData}=this.state;
+        price.CreatePriceVersion(versionId)
+             .then(arg=>{
+                 iss.success("新增成功！");
+                 this.loadStep();
+             })
+             .catch(err=>{
+                 debugger
+                 iss.error("新增失败！")
+             })
+    }
+    /**
+     * 生版
+     */
+    Render_ButtonBuild=()=>{
+        let {versionId,versionData}=this.state;
+        let approvaled = versionData[0]&&versionData[0]["statusCode"]!="approvaled";
+         if (this.state.isApproal||approvaled) {
+            return
+        } 
+        return <button onClick={this.BIND_ButtonBuild} className="jh_btn jh_btn28 jh_btn_add">生成新版本</button>
+    }
     /* 绑定button */
     BIND_Button = arg => {
         let list = []
@@ -681,11 +708,12 @@ class PriceControl extends React.Component {
                     编辑</button>
             }
         }
+        
 
         // let defaultValue = this.state.versionData.length ? [this.state.versionData[0]["id"]] : "请选择";
         return <ul className="BTN_GROUP Right">
             <li className={this.state.isNoPriceData ? "hide" : ""}> {ButtonBar()}</li>
-            <li className=""></li>
+            <li className="">{this.Render_ButtonBuild()}</li>
             <li className="">
                 <button type="button" onClick={this.handleApproval}
                         className={this.state.isNoPriceData ? "hide" : "jh_btn jh_btn22 jh_btn_apro"}>
@@ -738,6 +766,7 @@ class PriceControl extends React.Component {
             </Tabs>
         }
     }
+
 
     render() {
         var th = this;
