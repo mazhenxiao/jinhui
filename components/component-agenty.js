@@ -31,7 +31,6 @@ class Agenty extends React.Component {
         }
     }
     EVENT_CLICK_PROJECTNAME(da){
-        debugger
         let search = "";
         var url="";
         var pageUrl=da.pageurl;
