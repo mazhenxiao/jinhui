@@ -246,13 +246,16 @@ class ApprovalControlNode2 extends React.Component {
 
     }
     EVENT_CLICK_PASS() {  //通过
-
+        
         var dto = this.getInfo;
         let comment = this.getInfo.comment;
         let {entiId,dataKey} = this.getInfo;
         if (comment == "") {
             dto.comment = "通过"
         }
+        this.setState({
+            loading:true
+        })
         new Promise((resolve, reject) => {
             iss.ajax({
                 url: "/iWorkflow/Workflow/api/WFServices.asmx/RunWorkflow2",
@@ -269,7 +272,6 @@ class ApprovalControlNode2 extends React.Component {
                         /*window.parent.opener.location.reload();
                         alert("审批成功！");*/
                         iss.popover({ content: "通过成功！", type: 2 });
-                        
                         resolve();
                     } else {
                         iss.popover({ content: rt.Message });
@@ -294,7 +296,7 @@ class ApprovalControlNode2 extends React.Component {
             }
            
         }).then(()=>{
-            
+            this.setState({loading:false});
             iss.hashHistory.push({ "pathname": "/agenty" });
             /*审批通过一条数据,触发一次我的里面的数量查询*/
             $(document).triggerHandler("reloadMyCount");

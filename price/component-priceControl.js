@@ -319,7 +319,7 @@ class PriceControl extends React.Component {
             Array.isArray(da["children"]) && (opt["children"] = da["children"]);
             return opt
         });
-       console.log(priceColumns)
+      // console.log(priceColumns)
         this.setState({
             priceColumnsSource:params,
             priceColumns
@@ -344,7 +344,7 @@ class PriceControl extends React.Component {
         let val = ev.target.value,data = this.state.priceData;
           if(!knife.checkType(val,"number(2)")){return};
             
-            params[row] = val;
+            params[row] = parseFloat(val);
         
         //横向汇总 TOTALSALEAREA总可售*AVERAGEPRICE 均价=PRICE货值
           knife.setTableExec(row,this.state.priceColumnsSource,[params]);
