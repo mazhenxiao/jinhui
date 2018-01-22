@@ -159,6 +159,10 @@ class Index extends Component {
     
     //点击编辑
     handleBindEdit = () =>{
+        if(this.state.tableDate.baseinfo.SaveType ==3){
+            iss.error("审批中不能编辑！！");
+            return
+        }
         this.setState({
             editstatus:true,
         });
@@ -190,10 +194,7 @@ class Index extends Component {
                 return
             }
         }
-        if(this.state.tableDate.baseinfo.SaveType ==3){
-            iss.error("审批中不能编辑！！");
-            return            
-        }
+        
         PrimaryKey.ISaveDynamciInfo({
             baseinfo:JSON.stringify(this.state.tableDate.baseinfo),
             data:JSON.stringify(this.state.tableDate.baselist.dataSource)
@@ -217,10 +218,7 @@ class Index extends Component {
             }
         }
         
-        if(this.state.tableDate.baseinfo.SaveType ==3){
-            iss.error("审批中不能编辑！！");
-            return
-        }
+        
         PrimaryKey.ISaveDynamciInfo({
             baseinfo:JSON.stringify(this.state.tableDate.baseinfo),
             data:JSON.stringify(this.state.tableDate.baselist.dataSource)
