@@ -1,3 +1,6 @@
+/*
+ 价格price下compoent-priceControl.js
+*/
 .priceBlock .text-left {
   text-align: left !important;
 }
@@ -13,6 +16,6 @@
   cursor: pointer;
 }
 .priceBlock #statusText {
-  width: 50px;
+  min-width: 60px;
   display: inline-block;
 }

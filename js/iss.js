@@ -1001,6 +1001,19 @@ class $iss {
             description:message
         })  
     }
+    success=(message)=>{
+        this.message({
+            type: "success",
+            content: message,
+        });
+    }
+    Success=(message)=>{
+        this.tip({
+            type:"success",
+            message:"提示",
+            description:message
+        })  
+    }
     error = (error) => {
         this.message({
                 type: "error",
@@ -1013,8 +1026,7 @@ class $iss {
         this.message({
                 type: "info",
                 content: message,
-            }
-        );
+            });
     };
 }
 
