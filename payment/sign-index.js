@@ -440,9 +440,26 @@ class SignIndex extends Component {
                // debugger
                 for (let key in arg) {
                     let reg = /^Y\d{3}/ig,mon=key.substr(2, 2),reg3=/Y3\d{2}Q\w/,yearNum=key.substr(1,1);
+                    let newAdd=`FullSales,FullValue,FullBuilding,
+                                ContractAreaCanBeSold,ContractAmountOfMoney,ContractHouseCount,
+                                BeginAreaCanBeSold,BeginValue`;
+                     let regNew = new RegExp(key),newCheck=regNew.exec(newAdd);
                      if(yearNum=="3"&&!reg3.test(key)){ //用来处理第三年非带Q字段不获取-瑞涛版
                         continue 
-                    } 
+                    }
+                    //新增总货值
+                    if(newCheck){
+                        let type="";
+                            switch(newCheck[0]){
+                                case "FullSales":
+                                case "FullValue":
+                                case "FullBuilding":type="overall";break;
+                                case "ContractAreaCanBeSold":
+                                case "ContractAmountOfMoney":
+                                case "ContractHouseCount":type="contract";break;
+                               
+                            }
+                    }
                     if (reg.test(key) && arg[key] !== "") {
                         let {StartYear} = this.dynamicTable;
                         StartYear = eval(StartYear + "-1+" + yearNum)
