@@ -133,7 +133,7 @@ class ProcessApprovalTab extends React.Component {
                     str = "关键指标目标";
                     break;
                 case "primarykey":
-                    str = "关键指标";
+                    str = "关键指标动态";
                     break;
             }
             return <li className={this.props.current == el.id ? "active" : ""} key={id}

@@ -87,16 +87,7 @@ class Index extends Component {
                 stageVersionId:dataKey
             }
         }
-        //console.log(this.props)
-        // if(this.props.location.query.vid){
-        //     json = {
-        //         stageVersionId:this.props.location.query.vid
-        //     }
-        // }else{
-        //     json = {
-        //         stageVersionId:dataKey
-        //     }
-        // }
+
         PrimaryKey.IGetTargetBaseInfo(json)
                 .then(tableDate=>{
                     var sttep="请选择";
