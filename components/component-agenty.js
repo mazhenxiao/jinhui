@@ -31,6 +31,7 @@ class Agenty extends React.Component {
         }
     }
     EVENT_CLICK_PROJECTNAME(da){
+        debugger
         let search = "";
         var url="";
         var pageUrl=da.pageurl;
@@ -41,8 +42,8 @@ class Agenty extends React.Component {
                 case iss.getEVal("newProjectStatus"):url="newProject";break;//项目
                 case iss.getEVal("teamMaintainStatus"):url="/AreaInfo/groupbuild";break;//项目团队维护
                 case iss.getEVal("priority"):url="/AreaInfo/priority";break;//重点事项
-                case iss.getEVal("primarykeyTarget"):url="/AreaInfo/priority";break;//关键指标目标
-                case iss.getEVal("primarykey"):url="/AreaInfo/priority";break;//关键指标
+                case iss.getEVal("primarykeyTarget"):url="/AreaInfo/primarykeyTarget";break;//关键指标目标
+                case iss.getEVal("primarykey"):url="/AreaInfo/primarykey";break;//关键指标
             };
             iss.hashHistory.push({
                 pathname:`/${url}`,
@@ -55,6 +56,8 @@ class Agenty extends React.Component {
 
                 if(da.ENTIID =="10114"){
                     search="?"+pageUrlArr[1]+"&readOnly=readOnly&isProOrStage=2";
+                }else if(da.ENTIID =="10111"){
+                    search="?"+pageUrlArr[1]+"&primarykey=primarykey&isProOrStage=2";
                 }else{
                     search="?"+pageUrlArr[1];
                 }
@@ -75,10 +78,10 @@ class Agenty extends React.Component {
                         search=`?e=${da.ENTIID}&dataKey=${da.RUNTRECORDID}&current=ProcessApprover&readOnly=readOnly`;
                         break;
                     case iss.getEVal("primarykeyTarget"):
-                        search=`?e=${da.ENTIID}&dataKey=${da.RUNTRECORDID}&current=ProcessApprover&isProOrStage=2`;
+                        search=`?e=${da.ENTIID}&dataKey=${da.RUNTRECORDID}&current=ProcessApprover&primarykeyTarget=primarykeyTarget&isProOrStage=2`;
                         break;
                     case iss.getEVal("primarykey"):
-                        search=`?e=${da.ENTIID}&dataKey=${da.RUNTRECORDID}&current=ProcessApprover&isProOrStage=2`;
+                        search=`?e=${da.ENTIID}&dataKey=${da.RUNTRECORDID}&current=ProcessApprover&primarykey=primarykey&isProOrStage=2`;
                         break;
                     case iss.getEVal("area"): //信息填报-面积
                     case iss.getEVal("priceControl"): //信息填报-价格

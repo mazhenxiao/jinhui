@@ -76,7 +76,7 @@ class Index extends Component {
      */
     IGetDynamicBaseInfo=()=>{
         var primarykey = this.GetQueryString("primarykey")
-        let {dataKey}=this.state,json={}
+        let {dataKey}=this.state,json={};
         if (primarykey) {
             json = {
                 stageVersionId:"",
@@ -254,7 +254,6 @@ class Index extends Component {
                 return (
                     <div>
                         <button type="button" onClick={this.handleBindEdit} className="jh_btn jh_btn22 jh_btn_add">编辑</button>
-                        <button type="button" onClick={this.BIND_ROUTERCHANGE} className="jh_btn jh_btn22 jh_btn_apro">发起审批</button>
                     </div>
                 );
             }else{

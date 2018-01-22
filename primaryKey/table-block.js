@@ -105,14 +105,18 @@ class TableBlock extends Component {
     quarterSelect = (obj) =>{
         return(
             <div>
-                <Select defaultValue={this.props.step} style={{ width: 110 }} onChange={this.quarterSelectChange}>
+                <Select disabled={this.GetQueryString("primarykey")?true:false} defaultValue={this.props.step} style={{ width: 110 }} onChange={this.quarterSelectChange}>
                    {this.selectOption(obj)}
                 </Select>
           </div>
         )
     }
 
-
+    GetQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.href.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
     tableRender =()=>{
         //表头数据
         var columns=[{
@@ -129,7 +133,7 @@ class TableBlock extends Component {
           this.props.tableDate.baselist.headerData.forEach((el,ind)=>{
             var obj={}
             if(el.field=="QUARTVAL"){
-              if(!editstatus){
+              if(!editstatus && !this.GetQueryString("primarykey")){
                 return
               }
               obj = {

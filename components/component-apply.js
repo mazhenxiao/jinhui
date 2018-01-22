@@ -29,7 +29,6 @@ class Apply extends React.Component {
      * @param {*判断路由跳转} da 
      */
     EVENT_CLICK_PROJECTNAME(da) {
-    
         let url = iss.convertURL(da.entiid), search = "";
         switch (da.entiid) {
             case iss.getEVal("newProjectStatus"):  //项目列表-项目
