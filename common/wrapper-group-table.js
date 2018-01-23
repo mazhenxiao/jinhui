@@ -47,6 +47,7 @@ export default class WrapperGroupTable extends Component {
             const {headerData, dataSource} = this.props;
             let value = e.target.value;
             value = value.replace(/\s*/ig, "");
+            
             if (value && !numberReg.test(value)) {
                 value = parseFloat(value).toFixed(2);
             }
