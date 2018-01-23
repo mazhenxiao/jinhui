@@ -155,7 +155,7 @@ class TableBlock extends Component {
         <Spin spinning={this.state.loading}>
             <Table 
                 columns={columns} 
-                pagination={false} 
+                pagination={false}
                 dataSource={dataSource} 
                 bordered={true} 
             />

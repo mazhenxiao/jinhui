@@ -174,104 +174,111 @@ class StagingInformation extends React.Component {
 
     }
     //推盘划分
-    BIND_OPENPlateIframe(){
-        var th=this,data = this.plateInfo;
+    BIND_OPENPlateIframe(look){
+        var th=this,data = this.plateInfo,okVal;
         let status = th.props.status;
-        if(status=="add" || status=="upgrade"){
+        if(look != "look"){
+            if(status=="add" || status=="upgrade"){
         		iss.popover({ content: "请先暂存分期信息"});
         		return false;
+            }
+            okVal="保存"
+        }
+        if(look == "look"){
+            okVal ="确定"
         }
         iss.Alert({
             title:"推盘划分",
             width:600,
             height:300,
             content:`<div id="PlateIframeBox"></div>`,
-            okVal:"保存",
+            okVal:okVal,
             cancel:"取消",
             ok(da){
-                
-                let checkid="";
-                if(th.props.location.query["dataKey"]){
-                    checkid=th.props.location.query["dataKey"];
-                }else{
-                    checkid = th.state.STAGEVERSIONID
-                }
-               // var stageversionid = th.state.STAGEVERSIONID,
-               var stageversionid=checkid,
-                    newPushPlate = [],
-                    buildingPushPlateMapping = [],
-                    valueNumber=[],
-                    deletePushPlate=[],
-                    newPushPlateNumber=[];
-                    deletePushPlate=th.plateInfo.delete;
-                th.plateInfo.state.dataList.forEach((el,ind) =>{
-                    // if(el.delete == 'del'){
-                    //     if(deletePushPlate.indexOf(el.pushPlateId) == -1 && el.pushPlateId != null){
-                    //         deletePushPlate.push(el.pushPlateId)
-                    //         console.log(el.pushPlateId)
-                    //         el.pushPlateId = null;
-                    //         console.log(el.pushPlateId)
-                    //     }
-                    // }
-                    if((el.pushPlateId != null && el.pushPlateNumber !=0) || (el.newPush == "newPush" && el.pushPlateNumber !=0)){
-                        if(el.del == null){
-                            var nGn = {
-                                "key":el.pushPlateId,
-                                "value":el.pushPlateNumber
+                if(look != "look"){
+                    let checkid="";
+                    if(th.props.location.query["dataKey"]){
+                        checkid=th.props.location.query["dataKey"];
+                    }else{
+                        checkid = th.state.STAGEVERSIONID
+                    }
+                // var stageversionid = th.state.STAGEVERSIONID,
+                var stageversionid=checkid,
+                        newPushPlate = [],
+                        buildingPushPlateMapping = [],
+                        valueNumber=[],
+                        deletePushPlate=[],
+                        newPushPlateNumber=[];
+                        deletePushPlate=th.plateInfo.delete;
+                    th.plateInfo.state.dataList.forEach((el,ind) =>{
+                        // if(el.delete == 'del'){
+                        //     if(deletePushPlate.indexOf(el.pushPlateId) == -1 && el.pushPlateId != null){
+                        //         deletePushPlate.push(el.pushPlateId)
+                        //         console.log(el.pushPlateId)
+                        //         el.pushPlateId = null;
+                        //         console.log(el.pushPlateId)
+                        //     }
+                        // }
+                        if((el.pushPlateId != null && el.pushPlateNumber !=0) || (el.newPush == "newPush" && el.pushPlateNumber !=0)){
+                            if(el.del == null){
+                                var nGn = {
+                                    "key":el.pushPlateId,
+                                    "value":el.pushPlateNumber
+                                }
+                                newPushPlateNumber.push(nGn)
                             }
-                            newPushPlateNumber.push(nGn)
+                            
                         }
                         
-                    }
-                    
-                    if((el.delete == null || el.delete == "") && el.del == null){
-                        var oldG = {
-                            "key": el.buildingId,
-                            "value": el.pushPlateId
+                        if((el.delete == null || el.delete == "") && el.del == null){
+                            var oldG = {
+                                "key": el.buildingId,
+                                "value": el.pushPlateId
+                            }
+                            buildingPushPlateMapping.push(oldG)
+                        }else if(el.delete == 'del' && el.buildingId != null && el.del ==null){
+                            var oldG = {
+                                "key": el.buildingId,
+                                "value": null
+                            }
+                            buildingPushPlateMapping.push(oldG)
                         }
-                        buildingPushPlateMapping.push(oldG)
-                    }else if(el.delete == 'del' && el.buildingId != null && el.del ==null){
-                        var oldG = {
-                            "key": el.buildingId,
-                            "value": null
-                        }
-                        buildingPushPlateMapping.push(oldG)
-                    }
-                    
-                    
-                    if(valueNumber.indexOf(el.pushPlateNumber) == -1){
-                        valueNumber.push(el.pushPlateNumber)
+                        
+                        
+                        if(valueNumber.indexOf(el.pushPlateNumber) == -1){
+                            valueNumber.push(el.pushPlateNumber)
 
-                        if(el.current == "new" && el.pushPlateNumber != 0){
-                            var newG = {
-                                "key": el.pushPlateId,
-                                "value": el.pushPlateNumber
+                            if(el.current == "new" && el.pushPlateNumber != 0){
+                                var newG = {
+                                    "key": el.pushPlateId,
+                                    "value": el.pushPlateNumber
+                                }
+                                newPushPlate.push(newG)
                             }
-                            newPushPlate.push(newG)
+                            
                         }
-                        
+                    })
+                    let json = {
+                        "stageversionid":stageversionid,
+                        "newPushPlate":newPushPlate,
+                        "buildingPushPlateMapping":buildingPushPlateMapping,
+                        "deletePushPlate":deletePushPlate,
+                        "newPushPlateNumber":newPushPlateNumber
                     }
-                })
-                let json = {
-                    "stageversionid":stageversionid,
-                    "newPushPlate":newPushPlate,
-                    "buildingPushPlateMapping":buildingPushPlateMapping,
-                    "deletePushPlate":deletePushPlate,
-                    "newPushPlateNumber":newPushPlateNumber
+                // console.log(json)
+                    iss.ajax({
+                        url: "/Stage/ISavePushPlateMapping",
+                        data:json,
+                        success(data) {
+                            th.setState({
+                                "PUSHPLATENUMBER":Math.max.apply(null, valueNumber)
+                            })
+                        },
+                        error() {
+                            console.log('失败')
+                        }
+                    })
                 }
-               // console.log(json)
-                iss.ajax({
-                    url: "/Stage/ISavePushPlateMapping",
-                    data:json,
-                    success(data) {
-                        th.setState({
-                            "PUSHPLATENUMBER":Math.max.apply(null, valueNumber)
-                        })
-                    },
-                    error() {
-                        console.log('失败')
-                    }
-                })
             },
             cancel(){}
         })
@@ -281,23 +288,31 @@ class StagingInformation extends React.Component {
         }else{
             checkid = this.state.STAGEVERSIONID
         }
-        ReactDOM.render(<PlateIframe  data={data} callback={th.PlateIframeCallback.bind(this)} 
+        ReactDOM.render(<PlateIframe look={look} data={data} callback={th.PlateIframeCallback.bind(this)} 
          versionId = {checkid} />,document.querySelector("#PlateIframeBox"));
     }
     
     //组团划分
-    BIND_OPENGroupIframe(){
+    BIND_OPENGroupIframe(look){
         var th=this,data = this.grupInfo,okVal = "";
         let status = th.props.status;
-        if(th.grupInfo.length == 0 || th.grupInfo.state.flag){
-            okVal = "保存"
+        if(look != "look"){
+            if(th.grupInfo.length == 0 || th.grupInfo.state.flag){
+                okVal = "保存"
+            }else{
+                okVal = false
+            }
         }else{
-            okVal = false
+            okVal = "确定"
         }
-        if(status=="add" || status=="upgrade"){
+        
+        if(look != "look"){
+            if(status=="add" || status=="upgrade"){
         		iss.popover({ content: "请先暂存分期信息"});
         		return false;
+            }
         }
+        
         
         iss.Alert({
             title:"组团划分",
@@ -307,84 +322,86 @@ class StagingInformation extends React.Component {
             okVal:okVal,
             cancel:"取消",
             ok(da){
-                let checkid="";
-                if(th.props.location.query["dataKey"]){
-                    checkid=th.props.location.query["dataKey"];
-                }else{
-                    checkid = th.state.STAGEVERSIONID
-                }
-                var stageversionid = checkid,
-                    newGroup = [],
-                    buildingGroupMapping = [],
-                    valueNumber=[],
-                    deleteGroup=[],
-                    newGroupNumber=[];
-                th.grupInfo.state.dataList.map((el,ind) =>{
-                    if(el.groupId == null && el.buildingId != null){
-                        th.checkGroup = false
+                if(look != "look"){
+                    let checkid="";
+                    if(th.props.location.query["dataKey"]){
+                        checkid=th.props.location.query["dataKey"];
+                    }else{
+                        checkid = th.state.STAGEVERSIONID
                     }
-                    if(el.delete == 'del'){
-                        if(deleteGroup.indexOf(el.groupId) == -1){
-                            deleteGroup.push(el.groupId)
-                            el.groupId = null;
+                    var stageversionid = checkid,
+                        newGroup = [],
+                        buildingGroupMapping = [],
+                        valueNumber=[],
+                        deleteGroup=[],
+                        newGroupNumber=[];
+                    th.grupInfo.state.dataList.map((el,ind) =>{
+                        if(el.groupId == null && el.buildingId != null){
+                            th.checkGroup = false
                         }
-                    }
-                    if(el.groupId != null && el.groupnumber != 0){
-                        var nGn = {
-                            "key":el.groupId,
-                            "value":el.groupnumber
+                        if(el.delete == 'del'){
+                            if(deleteGroup.indexOf(el.groupId) == -1){
+                                deleteGroup.push(el.groupId)
+                                el.groupId = null;
+                            }
                         }
-                        newGroupNumber.push(nGn)
-                    }
-                    
-                    
-                    if(el.current == "new" && el.groupnumber != 0){
-                        var newG = {
-                            "key": el.groupId,
-                            "value": el.groupnumber
+                        if(el.groupId != null && el.groupnumber != 0){
+                            var nGn = {
+                                "key":el.groupId,
+                                "value":el.groupnumber
+                            }
+                            newGroupNumber.push(nGn)
                         }
-                        newGroup.push(newG)
-                    }
+                        
+                        
+                        if(el.current == "new" && el.groupnumber != 0){
+                            var newG = {
+                                "key": el.groupId,
+                                "value": el.groupnumber
+                            }
+                            newGroup.push(newG)
+                        }
 
-                    if(el.buildingId != null || el.groupId != null){
+                        if(el.buildingId != null || el.groupId != null){
+                            var oldG = {
+                                "key": el.buildingId,
+                                "value": el.groupId
+                            }
+                            buildingGroupMapping.push(oldG)
+                        }
+                        
+                        if(valueNumber.indexOf(el.groupnumber) == -1 && el.groupnumber!=200){
+                            valueNumber.push(el.groupnumber)
+                        }
+                    })
+                    th.checkDataValue(newGroupNumber);
+                    th.grupInfo.state.parkingLot.forEach((el,ind)=>{
                         var oldG = {
                             "key": el.buildingId,
                             "value": el.groupId
                         }
                         buildingGroupMapping.push(oldG)
+                    })
+                    let json = {
+                        "stageversionid":stageversionid,
+                        "newGroup":newGroup,
+                        "buildingGroupMapping":buildingGroupMapping,
+                        "deleteGroup":deleteGroup,
+                        "newGroupNumber":newGroupNumber
                     }
-                    
-                    if(valueNumber.indexOf(el.groupnumber) == -1 && el.groupnumber!=200){
-                        valueNumber.push(el.groupnumber)
-                    }
-                })
-                th.checkDataValue(newGroupNumber);
-                th.grupInfo.state.parkingLot.forEach((el,ind)=>{
-                    var oldG = {
-                        "key": el.buildingId,
-                        "value": el.groupId
-                    }
-                    buildingGroupMapping.push(oldG)
-                })
-                let json = {
-                    "stageversionid":stageversionid,
-                    "newGroup":newGroup,
-                    "buildingGroupMapping":buildingGroupMapping,
-                    "deleteGroup":deleteGroup,
-                    "newGroupNumber":newGroupNumber
+                    iss.ajax({
+                        url: "/Stage/ISaveGroupBuildingMapping",
+                        data:json,
+                        success(data) {
+                            th.setState({
+                                "GROUPNUMBER":Math.max.apply(null, valueNumber)
+                            })
+                        },
+                        error() {
+                            console.log('失败')
+                        }
+                    })
                 }
-                iss.ajax({
-                    url: "/Stage/ISaveGroupBuildingMapping",
-                    data:json,
-                    success(data) {
-                        th.setState({
-                            "GROUPNUMBER":Math.max.apply(null, valueNumber)
-                        })
-                    },
-                    error() {
-                        console.log('失败')
-                    }
-                })
             },
             cancel(){
 
@@ -396,7 +413,7 @@ class StagingInformation extends React.Component {
         }else{
             checkid = this.state.STAGEVERSIONID
         }
-        ReactDOM.render(<GroupIframe  data={data} callback={th.GroupIframeCallback.bind(this)}  
+        ReactDOM.render(<GroupIframe look={look}  data={data} callback={th.GroupIframeCallback.bind(this)}  
         versionId = {checkid} />,document.querySelector("#GroupIframeBox"));
     }
     /**
@@ -1029,7 +1046,7 @@ class StagingInformation extends React.Component {
                                         <td>
                                             <input data-type="number" readOnly="true" disabled="disabled" data-max="10" data-min="1" id="GROUPNUMBER" value={this.state.GROUPNUMBER||1} className="inputTextBox boxSizing stage-validatebox" type="text" maxLength="4" />
                                             <input onClick={this.BIND_OPENGroupIframe.bind(this)} className='btn btnStyle uploadIconBtn' value='组团划分' type='button' />  
-                                            {/* <input onChange={this.handleInputTextChange.bind(this)} data-type="number" data-max="10" data-min="1" id="GROUPNUMBER" value={this.state.GROUPNUMBER||""} className="inputTextBox boxSizing stage-validatebox" type="text" maxLength="4" /> */}
+                                            <span onClick={this.BIND_OPENGroupIframe.bind(this,"look")} className="lookGroup"><img src="../img/look-group.png" /></span>
                                         </td>
                                         <th>
                                             <label className="formTableLabel boxSizing">推盘图</label>
@@ -1045,6 +1062,7 @@ class StagingInformation extends React.Component {
                                         <td>
                                             <input data-type="number" readOnly="true" disabled="disabled" data-max="10" data-min="1" id="PUSHPLATENUMBER" value={this.state.PUSHPLATENUMBER||1} className="inputTextBox boxSizing stage-validatebox" type="text" maxLength="4" />
                                             <input onClick={this.BIND_OPENPlateIframe.bind(this)} className='btn btnStyle uploadIconBtn' value='推盘划分' type='button' />  
+                                            <span onClick={this.BIND_OPENPlateIframe.bind(this,"look")} className="lookPlate"><img src="../img/look-group.png" /></span>
                                         </td>
                                     </tr>
                             </tbody>

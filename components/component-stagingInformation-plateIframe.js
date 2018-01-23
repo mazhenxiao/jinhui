@@ -77,7 +77,9 @@ class PlateIframe extends React.Component{
     }
     //删除推盘
     delGroup(da,ev){
-        
+        if(this.props.look == "look"){
+            return
+        }
         const target = ev.currentTarget;
         var th = this,arr=[];
         var delAr = th.state.dataList;
@@ -148,6 +150,9 @@ class PlateIframe extends React.Component{
 
     //复选框
     inputChange(ind,el,ev){
+        if(this.props.look == "look"){
+            return
+        }
         const target = ev.target;
         var th = this,
             domType = target.type === 'checkbox' ? target.checked : target.value,
@@ -295,7 +300,6 @@ class PlateIframe extends React.Component{
 
     //增加推盘
     addGroup(){
-        debugger
         var th=this;
         var crr = th.state.dataList;
         var addObj = {},len = 1,
@@ -400,8 +404,8 @@ class PlateIframe extends React.Component{
         
         return <article>
             <div className='addGroup'>
-                <input type='button' value='增加推盘批次' onClick={this.addGroup.bind(this)} />
-                <input type='button' value='引用组团划分' onClick={this.quoteGroup.bind(this)} />
+                <input disabled={this.props.look == "look"?true:false} type='button' value='增加推盘批次' onClick={this.addGroup.bind(this)} />
+                <input disabled={this.props.look == "look"?true:false} type='button' value='引用组团划分' onClick={this.quoteGroup.bind(this)} />
             </div>
             <div className='groupList'>
                 <div className='groupName groupListScroll plateName'>

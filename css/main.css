@@ -751,6 +751,16 @@ a:hover {
 .formTable td .groupButton {
   float: right;
 }
+.formTable td .lookGroup,
+.formTable td .lookPlate {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+.formTable td .lookGroup img,
+.formTable td .lookPlate img {
+  width: 100%;
+}
 .formTable td select {
   width: 100%;
 }

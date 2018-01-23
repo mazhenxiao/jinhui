@@ -106,7 +106,6 @@ class Index extends Component {
     }
     componentDidMount(){
       
-     
     };
 
     getLocalTime(nS) {

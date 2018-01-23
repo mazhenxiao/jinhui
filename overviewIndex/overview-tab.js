@@ -72,7 +72,7 @@ class OverviewTab extends React.Component {
                         { "guid":"4","text":"回款","tap":"payment"},
                         // { "guid":"5","text":"主项计划","tap":"plan"},
                         { "guid":"6","text":"重点事项","tap":"matter"},
-                        { "guid":"7","text":"关键指标","tap":"keyPoint"},
+                        //{ "guid":"7","text":"关键指标","tap":"keyPoint"},
                     ],
                 })
             break;
@@ -86,7 +86,7 @@ class OverviewTab extends React.Component {
                         { "guid":"4","text":"回款","tap":"payment"},
                         // { "guid":"5","text":"主项计划","tap":"plan"},
                         { "guid":"6","text":"重点事项","tap":"matter"},
-                        { "guid":"7","text":"关键指标","tap":"keyPoint"},
+                        //{ "guid":"7","text":"关键指标","tap":"keyPoint"},
                     ],
                 })
             break;
@@ -100,7 +100,7 @@ class OverviewTab extends React.Component {
                         { "guid":"4","text":"回款","tap":"payment"},
                         // { "guid":"5","text":"主项计划","tap":"plan"},
                         { "guid":"6","text":"重点事项","tap":"matter"},
-                        { "guid":"7","text":"关键指标","tap":"keyPoint"},
+                        //{ "guid":"7","text":"关键指标","tap":"keyPoint"},
                     ],
                 })
             break;
@@ -114,7 +114,7 @@ class OverviewTab extends React.Component {
                         { "guid":"5","text":"回款","tap":"payment"},
                         // { "guid":"6","text":"主项计划","tap":"plan"},
                         { "guid":"7","text":"重点事项","tap":"matter"},
-                        { "guid":"8","text":"关键指标","tap":"keyPoint"},
+                        //{ "guid":"8","text":"关键指标","tap":"keyPoint"},
                     ],
                 })
             break;
