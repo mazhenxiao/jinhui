@@ -87,13 +87,13 @@
   width: 100px;
   display: inline-block !important;
 }
-.PriorityTable .ant-progress-status-success .ant-progress-bg {
+.progre .ant-progress-status-success .ant-progress-bg {
   background-color: #f04134;
   height: 5px !important;
 }
-.PriorityTable .ant-progress-status-exception .ant-progress-bg {
+.progre .ant-progress-status-exception .ant-progress-bg {
   background-color: #F1A118;
 }
-.PriorityTable .ant-progress-bg {
+.progre .ant-progress-bg {
   height: 5px !important;
 }

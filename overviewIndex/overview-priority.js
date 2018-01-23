@@ -5,10 +5,6 @@ import React, { Component } from 'react';
 import { Spin, Tabs, Row, Col, Button, Select,Input,Progress,Alert,DatePicker,message,Pagination} from 'antd';
 import { AreaService,Priority } from '../services';
 import PriorityTable from '../priority/priority-table.js';
-import "../css/tools-processBar.less";
-import "../css/button.less";
-import "../area/areaCss/areaManage.less";
-import "../css/antd.min.css"
 
 class Index extends Component {
     state = {

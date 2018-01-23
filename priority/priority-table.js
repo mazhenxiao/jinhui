@@ -3,7 +3,7 @@ import iss from "../js/iss.js";
 import React, { Component } from 'react';
 import { Table,Input,Progress } from 'antd';
 import { debug } from "util";
-require("./priority/priority.less");
+import "./priority/priority.less"
 // In the fifth row, other columns are merged into first column
 // by setting it's colSpan to be 0
 
@@ -99,7 +99,7 @@ class PriorityTable extends Component {
                 
               }
           }
-          return<div>
+          return<div className="progre">
               <div style={{color:statusColor}}>{value}</div>
               <Progress percent={finishRate} status={status} showInfo={false} size="small" />
           </div>
