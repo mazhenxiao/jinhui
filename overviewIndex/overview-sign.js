@@ -1387,20 +1387,13 @@ class SignIndex extends Component {
     }
 
     handleEdit = () => {
-        let {dynamicTable} = this.state;
-        let dynamicEdit = !dynamicTable.dynamicEdit;
-        dynamicTable = {...dynamicTable, ...{dynamicEdit}}
-        this.setState({
-
-            dynamicTable
-        });
-        if (!dynamicEdit) { //保存
-            this.setState({
-                loading: true
-            })
-
-        }
-
+        Overview.SignExprot({
+            nodeId:this.props.location.state.id,
+            nodeLevel:this.props.location.state.level_id
+        })
+        .then((planDataSource) => {
+            console.log(planDataSource)
+        })
     };
 
   
@@ -1546,15 +1539,9 @@ class SignIndex extends Component {
                             <span className="header-title">签约计划{DynamicDate}动态调整版（面积：平方米，货值：万元）</span>
                         </Col>
                         <Col span={12}>
-                            <div className={dynamicEditButtonShow ? "RT" : "hidden"}>
-                                <Popconfirm placement="top" title={"确定提交吗？"} >
-                                    <button className="jh_btn jh_btn22 jh_btn_apro mgR20">提交</button>
-                                </Popconfirm>
-                                <Popconfirm placement="top" title={"确定退回吗？"} >
-                                    <button className="jh_btn jh_btn22 refresh-icon mgR20">退回</button>
-                                </Popconfirm>
+                            <div className="RT">
                                 <button className="jh_btn jh_btn22 jh_btn_edit"
-                                        onClick={this.handleEdit}>{dynamicEdit ? "保存" : "编辑"}
+                                        onClick={this.handleEdit}>导出
                                 </button>
                             </div>
                         </Col>
@@ -1613,12 +1600,12 @@ class SignIndex extends Component {
             <div className="sign-wrapper">
                 <Spin size="large" spinning={this.state.loading} tip="加载中请稍后。。。">
                     <article>
-                        <Tabs defaultActiveKey="sign">
-                            <TabPane tab="签约" key="sign">
-                                {this.renderHistoryData()}
-                                {this.renderCurrentData()}
-                            </TabPane>
-                        </Tabs>
+                        <Row>
+                            {this.renderHistoryData()}
+                        </Row>
+                        <Row>
+                            {this.renderCurrentData()}
+                        </Row>
                     </article>
                 </Spin>
             </div>

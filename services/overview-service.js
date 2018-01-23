@@ -15,6 +15,16 @@ export const GetSignSummary = (data) => {
     .catch(ERROR)
 };
 
+//签约导出
+export const SignExprot = (data) => {
+    return iss.fetch({
+        url: "/Exprot/SignExprot",
+        type: "get",
+        data
+    })
+    .then(ThenListener)
+    .catch(ERROR)
+};
 //供货
 
 export const GetSupplySummary = (data) => {
