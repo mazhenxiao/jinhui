@@ -403,6 +403,7 @@ class SignIndex extends Component {
         let {saveData,saveData2,DynamicId} = this.dynamicTable;//非stage存储保存数据
 
         this.filterSaveData(dynamicDataSource);//递归赋值    
+        
         let _da = JSON.stringify(Object.values(saveData));
         let _da2 = JSON.stringify(Object.values(saveData2));
         
@@ -443,7 +444,7 @@ class SignIndex extends Component {
                 //console.log(`${arg.GROUPNAME}=>${arg.PROJECTNAME}=>${arg.TYPENAME}`)
                // debugger
                 for (let key in arg) {
-                    let reg = /^Y\d{3}/ig,mon=key.substr(2, 2),reg3=/Y3\d{2}Q\w/,yearNum=key.substr(1,1);
+                    let reg = /^Y[123]\d{2}/ig,mon=key.substr(2, 2),reg3=/Y3\d{2}Q\w/,yearNum=key.substr(1,1);
                     let newAdd=`FullSales,FullValue,FullBuilding,
                                 ContractAreaCanBeSold,ContractAmountOfMoney,ContractHouseCount,
                                 BeginAreaCanBeSold,BeginValue`;
@@ -648,11 +649,11 @@ class SignIndex extends Component {
         for(let it in record){
             let reg = new RegExp(`\{${it}\}`);
             if(reg.test(sale_exec)){
-               sale_exec=sale_exec.replace(reg,record[it]);
+               sale_exec=sale_exec.replace(reg,record[it]||0);
             }else if(reg.test(value_exec)){
-                value_exec=value_exec.replace(reg,record[it]);
+                value_exec=value_exec.replace(reg,record[it]||0);
             }else if(reg.test(build_exec)){
-                build_exec=build_exec.replace(reg,record[it]);
+                build_exec=build_exec.replace(reg,record[it]||0);
             }
         }
         sale_value = eval(sale_exec);value_value=eval(value_exec);build_value=eval(build_exec);
