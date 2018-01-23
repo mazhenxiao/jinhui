@@ -668,7 +668,7 @@ class PriceControl extends React.Component {
         //let stageversionId;
         //price.CreatePriceVersion()
         let {versionId,versionData}=this.state;
-        price.CreatePriceVersion(versionId)
+        price.CreatePriceVersion(versionData[0].id)
              .then(arg=>{
                  iss.success("新增成功！");
                  this.loadStep();
@@ -684,7 +684,7 @@ class PriceControl extends React.Component {
     Render_ButtonBuild=()=>{
         let {versionId,versionData}=this.state;
        // let approvaled = !(versionData[0]&&versionData[0]["statusCode"]&&versionData[0]["statusCode"]=="approvaled");
-       let approvaled =!(versionData.some(arg=>(arg.id==versionId&&arg.statusCode=="approvaled")));
+       let approvaled =!(versionData.length&&versionData[0]["id"]==versionId&&versionData[0]["statusCode"]=="approvaled");
        
          if (this.state.isApproal||approvaled) {
             return

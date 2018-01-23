@@ -328,7 +328,8 @@ class WrapperTreeTable extends Component {
     handleInputChange = (record, key, column) => {
         return (e) => {
             let value = e.target.value;
-            value = value.replace(/\s*/ig, "");debugger
+            value = value.replace(/\s*/ig, "");
+            debugger
             if (value && !numberReg.test(value)) {
                 value = parseFloat(value).toFixed(2);
             }
