@@ -105,6 +105,9 @@ class GroupIframe extends React.Component{
     }
 
     delGroup(da,ev){
+        if(this.props.look == "look"){
+            return
+        }
         var th = this,arr=[];
         var delAr = th.state.dataList,groupid="";
         delAr.forEach((el,ind) =>{
@@ -195,6 +198,9 @@ class GroupIframe extends React.Component{
 
     //复选框
     inputChange(ind,el,ev){
+        if(this.props.look == "look"){
+            return
+        }
         const target = ev.target;
         var th = this,
             domType = target.type === 'checkbox' ? target.checked : target.value,
@@ -376,7 +382,7 @@ class GroupIframe extends React.Component{
     render(){
         
         return <article>
-            <div className='addGroup'><input type='button' value='增加组团' onClick={this.addGroup.bind(this)} /></div>
+            <div className='addGroup'><input type='button' disabled={this.props.look == "look"?true:false} value='增加组团' onClick={this.addGroup.bind(this)} /></div>
             <div className='groupList'>
                 <div className='groupName groupListScroll'>
                 <ul >
