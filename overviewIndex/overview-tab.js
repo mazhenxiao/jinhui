@@ -17,10 +17,8 @@ import { setTimeout } from "timers";
 const TabPane = Tabs.TabPane;
 class OverviewTab extends React.Component {
     
-    constructor(arg) {
-        super(arg);
-        
-        this.state={
+
+        state={
             dataTabHeader:[
                 //{ "guid":"1","text":"项目概览","tap":"index"},
                 //{ "guid":"2","text":"项目身份证","tap":"identity"},
@@ -33,26 +31,26 @@ class OverviewTab extends React.Component {
             ],
             activeKey:"0",
             planUrl:"http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=",
+            activeTapKey:"supply"
         
         };//通过props初始化tab菜单子组件的state
-    }
+    
     componentWillReceiveProps(nextProps){
-        this.setState({
-            currentPosi:nextProps.currentPosi,//获取左侧树当前级别,
-            activeKey:"0",
-            dataKey:nextProps.dataKey,//获取左侧树当前id
-            parentid:nextProps.parentid,
-            location:nextProps.location,
-        },()=>{
-            this.renderLeftTab();
-            this.renderTabs();
+        // this.setState({
+        //     currentPosi:nextProps.currentPosi,//获取左侧树当前级别,
+        //     activeKey:"0",
+        //     dataKey:nextProps.dataKey,//获取左侧树当前id
+        //     parentid:nextProps.parentid,
+        //     location:nextProps.location,
+        // },()=>{
+        //     this.renderLeftTab();
+        //     this.renderTabs();
             
-        })
+        // })
     }
 
     componentDidMount(){
-        this.renderLeftTab();
-        this.renderTabs();
+        //this.renderTabList();
     }
    //
     //左侧树变更切换右侧数据内容
@@ -239,11 +237,86 @@ class OverviewTab extends React.Component {
         }   
         
     }
+    handleTabChange = (activeTapKey) => {
+        this.setState({activeTapKey});
+    };
+
+    renderTabList = () =>{
+        if(!iss.id || !iss.id.id){
+            return
+        }
+        const {currentPosi, dataKey,location,parentid} = this.props;
+        const {activeTapKey} = this.state;
+        const panelArray = [];
+        if(iss.id.level_id == 4){
+            panelArray.push(
+                <TabPane tab="项目身份证" key="identityProject">
+                     <OverviewProject 
+                        location={location}
+                        dataKey={dataKey}  
+                    />  
+                </TabPane>
+            )
+        }
+        if(iss.id.level_id == 5){
+            panelArray.push(
+                <TabPane tab="分期身份证" key="identityIntallment">
+                      <OverviewIntallment dataKey={dataKey} parentid={this.state.parentid} />
+                </TabPane>
+            )
+        }
+        panelArray.push(
+            <TabPane tab="供货" key="supply">
+                <OverviewSupply location={location} />
+            </TabPane>
+        )
+        panelArray.push(
+            <TabPane tab="签约" key="sign">
+                <OverviewSupply location={location} />
+            </TabPane>
+        )
+        panelArray.push(
+            <TabPane tab="回款" key="payment">
+                <OverviewSupply location={location} />
+            </TabPane>
+        )
+        panelArray.push(
+            <TabPane tab="重点事项" key="matter">
+                 <OverviewPriority />
+            </TabPane>
+        )
+        if(iss.id.level_id == 5){
+            panelArray.push(
+                <TabPane tab="关键指标" key="keyPoint">
+                     <OverviewPrimaryKey />
+                </TabPane>
+            )
+        }
+        return (
+            <Tabs activeKey={activeTapKey}
+                  animated={false}
+                  onChange={this.handleTabChange}>
+                {panelArray}
+            </Tabs>
+        );
+    }
+
 
     renderTabs = () =>{
+        //onChange={this.callback} onTabClick={this.tabClick} defaultActiveKey="0" activeKey={this.state.activeKey}
         return(
-            <Tabs onChange={this.callback} onTabClick={this.tabClick} defaultActiveKey="0" activeKey={this.state.activeKey} type="card">
-                {this.renderTabMenu1()}
+            <Tabs type="card">
+                <TabPane tab="供货" key="1">
+                    <OverviewSupply location={location} />
+                </TabPane>
+                <TabPane tab="签约" key="2">
+                    <OverviewSupply location={location} />
+                </TabPane>
+                <TabPane tab="回款" key="3">
+                    <p>Content of Tab Pane 3</p>
+                    <p>Content of Tab Pane 3</p>
+                    <p>Content of Tab Pane 3</p>
+                </TabPane>
             </Tabs>
         );
     }
@@ -253,7 +326,7 @@ class OverviewTab extends React.Component {
         return(<div>
                 <Row>
                     <Col span={24}>
-                        {this.renderTabs()}
+                        {this.renderTabList()}
                     </Col>
                 </Row>
             </div>

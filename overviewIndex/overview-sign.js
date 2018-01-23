@@ -143,6 +143,9 @@ class SignIndex extends Component {
      * 获取动态数据，获取签约计划数据，获取版本数
      */
     getFetData = () => {
+        if(!iss.id || !iss.id.id){
+            return;
+        }
         return Overview.GetSignSummary({
             nodeId:iss.id.id,
             nodeLevel:iss.id.level_id
