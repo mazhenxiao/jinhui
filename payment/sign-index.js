@@ -628,7 +628,38 @@ class SignIndex extends Component {
             })
 
     }
+    /**
+     * 编辑结束
+     */
+    onDataChange=(KEY,key, value, record, column)=>{
+        var sale_exec=`{FullSales}-{ContractAreaCanBeSold}-{BeginAreaCanBeSold}-
+        {Y101Area}-{Y102Area}-{Y103Area}-{Y104Area}-{Y105Area}-{Y106Area}-{Y107Area}-{Y108Area}-{Y109Area}-{Y110Area}-{Y111Area}-{Y112Area}-
+        {Y201Area}-{Y202Area}-{Y203Area}-{Y204Area}-{Y205Area}-{Y206Area}-{Y207Area}-{Y208Area}-{Y209Area}-{Y210Area}-{Y211Area}-{Y212Area}-
+        {Y301QArea}-{Y302QArea}-{Y303QArea}-{Y304QArea}`;
+        var value_exec=`{FullValue}-{ContractAmountOfMoney}-{BeginValue}-
+        {Y101Value}-{Y102Value}-{Y103Value}-{Y104Value}-{Y105Value}-{Y106Value}-{Y107Value}-{Y108Value}-{Y109Value}-{Y110Value}-{Y111Value}-{Y112Value}-
+        {Y201Value}-{Y202Value}-{Y203Value}-{Y204Value}-{Y205Value}-{Y206Value}-{Y207Value}-{Y208Value}-{Y209Value}-{Y210Value}-{Y211Value}-{Y212Value}-
+        {Y301QValue}-{Y302QValue}-{Y303QValue}-{Y304QValue}`;
+        var build_exec=`{FullBuilding}-{ContractHouseCount}-{BeginHousecount}-
+        {Y101Housecount}-{Y102Housecount}-{Y103Housecount}-{Y104Housecount}-{Y105Housecount}-{Y106Housecount}-{Y107Housecount}-{Y108Housecount}-{Y109Housecount}-{Y110Housecount}-{Y111Housecount}-{Y112Housecount}-
+        {Y201Housecount}-{Y202Housecount}-{Y203Housecount}-{Y204Housecount}-{Y205Housecount}-{Y206Housecount}-{Y207Housecount}-{Y208Housecount}-{Y209Housecount}-{Y210Housecount}-{Y211Housecount}-{Y212Housecount}-
+        {Y301QHousecount}-{Y302QHousecount}-{Y303QHousecount}-{Y304QHousecount}`;
+        let sale_value=0,value_value=0,build_value=0;
+        for(let it in record){
+            let reg = new RegExp(`\{${it}\}`);
+            if(reg.test(sale_exec)){
+               sale_exec=sale_exec.replace(reg,record[it]);
+            }else if(reg.test(value_exec)){
+                value_exec=value_exec.replace(reg,record[it]);
+            }else if(reg.test(build_exec)){
+                build_exec=build_exec.replace(reg,record[it]);
+            }
+        }
+        sale_value = eval(sale_exec);value_value=eval(value_exec);build_value=eval(build_exec);
+        record.Y401AfterArea=sale_value;record.Y401AfterValue=value_value;record.Y401AfterHousecount=build_value;
+        return record;
 
+    }
     /**
      * 弹出窗口
      */
@@ -690,6 +721,7 @@ class SignIndex extends Component {
                 </header>
 
                 <WrapperTreeTable
+                    onDataChange={this.onDataChange}
                     loading={loading}
                     size="small"
                     defaultHeight={defaultHeight}
