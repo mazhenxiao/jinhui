@@ -182,7 +182,6 @@ class SignIndex extends Component {
                 loading:false
             })
         }).catch(err => {
-
             err && iss.error(err);
             this.setState({
                 loading: false
@@ -441,12 +440,13 @@ class SignIndex extends Component {
         }
 
     }
-
+    aaaaa = () =>{
+        console.log(8)
+    }
     /**
      * 动态调整table
      */
     renderHistoryData = () => {
-        console.log(this.props)
         let {versionData, versionId, editable, dynamicTable, loading,supperShow} = this.state;
         let {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow, defaultHeight,DynamicDate} = dynamicTable;
         dynamicEditButtonShow = (supperShow&&dynamicEditButtonShow);//保存后不能编辑
@@ -466,9 +466,10 @@ class SignIndex extends Component {
                         </Col>
                     </Row>
                 </header>
-
+                
                 <WrapperTreeTable
                     loading={loading}
+                    onExpand={()=>{console.log(88)}}
                     size="small"
                     defaultHeight={defaultHeight}
                     //  onDataChange={this.onDataChangeDynamic}
@@ -508,7 +509,8 @@ class SignIndex extends Component {
                 </header>
                 <WrapperTreeTable
                     headerData={dynamicHeaderData || []}
-                    dataSource={planDataSource || []}/>
+                    dataSource={planDataSource || []}
+                    />
             </article>
         );
     };

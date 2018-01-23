@@ -62,7 +62,6 @@ class assessmentVersionIndex extends Component {
             <div className="">
                 <div className="version-title">
                             {this.renderHeader()}
-
                     <h3 className="boxGroupTit">
                         
                     </h3>
