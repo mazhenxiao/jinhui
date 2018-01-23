@@ -22,7 +22,7 @@ class OverviewTab extends React.Component {
         
         this.state={
             dataTabHeader:[
-                { "guid":"1","text":"项目概览","tap":"index"},
+                //{ "guid":"1","text":"项目概览","tap":"index"},
                 //{ "guid":"2","text":"项目身份证","tap":"identity"},
                 { "guid":"2","text":"供货","tap":"supply"},
                 { "guid":"3","text":"签约","tap":"sign"},
@@ -65,7 +65,7 @@ class OverviewTab extends React.Component {
             case "group"://集团
                 this.setState({
                     dataTabHeader:[
-                        { "guid":"1","text":"项目概览","tap":"index"},
+                        //{ "guid":"1","text":"项目概览","tap":"index"},
                         // { "guid":"2","text":"项目身份证","tap":"identity"},
                         { "guid":"2","text":"供货","tap":"supply"},
                         { "guid":"3","text":"签约","tap":"sign"},
@@ -79,7 +79,7 @@ class OverviewTab extends React.Component {
             case "area"://区域
                 this.setState({
                     dataTabHeader:[
-                        { "guid":"1","text":"项目概览","tap":"index"},
+                        //{ "guid":"1","text":"项目概览","tap":"index"},
                         // { "guid":"2","text":"项目身份证","tap":"identity"},
                         { "guid":"2","text":"供货","tap":"supply"},
                         { "guid":"3","text":"签约","tap":"sign"},
@@ -93,7 +93,7 @@ class OverviewTab extends React.Component {
             case "branchOffice"://分公司
                 this.setState({
                     dataTabHeader:[
-                        { "guid":"1","text":"项目概览","tap":"index"},
+                        //{ "guid":"1","text":"项目概览","tap":"index"},
                         // { "guid":"2","text":"项目身份证","tap":"identity"},
                         { "guid":"2","text":"供货","tap":"supply"},
                         { "guid":"3","text":"签约","tap":"sign"},
@@ -107,7 +107,7 @@ class OverviewTab extends React.Component {
             case "project"://项目
                 this.setState({
                     dataTabHeader:[
-                        { "guid":"1","text":"项目概览","tap":"index"},
+                        //{ "guid":"1","text":"项目概览","tap":"index"},
                         { "guid":"2","text":"项目身份证","tap":"identityProject"},
                         { "guid":"3","text":"供货","tap":"supply"},
                         { "guid":"4","text":"签约","tap":"sign"},
@@ -121,7 +121,7 @@ class OverviewTab extends React.Component {
             case "intallment"://分期
                 this.setState({
                     dataTabHeader:[
-                        { "guid":"1","text":"项目概览","tap":"index"},
+                        //{ "guid":"1","text":"项目概览","tap":"index"},
                         { "guid":"2","text":"分期身份证","tap":"identityIntallment"},
                         { "guid":"3","text":"供货","tap":"supply"},
                         { "guid":"4","text":"签约","tap":"sign"},
@@ -155,7 +155,6 @@ class OverviewTab extends React.Component {
          switch(arg){
             case "index"://项目概览
                 return<div>
-                    <p style={{clear:"both"}}><b style={{float:"right",color:"red",fontSize:"18px"}}>数据案例</b></p>
                     <OverviewIndex />
                 </div>
             break;
@@ -179,20 +178,17 @@ class OverviewTab extends React.Component {
             break;
             case "supply"://供货
                 return <div>
-                    <p style={{clear:"both"}}><b style={{float:"right",color:"red",fontSize:"18px"}}>数据案例</b></p>
                     <OverviewSupply location={location} />
                 </div>
             break;
             case "sign"://签约
                 return <div>
-                        <p style={{clear:"both"}}><b style={{float:"right",color:"red",fontSize:"18px"}}>数据案例</b></p>
                         <OverviewSign location={location} />
                     </div>
                 
             break;  
             case "payment"://回款
                 return <div>
-                        <p style={{clear:"both"}}><b style={{float:"right",color:"red",fontSize:"18px"}}>数据案例</b></p>
                         <OverviewPayment />
                     </div>
                 
@@ -204,7 +200,6 @@ class OverviewTab extends React.Component {
             break;
             case "matter"://重点事项
                 return <div>
-                    <p style={{clear:"both"}}><b style={{float:"right",color:"red",fontSize:"18px"}}>数据案例</b></p>
                     <div>
                         <OverviewPriority />
                     </div>
@@ -215,7 +210,6 @@ class OverviewTab extends React.Component {
                 //     <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
                 // </div>
                 return <div>
-                     <p style={{clear:"both"}}><b style={{float:"right",color:"red",fontSize:"18px"}}>数据案例</b></p>
                     <div>
                         <OverviewPrimaryKey />
                     </div>

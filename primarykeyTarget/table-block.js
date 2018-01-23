@@ -105,10 +105,10 @@ class TableBlock extends Component {
     //渲染select
     quarterSelect = () =>{
         return(
-            <div>目标：
+            <div>
                 <Select disabled = {!this.props.editstatus}  value={this.props.step} style={{ width: 110 }} onChange={this.quarterSelectChange}>
                    {this.selectOption()}
-                </Select>
+                </Select> 目标值
           </div>
         )
       

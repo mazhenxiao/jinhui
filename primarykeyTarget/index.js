@@ -135,6 +135,10 @@ class Index extends Component {
     
     //点击编辑
     handleBindEdit = () =>{
+        if(this.state.tableDate.baseinfo.SaveType ==3){
+            iss.error("审批中不能编辑！！");
+            return            
+        }
         this.setState({
             editstatus:true,
         });
@@ -166,6 +170,7 @@ class Index extends Component {
             iss.error("请完善数据！！");
             return
         }
+        
         PrimaryKey.ISaveTargetInfo({
             baseinfo:JSON.stringify(this.state.tableDate.baseinfo),
             data:JSON.stringify(this.state.tableDate.baselist.dataSource)
