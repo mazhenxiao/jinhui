@@ -170,3 +170,84 @@ knife.checkType(val,type)
 knife.checkType(20.12,"number(2)") //4位小数
 knife.checkType(20.12,"number(6)") //6位小数
 ~~~
+
+权限
+---
+{
+    index:{ //项目信息
+        newProject:{     //项目
+            create:false,//增
+            remove:false //删
+            edit:false,  //改
+        },
+        intallment:{//分期
+            create:false,//增
+            remove:false //删
+            edit:false,  //改
+        }
+    },
+    AreaInfo:{ //信息填报
+        areaManage:{ //面积管理
+            newVersion:false,//生成新版本
+            approval:false,             //发起
+            save:false,                 //存
+            remove:false                //删
+            edit:false,                 //改
+            blockFormatEdit:flase,      //业态维护
+            buildingFormatEdit:false    //业态/楼栋维护
+        },
+        priceControl:{ //价格管理
+            newVersion:false,//生成新版本
+            approval:false,             //发起
+            save:false,                 //存
+            edit:false,                 //改
+        },
+        supply:{ //供货计划
+            edit:false,                 //改
+            submit:false                //提交
+        },
+        sign:{//签约计划
+            edit:false,                 //改
+            submit:false,               //提交
+            revert:false                //退回
+        },
+        payment:{//回款计划
+            edit:false,                 //改
+            submit:false,               //提交
+            revert:false                //退回
+        },
+        priority:{//重点事项
+            newVersion:false,           //生成新版本
+            approval:false,             //发起
+            save:false,                 //存
+            revert:false,               //退回
+            excel:false,                //到处
+
+        }
+        primarykeyTarget:{//关键指标
+            
+            approval:false,             //发起
+            save:false,                 //存
+            edit:false,                 //改
+            revert:false,               //退回
+        },
+        primarykey:{//关键指标动态
+            approval:false,             //发起
+            save:false,                 //存
+            edit:false,                 //改
+            revert:false,               //退回
+        }
+        groupbuild:{ //团队维护
+            approval:false,             //发起
+            save:false,                 //存
+        }
+    },
+    SystemManager:{//基础设置
+        JobAuthorize:{
+            Jurisdiction:false,         //权限
+            disable:false,              //禁用
+            export:false,               //导出
+            remove：false,              //删除
+        }
+    }
+}
