@@ -24,8 +24,7 @@ class SignIndex extends Component {
     state = {
         supperShow:true,//最高关闭阻断
         loading: true,
-        dataKey: this.props.location.query.dataKey || "", /*项目id或分期版本id*/
-        mode: this.props.location.query.isProOrStage == "1" ? "Project" : this.props.location.query.isProOrStage == "2" ? "Stage" : "",//显示模式，项目或者分期
+        dataKey: "", /*项目id或分期版本id*/
         editable: false,//是否可编辑
         dynamicTable: {
             versionId:"",//新增的通过这个参数去获取数据发起审批相关
@@ -117,27 +116,7 @@ class SignIndex extends Component {
      * param nextProps 下一阶段的props
      */
     componentWillReceiveProps(nextProps) {
-        const {dataKey} = this.state;
-        const {location} = nextProps;
-        const nextDataKey = location.query.dataKey || "";
-        let nextMode = location.query.isProOrStage || "";
-        nextMode = nextMode == "1" ? "Project" : nextMode == "2" ? "Stage" : "";
-        //切换路由之后，重新获取数据
-
-        if (dataKey != nextDataKey) {
-            this.setState({
-                    supperShow:true,
-                    loading: true,
-                    dataKey: nextDataKey,
-                    mode: nextMode,
-                    activeTapKey: "plan-quota",
-                }, arg => {
-                    if (nextDataKey) {
-                        this.pageInt()
-                    }
-                }
-            );
-        }
+        this.pageInt()
     }
     pageInt=()=>{
         this.getFetData()
@@ -164,14 +143,9 @@ class SignIndex extends Component {
      * 获取动态数据，获取签约计划数据，获取版本数
      */
     getFetData = () => {
-        let {dataKey, mode} = this.state;
-        let {versionId}=this.dynamicTable;
-        this.dynamicTable.saveData = {};
-        versionId = versionId||"";
-        //获取基础数据=瑞涛
         return Overview.GetSignSummary({
-            nodeId:this.props.location.state.id,
-            nodeLevel:this.props.location.state.level_id
+            nodeId:iss.id.id,
+            nodeLevel:iss.id.level_id
         })
         .then(arg => {  //进行错误判断
             var obj = this.state.dynamicTable
@@ -309,7 +283,6 @@ class SignIndex extends Component {
             nodeLevel:this.props.location.state.level_id
         })
         .then((data) => {
-            console.log(data)
             window.location.href="http://39.106.71.187:8000/Exprot/DownLoadExcelFile/?fileName="+data.File
         })
     };
@@ -401,9 +374,6 @@ class SignIndex extends Component {
                .catch(err=>{
                    iss.error(err);
                })
-        
-       
-
     }
 
     /**
@@ -440,9 +410,7 @@ class SignIndex extends Component {
         }
 
     }
-    aaaaa = () =>{
-        console.log(8)
-    }
+
     /**
      * 动态调整table
      */
@@ -469,7 +437,6 @@ class SignIndex extends Component {
                 
                 <WrapperTreeTable
                     loading={loading}
-                    onExpand={()=>{console.log(88)}}
                     size="small"
                     defaultHeight={defaultHeight}
                     //  onDataChange={this.onDataChangeDynamic}

@@ -206,9 +206,6 @@ class OverviewTab extends React.Component {
                 </div>
             break; 
             case "keyPoint"://关键指标
-                // return <div style={{fontSize:"16px"}}>
-                //     <img style={{margin:"0 auto",display:"block"}} src="../img/construction.jpg" />
-                // </div>
                 return <div>
                     <div>
                         <OverviewPrimaryKey />
@@ -239,7 +236,7 @@ class OverviewTab extends React.Component {
             if(outheIframe != undefined){
                 outheIframe.src = iframeUrl;
             }
-        }
+        }   
         
     }
 

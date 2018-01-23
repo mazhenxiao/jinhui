@@ -21,6 +21,7 @@ class GroupIframe extends React.Component{
         this.nameList = [];
         this._group = [];
         this._nData = [];
+        this.idd = "";
     }
     //?stageversionid=2a8ff0cd-5718-725e-aa85-3c577cd9f22f
     componentWillMount() {
@@ -46,6 +47,9 @@ class GroupIframe extends React.Component{
                     var arr = [],rows=[],parkingLot=[]
                     data.rows.forEach((el,ind) => {
                         arr.push(el.groupnumber)
+                        if(el.groupnumber == 200){
+                            th.idd = el.groupId
+                        }
                     })
                     if(arr.indexOf(1) == -1){
                         var newId = iss.guid()
@@ -169,13 +173,20 @@ class GroupIframe extends React.Component{
          for(var i=0;i<_len;i++){
              if(th._group.indexOf(th.state.dataList[i].groupnumber)==-1){ 
                  th._group.push(th.state.dataList[i].groupnumber);
+                
              }
-                var obj = {
-                    "groupId":th.state.dataList[i].groupId,
-                    "groupnumber":th.state.dataList[i].groupnumber
-                };
+             var obj = {
+                "groupId":th.state.dataList[i].groupId,
+                "groupnumber":th.state.dataList[i].groupnumber
+            };
+            if(th.state.dataList[i].groupId != null){
                 th._nData.push(obj)
-            
+            }
+            var obj2={
+                "groupId":th.idd,
+                "groupnumber":200
+            }
+            th._nData.push(obj2)
          }
          th._group.sort(function sortNumber(a,b)
          {
@@ -249,7 +260,6 @@ class GroupIframe extends React.Component{
                 brr.forEach((el,ind) =>{
                     newBr.push(el.groupnumber)
                 })
-                console.log(brr)
                 if(newBr.indexOf(n) == -1){
                     var kongId = "";
                     th._nData.forEach((el,ind) => {
