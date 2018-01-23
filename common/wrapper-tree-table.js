@@ -340,7 +340,8 @@ class WrapperTreeTable extends Component {
     };
 
     formatToFixed = (value) => {
-        if (!!value && !isNaN(value) && value.toString().indexOf(".") > -1) {
+        let reg_num = new RegExp(`\\d*\\.\\d{${2}}`); 
+        if (!!value && !isNaN(value) && reg_num.test(value)) {
             return parseFloat(value).toFixed(2)
         }
         return value;
