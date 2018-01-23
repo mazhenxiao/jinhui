@@ -329,6 +329,7 @@ class WrapperTreeTable extends Component {
         return (e) => {
             let value = e.target.value;
             value = value.replace(/\s*/ig, "");
+            debugger
             if (value && !numberReg.test(value)) {
                 value = parseFloat(value).toFixed(2);
             }
