@@ -683,8 +683,9 @@ class PriceControl extends React.Component {
      */
     Render_ButtonBuild=()=>{
         let {versionId,versionData}=this.state;
-        let approvaled = !(versionData[0]&&versionData[0]["statusCode"]&&versionData[0]["statusCode"]=="approvaled");
-        
+       // let approvaled = !(versionData[0]&&versionData[0]["statusCode"]&&versionData[0]["statusCode"]=="approvaled");
+       let approvaled =!(versionData.some(arg=>(arg.id==versionId&&arg.statusCode=="approvaled")));
+       
          if (this.state.isApproal||approvaled) {
             return
         } 
