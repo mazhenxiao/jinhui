@@ -100,7 +100,8 @@ class SignIndex extends Component {
     antdTableScrollLock = null;//用来触发卸载原生事件
 
     componentDidMount() {
-        this.pageInt()
+        const {nodeId, nodeLevel} = this.props;
+        this.getFetData(nodeId, nodeLevel);
     }
 
     componentWillUnmount() {
@@ -116,23 +117,21 @@ class SignIndex extends Component {
     componentWillReceiveProps(nextProps) {
         const {nodeId, nodeLevel} = this.props;
         if (nodeId != nextProps.nodeId) {
-            this.pageInt()
+            this.getFetData(nextProps.nodeId, nextProps.nodeLevel)
         }
     }
-
-    pageInt = () => {
-        this.getFetData()
-    };
 
     /**
      * 获取动态数据，获取签约计划数据，获取版本数
      */
-    getFetData = () => {
-        const {nodeId, nodeLevel} = this.props;
+    getFetData = (nodeId, nodeLevel) => {
         if (!nodeId || !nodeLevel) {
             return;
         }
 
+        this.setState({
+            loading: true,
+        });
         return Overview.GetSignSummary({
             nodeId,
             nodeLevel
@@ -185,9 +184,6 @@ class SignIndex extends Component {
         let {dynamicTable, dataKey, mode, supperShow} = this.state;
         let {DynamicId} = this.dynamicTable;
 
-        //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
-        //瑞涛版数据
-
         return Payment.IGetSignDataByVersionId({DynamicId, mode})
             .then(dynamicDataSource => {
 
@@ -215,7 +211,8 @@ class SignIndex extends Component {
         } else {
             return AList && AList.length ? AList[0].id : ""
         }
-    }
+    };
+
     /**
      * 获取当前版本下比对版本数据
      * currentVersion 当前版本 返回Promise
@@ -224,7 +221,8 @@ class SignIndex extends Component {
         let {mode} = this.state;
         return Payment.IGetSignDataByVersionId({DynamicId: currentVersion, mode}); //获取数据
 
-    }
+    };
+
     /**
      * 获取计划版数据
      * return promise 884dd5a6-ff48-4628-f4fa-294472d49b37
@@ -263,7 +261,6 @@ class SignIndex extends Component {
      * 动态编辑数据
      */
     setDynamicColumns(text, value, index) {
-
         return text;
     }
 
@@ -325,8 +322,6 @@ class SignIndex extends Component {
             pkTable.scrollTop = pkTable.scrollLeft = 0;
             this.antdTableScrollLock = knife.AntdTable_ScrollLock(toTable, pkTable);
         }
-
-
     }
 
     /**
