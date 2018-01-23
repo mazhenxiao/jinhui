@@ -95,7 +95,8 @@ class SignIndex extends Component {
         status: "",                  //接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回
         startYear: "",               //起始年
         signAContractVersionId: "",  //调整版本id
-        saveData: {}                 //保存数据临时存储
+        saveData: {},                //保存数据临时存储
+        saveData2:{}                 //张权改的需求
     }
     antdTableScrollLock = null;//用来触发卸载原生事件
 
@@ -396,16 +397,19 @@ class SignIndex extends Component {
      */
     saveDynamicTableData() {
         this.dynamicTable.saveData = {};//清场
+        this.dynamicTable.saveData2 = {};//清场
         let {dataKey, dynamicTable} = this.state;
         let {dynamicDataSource,} = dynamicTable;
-        let {saveData,DynamicId} = this.dynamicTable;//非stage存储保存数据
+        let {saveData,saveData2,DynamicId} = this.dynamicTable;//非stage存储保存数据
 
         this.filterSaveData(dynamicDataSource);//递归赋值    
         let _da = JSON.stringify(Object.values(saveData));
+        let _da2 = JSON.stringify(Object.values(saveData2));
         
         let postData = {
             versionId: DynamicId,
-            signAContractSaveData: _da
+            signAContractSaveData: _da,
+            signAContractSaveData2:_da2
         }
 
         return Payment.ISaveSignAContractData(postData)
@@ -449,7 +453,7 @@ class SignIndex extends Component {
                     }
                     //新增总货值
                     if(newCheck){
-                        let type="";
+                        let type="";  //BeginHousecount
                             switch(newCheck[0]){
                                 case "FullSales":
                                 case "FullValue":
@@ -457,8 +461,18 @@ class SignIndex extends Component {
                                 case "ContractAreaCanBeSold":
                                 case "ContractAmountOfMoney":
                                 case "ContractHouseCount":type="contract";break;
-                               
+                                case "BeginAreaCanBeSold":
+                                case "BeginValue":
+                                case "BeginHousecount":type="inventory";break;
                             }
+                        let _nd = {
+                            dataType:type,
+                            titlename:newCheck[0],
+                            productTypeID:arg["showId"] || "",
+                            GROUPID:arg["GROUPID"],
+                            val:arg[newCheck[0]]
+                        }
+                        this.dynamicTable.saveData2[_nd.titlename+'-'+type+"-"+arg.key]=_nd;
                     }
                     if (reg.test(key) && arg[key] !== "") {
                         let {StartYear} = this.dynamicTable;
@@ -471,6 +485,7 @@ class SignIndex extends Component {
                             val: arg[key]
                         }
                         this.dynamicTable.saveData[_da.titlename + "-" + key + "-" + arg.key] = _da;
+                        
                     }
                 }
 
