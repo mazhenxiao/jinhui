@@ -2,8 +2,8 @@
 // import ReactDOM from 'react-dom';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
-import React, { Component } from 'react';
-import { Spin, Tabs, Row, Col, Button, Select,Input} from 'antd';
+import React, {Component} from 'react';
+import {Spin, Tabs, Row, Col, Button, Select, Input} from 'antd';
 
 import OverviewIndex from "./overview-index";//首页
 import OverviewPriority from './overview-priority';//重点事项
@@ -13,29 +13,31 @@ import OverviewSign from './overview-sign.js';//签约
 import OverviewSupply from './overview-supply';//供货
 import OverviewProject from './overview-project'//项目
 import OverviewIntallment from './overview-intallment'//分期
-import { setTimeout } from "timers";
-const TabPane = Tabs.TabPane;
-class OverviewTab extends React.Component {
-    
+import {setTimeout} from "timers";
 
-        state={
-            dataTabHeader:[
-                //{ "guid":"1","text":"项目概览","tap":"index"},
-                //{ "guid":"2","text":"项目身份证","tap":"identity"},
-                { "guid":"2","text":"供货","tap":"supply"},
-                { "guid":"3","text":"签约","tap":"sign"},
-                { "guid":"4","text":"回款","tap":"payment"},
-                // { "guid":"5","text":"计划","tap":"plan"},
-                { "guid":"6","text":"重点事项","tap":"matter"},
-                { "guid":"7","text":"关键指标","tap":"keyPoint"},
-            ],
-            activeKey:"0",
-            planUrl:"http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=",
-            activeTapKey:"supply"
-        
-        };//通过props初始化tab菜单子组件的state
-    
-    componentWillReceiveProps(nextProps){
+const TabPane = Tabs.TabPane;
+
+class OverviewTab extends React.Component {
+
+
+    state = {
+        dataTabHeader: [
+            //{ "guid":"1","text":"项目概览","tap":"index"},
+            //{ "guid":"2","text":"项目身份证","tap":"identity"},
+            {"guid": "2", "text": "供货", "tap": "supply"},
+            {"guid": "3", "text": "签约", "tap": "sign"},
+            {"guid": "4", "text": "回款", "tap": "payment"},
+            // { "guid":"5","text":"计划","tap":"plan"},
+            {"guid": "6", "text": "重点事项", "tap": "matter"},
+            {"guid": "7", "text": "关键指标", "tap": "keyPoint"},
+        ],
+        activeKey: "0",
+        planUrl: "http://plantest.radiance.com.cn:7001/wpmplan/planindex.html?orgid=",
+        activeTapKey: "supply"
+
+    };//通过props初始化tab菜单子组件的state
+
+    componentWillReceiveProps(nextProps) {
         // this.setState({
         //     currentPosi:nextProps.currentPosi,//获取左侧树当前级别,
         //     activeKey:"0",
@@ -45,250 +47,265 @@ class OverviewTab extends React.Component {
         // },()=>{
         //     this.renderLeftTab();
         //     this.renderTabs();
-            
+
         // })
     }
 
-    componentDidMount(){
+    componentDidMount() {
         //this.renderTabList();
     }
-   //
+
+    //
     //左侧树变更切换右侧数据内容
     renderLeftTab = () => {
         let currentPosi = this.state.currentPosi;//当前级别
-        if(currentPosi == undefined){
+        if (currentPosi == undefined) {
             currentPosi = "group";
         }
-        switch(currentPosi){
+        switch (currentPosi) {
             case "group"://集团
                 this.setState({
-                    dataTabHeader:[
+                    dataTabHeader: [
                         //{ "guid":"1","text":"项目概览","tap":"index"},
                         // { "guid":"2","text":"项目身份证","tap":"identity"},
-                        { "guid":"2","text":"供货","tap":"supply"},
-                        { "guid":"3","text":"签约","tap":"sign"},
-                        { "guid":"4","text":"回款","tap":"payment"},
+                        {"guid": "2", "text": "供货", "tap": "supply"},
+                        {"guid": "3", "text": "签约", "tap": "sign"},
+                        {"guid": "4", "text": "回款", "tap": "payment"},
                         // { "guid":"5","text":"主项计划","tap":"plan"},
-                        { "guid":"6","text":"重点事项","tap":"matter"},
+                        {"guid": "6", "text": "重点事项", "tap": "matter"},
                         //{ "guid":"7","text":"关键指标","tap":"keyPoint"},
                     ],
                 })
-            break;
+                break;
             case "area"://区域
                 this.setState({
-                    dataTabHeader:[
+                    dataTabHeader: [
                         //{ "guid":"1","text":"项目概览","tap":"index"},
                         // { "guid":"2","text":"项目身份证","tap":"identity"},
-                        { "guid":"2","text":"供货","tap":"supply"},
-                        { "guid":"3","text":"签约","tap":"sign"},
-                        { "guid":"4","text":"回款","tap":"payment"},
+                        {"guid": "2", "text": "供货", "tap": "supply"},
+                        {"guid": "3", "text": "签约", "tap": "sign"},
+                        {"guid": "4", "text": "回款", "tap": "payment"},
                         // { "guid":"5","text":"主项计划","tap":"plan"},
-                        { "guid":"6","text":"重点事项","tap":"matter"},
+                        {"guid": "6", "text": "重点事项", "tap": "matter"},
                         //{ "guid":"7","text":"关键指标","tap":"keyPoint"},
                     ],
                 })
-            break;
+                break;
             case "branchOffice"://分公司
                 this.setState({
-                    dataTabHeader:[
+                    dataTabHeader: [
                         //{ "guid":"1","text":"项目概览","tap":"index"},
                         // { "guid":"2","text":"项目身份证","tap":"identity"},
-                        { "guid":"2","text":"供货","tap":"supply"},
-                        { "guid":"3","text":"签约","tap":"sign"},
-                        { "guid":"4","text":"回款","tap":"payment"},
+                        {"guid": "2", "text": "供货", "tap": "supply"},
+                        {"guid": "3", "text": "签约", "tap": "sign"},
+                        {"guid": "4", "text": "回款", "tap": "payment"},
                         // { "guid":"5","text":"主项计划","tap":"plan"},
-                        { "guid":"6","text":"重点事项","tap":"matter"},
+                        {"guid": "6", "text": "重点事项", "tap": "matter"},
                         //{ "guid":"7","text":"关键指标","tap":"keyPoint"},
                     ],
                 })
-            break;
+                break;
             case "project"://项目
                 this.setState({
-                    dataTabHeader:[
+                    dataTabHeader: [
                         //{ "guid":"1","text":"项目概览","tap":"index"},
-                        { "guid":"2","text":"项目身份证","tap":"identityProject"},
-                        { "guid":"3","text":"供货","tap":"supply"},
-                        { "guid":"4","text":"签约","tap":"sign"},
-                        { "guid":"5","text":"回款","tap":"payment"},
+                        {"guid": "2", "text": "项目身份证", "tap": "identityProject"},
+                        {"guid": "3", "text": "供货", "tap": "supply"},
+                        {"guid": "4", "text": "签约", "tap": "sign"},
+                        {"guid": "5", "text": "回款", "tap": "payment"},
                         // { "guid":"6","text":"主项计划","tap":"plan"},
-                        { "guid":"7","text":"重点事项","tap":"matter"},
+                        {"guid": "7", "text": "重点事项", "tap": "matter"},
                         //{ "guid":"8","text":"关键指标","tap":"keyPoint"},
                     ],
                 })
-            break;
+                break;
             case "intallment"://分期
                 this.setState({
-                    dataTabHeader:[
+                    dataTabHeader: [
                         //{ "guid":"1","text":"项目概览","tap":"index"},
-                        { "guid":"2","text":"分期身份证","tap":"identityIntallment"},
-                        { "guid":"3","text":"供货","tap":"supply"},
-                        { "guid":"4","text":"签约","tap":"sign"},
-                        { "guid":"5","text":"回款","tap":"payment"},
+                        {"guid": "2", "text": "分期身份证", "tap": "identityIntallment"},
+                        {"guid": "3", "text": "供货", "tap": "supply"},
+                        {"guid": "4", "text": "签约", "tap": "sign"},
+                        {"guid": "5", "text": "回款", "tap": "payment"},
                         // { "guid":"6","text":"主项计划","tap":"plan"},
-                        { "guid":"7","text":"重点事项","tap":"matter"},
-                        { "guid":"8","text":"关键指标","tap":"keyPoint"},
+                        {"guid": "7", "text": "重点事项", "tap": "matter"},
+                        {"guid": "8", "text": "关键指标", "tap": "keyPoint"},
                     ],
                 })
-            break;
+                break;
         }
     }
-    iframeLoad = () =>{
-        const {dataKey}  = this.state;
-        let iframeUrl=this.state.planUrl+dataKey;
+    iframeLoad = () => {
+        const {dataKey} = this.state;
+        let iframeUrl = this.state.planUrl + dataKey;
         let groupId = iss.id.id;
-        groupId = this.state.planUrl+groupId;
-        if(dataKey == undefined ){
-            return <iframe ref="outheIframe" src={groupId} scrolling="no" width="100%" height="600" style={{border: 0}}></iframe>
-        }else{
-            let att = <iframe ref="outheIframe" scrolling="no" width="100%" height="600" src={iframeUrl} style={{border: 0,width:"100%",height:"700px"}}></iframe>;
+        groupId = this.state.planUrl + groupId;
+        if (dataKey == undefined) {
+            return <iframe ref="outheIframe" src={groupId} scrolling="no" width="100%" height="600"
+                           style={{border: 0}}></iframe>
+        } else {
+            let att = <iframe ref="outheIframe" scrolling="no" width="100%" height="600" src={iframeUrl}
+                              style={{border: 0, width: "100%", height: "700px"}}></iframe>;
             return att;
-        } 
-        
+        }
+
     }
-   
-   
+
+
     //切换tab菜单渲染内容
-    renderSyncEele = (arg) =>{
-         const {currentPosi, dataKey,location,parentid} = this.props;
-         switch(arg){
+    renderSyncEele = (arg) => {
+        const {currentPosi, dataKey, location, parentid} = this.props;
+        switch (arg) {
             case "index"://项目概览
-                return<div>
-                    <OverviewIndex />
+                return <div>
+                    <OverviewIndex/>
                 </div>
-            break;
+                break;
             case "identityProject"://项目身份证
-                 if(currentPosi=="project"){
-                    return <OverviewProject 
+                if (currentPosi == "project") {
+                    return <OverviewProject
                         location={location}
-                        dataKey={dataKey}  
-                    />  
-                 }
-            break;
+                        dataKey={dataKey}
+                    />
+                }
+                break;
 
             case "identityIntallment"://分期身份证
-                if(currentPosi=="intallment"){
+                if (currentPosi == "intallment") {
                     return <div>
-                            <OverviewIntallment dataKey={dataKey} parentid={this.state.parentid} />
+                        <OverviewIntallment dataKey={dataKey} parentid={this.state.parentid}/>
                     </div>
-                    
+
                 }
-                    
-            break;
+
+                break;
             case "supply"://供货
                 return <div>
-                    <OverviewSupply location={location} />
+                    <OverviewSupply location={location}/>
                 </div>
-            break;
+                break;
             case "sign"://签约
                 return <div>
-                        <OverviewSign location={location} />
-                    </div>
-                
-            break;  
+                    <OverviewSign location={location}/>
+                </div>
+
+                break;
             case "payment"://回款
                 return <div>
-                        <OverviewPayment />
-                    </div>
-                
-            break;
+                    <OverviewPayment/>
+                </div>
+
+                break;
             case "plan"://计划
-                return <div className="iframeLoad"> 
-                        {this.iframeLoad()}
-                 </div>
-            break;
+                return <div className="iframeLoad">
+                    {this.iframeLoad()}
+                </div>
+                break;
             case "matter"://重点事项
                 return <div>
                     <div>
-                        <OverviewPriority />
+                        <OverviewPriority/>
                     </div>
                 </div>
-            break; 
+                break;
             case "keyPoint"://关键指标
                 return <div>
                     <div>
-                        <OverviewPrimaryKey />
+                        <OverviewPrimaryKey/>
                     </div>
                 </div>
-            break;
-        } 
+                break;
+        }
 
     }
-    renderTabMenu1 = () =>{
-            const {dataTabHeader} = this.state;
-             return  dataTabHeader.map((da,ind)=>{
-                return <TabPane tab={da.text} key={ind}>{this.renderSyncEele(da.tap)}</TabPane>
-             });
+    renderTabMenu1 = () => {
+        const {dataTabHeader} = this.state;
+        return dataTabHeader.map((da, ind) => {
+            return <TabPane tab={da.text} key={ind}>{this.renderSyncEele(da.tap)}</TabPane>
+        });
     }
-    
+
     callback = (key) => {
-        const {dataKey}  = this.state;
-        let iframeUrl=this.state.planUrl+dataKey;
+        const {dataKey} = this.state;
+        let iframeUrl = this.state.planUrl + dataKey;
         this.setState({
-            activeKey:key,
+            activeKey: key,
         });
 
         //切换概览计划刷新加载
-      
-        if(this.state.dataTabHeader.some( obj => obj.tap == "plan")){
+
+        if (this.state.dataTabHeader.some(obj => obj.tap == "plan")) {
             let outheIframe = this.refs.outheIframe;
-            if(outheIframe != undefined){
+            if (outheIframe != undefined) {
                 outheIframe.src = iframeUrl;
             }
-        }   
-        
+        }
+
     }
     handleTabChange = (activeTapKey) => {
         this.setState({activeTapKey});
     };
 
-    renderTabList = () =>{
-        if(!iss.id || !iss.id.id){
+    renderTabList = () => {
+        if (!iss.id || !iss.id.id) {
             return
         }
-        const {currentPosi, dataKey,location,parentid} = this.props;
+        const nodeId = iss.id.id;
+        const nodeLevel = iss.id.level_id;
+
+        const {currentPosi, dataKey, location, parentid} = this.props;
         const {activeTapKey} = this.state;
         const panelArray = [];
-        if(iss.id.level_id == 4){
+        if (iss.id.level_id == 4) {
             panelArray.push(
                 <TabPane tab="项目身份证" key="identityProject">
-                     <OverviewProject 
+                    <OverviewProject
                         location={location}
-                        dataKey={dataKey}  
-                    />  
+                        dataKey={dataKey}
+                    />
                 </TabPane>
             )
         }
-        if(iss.id.level_id == 5){
+        if (iss.id.level_id == 5) {
             panelArray.push(
                 <TabPane tab="分期身份证" key="identityIntallment">
-                      <OverviewIntallment dataKey={dataKey} parentid={this.state.parentid} />
+                    <OverviewIntallment dataKey={dataKey} parentid={this.state.parentid}/>
                 </TabPane>
             )
         }
         panelArray.push(
             <TabPane tab="供货" key="supply">
-                <OverviewSupply location={location} />
+                <OverviewSupply
+                    nodeId={nodeId}
+                    nodeLevel={nodeLevel}
+                />
             </TabPane>
         )
         panelArray.push(
             <TabPane tab="签约" key="sign">
-                <OverviewSupply location={location} />
+                <OverviewSupply
+                    nodeId={nodeId}
+                    nodeLevel={nodeLevel}
+                />
             </TabPane>
         )
         panelArray.push(
             <TabPane tab="回款" key="payment">
-                <OverviewSupply location={location} />
+                <OverviewSupply
+                    nodeId={nodeId}
+                    nodeLevel={nodeLevel}
+                />
             </TabPane>
         )
         panelArray.push(
             <TabPane tab="重点事项" key="matter">
-                 <OverviewPriority />
+                <OverviewPriority/>
             </TabPane>
         )
-        if(iss.id.level_id == 5){
+        if (iss.id.level_id == 5) {
             panelArray.push(
                 <TabPane tab="关键指标" key="keyPoint">
-                     <OverviewPrimaryKey />
+                    <OverviewPrimaryKey/>
                 </TabPane>
             )
         }
@@ -302,15 +319,15 @@ class OverviewTab extends React.Component {
     }
 
 
-    renderTabs = () =>{
+    renderTabs = () => {
         //onChange={this.callback} onTabClick={this.tabClick} defaultActiveKey="0" activeKey={this.state.activeKey}
-        return(
+        return (
             <Tabs type="card">
                 <TabPane tab="供货" key="1">
-                    <OverviewSupply location={location} />
+                    <OverviewSupply location={location}/>
                 </TabPane>
                 <TabPane tab="签约" key="2">
-                    <OverviewSupply location={location} />
+                    <OverviewSupply location={location}/>
                 </TabPane>
                 <TabPane tab="回款" key="3">
                     <p>Content of Tab Pane 3</p>
@@ -320,10 +337,10 @@ class OverviewTab extends React.Component {
             </Tabs>
         );
     }
-    
+
 
     render() {
-        return(<div>
+        return (<div>
                 <Row>
                     <Col span={24}>
                         {this.renderTabList()}
