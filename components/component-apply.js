@@ -4,12 +4,15 @@ import iss from "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import AgentyTab from "./tools-agenty-tab.js";//引入头部
 import Page from "./tools-page.js";//基于bootstrap分页组件
+import { Pagination } from 'antd';
+import "../css/antd.min.css";
 class Apply extends React.Component {
     constructor(arg) {
         super(arg);
         this.url = "/MyTodo/IGetmySubmition?page=1&size=10";
         this.state = {
-            dataList: []
+            dataList: [],
+            current:1
         }
     }
     componentWillMount() {
@@ -138,8 +141,11 @@ class Apply extends React.Component {
             }
         })
     }
-    Bind_Click_Page(arg) { // 分页回调
-        this.getAjax(arg);//分页完成后重新获取
+    Bind_Click_Page=(page, pageSize)=> { // 分页回调
+        this.setState({current:page},()=>{
+            this.getAjax(page);//分页完成后重新获取
+        })
+        
     }
     agentyTabel() {
         var th = this;
@@ -161,6 +167,8 @@ class Apply extends React.Component {
 
     }
     render() {
+
+        let {current,pageCount}=this.state;
         return <article>
             <AgentyTab parent={this.props} />
             <section className="agentyBox mgT20">
@@ -191,7 +199,8 @@ class Apply extends React.Component {
                 </table>
 
             </section>
-            <Page total={this.state.pageTotal} count={this.state.pageCount} callback={this.Bind_Click_Page.bind(this)} />
+            <Pagination current={current} total={pageCount} onChange={this.Bind_Click_Page} />
+            {/* <Page total={this.state.pageTotal} count={this.state.pageCount} callback={this.Bind_Click_Page.bind(this)} /> */}
         </article>
     }
 }
