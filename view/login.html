@@ -76,6 +76,7 @@
                         UserDto = result.rows.MenusData.rows;
                         sessionStorage.setItem("Jurisdiction",JSON.stringify(UserDto));
                     }catch(e){
+                        alert("为获取到权限");
                         $(".alertBox").html("登录失败! 错误原因: 用户没有权限！");
                     }
                     
