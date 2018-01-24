@@ -55,7 +55,8 @@
 
 <script type="text/javascript">
 
-    var home ="<%=url%>"; //"http://192.168.14.160:10001/"; //"<%=url%>";
+    var home ="<%=url%>";
+   // var home ="http://192.168.14.160:10001/"; //"<%=url%>";
     $(function () {
         $(".userButton_1").css("display", "none");
         $(".alertBox").css("display", "block");
@@ -82,6 +83,7 @@
                     
                     if (result.errorcode == 200) {
                         // window.location.href = "/Home/Index/#/index";
+                        
                         if (result.token) {
                             localStorage.setItem("token", result.token);
                             window.location.href = "/index/#/agenty?login=" + _username;
