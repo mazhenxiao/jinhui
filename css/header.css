@@ -436,6 +436,7 @@ a:hover {
   background: #1a315a;
 }
 .JH-Header ul li .subMenu li a {
+  white-space: nowrap;
   width: 100%;
   padding: 0 30px;
   line-height: 40px;

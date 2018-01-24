@@ -16,12 +16,128 @@ export default class ToolsList extends React.Component {
             myTodoCount: 0, /*我的待审*/
             toURL: ""//基础设置需要跳转的地址
         }
+        this.Jurisdiction=[
+            {
+                "title":"项目信息",
+                "url":"Index,index",
+                "child":[] 
+            },
+            {
+                "title":"信息填报",
+                "url":"",
+                "child":[
+                    {
+                    "title":"面积管理",
+                    "url":"AreaInfo,areaManage",
+                    "child":[]
+                    },
+                    {
+                    "title":"价格管理",
+                    "url":"AreaInfo,priceControl",
+                    "child":[]
+                    },
+                    {
+                    "title":"供货",
+                    "url":"AreaInfo,supply",
+                    "child":[]
+                    },
+                    {
+                    "title":"签约",
+                    "url":"AreaInfo,sign",
+                    "child":[]
+                    },
+                    {
+                    "title":"回款",
+                    "url":"AreaInfo,payment",
+                    "child":[]
+                    },
+                    {
+                    "title":"重点事项",
+                    "url":"AreaInfo,priority",
+                    "child":[]
+                    },
+                    {
+                    "title":"关键指标目标",
+                    "url":"AreaInfo,primarykeyTarget",
+                    "child":[]
+                    },
+                    {
+                    "title":"关键指标动态",
+                    "url":"AreaInfo,primarykey",
+                    "child":[]
+                    },
+                    {
+                    "title":"项目团队维护",
+                    "url":"AreaInfo,groupbuild",
+                    "child":[]
+                    }
+                ]
+            },
+            {
+             "title":"报表管理",
+             "url":"",
+             "child":[
+                 {
+                    "title":"年度供销存计划汇总(建设中)",
+                    "url":"",
+                    "child":[]
+                },
+                  {
+                    "title":"三年销售目标汇总(建设中)",
+                    "url":"",
+                    "child":[]
+                },
+                   {
+                    "title":"三年投资计划汇总(建设中)",
+                    "url":"",
+                    "child":[]
+                },
+                    {
+                    "title":"集团项目清单(建设中)",
+                    "url":"",
+                    "child":[]
+                },
+                     {
+                    "title":"数据巡检(建设中)",
+                    "url":"",
+                    "child":[]
+                }
+             ]
+            },
+            {
+            "title":"基础设置",
+            "url":"",
+            "child":[
+                {
+                    "title":"标准角色授权",
+                    "url":"xxxxxxxxxxxxxxxxxxxxxx",
+                    "child":[]
+                },
+                {
+                    "title":"考核版本设置(建设中)",
+                    "url":"basicSetting,assessmentVersion",
+                    "child":[]
+                },
+                
+                {
+                    "title":"组织架构维护(建设中)",
+                    "url":"",
+                    "child":[]
+                },
+                {
+                    "title":"字典维护(建设中)",
+                    "url":"",
+                    "child":[]
+                }
+            ]
+            }
+        ]
     }
 
     componentWillMount() {
         this.EVENT_CLICKSETUP();
     }
-
+    
     /*菜单跳转
      *pageClass 页面分类，例如项目列表，面积管理，具有单独的index页面
      *routerArr 页面分类下对应的路由
@@ -162,7 +278,52 @@ export default class ToolsList extends React.Component {
             </div>
             <h1 className="xtName">金辉集团运营管理平台</h1>
             <ul>
-                <li>
+                {
+                    
+                     this.Jurisdiction.map((arg,ind)=>{
+                         let {url,title}=arg,id = "";
+                         if(arg.url.includes("Index")){
+                             id="projectList";
+                         }else if(!arg.url&&arg["child"]&&arg.child[0]&&arg.child[0].url.includes("AreaInfo")){
+                             id="areaInfo";
+                         }
+                         let urlArr = url.includes(",")? url.split(","):url;
+                        return  <li key={ind}>
+                                    {
+                                        (typeof urlArr=="string")? (
+                                            <a id={id} href={urlArr? urlArr:"javascript:;"} target="_blank" >{title}</a>
+                                        )
+                                        :(
+                                            <a id={id} href="javascript:void(0);"
+                                            onClick={this.EVENT_CLICK.bind(this,urlArr[0],urlArr[1])}>{title}</a>
+                                        )
+                                    }
+                                   
+                                      {   
+                                           (arg["child"]&&arg.child.length)&&(
+                                              <ol className="subMenu">{
+                                                arg.child.map((arg2,ind2)=>{
+                                                    let {url,title}=arg2,urlArr = url.includes(",")? url.split(","):url;
+                                                    return  <li className="" key={ind2}>
+                                                                                                    
+                                                            {
+                                                                (typeof urlArr=="string")?
+                                                                (<a id={id} href={urlArr? urlArr:"javascript:;"} target="_blank" >{title}</a>)
+                                                                 :(
+                                                                    <a id={id} href="javascript:void(0);"
+                                                                        onClick={this.EVENT_CLICK.bind(this,urlArr[0],urlArr[1])}>{title}</a>
+                                                                  )
+                                                            }
+                                                               
+                                                            </li>
+                                                })
+                                              }</ol>
+                                        ) 
+                                      }  
+                                </li>
+                    }) 
+                }
+               {/*  <li>
                     <a id="projectList" href="javascript:void(0);"
                        onClick={this.EVENT_CLICK.bind(this, "Index", "index")}>项目信息</a>
                 </li>
@@ -228,10 +389,8 @@ export default class ToolsList extends React.Component {
                         <li className=""><a href="javascript:void(0);">组织架构维护(建设中)</a></li>
                         <li className=""><a href="javascript:void(0);">字典维护(建设中)</a></li>
                     </ol>
-                </li>
-                {/* <li className="hide">
-                    <a href="#">报表管理</a>
                 </li> */}
+               
 
             </ul>
 
