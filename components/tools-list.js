@@ -1,7 +1,7 @@
 /* 总头部 */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import "../js/iss.js";
+import iss from "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import appConfig from '../app.config';
 
@@ -17,6 +17,8 @@ export default class ToolsList extends React.Component {
             toURL: ""//基础设置需要跳转的地址
         }
         this.Jurisdiction=JSON.parse(sessionStorage.getItem("Jurisdiction"));
+   
+        
         /* [
             {
             "Title": "信息填报",
@@ -44,7 +46,17 @@ export default class ToolsList extends React.Component {
     }
 
     componentWillMount() {
+        
         this.EVENT_CLICKSETUP();
+        if(!this.Jurisdiction.length){ 
+            iss.popover({content:"用户没有权限！"})
+           // iss.error("用户没有权限！")
+         }
+        
+    }
+    componentDidMount(){
+        
+   
     }
     
     /*菜单跳转

@@ -52,7 +52,7 @@
                         $(".alertBox").html("登录失败! 错误原因: 用户没有权限！");
                     }
                     
-                if (result.errorcode == 200&&UserDto&&UserDto.length) {
+                if (result.errorcode == 200) {
                     if (result.token) {
                         localStorage.setItem("token", result.token);
                         window.location.href = "/index/#/agenty?login=" + fdLoginName;
