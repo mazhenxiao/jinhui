@@ -7,6 +7,7 @@ import * as Project from './project-service';
 import * as CommonService from "./common-service";
 import * as Priority from "./priority-service"
 import * as Overview from "./overview-service"
+import * as Version from "./version-service"
 
 export {
     CommonService,
@@ -17,5 +18,6 @@ export {
     price,
     Project,
     Priority,
-    Overview
+    Overview,
+    Version
 };

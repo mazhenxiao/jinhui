@@ -86,22 +86,21 @@ class Index extends Component {
      */
     componentWillReceiveProps(nextProps) {
         var obj = this.state.entityJson
-        obj.SELECTEDID=iss.id.id,
-        obj.SELECTEDLEVEL=iss.id.level_id 
-        this.setState({
-          entityJson:obj
-        },()=>{
-          this.getAjax(this.obj,this.state.pageIndex);
-        })
-        //this.getAjax(this.obj,this.state.pageIndex);
+        const {nodeId, nodeLevel} = this.props;
+        if (nodeId != nextProps.nodeId) {
+            obj.SELECTEDID=nextProps.nodeId,
+            obj.SELECTEDLEVEL=nextProps.nodeLevel     
+            this.getAjax(obj,this.state.pageIndex);
+        }
+        
 
     }
     componentWillMount() {
-        this.obj = this.state.entityJson
-        this.getAjax(this.obj,this.state.pageIndex);
+        
     }
     componentDidMount(){
-      
+        this.obj = this.state.entityJson
+        this.getAjax(this.obj,this.state.pageIndex);
     };
 
     getLocalTime(nS) {
