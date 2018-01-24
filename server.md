@@ -16,4 +16,7 @@ npm run server-test
 
 npm run build-uat
 npm run server-uat
+//85 生产环境发版
+npm run build-prod
+npm run server-prod
 ~~~

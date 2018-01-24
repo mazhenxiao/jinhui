@@ -538,14 +538,17 @@ class $iss {
             });
             let render = d => {
                 let rp = "", $el = $(".chooseToRight ul");
+                
                 $el.html("")
                 let op = opt.pepole;
                 for (let me in op) {
 
                     rp += `<li class="chooseTolist" guid="${me}">${op[me]["text"]}</li>`
                 }
-
-                $el.html(rp);
+             
+                    $el.html(rp);
+                
+              
             }
             render();
             let time, J_chooseToSearch = $(".J_chooseToSearch"), ul = $(".chooseToSearchUL"), btn = $("")
@@ -566,7 +569,7 @@ class $iss {
                             }
 
                         })
-
+                        
                         ul.html(v).addClass("active");
 
                     }
@@ -601,7 +604,8 @@ class $iss {
                     render();
                 }
                 if (th.hasClass("chooseToSearchli")) { //人员检索
-                    opt.pepole = {};
+                    if(!opt.multiple){opt.pepole = {};}
+                  // opt.pepole = {};
                     opt.pepole[th.attr("guid")] = {
                         id: th.attr("guid"),
                         element: th.attr("element"),
@@ -613,7 +617,7 @@ class $iss {
 
             }).on("dblclick.chooseTo", ".chooseTolist", ev => {
                 var th = $(ev.target);
-                debugger
+                
                 if (th.hasClass("chooseTolist")) {  //右侧选人
                     let guid = th.attr("guid");
                     delete opt.pepole[guid];

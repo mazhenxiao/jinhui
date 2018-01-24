@@ -403,6 +403,7 @@ class SignIndex extends Component {
         let {saveData,saveData2,DynamicId} = this.dynamicTable;//非stage存储保存数据
 
         this.filterSaveData(dynamicDataSource);//递归赋值    
+        
         let _da = JSON.stringify(Object.values(saveData));
         let _da2 = JSON.stringify(Object.values(saveData2));
         
@@ -447,6 +448,8 @@ class SignIndex extends Component {
                     let newAdd=`FullSales,FullValue,FullBuilding,
                                 ContractAreaCanBeSold,ContractAmountOfMoney,ContractHouseCount,
                                 BeginAreaCanBeSold,BeginValue`;
+                    let filter=`Y401Area,Y401Housecount,Y401Value`;
+                    if(filter.includes(key)){ continue}
                      let regNew = new RegExp(key),newCheck=regNew.exec(newAdd);
                      if(yearNum=="3"&&!reg3.test(key)){ //用来处理第三年非带Q字段不获取-瑞涛版
                         continue 
@@ -648,11 +651,11 @@ class SignIndex extends Component {
         for(let it in record){
             let reg = new RegExp(`\{${it}\}`);
             if(reg.test(sale_exec)){
-               sale_exec=sale_exec.replace(reg,record[it]);
+               sale_exec=sale_exec.replace(reg,record[it]||0);
             }else if(reg.test(value_exec)){
-                value_exec=value_exec.replace(reg,record[it]);
+                value_exec=value_exec.replace(reg,record[it]||0);
             }else if(reg.test(build_exec)){
-                build_exec=build_exec.replace(reg,record[it]);
+                build_exec=build_exec.replace(reg,record[it]||0);
             }
         }
         sale_value = eval(sale_exec);value_value=eval(value_exec);build_value=eval(build_exec);

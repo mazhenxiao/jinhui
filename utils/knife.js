@@ -184,8 +184,9 @@ class $knife {
                 
                     let number = eval(replaceText);
                         number = number=="Infinity"? 0:number;
-                       
-                        ds[field]= num==""? number:number.toFixed(num);
+                    let reg_num = new RegExp(`\\d*\\.\\d{${2}}`);
+                    //ds[field]=number;
+                        ds[field]= (num==""||!reg_num.test(number||number==""))? number:number.toFixed(num);
                       //  console.log(ind+":"+ds.PRODUCTNAME+"=",ds[field])
                 })
               
