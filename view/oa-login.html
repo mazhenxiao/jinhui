@@ -44,15 +44,27 @@
             dataType: "JSON",
             success: function (result) {
                 console.log("result", result);
+                var UserDto;
+                    try{
+                        UserDto = JSON.stringify(result.rows.MenusData.rows);
+                        sessionStorage.setItem("Jurisdiction",UserDto);
+                    }catch(e){
+                        $(".alertBox").html("登录失败! 错误原因: 用户没有权限！");
+                    }
+                    
                 if (result.errorcode == 200) {
                     if (result.token) {
                         localStorage.setItem("token", result.token);
                         window.location.href = "/index/#/agenty?login=" + fdLoginName;
                     } else {
-                        $(".logining").addClass("error").html("登录失败! 错误原因: " + result.message);
+                        $(".alertBox").html("登录失败! 错误原因: " + result.message);
                     }
                 } else {
-                    $(".logining").addClass("error").html("登录失败! 错误原因: " + result.message);
+                    if(!UserDto||!UserDto.length){
+                        $(".alertBox").html("登录失败! 错误原因: 用户没有权限！");
+                    }else{
+                        $(".alertBox").html("登录失败! 错误原因: " + result.message);
+                    }
                 }
             },
         });

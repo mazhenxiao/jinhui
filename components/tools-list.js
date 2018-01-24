@@ -1,7 +1,7 @@
 /* 总头部 */
 import React from 'react';
 import ReactDOM from 'react-dom';
-import "../js/iss.js";
+import iss from "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import appConfig from '../app.config';
 
@@ -16,126 +16,47 @@ export default class ToolsList extends React.Component {
             myTodoCount: 0, /*我的待审*/
             toURL: ""//基础设置需要跳转的地址
         }
-        this.Jurisdiction=[
+        this.Jurisdiction=JSON.parse(sessionStorage.getItem("Jurisdiction"));
+   
+        
+        /* [
             {
-                "title":"项目信息",
-                "url":"Index,index",
-                "child":[] 
+            "Title": "信息填报",
+            "Url": "",
+            "ID": "11F446E7-EDDB-4FCF-5DFA-F856796082AA",
+            "PID": "-1",
+            "Child": [
+            {
+            "Title": "价格管理",
+            "Url": "AreaInfo,priceControl",
+            "ID": "91014D8C-48F0-477D-C2B4-F295532BEA95",
+            "PID": "11F446E7-EDDB-4FCF-5DFA-F856796082AA",
+            "Child": []
             },
             {
-                "title":"信息填报",
-                "url":"",
-                "child":[
-                    {
-                    "title":"面积管理",
-                    "url":"AreaInfo,areaManage",
-                    "child":[]
-                    },
-                    {
-                    "title":"价格管理",
-                    "url":"AreaInfo,priceControl",
-                    "child":[]
-                    },
-                    {
-                    "title":"供货",
-                    "url":"AreaInfo,supply",
-                    "child":[]
-                    },
-                    {
-                    "title":"签约",
-                    "url":"AreaInfo,sign",
-                    "child":[]
-                    },
-                    {
-                    "title":"回款",
-                    "url":"AreaInfo,payment",
-                    "child":[]
-                    },
-                    {
-                    "title":"重点事项",
-                    "url":"AreaInfo,priority",
-                    "child":[]
-                    },
-                    {
-                    "title":"关键指标目标",
-                    "url":"AreaInfo,primarykeyTarget",
-                    "child":[]
-                    },
-                    {
-                    "title":"关键指标动态",
-                    "url":"AreaInfo,primarykey",
-                    "child":[]
-                    },
-                    {
-                    "title":"项目团队维护",
-                    "url":"AreaInfo,groupbuild",
-                    "child":[]
-                    }
-                ]
-            },
-            {
-             "title":"报表管理",
-             "url":"",
-             "child":[
-                 {
-                    "title":"年度供销存计划汇总(建设中)",
-                    "url":"",
-                    "child":[]
-                },
-                  {
-                    "title":"三年销售目标汇总(建设中)",
-                    "url":"",
-                    "child":[]
-                },
-                   {
-                    "title":"三年投资计划汇总(建设中)",
-                    "url":"",
-                    "child":[]
-                },
-                    {
-                    "title":"集团项目清单(建设中)",
-                    "url":"",
-                    "child":[]
-                },
-                     {
-                    "title":"数据巡检(建设中)",
-                    "url":"",
-                    "child":[]
-                }
-             ]
-            },
-            {
-            "title":"基础设置",
-            "url":"",
-            "child":[
-                {
-                    "title":"标准角色授权",
-                    "url":"xxxxxxxxxxxxxxxxxxxxxx",
-                    "child":[]
-                },
-                {
-                    "title":"考核版本设置(建设中)",
-                    "url":"basicSetting,assessmentVersion",
-                    "child":[]
-                },
-                
-                {
-                    "title":"组织架构维护(建设中)",
-                    "url":"",
-                    "child":[]
-                },
-                {
-                    "title":"字典维护(建设中)",
-                    "url":"",
-                    "child":[]
-                }
+            "Title": "面积管理",
+            "Url": "AreaInfo,areaManage",
+            "ID": "6FD6BA65-AA3B-336D-85FC-C62D4CB8D020",
+            "PID": "11F446E7-EDDB-4FCF-5DFA-F856796082AA",
+            "Child": []
+            }
             ]
             }
-        ]
+            ] */
     }
 
     componentWillMount() {
+        
         this.EVENT_CLICKSETUP();
+        if(!this.Jurisdiction.length){ 
+            iss.popover({content:"用户没有权限！"})
+           // iss.error("用户没有权限！")
+         }
+        
+    }
+    componentDidMount(){
+        
+   
     }
     
     /*菜单跳转
@@ -281,37 +202,38 @@ export default class ToolsList extends React.Component {
                 {
                     
                      this.Jurisdiction.map((arg,ind)=>{
-                         let {url,title}=arg,id = "";
-                         if(arg.url.includes("Index")){
+                         let {Url,Title,Child}=arg,id = "";
+                         Url=Url||"";Child=Child||[];
+                         if(Url.includes("Index")){
                              id="projectList";
-                         }else if(!arg.url&&arg["child"]&&arg.child[0]&&arg.child[0].url.includes("AreaInfo")){
-                             id="areaInfo";
+                         }else if(!Url&&Child&&Child[0]&&Child[0].Url.includes("AreaInfo")){
+                             id="areaInfo"; 
                          }
-                         let urlArr = url.includes(",")? url.split(","):url;
+                         let urlArr = Url.includes(",")? Url.split(","):Url;
                         return  <li key={ind}>
                                     {
                                         (typeof urlArr=="string")? (
-                                            <a id={id} href={urlArr? urlArr:"javascript:;"} target="_blank" >{title}</a>
+                                            <a id={id} href={urlArr? urlArr:"javascript:;"} target="_blank" >{Title}</a>
                                         )
                                         :(
                                             <a id={id} href="javascript:void(0);"
-                                            onClick={this.EVENT_CLICK.bind(this,urlArr[0],urlArr[1])}>{title}</a>
+                                            onClick={this.EVENT_CLICK.bind(this,urlArr[0],urlArr[1])}>{Title}</a>
                                         )
                                     }
                                    
                                       {   
-                                           (arg["child"]&&arg.child.length)&&(
+                                           (Child&&Child.length)&&(
                                               <ol className="subMenu">{
-                                                arg.child.map((arg2,ind2)=>{
-                                                    let {url,title}=arg2,urlArr = url.includes(",")? url.split(","):url;
+                                                Child.map((arg2,ind2)=>{
+                                                    let {Url,Title}=arg2,urlArr = Url.includes(",")? Url.split(","):Url;
                                                     return  <li className="" key={ind2}>
                                                                                                     
                                                             {
                                                                 (typeof urlArr=="string")?
-                                                                (<a id={id} href={urlArr? urlArr:"javascript:;"} target="_blank" >{title}</a>)
+                                                                (<a id={id} href={urlArr? urlArr:"javascript:;"} target="_blank" >{Title}</a>)
                                                                  :(
                                                                     <a id={id} href="javascript:void(0);"
-                                                                        onClick={this.EVENT_CLICK.bind(this,urlArr[0],urlArr[1])}>{title}</a>
+                                                                        onClick={this.EVENT_CLICK.bind(this,urlArr[0],urlArr[1])}>{Title}</a>
                                                                   )
                                                             }
                                                                
