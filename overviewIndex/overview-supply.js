@@ -266,12 +266,12 @@ class SignIndex extends Component {
 
     handleEdit = () => {
         const {nodeId, nodeLevel} = this.props;
-        Overview.SignExprot({
+        Overview.SupplyExprot({
             nodeId,
             nodeLevel
         })
             .then((data) => {
-                window.location.href = "http://39.106.71.187:8000/Exprot/SupplyExprot/?fileName=" + data.File
+                window.location.href = "http://39.106.71.187:8000/Exprot/DownLoadExcelFile/?fileName=" + data.File
             })
     };
 

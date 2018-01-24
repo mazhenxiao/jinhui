@@ -25,6 +25,24 @@ export const SignExprot = (data) => {
     .then(ThenListener)
     .catch(ERROR)
 };
+export const SupplyExprot = (data) => {
+    return iss.fetch({
+        url: "/Exprot/SupplyExprot",
+        type: "get",
+        data
+    })
+    .then(ThenListener)
+    .catch(ERROR)
+};
+export const IncomeExprot = (data) => {
+    return iss.fetch({
+        url: "/Exprot/IncomeExprot",
+        type: "get",
+        data
+    })
+    .then(ThenListener)
+    .catch(ERROR)
+};
 //供货
 
 export const GetSupplySummary = (data) => {
