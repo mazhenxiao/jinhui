@@ -222,7 +222,7 @@ export default class ToolsList extends React.Component {
                                     }
                                    
                                       {   
-                                           (Child&&Child.length)&&(
+                                           Boolean(Child&&Child.length)&&(
                                               <ol className="subMenu">{
                                                 Child.map((arg2,ind2)=>{
                                                     let {Url,Title}=arg2,urlArr = Url.includes(",")? Url.split(","):Url;
