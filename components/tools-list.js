@@ -16,7 +16,8 @@ export default class ToolsList extends React.Component {
             myTodoCount: 0, /*我的待审*/
             toURL: ""//基础设置需要跳转的地址
         }
-        this.Jurisdiction=[
+        this.Jurisdiction=JSON.parse(sessionStorage.getItem("Jurisdiction"));
+        /* [
             {
             "Title": "信息填报",
             "Url": "",
@@ -39,7 +40,7 @@ export default class ToolsList extends React.Component {
             }
             ]
             }
-            ]
+            ] */
     }
 
     componentWillMount() {
