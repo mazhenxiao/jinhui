@@ -444,7 +444,7 @@ class SignIndex extends Component {
                 //console.log(`${arg.GROUPNAME}=>${arg.PROJECTNAME}=>${arg.TYPENAME}`)
                // debugger
                 for (let key in arg) {
-                    let reg = /^Y[123]\d{2}/ig,mon=key.substr(2, 2),reg3=/Y3\d{2}Q\w/,yearNum=key.substr(1,1);
+                    let reg = /^Y\d{3}/ig,mon=key.substr(2, 2),reg3=/Y3\d{2}Q\w/,yearNum=key.substr(1,1);
                     let newAdd=`FullSales,FullValue,FullBuilding,
                                 ContractAreaCanBeSold,ContractAmountOfMoney,ContractHouseCount,
                                 BeginAreaCanBeSold,BeginValue`;
