@@ -448,6 +448,8 @@ class SignIndex extends Component {
                     let newAdd=`FullSales,FullValue,FullBuilding,
                                 ContractAreaCanBeSold,ContractAmountOfMoney,ContractHouseCount,
                                 BeginAreaCanBeSold,BeginValue`;
+                    let filter=`Y401Area,Y401Housecount,Y401Value`;
+                    if(filter.includes(key)){ continue}
                      let regNew = new RegExp(key),newCheck=regNew.exec(newAdd);
                      if(yearNum=="3"&&!reg3.test(key)){ //用来处理第三年非带Q字段不获取-瑞涛版
                         continue 
