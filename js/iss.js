@@ -539,17 +539,15 @@ class $iss {
             let render = d => {
                 let rp = "", $el = $(".chooseToRight ul");
                 
-               // $el.html("")
+                $el.html("")
                 let op = opt.pepole;
                 for (let me in op) {
 
                     rp += `<li class="chooseTolist" guid="${me}">${op[me]["text"]}</li>`
                 }
-                if(opt.multiple){
-                    $el.append(rp);
-                }else{
+             
                     $el.html(rp);
-                }
+                
               
             }
             render();
@@ -606,7 +604,8 @@ class $iss {
                     render();
                 }
                 if (th.hasClass("chooseToSearchli")) { //人员检索
-                    opt.pepole = {};
+                    if(!opt.multiple){opt.pepole = {};}
+                  // opt.pepole = {};
                     opt.pepole[th.attr("guid")] = {
                         id: th.attr("guid"),
                         element: th.attr("element"),
