@@ -248,7 +248,9 @@ class OverviewTab extends React.Component {
 
     renderTabList = () => {
         if (!iss.id || !iss.id.id) {
-            return
+            return (
+                <div>请点击左侧树</div>
+            )
         }
         const nodeId = iss.id.id;
         const nodeLevel = iss.id.level_id;
@@ -256,6 +258,39 @@ class OverviewTab extends React.Component {
         const {currentPosi, dataKey, location, parentid} = this.props;
         const {activeTapKey} = this.state;
         const panelArray = [];
+        
+        panelArray.push(
+            <TabPane tab="供货" key="supply">
+                <OverviewSupply
+                    nodeId={nodeId}
+                    nodeLevel={nodeLevel}
+                />
+            </TabPane>
+        )
+        panelArray.push(
+            <TabPane tab="签约" key="sign">
+                <OverviewSign
+                    nodeId={nodeId}
+                    nodeLevel={nodeLevel}
+                />
+            </TabPane>
+        )
+        panelArray.push(
+            <TabPane tab="回款" key="payment">
+                <OverviewPayment
+                    nodeId={nodeId}
+                    nodeLevel={nodeLevel}
+                />
+            </TabPane>
+        )
+        panelArray.push(
+            <TabPane tab="重点事项" key="matter">
+                <OverviewPriority 
+                    nodeId={nodeId}
+                    nodeLevel={nodeLevel}
+                />
+            </TabPane>
+        )
         if (iss.id.level_id == 4) {
             panelArray.push(
                 <TabPane tab="项目身份证" key="identityProject">
@@ -273,35 +308,6 @@ class OverviewTab extends React.Component {
                 </TabPane>
             )
         }
-        panelArray.push(
-            <TabPane tab="供货" key="supply">
-                <OverviewSupply
-                    nodeId={nodeId}
-                    nodeLevel={nodeLevel}
-                />
-            </TabPane>
-        )
-        panelArray.push(
-            <TabPane tab="签约" key="sign">
-                <OverviewSupply
-                    nodeId={nodeId}
-                    nodeLevel={nodeLevel}
-                />
-            </TabPane>
-        )
-        panelArray.push(
-            <TabPane tab="回款" key="payment">
-                <OverviewSupply
-                    nodeId={nodeId}
-                    nodeLevel={nodeLevel}
-                />
-            </TabPane>
-        )
-        panelArray.push(
-            <TabPane tab="重点事项" key="matter">
-                <OverviewPriority/>
-            </TabPane>
-        )
         if (iss.id.level_id == 5) {
             panelArray.push(
                 <TabPane tab="关键指标" key="keyPoint">

@@ -132,7 +132,7 @@ class SignIndex extends Component {
         this.setState({
             loading: true,
         });
-        return Overview.GetSignSummary({
+        return Overview.GetSupplySummary({
             nodeId,
             nodeLevel
         })
