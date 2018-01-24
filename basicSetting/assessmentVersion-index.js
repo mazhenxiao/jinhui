@@ -52,7 +52,11 @@ class assessmentVersionIndex extends Component {
                         // }
                         el.key = ind+1
                     });
-                    this.setState({dataList:dataList.datalist})
+                    this.setState({
+                        dataList:dataList.datalist,
+                        arealist:dataList.arealist,
+                        citylist:dataList.citylist
+                    })
                 })
     }
 
@@ -96,21 +100,26 @@ class assessmentVersionIndex extends Component {
             );
     }
     renderForm = () =>{
+        const {arealist,citylist} = this.state;
+        var areaArr=[],cityArr=[];
+        arealist.forEach((el,ind)=>{
+            areaArr.push(<Option value={el.id}>{el.name}</Option>)
+        })
+        citylist.forEach((el,ind)=>{
+            cityArr.push(<Option key={el.id} value={el.id}>{el.name}</Option>)
+        })
         return (
-            <Row>
+            <Row className="version-form">
                 <Col span={4}>
                     区域：<Select onChange={this.POINTLEVEL_FN} defaultValue="请选择" style={{ width: 120 }}>
                         <Option value="-1">请选择</Option>
-                        <Option value="0">低</Option>
-                        <Option value="1">中</Option>
-                        <Option value="2">高</Option>
+                        {areaArr}
                     </Select>
                 </Col>
                 <Col span={4}>
                     城市公司：<Select onChange={this.ISOLVE_FN} defaultValue="请选择" style={{ width: 120 }}>
                         <Option value="-1">请选择</Option>
-                        <Option value="1">是</Option>
-                        <Option value="0">否</Option>
+                        {cityArr}
                     </Select> 
                 </Col>
                 <Col span={4}>
