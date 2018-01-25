@@ -71,6 +71,7 @@ export default class ToolsList extends React.Component {
         }
         $(window).trigger("treeLoad");
         $(".JH-Content").removeClass("CLASS_AGENTY");
+        
         if (pageClass == "Index") {
             th.props.callback(pageUrl + routerArr);
             // $(".icon-bar").trigger("click.bar")
@@ -209,7 +210,7 @@ export default class ToolsList extends React.Component {
                          }else if(!Url&&Child&&Child[0]&&Child[0].Url.includes("AreaInfo")){
                              id="areaInfo"; 
                          }
-                         let urlArr = Url.includes(",")? Url.split(","):Url;
+                         let urlArr = Url.includes("/")? Url.split("/"):Url;
                         return  <li key={ind}>
                                     {
                                         (typeof urlArr=="string")? (
@@ -225,7 +226,7 @@ export default class ToolsList extends React.Component {
                                            Boolean(Child&&Child.length)&&(
                                               <ol className="subMenu">{
                                                 Child.map((arg2,ind2)=>{
-                                                    let {Url,Title}=arg2,urlArr = Url.includes(",")? Url.split(","):Url;
+                                                    let {Url,Title}=arg2,urlArr = Url.includes("/")? Url.split("/"):Url;
                                                     return  <li className="" key={ind2}>
                                                                                                     
                                                             {
