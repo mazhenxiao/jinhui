@@ -30,7 +30,7 @@ class Index extends Component {
         headerData:[],
         dataSource:[]
     }
-    Jurisdiction=iss.Jurisdiction("primarykey");
+    Jurisdiction=iss.Jurisdiction("AreaInfo/primarykey");
     /**
      * 在组件接收到一个新的prop时被调用,这个方法在初始化render时不会被调用
      * param nextProps 下一阶段的props
@@ -246,6 +246,7 @@ class Index extends Component {
     renderButtonList = () => {
         var primarykey = this.GetQueryString("primarykey")
         const editstatus = this.state.editstatus;
+        debugger
         //判断是否是编辑状态  编辑状态
         if(!primarykey){
             if(!editstatus){

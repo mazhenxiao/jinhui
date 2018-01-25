@@ -22,7 +22,7 @@ export default class Index extends Component{
         }
         number = "2"; //2
         lev ="5"; //5
-        Jurisdiction=iss.Jurisdiction("primarykeyTarget");
+        Jurisdiction=iss.Jurisdiction("groupbuild");
     componentWillMount() {
 
         this.setState({
