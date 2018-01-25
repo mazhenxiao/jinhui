@@ -100,13 +100,13 @@ export default class ToolsTree extends React.Component {
 	                	break;
 	            }
             }else{
-                this.Jurisdiction = iss.Jurisdiction("newProjects");
+               
                 switch(arg["level_id"]){
 	                case "1":iss.hashHistory.replace({pathname:"index",state:arg,query:{currentPosi:"group",dataKey:iss.id.id}});break; //集团汇总
 	                case "2":iss.hashHistory.replace({pathname:"index",state:arg,query:{currentPosi:"area",dataKey:iss.id.id}});break;//区域
 	                case "3":iss.hashHistory.replace({pathname:"index",state:arg,query:{currentPosi:"branchOffice",dataKey:iss.id.id}});id="newProject";break;//分公司
-	                case "4":iss.hashHistory.replace({pathname:"index",state:arg,query:{status:"show",currentPosi:"project",dataKey:iss.id.id}});id="intallment";current="newProject";break;//项目
-	                case "5":"";iss.hashHistory.replace({pathname:"index",state:arg,query:{status:"show",currentPosi:"intallment",dataKey:iss.id.id}});current="intallment";id="intallmentDetail";break;//分期;
+	                case "4":iss.hashHistory.replace({pathname:"index",state:arg,query:{status:"show",currentPosi:"project",dataKey:iss.id.id}});id="intallment";current="newProject"; this.Jurisdiction = iss.Jurisdiction("newProjects");break;//项目
+	                case "5":"";iss.hashHistory.replace({pathname:"index",state:arg,query:{status:"show",currentPosi:"intallment",dataKey:iss.id.id}});current="intallment";id="intallmentDetail"; this.Jurisdiction = iss.Jurisdiction("intallment");break;//分期;
 	            }
             }
 
