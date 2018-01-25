@@ -9,6 +9,7 @@ import * as Priority from "./priority-service"
 import * as Overview from "./overview-service"
 import * as Version from "./version-service"
 import * as ProjectListServer from "./projectList-server";
+import * as PlanSummary from "./planSummary-service";
 export {
     CommonService,
     AreaService,
@@ -20,5 +21,6 @@ export {
     Priority,
     Overview,
     Version,
-    ProjectListServer
+    ProjectListServer,
+    PlanSummary
 };
