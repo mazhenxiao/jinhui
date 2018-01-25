@@ -50,6 +50,7 @@ class assessmentVersionIndex extends Component {
                     this.setState({
                         loading:false,
                         dataList:dataList.datalist,
+                        searchList:dataList.datalist,
                         arealist:dataList.arealist,
                         citylist:dataList.citylist
                     })
@@ -81,8 +82,35 @@ class assessmentVersionIndex extends Component {
     }
     //查询
     handleLocalSearch = () =>{
-
+        this.forceUpdate();
+        // let dataList = [...this.state.dataList];
+        // var searchList = dataList.filter((el,ind)=>{
+        //     let {CityId,AreaId,ProjectName}=el;
+        //     let {city,area,project}=this;
+        //     let arr = [],search=[];
+        //     city&&(arr.push(city),search.push(CityId)); 
+        //     area&&(arr.push(area),search.push(AreaId)); 
+        //     project&&(arr.push(project),search.push(ProjectName));
+        //     let check = true;
+        //     for(var i = 0 ; i < arr.length;i++){
+        //         if(arr[i]!=search[i]){
+        //             check = false;
+        //         }
+        //     }
+        //     return check;           
+        // })
+        // this.setState({searchList})
+        
     }
+
+    getFilterData = ()=>{
+        let dataList = [...this.state.dataList];
+        let {city,area,project}=this;
+        !!area && (dataList = dataList.filter(item=>item["AreaId"] == area))
+        !!city && (dataList = dataList.filter(item=>item["CityId"] == city))
+        !!project && (dataList = dataList.filter(item=>item["ProjectName"].indexOf(project)>-1))
+        return dataList;
+    };
     
 
     //选择区域
@@ -102,7 +130,7 @@ class assessmentVersionIndex extends Component {
         const {arealist,citylist} = this.state;
         var areaArr=[],cityArr=[];
         arealist.forEach((el,ind)=>{
-            areaArr.push(<Option value={el.id}>{el.name}</Option>)
+            areaArr.push(<Option key={el.id} value={el.id}>{el.name}</Option>)
         })
         citylist.forEach((el,ind)=>{
             cityArr.push(<Option key={el.id} value={el.id}>{el.name}</Option>)
@@ -172,6 +200,7 @@ class assessmentVersionIndex extends Component {
         )
     }
     renderContent = () =>{
+        const {searchList,dataList} = this.state;
         const columns = [{
             title: '区域',
             colSpan: 1,
@@ -208,12 +237,14 @@ class assessmentVersionIndex extends Component {
             colSpan: 1,
             dataIndex: 'SalesStatus',
             render:(title,row,ind) => this.renderRadio(row,'SalesStatus',ind)
-          }];
+        }];
+        let dataSource=this.getFilterData();
+        
         return (
             <Spin spinning={this.state.loading}>
                 <Table
                     columns={columns}
-                    dataSource={this.state.dataList} 
+                    dataSource={dataSource} 
                     bordered={true}
                 />
             </Spin>
