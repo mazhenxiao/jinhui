@@ -16,8 +16,8 @@ export default class ToolsTree extends React.Component {
         }
         this.setTime = "";
         this.currentPath = "";
-        this.Jurisdiction=[];//权限
-               
+        this.Jurisdiction_newProjects=[];//权限
+        this.Jurisdiction_intallment=[];
         //iss.hashHistory.listen()
     }
     componentWillReceiveProps(nextProps) {
@@ -100,13 +100,13 @@ export default class ToolsTree extends React.Component {
 	                	break;
 	            }
             }else{
-                this.Jurisdiction = iss.Jurisdiction("newProjects");
+               
                 switch(arg["level_id"]){
 	                case "1":iss.hashHistory.replace({pathname:"index",state:arg,query:{currentPosi:"group",dataKey:iss.id.id}});break; //集团汇总
 	                case "2":iss.hashHistory.replace({pathname:"index",state:arg,query:{currentPosi:"area",dataKey:iss.id.id}});break;//区域
-	                case "3":iss.hashHistory.replace({pathname:"index",state:arg,query:{currentPosi:"branchOffice",dataKey:iss.id.id}});id="newProject";break;//分公司
-	                case "4":iss.hashHistory.replace({pathname:"index",state:arg,query:{status:"show",currentPosi:"project",dataKey:iss.id.id}});id="intallment";current="newProject";break;//项目
-	                case "5":"";iss.hashHistory.replace({pathname:"index",state:arg,query:{status:"show",currentPosi:"intallment",dataKey:iss.id.id}});current="intallment";id="intallmentDetail";break;//分期;
+	                case "3":iss.hashHistory.replace({pathname:"index",state:arg,query:{currentPosi:"branchOffice",dataKey:iss.id.id}});id="newProject";this.Jurisdiction_newProjects = iss.Jurisdiction("newProjects");break;//分公司
+	                case "4":iss.hashHistory.replace({pathname:"index",state:arg,query:{status:"show",currentPosi:"project",dataKey:iss.id.id}});id="intallment";current="newProject"; this.Jurisdiction_newProjects = iss.Jurisdiction("newProjects");break;//项目
+	                case "5":"";iss.hashHistory.replace({pathname:"index",state:arg,query:{status:"show",currentPosi:"intallment",dataKey:iss.id.id}});current="intallment";id="intallmentDetail"; this.Jurisdiction_intallment = iss.Jurisdiction("intallment");break;//分期;
 	            }
             }
 
@@ -341,7 +341,7 @@ export default class ToolsTree extends React.Component {
     }
     render() {
         let th = this;
-        
+      //  Jurisdiction_intallment  Jurisdiction_newProjects
         let setBar = arg => {
             
             if (th.state.changeState == "" || th.state.changeState == undefined) {
@@ -349,7 +349,7 @@ export default class ToolsTree extends React.Component {
             } else if (th.state.changeState == "newProject") {
                 return <div className="">
                     {
-                    Boolean(th.Jurisdiction.includes("create"))&&
+                    Boolean(th.Jurisdiction_newProjects.includes("create"))&&
                     <a href="javascript:;" onClick={this.addTodo.bind(this)} className="iconBoxJin projectAdd" title="创建项目"></a>
                     }
                 </div>
@@ -357,11 +357,11 @@ export default class ToolsTree extends React.Component {
             } else if (th.state.changeState == "intallmentDetail") {
                 return <div className="deleteBox">
                     {
-                    Boolean(th.Jurisdiction.includes("remove"))&&
+                    Boolean(th.Jurisdiction_intallment.includes("remove"))&&
                     <a href="javascript:;" onClick={this.deleteTodo_1.bind(this)} className="iconBoxJin projectDelete" title="删除分期"></a>
                     }
                     {
-                        Boolean(th.Jurisdiction.includes("edit"))&&
+                        Boolean(th.Jurisdiction_intallment.includes("edit"))&&
                     <a href="javascript:;" onClick={this.editTodo.bind(this)} className="iconBoxJin projectBian" title="编辑分期"></a>
                     }
                 </div>
@@ -370,15 +370,15 @@ export default class ToolsTree extends React.Component {
                 return <div className="">
                     {
                         
-                        Boolean(th.Jurisdiction.includes("remove"))&&
+                        Boolean(th.Jurisdiction_newProjects.includes("remove"))&&
                         <a href="javascript:;" onClick={this.deleteTodo_2.bind(this)} className="iconBoxJin projectDelete" title="删除项目"></a>
                     }
                     {
-                         Boolean(th.Jurisdiction.includes("edit"))&&
+                         Boolean(th.Jurisdiction_newProjects.includes("edit"))&&
                          <a href="javascript:;" onClick={this.editTodo.bind(this)} className="iconBoxJin projectBian" title="编辑项目"></a>
                     }
                     {
-                        Boolean(th.Jurisdiction.includes("create"))&&
+                        Boolean(th.Jurisdiction_intallment.includes("create"))&&
                         <a href="javascript:;" onClick={this.addTodo.bind(this)} className="iconBoxJin projectAdd" title="创建分期"></a>
                     }
                 </div>
