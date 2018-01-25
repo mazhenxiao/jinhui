@@ -54,6 +54,7 @@ class PriceControl extends React.Component {
         isNoPriceData: true //默认没有数据
     };
     sessionCurrentData = {};//点击阶段或初次加载table时暂存数据
+    Jurisdiction=iss.Jurisdiction("priceControl");
     componentWillMount() {
 
     }
@@ -689,7 +690,7 @@ class PriceControl extends React.Component {
          if (this.state.isApproal||approvaled) {
             return
         } 
-        return <button onClick={this.BIND_ButtonBuild} className="jh_btn jh_btn28 jh_btn_add">生成新版本</button>
+        return Boolean(this.Jurisdiction.includes("newVersion"))&&<button onClick={this.BIND_ButtonBuild} className="jh_btn jh_btn28 jh_btn_add">生成新版本</button>
     }
     /* 绑定button */
     BIND_Button = arg => {
@@ -702,11 +703,11 @@ class PriceControl extends React.Component {
                 return
             }
             if (this.state.edit) {
-                return <button type="button" className="jh_btn jh_btn22 jh_btn_save" onClick={this.saveNewPriceVersion}>
+                return Boolean(this.Jurisdiction.includes("save"))&&<button type="button" className="jh_btn jh_btn22 jh_btn_save" onClick={this.saveNewPriceVersion}>
                     保存</button>
 
             } else {
-                return <button type="button" className="jh_btn jh_btn22 jh_btn_edit" onClick={this.editNewPriceVersion}>
+                return Boolean(this.Jurisdiction.includes("edit"))&&<button type="button" className="jh_btn jh_btn22 jh_btn_edit" onClick={this.editNewPriceVersion}>
                     编辑</button>
             }
         }
@@ -717,10 +718,13 @@ class PriceControl extends React.Component {
             <li className={this.state.isNoPriceData ? "hide" : ""}> {ButtonBar()}</li>
             <li className="">{this.Render_ButtonBuild()}</li>
             <li className="">
-                <button type="button" onClick={this.handleApproval}
+                {
+                    Boolean(this.Jurisdiction.includes("edit"))&&
+                    <button type="button" onClick={this.handleApproval}
                         className={this.state.isNoPriceData ? "hide" : "jh_btn jh_btn22 jh_btn_apro"}>
                     发起审批
-                </button>
+                    </button>
+                }
             </li>
             <li className=""><span>当前版本：</span><Select value={this.state.versionId}
                                                        onChange={this.EventChangeSelectVersion}
