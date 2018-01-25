@@ -34,7 +34,7 @@ class Index extends Component {
     };
 
     antdTableScrollLock = null;
-
+    Jurisdiction=iss.Jurisdiction("supply");
     componentDidMount() {
         // 判断是否是审批, 真:审批状态; 假:普通状态
         if (this.getApprovalStatus()) {
@@ -273,12 +273,18 @@ class Index extends Component {
                         {
                             buttonPermission ?
                                 <div>
-                                    <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick}>
+                                    {
+                                        
+                                        Boolean(this.Jurisdiction.includes("edit"))&&<button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick}>
                                         编辑供货
                                     </button>
-                                    <button className="jh_btn jh_btn22 jh_btn_save" onClick={this.handleSubmitClick}>
+                                    }
+                                    {
+                                        Boolean(this.Jurisdiction.includes("save"))&&<button className="jh_btn jh_btn22 jh_btn_save" onClick={this.handleSubmitClick}>
                                         提交
-                                    </button>
+                                        </button>
+                                    }
+                                  
                                 </div>
                                 : null
                         }
