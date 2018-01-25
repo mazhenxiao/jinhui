@@ -57,7 +57,7 @@ class SignIndex extends Component {
 
 
     };
-
+    Jurisdiction=iss.Jurisdiction("payment");
     //protected 数据
     dynamicTable = { //动态表格私有仓储
         number: 0,//死循环记录
@@ -607,15 +607,26 @@ class SignIndex extends Component {
                         </Col>
                         <Col span={12}>
                             <div className={dynamicEditButtonShow ? "RT" : "hidden"}>
-                                <Popconfirm placement="top" title={"确定发起审批吗？"} onConfirm={this.handleApproval}>
+                                {
+                                    Boolean(this.Jurisdiction.includes("approval"))&& 
+                                    <Popconfirm placement="top" title={"确定发起审批吗？"} onConfirm={this.handleApproval}>
                                     <button className="jh_btn jh_btn22 jh_btn_apro mgR20">发起审批</button>
                                 </Popconfirm>
-                                <Popconfirm placement="top" title={"确定退回吗？"} onConfirm={this.handleCancel}>
+                                }
+                                {
+                                     Boolean(this.Jurisdiction.includes("revert"))&&
+                                     <Popconfirm placement="top" title={"确定退回吗？"} onConfirm={this.handleCancel}>
                                     <button className="jh_btn jh_btn22 refresh-icon mgR20">退回</button>
-                                </Popconfirm>
-                                <button className="jh_btn jh_btn22 jh_btn_edit"
-                                        onClick={this.handleEdit}>{dynamicEdit ? "保存" : "编辑"}
-                                </button>
+                                    </Popconfirm>
+                                }
+                                {
+                                     Boolean(this.Jurisdiction.includes("edit"))&&
+                                     <button className="jh_btn jh_btn22 jh_btn_edit"
+                                    onClick={this.handleEdit}>{dynamicEdit ? "保存" : "编辑"}
+                                    </button>
+                                }
+                               
+                              
                             </div>
                         </Col>
                     </Row>

@@ -65,7 +65,7 @@ class SignIndex extends Component {
 
 
     };
-    Jurisdiction=iss.Jurisdiction("priceControl");
+    Jurisdiction=iss.Jurisdiction("sign");
     //版本信息私有数据
     version = { //版本
         currentVersion: "",//当前版本
