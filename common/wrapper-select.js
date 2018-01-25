@@ -27,8 +27,8 @@ class WrapperSelect extends React.Component {
 
     static defaultProps = {
         showDefault: true,
-        labelSpan:4,
-        inputSpan: 20,
+        labelSpan:8,
+        inputSpan: 15,
         defaultValue: "",
         promiseLoader: () => {
             return Promise.resolve([]);
@@ -83,7 +83,7 @@ class WrapperSelect extends React.Component {
 
         if (labelText) {
             return (
-                <Row style={rowStyle} className={className+"width:300px"}>
+                <Row style={rowStyle} className={className}>
                     <Col span={labelSpan} style={labelStyle}>
                         {showRequired ? <span style={{color: "red"}}>*</span> : null}
                         {labelText}
