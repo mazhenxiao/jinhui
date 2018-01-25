@@ -23,7 +23,7 @@ class assessmentVersionIndex extends Component {
         area="";
         city="";
         project="";
-    
+        Jurisdiction=iss.Jurisdiction("assessmentVersion");
     componentDidMount() {
         this.bindLeftBart();
         this.getFetData()
@@ -265,7 +265,9 @@ class assessmentVersionIndex extends Component {
                                     </Col>
                                     <Col span={2}>
                                         <p>
+                                            { Boolean(this.Jurisdiction.includes("save"))&&
                                             <button type="button" onClick={this.BIND_Save} className="jh_btn jh_btn22 jh_btn_add">保存</button>
+                                            }
                                         </p>
                                     </Col>
                                 </Row>
