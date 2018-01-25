@@ -1,7 +1,8 @@
-import {message, notification,Calendar } from 'antd';
+import {message, notification, Calendar} from 'antd';
 import "babel-polyfill";  //兼容ie  
 import 'whatwg-fetch';//兼容ie fetch
 import appConfig from '../app.config';
+
 class $iss {
     constructor() {
         this.pagination();
@@ -109,10 +110,11 @@ class $iss {
                         description: `登陆超时请重新登陆！`
                     });
                     top.window.location.href = "/login";
-                }else if(res["errorcode"] && res.errorcode == "500"){
-                    // iss.error(res.message);
+                } else if (res["errorcode"] && res.errorcode == "500") {
+                    console.error("服务器500错误", res);
                     return Promise.reject(res)
-                }else {
+                } else {
+                    console.error("接口返回格式不正确, 返回的对象没有 errorcode 属性", res);
                     return Promise.reject(res);
                 }
             })
@@ -120,7 +122,7 @@ class $iss {
 
     ajax(opt) {
         let th = this;
-        let $o ={...opt}; //JSON.parse(JSON.stringify(opt));
+        let $o = {...opt}; //JSON.parse(JSON.stringify(opt));
         $o["success"] && delete $o["success"];
         $o["error"] && delete $o["error"];
         let token = this.token;
@@ -142,7 +144,7 @@ class $iss {
         }
         $.support.cors = true;
         return $.ajax(arg).done((da) => {
-           
+
             var _da = da;
             if (typeof da == "string") {
                 _da = JSON.parse(da);
@@ -160,15 +162,15 @@ class $iss {
             } else if (_da["errorcode"] == "300") {
                 iss.popover({content: "操作失败，请联系后台工作人员！"});
                 return false;
-            }else if(_da["errorcode"]=="500"){
-                if(opt["error"]){
-                    opt.error(_da,_da);
-                }else{
-                    iss.error(`${_da["message"]? _da["message"]:"操作失败，请联系后台工作人员!"}`);
+            } else if (_da["errorcode"] == "500") {
+                if (opt["error"]) {
+                    opt.error(_da, _da);
+                } else {
+                    iss.error(`${_da["message"] ? _da["message"] : "操作失败，请联系后台工作人员!"}`);
                 }
-           
-                console.log("ajaxError500",_da)
-              //  $.Deferred().reject(_da);
+
+                console.log("ajaxError500", _da)
+                //  $.Deferred().reject(_da);
             } else if (_da) {
                 return (opt["success"] && opt.success(_da));
             }
@@ -284,7 +286,7 @@ class $iss {
     }
 
     upload(arg) {
-        var th = this,token = this.token;
+        var th = this, token = this.token;
         let str = `<section class="upload">
             <header><div id="uploadAddBTN"></div><div class="uploadBtn J_uploadBtn hide">上传</div></header>
             <ul class="uploadList"></ul>
@@ -324,7 +326,7 @@ class $iss {
             } //上传完成
         }
         $.extend(opt, arg || {})
-        opt.server =  opt.server.indexOf("token")>=0? opt.server:opt.server+`?token=${token}`
+        opt.server = opt.server.indexOf("token") >= 0 ? opt.server : opt.server + `?token=${token}`
         let addFile = $f => {  //新增上传
             let txt = "";
             if ($f.length) {
@@ -446,7 +448,7 @@ class $iss {
             }
         })
     }
-    
+
     chooseTo(arg) {  //选人控件
         let th = this,
             str = `<section class="chooseTo">
@@ -538,17 +540,17 @@ class $iss {
             });
             let render = d => {
                 let rp = "", $el = $(".chooseToRight ul");
-                
+
                 $el.html("")
                 let op = opt.pepole;
                 for (let me in op) {
 
                     rp += `<li class="chooseTolist" guid="${me}">${op[me]["text"]}</li>`
                 }
-             
-                    $el.html(rp);
-                
-              
+
+                $el.html(rp);
+
+
             }
             render();
             let time, J_chooseToSearch = $(".J_chooseToSearch"), ul = $(".chooseToSearchUL"), btn = $("")
@@ -569,7 +571,7 @@ class $iss {
                             }
 
                         })
-                        
+
                         ul.html(v).addClass("active");
 
                     }
@@ -604,8 +606,10 @@ class $iss {
                     render();
                 }
                 if (th.hasClass("chooseToSearchli")) { //人员检索
-                    if(!opt.multiple){opt.pepole = {};}
-                  // opt.pepole = {};
+                    if (!opt.multiple) {
+                        opt.pepole = {};
+                    }
+                    // opt.pepole = {};
                     opt.pepole[th.attr("guid")] = {
                         id: th.attr("guid"),
                         element: th.attr("element"),
@@ -617,7 +621,7 @@ class $iss {
 
             }).on("dblclick.chooseTo", ".chooseTolist", ev => {
                 var th = $(ev.target);
-                
+
                 if (th.hasClass("chooseTolist")) {  //右侧选人
                     let guid = th.attr("guid");
                     delete opt.pepole[guid];
@@ -954,25 +958,47 @@ class $iss {
         }
         return eVal;
     }
+
     /**
      * 通过url判断页面路由
      */
-    convertURL(id){
-        let url="";
-        switch(id){
-            case "10103":url="intallment";break; //分期
-            case "10102":url="newProject";break; //项目
-            case "10114":url="AreaInfo/groupbuild";break; //团队维护
-            case "10104":url="AreaInfo/areaManage";break; //面积
-            case "10106":url="AreaInfo/payment";break;//供销存
-            case "10105":url="AreaInfo/priceControl";break; //价格
-            case "10113":url="AreaInfo/priority";break; //重点事项
-            case "10115":url="AreaInfo/primarykeyTarget";break; //重点事项
-            case "10111":url="AreaInfo/primarykey";break; //重点事项
-            default:console.error("iss.js里没有配置convertURL");break;
+    convertURL(id) {
+        let url = "";
+        switch (id) {
+            case "10103":
+                url = "intallment";
+                break; //分期
+            case "10102":
+                url = "newProject";
+                break; //项目
+            case "10114":
+                url = "AreaInfo/groupbuild";
+                break; //团队维护
+            case "10104":
+                url = "AreaInfo/areaManage";
+                break; //面积
+            case "10106":
+                url = "AreaInfo/payment";
+                break;//供销存
+            case "10105":
+                url = "AreaInfo/priceControl";
+                break; //价格
+            case "10113":
+                url = "AreaInfo/priority";
+                break; //重点事项
+            case "10115":
+                url = "AreaInfo/primarykeyTarget";
+                break; //重点事项
+            case "10111":
+                url = "AreaInfo/primarykey";
+                break; //重点事项
+            default:
+                console.error("iss.js里没有配置convertURL");
+                break;
         }
         return url;
     }
+
     /*
     *配置上传标记总图url
     */
@@ -991,32 +1017,33 @@ class $iss {
             }
         });
     }
-    Error = (error)=>{
+
+    Error = (error) => {
         this.tip({
-            type:"error",
-            message:"提示",
-            description:error
+            type: "error",
+            message: "提示",
+            description: error
         })
     }
-    Info=(message)=>{
+    Info = (message) => {
         this.tip({
-            type:"info",
-            message:"提示",
-            description:message
-        })  
+            type: "info",
+            message: "提示",
+            description: message
+        })
     }
-    success=(message)=>{
+    success = (message) => {
         this.message({
             type: "success",
             content: message,
         });
     }
-    Success=(message)=>{
+    Success = (message) => {
         this.tip({
-            type:"success",
-            message:"提示",
-            description:message
-        })  
+            type: "success",
+            message: "提示",
+            description: message
+        })
     }
     error = (error) => {
         this.message({
@@ -1028,38 +1055,39 @@ class $iss {
 
     info = (message) => {
         this.message({
-                type: "info",
-                content: message,
-            });
+            type: "info",
+            content: message,
+        });
     };
-    Jurisdiction=(str)=>{
+    Jurisdiction = (str) => {
         let db = JSON.parse(localStorage.getItem("Jurisdiction"));
-        let newProject = filter(db,str);
-         return newProject;
+        let newProject = filter(db, str);
+        return newProject;
     }
 }
-let filter=(da,str)=>{
-    let arr=[]
-     da.forEach(arg=>{
-        let {Url,Watch,Child}=arg;
-        if(Url.indexOf("Index")>-1){
-           Watch.forEach(arg=>{
-               for(let key in arg){
-                  arr.push({
-                    Url:key,
-                    Watch:arg[key]
-                 })
-               }
-            
-           })
-        }else if(Child&&Child.length){
-            
+
+let filter = (da, str) => {
+    let arr = []
+    da.forEach(arg => {
+        let {Url, Watch, Child} = arg;
+        if (Url.indexOf("Index") > -1) {
+            Watch.forEach(arg => {
+                for (let key in arg) {
+                    arr.push({
+                        Url: key,
+                        Watch: arg[key]
+                    })
+                }
+
+            })
+        } else if (Child && Child.length) {
+
             arr = arr.concat(Child)
         }
     })
 
-    let _w = arr.filter(arg=>(arg.Url.indexOf(str)>-1));
-    return _w.length? _w[0]["Watch"]:[];
+    let _w = arr.filter(arg => (arg.Url.indexOf(str) > -1));
+    return _w.length ? _w[0]["Watch"] : [];
 }
 //let iss = window["iss"] = 
 let iss = window["iss"] = new $iss();
