@@ -20,7 +20,9 @@ class assessmentVersionIndex extends Component {
             citylist:[],
             loading:false
         };
-        
+        area="";
+        city="";
+        project="";
     
     componentDidMount() {
         this.bindLeftBart();
@@ -42,11 +44,11 @@ class assessmentVersionIndex extends Component {
         this.setState({loading:true})
         return Version.GetCustomTagList()
                 .then(dataList=>{
-                    this.setState({loading:false})
                     dataList.datalist.forEach((el,ind)=>{
                         el.key = ind+1
                     });
                     this.setState({
+                        loading:false,
                         dataList:dataList.datalist,
                         arealist:dataList.arealist,
                         citylist:dataList.citylist
@@ -63,7 +65,7 @@ class assessmentVersionIndex extends Component {
         $(window).trigger("EVENT_CLOSELEFTBAR");
        },1000)
     }
-
+    //保存
     BIND_Save =()=>{
         this.setState({loading:true})
         const {dataList} = this.state;
@@ -77,29 +79,24 @@ class assessmentVersionIndex extends Component {
             this.setState({loading:false})
         })
     }
-    renderHeader = () => {
+    //查询
+    handleLocalSearch = () =>{
 
-            return (
-                <div>
-                    <div className="boxGroupTit">
-                   
-                        <Row>    
-                            <Col span={22} >
-                                <p>
-                                    <span>考核版本设置</span>
-                                </p>
-                            </Col>
-                            <Col span={2}>
-                                <p>
-                                    <button type="button" onClick={this.BIND_Save} className="jh_btn jh_btn22 jh_btn_add">保存</button>
-                                </p>
-                            </Col>
-                        </Row>
-             
-                    </div>
-                </div> 
-                
-            );
+    }
+    
+
+    //选择区域
+    areaSelect = (value) =>{
+        this.area=value
+    }
+    //选择城市
+    citySelect = (value) =>{
+        this.city=value
+    }
+    //项目名称
+    projectValue = (e)=>{
+        var value = e.target.value
+        this.project=value
     }
     renderForm = () =>{
         const {arealist,citylist} = this.state;
@@ -113,19 +110,19 @@ class assessmentVersionIndex extends Component {
         return (
             <Row className="version-form">
                 <Col span={4}>
-                    区域：<Select onChange={this.POINTLEVEL_FN} defaultValue="请选择" style={{ width: 120 }}>
-                        <Option value="-1">请选择</Option>
+                    区域：<Select onChange={this.areaSelect} defaultValue="请选择" style={{ width: 120 }}>
+                        <Option value="">请选择</Option>
                         {areaArr}
                     </Select>
                 </Col>
                 <Col span={4}>
-                    城市公司：<Select onChange={this.ISOLVE_FN} defaultValue="请选择" style={{ width: 120 }}>
-                        <Option value="-1">请选择</Option>
+                    城市公司：<Select onChange={this.citySelect} defaultValue="请选择" style={{ width: 120 }}>
+                        <Option value="">请选择</Option>
                         {cityArr}
                     </Select> 
                 </Col>
                 <Col span={4}>
-                    项目：<Input onChange={this.SOLVETIME_FN} style={{ width: 120 }} />
+                    项目：<Input onChange={this.projectValue} style={{ width: 120 }} />
                 </Col>
                 <Col span={2} style={{textAlign: "left", paddingLeft: "10px"}}>
                     <Button onClick={this.handleLocalSearch}>查询</Button>
@@ -159,7 +156,7 @@ class assessmentVersionIndex extends Component {
         var obj = this.state.dataList;
         obj.forEach((el,ind)=>{
             if(el.key == key){
-                el[keyName] = value
+                el[keyName] = value==""?null:value
             }
         })
         this.setState({
@@ -222,6 +219,30 @@ class assessmentVersionIndex extends Component {
             </Spin>
         );
     }
+    renderHeader = () => {
+        
+                    return (
+                        <div>
+                            <div className="boxGroupTit">
+                           
+                                <Row>    
+                                    <Col span={22} >
+                                        <p>
+                                            <span>考核版本设置</span>
+                                        </p>
+                                    </Col>
+                                    <Col span={2}>
+                                        <p>
+                                            <button type="button" onClick={this.BIND_Save} className="jh_btn jh_btn22 jh_btn_add">保存</button>
+                                        </p>
+                                    </Col>
+                                </Row>
+                     
+                            </div>
+                        </div> 
+                        
+                    );
+            }
     render() {
         return (
             <div className="version">
