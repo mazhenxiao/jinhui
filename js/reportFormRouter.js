@@ -7,5 +7,14 @@ export const reportFormRouter=[
                 callback(null, app.default);
             }, "reportForm-projectList");
         }
+    },
+    {  //年度供销存计划汇总
+        path: "/reportForm/planSummary",
+        getComponent: function (next, callback) {
+            require.ensure([], function (require) {
+                var app = require('../planSummary/index.js');
+                callback(null, app.default);
+            }, "planSummary-index");
+        }
     }
 ]

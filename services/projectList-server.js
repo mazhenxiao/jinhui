@@ -8,7 +8,7 @@ export const GetGroupProjectInventory=()=>{
         url:"/Report/GetGroupProjectInventory",
         data:{
             pageIndex:1,
-            pageSize:10
+            pageSize:10000
         }
     })
     .then(success)

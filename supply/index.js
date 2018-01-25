@@ -300,7 +300,7 @@ class Index extends Component {
                         <span className="title">供货计划历史版本（面积：平方米，货值：万元）</span>
                     </Col>
                     <Col span={12} className="text-align-right">
-                        <WrapperSelect labelText="版本:" className="plan-version"
+                        <WrapperSelect labelText="版本:" className="plan-version2"
                                        showDefault={false}
                                        value={versionId}
                                        dataSource={versionData}
