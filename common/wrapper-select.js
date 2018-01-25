@@ -67,7 +67,6 @@ class WrapperSelect extends React.Component {
     render() {
 
         let {labelText, labelSpan, inputSpan, dataSource, showDefault, showRequired, className, ...selectProps} = this.props;
-
         let options = [];
         let defaultOption = <Option key="1" value="">请选择</Option>;
         if (showDefault) options.push(defaultOption);
