@@ -22,7 +22,7 @@ class SaveVersion extends Component {
         approvalStatus: React.PropTypes.bool,//审核状态, 真:是审核状态, 假:非审核状态
         versionStatus: React.PropTypes.string,//版本状态  未编制 undraft, 编制中 draft, 审批中 approvaling, 审批通过 approvaled
     };
-
+  
     static defaultProps = {
         versionData: [],
         versionId: "",
@@ -46,7 +46,7 @@ class SaveVersion extends Component {
         approvalStatus: false,
         versionStatus: "",
     };
-
+    Jurisdiction=iss.Jurisdiction("areaManage");;//权限
     /**
      * 保存当前版本的规划方案指标数据
      */
@@ -94,7 +94,7 @@ class SaveVersion extends Component {
             return null;
         }
         return (
-            <button type="button" className="jh_btn jh_btn28 jh_btn_save Left" onClick={this.handleSave}>
+            Boolean(this.Jurisdiction.includes("save"))&&<button type="button" className="jh_btn jh_btn28 jh_btn_save Left" onClick={this.handleSave}>
                 保存</button>
         );
     };
@@ -106,7 +106,7 @@ class SaveVersion extends Component {
         }
         if (versionStatus == "draft") {
             return (
-                <button type="button" className="jh_btn jh_btn28 jh_btn_delete Left" onClick={this.handleDelete}>
+                Boolean(this.Jurisdiction.includes("remove"))&&<button type="button" className="jh_btn jh_btn28 jh_btn_delete Left" onClick={this.handleDelete}>
                     删除</button>
             );
         }
@@ -125,7 +125,7 @@ class SaveVersion extends Component {
             return null;
         }
         return (
-            <button type="button" onClick={this.handleApproval} className="jh_btn jh_btn28 jh_btn_apro Left">发起审批
+            Boolean(this.Jurisdiction.includes("approval"))&&<button type="button" onClick={this.handleApproval} className="jh_btn jh_btn28 jh_btn_apro Left">发起审批
             </button>
         );
     };
@@ -138,15 +138,19 @@ class SaveVersion extends Component {
 
         return (
             <div className="Left">
+                {
+                    
+                    Boolean(this.Jurisdiction.includes("newVersion"))&&
                 <button type="button" className="jh_btn jh_btn28 jh_btn_add" onClick={this.handleCreateVersion}>
                     生成新版本
                 </button>
+                 }
                 {
                     parseInt(step.guid) <= 2 ?
-                        <button type="button" className="jh_btn jh_btn28 jh_btn_save"
+                    Boolean(this.Jurisdiction.includes("blockFormatEdit"))&&<button type="button" className="jh_btn jh_btn28 jh_btn_save"
                                 onClick={this.handleBlockFormatEdit}>业态维护
                         </button> :
-                        <button type="button" className="jh_btn jh_btn28 jh_btn_save"
+                    Boolean(this.Jurisdiction.includes("buildingFormatEdit"))&&<button type="button" className="jh_btn jh_btn28 jh_btn_save"
                                 onClick={this.handleBuildingFormatEdit}>业态/楼栋维护
                         </button>
                 }
