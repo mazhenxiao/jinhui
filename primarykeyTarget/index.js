@@ -30,7 +30,7 @@ class Index extends Component {
         headerData:[],
         dataSource:[]
     }
-    
+    Jurisdiction=iss.Jurisdiction("groupbuild");
     /**
      * 在组件接收到一个新的prop时被调用,这个方法在初始化render时不会被调用
      * param nextProps 下一阶段的props
@@ -220,15 +220,28 @@ class Index extends Component {
             if(!editstatus){
                 return (
                     <div>
-                        <button type="button" onClick={this.handleBindEdit} className="jh_btn jh_btn22 jh_btn_add">编辑</button>
+                        {
+                            this.Jurisdiction.includes("edit")&&
+                            <button type="button" onClick={this.handleBindEdit} className="jh_btn jh_btn22 jh_btn_add">编辑</button>
+                        }
+                        
                     </div>
                 );
             }else{
                 return (
                     <div>
+                        {
+                            this.Jurisdiction.includes("save")&&
                             <button type="button" onClick={this.handleBindSave} className="jh_btn jh_btn22 jh_btn_add">保存</button>
+                        }
+                        {
+                            this.Jurisdiction.includes("revert")&&
                             <button type="button" onClick={this.handleBindCancel} className="jh_btn jh_btn22 jh_btn_add">取消</button>
+                        }
+                        {
+                            this.Jurisdiction.includes("approval")&&
                             <button type="button" onClick={this.BIND_ROUTERCHANGE} className="jh_btn jh_btn22 jh_btn_apro">发起审批</button>
+                        }
                     </div>  
                 );
             }

@@ -57,7 +57,7 @@ class Index extends Component {
         pageIndex:1,
         editS:false
     }
-    
+    Jurisdiction=iss.Jurisdiction("priority");
     formData={
         projectName:"",
         areaName:"",
@@ -537,31 +537,52 @@ class Index extends Component {
             if(this.state.lookStatus){
                 return(
                     <div>
-                        <button type="button" onClick={this.return_Save} className="jh_btn jh_btn22 jh_btn_add">返回</button>
+                        {this.Jurisdiction.includes("revert")&&
+                        <button type="button" onClick={this.return_Save} className="jh_btn jh_btn22 jh_btn_add">返回</button>}
                     </div>
                 )
             }else{
                 if(addAatterStatus){
                     return(
                         <div>
-                            <button type="button" onClick={this.return_Save} className="jh_btn jh_btn22 jh_btn_add">返回</button>
-                            <button type="button" onClick={this.BIND_Save} className="jh_btn jh_btn22 jh_btn_add">暂存</button>
-                            <button type="button" onClick={this.BIND_Save.bind(this,"approval")} className="jh_btn jh_btn22 jh_btn_add">发起审批</button>
+                            {this.Jurisdiction.includes("revert")&&
+                            <button type="button" onClick={this.return_Save} className="jh_btn jh_btn22 jh_btn_add">返回</button>}
+                            {
+                                this.Jurisdiction.includes("save")&&
+                                <button type="button" onClick={this.BIND_Save} className="jh_btn jh_btn22 jh_btn_add">暂存</button>
+                            }
+                            {
+                                this.Jurisdiction.includes("approval")&&
+                                <button type="button" onClick={this.BIND_Save.bind(this,"approval")} className="jh_btn jh_btn22 jh_btn_add">发起审批</button>
+                            }
+                            
                         </div>
                     )
                 }else{
                     if(this.state.level_id >3){
                         return(
                             <div>
-                                <button type="button" onClick={this.editChange} className={this.state.editStatus ?"jh_btn jh_btn22 jh_btn_add":"hide jh_btn jh_btn22 jh_btn_add"}>编辑</button>
-                                <button type="button" onClick={this.BIND_AddAatter} className="jh_btn jh_btn22 jh_btn_add">新增事项</button>
-                                <button type="button" onClick={this.exportData} className="jh_btn jh_btn22 jh_btn_add">导出EXCEL</button>
+                                {
+                                    this.Jurisdiction.includes("edit")&&
+                                    <button type="button" onClick={this.editChange} className={this.state.editStatus ?"jh_btn jh_btn22 jh_btn_add":"hide jh_btn jh_btn22 jh_btn_add"}>编辑</button>
+                                }
+                                {
+                                    this.Jurisdiction.includes("newVersion")&&
+                                    <button type="button" onClick={this.BIND_AddAatter} className="jh_btn jh_btn22 jh_btn_add">新增事项</button>
+                                }
+                                {
+                                    this.Jurisdiction.includes("excel")&&
+                                    <button type="button" onClick={this.exportData} className="jh_btn jh_btn22 jh_btn_add">导出EXCEL</button>
+                                }     
                             </div>
                         )
                     }else{
                         return(
                             <div>
-                                <button type="button" onClick={this.exportData} className="jh_btn jh_btn22 jh_btn_add">导出EXCEL</button>
+                                {
+                                    this.Jurisdiction.includes("excel")&&
+                                    <button type="button" onClick={this.exportData} className="jh_btn jh_btn22 jh_btn_add">导出EXCEL</button>
+                                } 
                             </div>
                         )
                     }

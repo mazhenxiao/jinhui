@@ -22,6 +22,7 @@ export default class Index extends Component{
         }
         number = "2"; //2
         lev ="5"; //5
+        Jurisdiction=iss.Jurisdiction("primarykeyTarget");
     componentWillMount() {
 
         this.setState({
@@ -280,8 +281,15 @@ export default class Index extends Component{
                         </p>
                         <div>
                             <div className="areaTopbtn jhBtn-wrap">
+                            {
+                                this.Jurisdiction.includes("save")&&
                                 <button type="button" onClick={this.holdData.bind(this)} className="jh_btn jh_btn22 jh_btn_add">暂存</button>
+                            }
+                            {
+                                this.Jurisdiction.includes("approval")&&
                                 <button type="button" onClick={this.holdData.bind(this,"launch")} className="jh_btn jh_btn22 jh_btn_add">发起审批</button>
+                            }
+                                
                             </div>
                         </div>
                     </h3>

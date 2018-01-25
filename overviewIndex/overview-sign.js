@@ -26,76 +26,12 @@ class SignIndex extends Component {
         loading: true,
         dataKey: "", /*项目id或分期版本id*/
         editable: false,//是否可编辑
-        dynamicTable: {
-            versionId: "",//新增的通过这个参数去获取数据发起审批相关
-            DynamicDate: "",//title显示
-            SupplyVersionId: "",//在弹出时需要获取的id
-            dynamicHeaderData: [],//动态调整版头部
-            dynamicDataSource: [],//动态调整版数据
-            dynamicEdit: false, //动态调整是否可编辑
-            dynamicEditButtonShow: false,
-            loading: false,
-            defaultHeight: 200
-        },
-        planTable: { //同上
-            planHeaderData: [],
-            planDataSource: [],
-            planEdit: false,
-            loading: true
-        },
-        version: { //版本
-
-            currentVersion: "",//当前版本
-            versionData: [], //版本数据
-            versionShow: false //是否显示版本
-        },
-        dialog: { //弹窗
-            ModalVisible: false,
-            dialogContent: [],//弹出窗口content
-            dataSource: [], //数据
-            columns: [
-                {dataIndex: "SupplyDate", title: "日期", width: 80, key: "SupplyDate"},
-                {dataIndex: "SourceSaleArea", title: "可售面积（㎡）", width: 80, key: "SourceSaleArea"},
-                {dataIndex: "SourceMonery", title: "货值（万元）", width: 80, key: "SourceMonery"},
-                {dataIndex: "SourceNumber", title: "套数（套）", width: 80, key: "SourceNumber"},
-            ] //表头
-        }
-
-
-    };
-    //版本信息私有数据
-    version = { //版本
-        currentVersion: "",//当前版本
-        versionData: [], //版本数据
-        versionShow: false //是否显示版本
+        dynamicHeaderData:[],
+        planDataSource:[],
+        dynamicDataSource:[],
+        defaultHeight:200
     };
 
-    //protected 数据
-    dynamicTable = {           //动态表格私有仓储
-        versionId: "",          //新增的通过这个参数去获取数据发起审批相关
-        DynamicDate: "",        //titile显示
-        TitleList: [],          //在inof中获取表头数据
-        SupplyVersionId: "",    //在弹出时需要获取的id
-        DynamicId: "",         //新加入的id，用此id获取动态调整版数据
-        Permission: "",        //新加入是否可以编辑
-        Status: "",            //新加入当前阶段,接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回
-        Permission: "edit",     //瑞涛添加通过是否为edit判断是否可以编辑
-        VersionList: [],       //新加入不知道是什么
-        StartYear: "",         //新加入起始年份
-        number: 0,             //死循环记录
-        dynamicRender: {
-            "showName": (text, record) => {
-                let {LEVELS, children} = record;
-                return children ? <span>{text}</span> :
-                    <a href="javascript:;" onClick={this.clickOpenDialog.bind(this, text, record)}>{text}</a>
-            }
-
-        },                           //动态编辑表格
-        status: "",                  //接口0 编制中 10提交 -1 退回，只有0可以编辑提交驳回
-        startYear: "",               //起始年
-        signAContractVersionId: "",  //调整版本id
-        saveData: {}                 //保存数据临时存储
-    };
 
     antdTableScrollLock = null;//用来触发卸载原生事件
 
@@ -137,11 +73,10 @@ class SignIndex extends Component {
             nodeLevel
         })
             .then(arg => {  //进行错误判断
-                var obj = this.state.dynamicTable
-                obj.dynamicDataSource = arg.DynamicDataList
-                obj.dynamicHeaderData = arg.TitleList
                 this.setState({
-                    dynamicTable: obj,
+                    dynamicDataSource: arg.DynamicDataList,
+                    dynamicHeaderData:arg.TitleList,
+                    planDataSource:arg.HistoryDataList,
                     loading: false
                 })
             }).catch(err => {
@@ -151,54 +86,6 @@ class SignIndex extends Component {
                 })
             })
 
-    }
-    /**
-     * 获取动态数据、比对数据并锁定表格
-     */
-    PromiseAllAndLockScroll = params => {
-        //获取动态调整表格数据
-        let dynamicTable = this.getDynamicData();
-        //获取比对版数据   
-        let planTable = this.getPlanData();
-
-        return Promise.all([dynamicTable, planTable])
-            .then(arg => {
-                //获取弹窗数据如果需要，因为张权说要给一个获取的id不知道依赖在哪里，先放到这,估计需要从动态表获取
-                this.bindScrollLock();
-            })
-            .catch(error => {
-                let {message} = error
-                iss.error(message);
-                this.setState({
-                    loading: false,
-                });
-
-            })
-    }
-
-    /**
-     * 获取动态调整版数据
-     * return promise
-     */
-    getDynamicData = () => {
-        let {dynamicTable, dataKey, mode, supperShow} = this.state;
-        let {DynamicId} = this.dynamicTable;
-
-        return Payment.IGetSignDataByVersionId({DynamicId, mode})
-            .then(dynamicDataSource => {
-
-                let {Permission, TitleList: dynamicHeaderData, DynamicDate} = this.dynamicTable;
-                let newData = {
-                        DynamicDate,
-                        dynamicHeaderData,
-                        dynamicDataSource,
-                        dynamicEdit: false,
-                        dynamicEditButtonShow: Boolean(Permission == `edit` && dynamicDataSource["length"]),
-                    },
-                    dynamicTable = {...this.state.dynamicTable, ...newData};
-
-                this.setState({dynamicTable, loading: false});
-            })
     }
     /**
      * 返回当前id
@@ -213,56 +100,6 @@ class SignIndex extends Component {
         }
     };
 
-    /**
-     * 获取当前版本下比对版本数据
-     * currentVersion 当前版本 返回Promise
-     */
-    getCurrentVersionPlanData = currentVersion => {
-        let {mode} = this.state;
-        return Payment.IGetSignDataByVersionId({DynamicId: currentVersion, mode}); //获取数据
-
-    };
-
-    /**
-     * 获取计划版数据
-     * return promise 884dd5a6-ff48-4628-f4fa-294472d49b37
-     */
-    getPlanData = () => {
-
-        let {planTable, version, dynamicTable, dataKey, mode} = this.state;
-        let {dynamicHeaderData} = dynamicTable;
-        let {versionData} = this.version;
-        // dataKey = "4100835d-2464-2f9e-5086-bc46a8af14f4";
-        //dynamicHeaderData:[],//动态调整版头部 dynamicDataSource:[],//动态调整版数据
-        let currentVersion = this.getCurrentVertion(versionData);
-
-        //瑞涛获取数据版本
-        return Payment.IGetSignDataByVersionId({DynamicId: currentVersion, mode})
-            .then((planDataSource) => {
-                let newData = { //table数据
-                        dynamicHeaderData,
-                        planDataSource,
-                        // planEditButtonShow:Boolean(planDataSource&&planDataSource.length)
-                    },
-                    newVersion = { //版本数据
-                        currentVersion,
-                        versionData,
-                        versionShow: true
-                    }
-                planTable = {...planTable, ...newData};
-                version = {...version, ...newVersion};
-
-                this.setState({planTable, version});
-
-            })
-    }
-
-    /**
-     * 动态编辑数据
-     */
-    setDynamicColumns(text, value, index) {
-        return text;
-    }
 
     handleEdit = () => {
         const {nodeId, nodeLevel} = this.props;
@@ -274,41 +111,6 @@ class SignIndex extends Component {
                 window.location.href = "http://39.106.71.187:8000/Exprot/DownLoadExcelFile/?fileName=" + data.File
             })
     };
-
-
-    /**
-     * 返回数据
-     */
-    filterSaveData = da => {
-        da.map(arg => {
-            if (arg.children && arg.children.length) {
-                this.filterSaveData(arg.children)
-            } else if (!arg.children) {
-                //console.log(`${arg.GROUPNAME}=>${arg.PROJECTNAME}=>${arg.TYPENAME}`)
-                // debugger
-                for (let key in arg) {
-                    let reg = /^Y\d{3}/ig, mon = key.substr(2, 2), reg3 = /Y3\d{2}Q\w/, yearNum = key.substr(1, 1);
-                    if (yearNum == "3" && !reg3.test(key)) { //用来处理第三年非带Q字段不获取-瑞涛版
-                        continue
-                    }
-                    if (reg.test(key) && arg[key] !== "") {
-                        let {StartYear} = this.dynamicTable;
-                        StartYear = eval(StartYear + "-1+" + yearNum)
-                        let _da = {
-                            dataType: key.substr(4),
-                            titlename: `${StartYear}-${mon}-01`,
-                            productTypeID: arg["showId"] || "",
-                            GROUPID: arg["GROUPID"],
-                            val: arg[key]
-                        }
-                        this.dynamicTable.saveData[_da.titlename + "-" + key + "-" + arg.key] = _da;
-                    }
-                }
-
-            }
-        })
-    }
-
 
     /**
      * 绑定双向滚动
@@ -324,92 +126,20 @@ class SignIndex extends Component {
         }
     }
 
-    /**
-     * 弹出点击取消
-     */
-    clickModalCancel = () => {
-        let dialog = {...this.state.dialog, ModalVisible: false}
-        this.setState({dialog})
-    }
-    /**
-     * 弹出确定
-     */
-    clickModalOk = () => {
-        let dialog = {...this.state.dialog, ModalVisible: false}
-        this.setState({dialog})
-    }
-    renderContent = (arg) => {
-        let {dialogContent} = this.state.dialog;
 
-    }
-
-    clickOpenDialog(text, row, index) {
-        let {dialog} = this.state;
-        let {SupplyVersionId: supplyid} = this.dynamicTable;
-        let {columns} = dialog;
-        //supplyid,producttypeid
-        let {PRODUCTTYPEID: producttypeid} = row;
-
-        Payment.ISingSupplyData({supplyid, producttypeid})
-            .then(dialogContent => {
-                dialog = {...dialog, columns, dialogContent, ModalVisible: true};
-                this.setState({
-                    dialog
-                })
-            })
-            .catch(err => {
-                iss.error(err);
-            })
-    }
-
-    /**
-     * 版本下拉菜单事件
-     */
-    selectChangeVersion = params => {
-        // let _da= this.getCurrentVertion(params);
-        let versionId = params; // _da.length? _da[0].id:"";
-        let {version, planTable} = this.state;
-        let {dynamicHeaderData} = this.state.dynamicTable
-        version = {...version, currentVersion: params}
-        if (versionId) {
-
-            this.getCurrentVersionPlanData(versionId)
-                .then((planDataSource) => {
-                    let {planTable} = this.state;
-                    let newData = {
-                        dynamicHeaderData,
-                        planDataSource
-                    }
-                    planTable = {...planTable, ...newData};
-                    this.setState({
-                        planTable,
-                        version
-                    })
-
-                })
-                .catch(error => {
-                    iss.error(error);
-                })
-        } else {
-            planTable = {...planTable, planDataSource: []};
-            this.setState({planTable, version})
-        }
-
-    }
 
     /**
      * 动态调整table
      */
     renderHistoryData = () => {
-        let {versionData, versionId, editable, dynamicTable, loading, supperShow} = this.state;
-        let {dynamicHeaderData, dynamicDataSource, dynamicEdit, dynamicEditButtonShow, defaultHeight, DynamicDate} = dynamicTable;
-        dynamicEditButtonShow = (supperShow && dynamicEditButtonShow);//保存后不能编辑
+        let {defaultHeight,dynamicHeaderData, dynamicDataSource} = this.state;
+        
         return (
             <article className="toTable signPage">
                 <header className="bottom-header-bar">
                     <Row>
                         <Col span={12}>
-                            <span className="header-title">签约计划{DynamicDate}动态调整版（面积：平方米，货值：万元）</span>
+                            <span className="header-title">签约计划动态调整版（面积：平方米，货值：万元）</span>
                         </Col>
                         <Col span={12}>
                             <div className="RT">
@@ -422,15 +152,9 @@ class SignIndex extends Component {
                 </header>
 
                 <WrapperTreeTable
-                    loading={loading}
-                    size="small"
-                    defaultHeight={defaultHeight}
-                    //  onDataChange={this.onDataChangeDynamic}
                     headerData={dynamicHeaderData || []}
-                    editState={dynamicEdit}
-                    editMode="LastLevel"
                     dataSource={dynamicDataSource || []}
-                    columnRender={this.dynamicTable.dynamicRender}
+                    defaultHeight={defaultHeight}
                 />
             </article>
         );
@@ -440,29 +164,20 @@ class SignIndex extends Component {
      */
     renderCurrentData = () => {
 
-        const {planTable, dynamicTable, version} = this.state;
-        const {planHeaderData, planDataSource} = planTable;
-        const {versionData, versionShow, versionId, currentVersion} = version;
-        const {dynamicHeaderData, defaultHeight, DynamicDate} = dynamicTable;
+        const {defaultHeight,dynamicHeaderData,planDataSource} = this.state;
         return (
             <article className="pkTable mgT10 signPage">
                 <header className="top-header-bar">
                     <Row>
-                        <Col span={12}>
+                        <Col span={24}>
                             <span className="header-title">签约计划考核版（面积：平方米，货值：万元）</span>
-                        </Col>
-                        <Col span={12} className="action-section">
-                            <WrapperSelect className={versionShow ? "select-version" : "hide"} labelText="版本:"
-                                           dataSource={versionData}
-                                           value={currentVersion}
-                                           defaultHeight={defaultHeight}
-                                           onChange={this.selectChangeVersion}></WrapperSelect>
                         </Col>
                     </Row>
                 </header>
                 <WrapperTreeTable
                     headerData={dynamicHeaderData || []}
                     dataSource={planDataSource || []}
+                    defaultHeight={defaultHeight}
                 />
             </article>
         );
