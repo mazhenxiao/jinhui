@@ -34,7 +34,6 @@
 }
 .supply-wrapper .title {
   font-size: 13px;
-  font-weight: 600;
 }
 .supply-wrapper .text-align-right {
   text-align: right;
@@ -42,7 +41,11 @@
 }
 .supply-wrapper .plan-version {
   display: inline-block;
-  width: 210px;
+  width: 200px;
+}
+.supply-wrapper .plan-version2 {
+  display: inline-block;
+  width: 300px;
 }
 .supply-wrapper .top-header {
   padding-bottom: 5px;
@@ -74,7 +77,6 @@
   text-align: right;
   padding-right: 10px;
   font-size: 12px;
-  font-weight: 600;
 }
 .building-adjust .adjust-header {
   position: relative;

@@ -83,7 +83,7 @@ class WrapperSelect extends React.Component {
 
         if (labelText) {
             return (
-                <Row style={rowStyle} className={className}>
+                <Row style={rowStyle} className={className+"width:300px"}>
                     <Col span={labelSpan} style={labelStyle}>
                         {showRequired ? <span style={{color: "red"}}>*</span> : null}
                         {labelText}
