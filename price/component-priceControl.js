@@ -719,7 +719,7 @@ class PriceControl extends React.Component {
             <li className="">{this.Render_ButtonBuild()}</li>
             <li className="">
                 {
-                    Boolean(this.Jurisdiction.includes("edit"))&&
+                    Boolean(this.Jurisdiction.includes("approval"))&&
                     <button type="button" onClick={this.handleApproval}
                         className={this.state.isNoPriceData ? "hide" : "jh_btn jh_btn22 jh_btn_apro"}>
                     发起审批

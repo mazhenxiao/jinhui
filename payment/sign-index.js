@@ -65,6 +65,7 @@ class SignIndex extends Component {
 
 
     };
+    Jurisdiction=iss.Jurisdiction("priceControl");
     //版本信息私有数据
     version = { //版本
         currentVersion: "",//当前版本
@@ -709,15 +710,24 @@ class SignIndex extends Component {
                         </Col>
                         <Col span={12}>
                             <div className={dynamicEditButtonShow ? "RT" : "hidden"}>
+                                {
+                                 Boolean(this.Jurisdiction.includes("save"))&&
                                 <Popconfirm placement="top" title={"确定提交吗？"} onConfirm={this.handleSubmit}>
                                     <button className="jh_btn jh_btn22 jh_btn_apro mgR20">提交</button>
                                 </Popconfirm>
-                                <Popconfirm placement="top" title={"确定退回吗？"} onConfirm={this.handleCancel}>
-                                    <button className="jh_btn jh_btn22 refresh-icon mgR20">退回</button>
-                                </Popconfirm>
-                                <button className="jh_btn jh_btn22 jh_btn_edit"
+                                }
+                                {
+                                    Boolean(this.Jurisdiction.includes("revert"))&&
+                                    <Popconfirm placement="top" title={"确定退回吗？"} onConfirm={this.handleCancel}>
+                                        <button className="jh_btn jh_btn22 refresh-icon mgR20">退回</button>
+                                    </Popconfirm>
+                                }
+                                {
+                                    Boolean(this.Jurisdiction.includes("edit"))&&<button className="jh_btn jh_btn22 jh_btn_edit"
                                         onClick={this.handleEdit}>{dynamicEdit ? "保存" : "编辑"}
-                                </button>
+                                    </button>
+                                }
+                                
                             </div>
                         </Col>
                     </Row>
