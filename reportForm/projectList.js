@@ -43,17 +43,17 @@ class ProjectList extends Component{
         },{
         title: '城市',
         dataIndex: 'CITYNAME',
-        width:120,
+        width:120,fixed: 'left',
         key:2
         },
         {
         title: '项目名称',
-        dataIndex: 'PROJECTNAME',width:120,
+        dataIndex: 'PROJECTNAME',width:120,fixed: 'left',
         key:3
         },
         {
         title: '分期名称',
-        dataIndex: 'STAGENAME',width:120,
+        dataIndex: 'STAGENAME',width:120,fixed: 'left',
         key:4
         },
         {
@@ -151,7 +151,7 @@ class ProjectList extends Component{
                         bordered={true}
                         columns={header || []}
                         dataSource={source || []}
-                        scroll={{ x: num,y:200 }}
+                        scroll={{ x: num,y:500 }}
             /> 
          
       
