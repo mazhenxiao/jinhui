@@ -94,11 +94,18 @@ class $tree {
                 callback(node);
             },
             onLoadSuccess:function(node,data){
-            	
+
             	$(".tree-node").each(function(index,element){
             		var me=element;
-            		var node=th.ele.tree("getNode",me);
-            		$(me).attr("title",node.text||"");
+                    var node=th.ele.tree("getNode",me);
+                    if(node.salestatus ==1){
+                        $(me).addClass("unlock")
+                    }else if(node.salestatus ==2){
+                        $(me).addClass("lock")
+                    }
+                        $(me).attr("title",node.text||"");
+                    
+            		
                 });
                 let ele = $("#mCSB_1_container");
                     if(!ele.length){
