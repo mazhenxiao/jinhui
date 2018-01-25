@@ -7,6 +7,7 @@ import iss from "../js/iss.js";
 import {Button,Spin,Table,Row,Col} from 'antd';
 import {PlanSummary} from "../services"
 import {WrapperTreeTable, WrapperSelect} from '../common';
+import appConfig from '../app.config';
 //import "./css/reportForm.less";
 import "../css/tools-processBar.less";
 import "../css/button.less";
@@ -47,7 +48,7 @@ class ProjectList extends Component{
     
     PlanSummary.YearSupplyMark()
     .then(data=>{
-        window.location.href = "http://39.106.71.187:8000/Exprot/DownLoadExcelFile/?fileName=" + data.rows.File
+        window.location.href = appConfig.domain+"/Exprot/DownLoadExcelFile/?fileName=" + data.rows.File
     }).catch(error=>{
         console.error("发生错误",error);
     })

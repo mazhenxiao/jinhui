@@ -5,7 +5,7 @@ import {Spin, Tabs, Row, Col, Button, Select, Modal, Table, Popconfirm, message}
 import {WrapperTreeTable, WrapperSelect} from '../common';
 import {Overview} from '../services';
 import {knife} from '../utils';
-
+import appConfig from '../app.config';
 import "../css/antd.min.css";
 import "../css/payment.css";
 import "../css/tools-processBar.less";
@@ -109,7 +109,7 @@ class SignIndex extends Component {
             nodeLevel
         })
             .then((data) => {
-                window.location.href = "http://39.106.71.187:8000/Exprot/DownLoadExcelFile/?fileName=" + data.File
+                window.location.href = appConfig.domain+"/Exprot/DownLoadExcelFile/?fileName=" + data.File
             })
     };
 
