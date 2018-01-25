@@ -39,3 +39,14 @@
   height: 311px;
   border: 1px solid #dddddd;
 }
+.lookGroup,
+.lookPlate {
+  margin-left: 10px;
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+}
+.lookGroup img,
+.lookPlate img {
+  width: 100%;
+}

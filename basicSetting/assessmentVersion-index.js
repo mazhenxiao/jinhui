@@ -1,7 +1,7 @@
 import "babel-polyfill";  //兼容ie
 import iss from "../js/iss.js";
 import React, {Component, Children} from 'react';
-import { Table, Icon, Divider, Select, Calendar,Row, Col,Input,Button,Radio,DatePicker,monthFormat } from 'antd';
+import { Table,Spin, Icon, Divider, Select, Calendar,Row, Col,Input,Button,Radio,DatePicker,monthFormat } from 'antd';
 import "./css/assessmentVersion.less";
 const Option = Select.Option;
 const { Column, ColumnGroup } = Table;
@@ -17,7 +17,8 @@ class assessmentVersionIndex extends Component {
         state = {
             dataList:[],
             arealist:[],
-            citylist:[]
+            citylist:[],
+            loading:false
         };
         
     
@@ -38,18 +39,11 @@ class assessmentVersionIndex extends Component {
     }
 
     getFetData = () =>{
+        this.setState({loading:true})
         return Version.GetCustomTagList()
                 .then(dataList=>{
+                    this.setState({loading:false})
                     dataList.datalist.forEach((el,ind)=>{
-                        // if(el.FiscalYearAdjustment!=null){
-                        //     el.FiscalYearAdjustment = el.FiscalYearAdjustment.slice(0,6)
-                        // }
-                        // if(el.FiscalYearPlan!=null){
-                        //     el.FiscalYearPlan = el.FiscalYearPlan.slice(0,6)
-                        // }
-                        // if(el.PolicyDecisionAssessment!=null){
-                        //     el.PolicyDecisionAssessment = el.PolicyDecisionAssessment.slice(0,6)
-                        // }
                         el.key = ind+1
                     });
                     this.setState({
@@ -57,6 +51,9 @@ class assessmentVersionIndex extends Component {
                         arealist:dataList.arealist,
                         citylist:dataList.citylist
                     })
+                })
+                .catch(()=>{
+                    this.setState({loading:false})
                 })
     }
 
@@ -68,11 +65,16 @@ class assessmentVersionIndex extends Component {
     }
 
     BIND_Save =()=>{
+        this.setState({loading:true})
         const {dataList} = this.state;
         Version.SaveCustomTag({
             data:JSON.stringify(dataList)
         })
         .then(dataList=>{
+            this.setState({loading:false})
+        })
+        .catch(()=>{
+            this.setState({loading:false})
         })
     }
     renderHeader = () => {
@@ -211,11 +213,13 @@ class assessmentVersionIndex extends Component {
             render:(title,row,ind) => this.renderRadio(row,'SalesStatus',ind)
           }];
         return (
-            <Table
-                columns={columns}
-                dataSource={this.state.dataList} 
-                bordered={true}
-            />
+            <Spin spinning={this.state.loading}>
+                <Table
+                    columns={columns}
+                    dataSource={this.state.dataList} 
+                    bordered={true}
+                />
+            </Spin>
         );
     }
     render() {

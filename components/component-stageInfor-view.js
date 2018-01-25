@@ -3,7 +3,9 @@ import React from 'react';
 import "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import "../css/view.less";
-
+import ReactDOM from 'react-dom';
+import GroupIframe from "./component-stagingInformation-groupIframe.js";
+import PlateIframe from "./component-stagingInformation-plateIframe.js";
 class StageInforView extends React.Component {
     constructor(arg) {
         super(arg);
@@ -214,7 +216,49 @@ class StageInforView extends React.Component {
     BIND_mapsTp(){
         window.open(iss.mapEUrl+"/Map/PUSHPLATE?stage_id="+this.state.STAGEVERSIONID+"&stage_map_id=stage"+this.state.STAGEVERSIONID);
     }//点击推盘图预览
+    //组团划分
+    BIND_OPENGroupIframe(look){
+        var th=this;
+        iss.Alert({
+            title:"组团划分",
+            width:600,
+            height:300,
+            content:`<div id="GroupIframeBox"></div>`,
+            okVal:"确定",
+            cancel:"取消",
+            ok(da){
+            },
+            cancel(){
 
+            }
+        })
+        let checkid="";
+        checkid = this.state.STAGEVERSIONID   
+        ReactDOM.render(<GroupIframe look={look} callback={th.GroupIframeCallback.bind(this)}  
+        versionId = {checkid} />,document.querySelector("#GroupIframeBox"));
+    }
+    //推盘划分
+    BIND_OPENPlateIframe(look){
+        var th=this;
+        iss.Alert({
+            title:"推盘划分",
+            width:600,
+            height:300,
+            content:`<div id="PlateIframeBox"></div>`,
+            okVal:"确定",
+            cancel:"取消",
+            ok(da){
+            },
+            cancel(){}
+        })
+        let checkid="";
+        checkid = this.state.STAGEVERSIONID
+        ReactDOM.render(<PlateIframe look={look} callback={th.GroupIframeCallback.bind(this)} 
+         versionId = {checkid} />,document.querySelector("#PlateIframeBox"));
+    }
+    GroupIframeCallback = () =>{
+
+    }
     render() {
     	let me=this;
         let th=this.state;
@@ -303,11 +347,17 @@ class StageInforView extends React.Component {
                                 <td className="stageViewTitle">启动开发时间</td>
                                 <td className="stageViewCon">{STARTDATE}</td>
                                 <td className="stageViewTitle">组团数量</td>
-                                <td className="stageViewCon">{th.GROUPNUMBER}</td>
+                                <td className="stageViewCon">
+                                    {th.GROUPNUMBER}
+                                    <span onClick={this.BIND_OPENGroupIframe.bind(this,"look")} className="lookGroup"><img src="../img/look-group.png" /></span>
+                                </td>
                             </tr>
                             <tr>
                                 <td className="stageViewTitle">推盘批次</td>
-                                <td className="stageViewCon">{th.PUSHPLATENUMBER}</td>
+                                <td className="stageViewCon">
+                                    {th.PUSHPLATENUMBER}
+                                    <span onClick={this.BIND_OPENPlateIframe.bind(this,"look")} className="lookPlate"><img src="../img/look-group.png" /></span>
+                                </td>
                                 <td className="stageViewTitle"></td>
                                 <td className="stageViewCon"></td>
                             </tr>
