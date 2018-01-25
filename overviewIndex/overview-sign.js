@@ -38,6 +38,7 @@ class SignIndex extends Component {
     componentDidMount() {
         const {nodeId, nodeLevel} = this.props;
         this.getFetData(nodeId, nodeLevel);
+        this.bindScrollLock()
     }
 
     componentWillUnmount() {
