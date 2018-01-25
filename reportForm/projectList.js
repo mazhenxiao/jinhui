@@ -9,6 +9,7 @@ import {ProjectListServer} from "../services"
 //import "./css/reportForm.less";
 import "../css/tools-processBar.less";
 import "../css/button.less";
+import "../css/antd.min.css";
 class ProjectList extends Component{
   state={
       loading:true

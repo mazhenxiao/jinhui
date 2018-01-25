@@ -75,6 +75,7 @@ class assessmentVersionIndex extends Component {
         })
         .then(dataList=>{
             this.setState({loading:false})
+            iss.success("保存成功！！");
         })
         .catch(()=>{
             this.setState({loading:false})

@@ -27,8 +27,8 @@ class WrapperSelect extends React.Component {
 
     static defaultProps = {
         showDefault: true,
-        labelSpan: 8,
-        inputSpan: 15,
+        labelSpan:4,
+        inputSpan: 20,
         defaultValue: "",
         promiseLoader: () => {
             return Promise.resolve([]);
