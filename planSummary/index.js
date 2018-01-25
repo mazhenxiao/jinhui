@@ -4,8 +4,9 @@
 import "babel-polyfill";  //兼容ie
 import React,{ Component} from 'react';
 import iss from "../js/iss.js";
-import {Spin,Table} from 'antd';
+import {Button,Spin,Table,Row,Col} from 'antd';
 import {PlanSummary} from "../services"
+import {WrapperTreeTable, WrapperSelect} from '../common';
 //import "./css/reportForm.less";
 import "../css/tools-processBar.less";
 import "../css/button.less";
@@ -35,49 +36,57 @@ class ProjectList extends Component{
     this.setState({
         loading:true
     });
-    // PlanSummary.YearSupplyMarkSummary({})
-    // .then(arg=>{
-    //     console.log("arg",arg)
-    //     this.setState({
-    //         loading:false
-    //     })
-    // })
-    var th=this;
-    iss.ajax({
-        url: "/Report/YearSupplyMarkSummary",
-        data:{
-            //stageversionid: th.state.versionId
-        },
-        success(data) {
-            th.setState({
-                header:data.headerData,
-                source:data.dataSource                
-            })
-        },
-        error() {
-            console.log('失败')
-        }
+    PlanSummary.YearSupplyMarkSummary({})
+    .then(data=>{
+        console.log("data",data)
+        this.setState({
+            loading:false
+        })
+    }).catch(error=>{
+        console.error("发生错误",error);
     })
+    // var th=this;
+    // iss.ajax({
+    //     url: "/Report/YearSupplyMarkSummary",
+    //     data:{
+    //         //stageversionid: th.state.versionId
+    //     },
+    //     success(data) {
+    //         th.setState({
+    //             header:data.headerData,
+    //             source:data.dataSource                
+    //         })
+    //     },
+    //     error() {
+    //         console.log('失败')
+    //     }
+    // })
   }
-  
+  export = () =>{
+
+  }
   render(){
       let {header,source,loading}=this.state;
-      let num=0;
-       for(let key in header){
-           num+=parseFloat(header[key]["width"]||0)
-       }
+       let defaultHeight = 1000;
       return <article className="reportForm">
-      
-    
-            <Table
-                        rowKey="key"
-                        bordered={true}
-                        columns={header || []}
-                        dataSource={source || []}
-                        scroll={{ x: num}}
-            /> 
-         
-      
+                <Row>
+                    <Col span={24}>
+                            <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick}>
+                                编辑供货
+                            </button>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={24}>
+                        {/* <WrapperTreeTable
+                            headerData={header || []}
+                            dataSource={source || []}
+                            fixedAble={true}
+                            defaultHeight={defaultHeight}
+                        /> */}
+                    </Col>
+                </Row>
+                
       </article>
   }
 }

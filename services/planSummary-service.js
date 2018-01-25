@@ -9,8 +9,6 @@ export const YearSupplyMarkSummary=(data)=>{
          url:"/Report/YearSupplyMarkSummary",
          data,
      })
-     .then(success)
-     .catch(error)
  }
 const success=(da)=>{
     return da

@@ -329,7 +329,6 @@ class WrapperTreeTable extends Component {
         return (e) => {
             let value = e.target.value;
             value = value.replace(/\s*/ig, "");
-            debugger
             if (value && !numberReg.test(value)) {
                 value = parseFloat(value).toFixed(2);
             }
@@ -360,6 +359,11 @@ class WrapperTreeTable extends Component {
             //默认固定第一列
             if (fixedAble && index === 0) {
                 column.fixed = "left";
+            }
+            if(fixedAble == "year"){
+                if( index === 0 ||  index === 1 || index === 2 ||  index === 3){
+                    column.fixed = "left";
+                }
             }
 
             //render
