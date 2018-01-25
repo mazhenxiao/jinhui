@@ -1032,8 +1032,35 @@ class $iss {
                 content: message,
             });
     };
+    Jurisdiction=(str)=>{
+        let db = JSON.parse(localStorage.getItem("Jurisdiction"));
+        let newProject = filter(db,str);
+         return newProject;
+    }
 }
+let filter=(da,str)=>{
+    let arr=[]
+     da.forEach(arg=>{
+        let {Url,Watch,Child}=arg;
+        if(Url.indexOf("Index")>-1){
+           Watch.forEach(arg=>{
+               for(let key in arg){
+                  arr.push({
+                    Url:key,
+                    Watch:arg[key]
+                 })
+               }
+            
+           })
+        }else if(Child&&Child.length){
+            
+            arr = arr.concat(Child)
+        }
+    })
 
+    let _w = arr.filter(arg=>(arg.Url.indexOf(str)>-1));
+    return _w.length? _w[0]["Watch"]:[];
+}
 //let iss = window["iss"] = 
 let iss = window["iss"] = new $iss();
 $(function () {

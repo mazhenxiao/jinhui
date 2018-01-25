@@ -17,7 +17,7 @@ export default class ToolsList extends React.Component {
             toURL: ""//基础设置需要跳转的地址
         }
         this.Jurisdiction=JSON.parse(localStorage.getItem("Jurisdiction")||"[]");
-   
+        
         
         /* [
             {

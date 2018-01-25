@@ -1,5 +1,5 @@
 import React from 'react';
-import "../js/iss.js";
+import iss from "../js/iss.js";
 import "babel-polyfill";  //兼容ie
 import NewProjectCount from "./component-newProject-count.js";
 import DynamicTable from "./tools-dynamicTable.js";
@@ -35,9 +35,6 @@ class NewProject extends React.Component {
       
 
         // this.guid = this.props.location.query["status"]=="add"? iss.guid():iss.id.id;
-
-
-
         this.time = "";//延时变量
         this.firstData = [];//初始化数据
         this.child1 = "";//子集指针

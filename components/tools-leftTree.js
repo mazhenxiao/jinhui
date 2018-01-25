@@ -16,6 +16,8 @@ export default class ToolsTree extends React.Component {
         }
         this.setTime = "";
         this.currentPath = "";
+        this.Jurisdiction=[];//权限
+               
         //iss.hashHistory.listen()
     }
     componentWillReceiveProps(nextProps) {
@@ -82,14 +84,14 @@ export default class ToolsTree extends React.Component {
 	                		state:arg
 	                	});
 	                	break;
-	                case "4":/*项目*/
+                    case "4":/*项目*/   
 	                	iss.hashHistory.push({
 	                		pathname:paths,
 	                		state:arg,
 	                		search:"?isProOrStage="+1+"&dataKey="+iss.id.id
 	                	});
 	                	break;
-	                case "5":/*分期*/
+                    case "5":/*分期*/
 	                	iss.hashHistory.push({
 	                		pathname:paths,
 	                		state:arg,
@@ -98,6 +100,7 @@ export default class ToolsTree extends React.Component {
 	                	break;
 	            }
             }else{
+                this.Jurisdiction = iss.Jurisdiction("newProjects");
                 switch(arg["level_id"]){
 	                case "1":iss.hashHistory.replace({pathname:"index",state:arg,query:{currentPosi:"group",dataKey:iss.id.id}});break; //集团汇总
 	                case "2":iss.hashHistory.replace({pathname:"index",state:arg,query:{currentPosi:"area",dataKey:iss.id.id}});break;//区域
@@ -338,25 +341,46 @@ export default class ToolsTree extends React.Component {
     }
     render() {
         let th = this;
+        
         let setBar = arg => {
+            
             if (th.state.changeState == "" || th.state.changeState == undefined) {
                 return "";
             } else if (th.state.changeState == "newProject") {
                 return <div className="">
+                    {
+                    Boolean(th.Jurisdiction.includes("create"))&&
                     <a href="javascript:;" onClick={this.addTodo.bind(this)} className="iconBoxJin projectAdd" title="创建项目"></a>
+                    }
                 </div>
 
             } else if (th.state.changeState == "intallmentDetail") {
                 return <div className="deleteBox">
+                    {
+                    Boolean(th.Jurisdiction.includes("remove"))&&
                     <a href="javascript:;" onClick={this.deleteTodo_1.bind(this)} className="iconBoxJin projectDelete" title="删除分期"></a>
+                    }
+                    {
+                        Boolean(th.Jurisdiction.includes("edit"))&&
                     <a href="javascript:;" onClick={this.editTodo.bind(this)} className="iconBoxJin projectBian" title="编辑分期"></a>
+                    }
                 </div>
 
             } else {
                 return <div className="">
-                    <a href="javascript:;" onClick={this.deleteTodo_2.bind(this)} className="iconBoxJin projectDelete" title="删除项目"></a>
-                    <a href="javascript:;" onClick={this.editTodo.bind(this)} className="iconBoxJin projectBian" title="编辑项目"></a>
-                    <a href="javascript:;" onClick={this.addTodo.bind(this)} className="iconBoxJin projectAdd" title="创建分期"></a>
+                    {
+                        
+                        Boolean(th.Jurisdiction.includes("remove"))&&
+                        <a href="javascript:;" onClick={this.deleteTodo_2.bind(this)} className="iconBoxJin projectDelete" title="删除项目"></a>
+                    }
+                    {
+                         Boolean(th.Jurisdiction.includes("edit"))&&
+                         <a href="javascript:;" onClick={this.editTodo.bind(this)} className="iconBoxJin projectBian" title="编辑项目"></a>
+                    }
+                    {
+                        Boolean(th.Jurisdiction.includes("create"))&&
+                        <a href="javascript:;" onClick={this.addTodo.bind(this)} className="iconBoxJin projectAdd" title="创建分期"></a>
+                    }
                 </div>
 
             }
