@@ -149,9 +149,9 @@ class $knife {
     }
     /**
      * 第二种计算工具，用于表格计算
-     * @param {*对象} Obj
-     * @param {*数组} headerData
-     * @param {*数组} dataSource
+     * @param {*对象} Obj         预留可以传空
+     * @param {*数组} headerData  头部，计算公式在头部的
+     * @param {*数组} dataSource  数据，实际计算的数据
      */
     setTableExec(Obj, headerData, dataSource){
         this.Count_Exec(headerData,dataSource);
