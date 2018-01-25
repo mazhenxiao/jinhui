@@ -151,7 +151,8 @@ class ProjectList extends Component{
                         bordered={true}
                         columns={header || []}
                         dataSource={source || []}
-                        scroll={{ x: num,y:500 }}
+                        scroll={{ x: num,y:400}}
+                        pagination={false}
             /> 
          
       
