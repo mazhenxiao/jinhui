@@ -47,7 +47,7 @@
                 var UserDto;
                     try{
                         UserDto = JSON.stringify(result.rows.MenusData.rows);
-                        sessionStorage.setItem("Jurisdiction",UserDto);
+                        localStorage.setItem("Jurisdiction",UserDto);
                     }catch(e){
                         $(".alertBox").html("登录失败! 错误原因: 用户没有权限！");
                     }
