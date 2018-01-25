@@ -199,7 +199,9 @@ class Apply extends React.Component {
                 </table>
 
             </section>
-            <Pagination current={current} total={pageCount} onChange={this.Bind_Click_Page} />
+            <div className="agency-pagination">
+                <Pagination current={current} total={pageCount} onChange={this.Bind_Click_Page} />
+            </div>
             {/* <Page total={this.state.pageTotal} count={this.state.pageCount} callback={this.Bind_Click_Page.bind(this)} /> */}
         </article>
     }

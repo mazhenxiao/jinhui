@@ -1460,3 +1460,8 @@ header.HeaderBar h5 ul li {
 .upload .uploadTable li i {
   font-style: normal;
 }
+.agency-pagination {
+  float: right;
+  margin-top: 10px;
+  margin-right: 20px;
+}
