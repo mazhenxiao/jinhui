@@ -226,12 +226,13 @@ export default class ToolsList extends React.Component {
                                            Boolean(Child&&Child.length)&&(
                                               <ol className="subMenu">{
                                                 Child.map((arg2,ind2)=>{
-                                                    let {Url,Title}=arg2,urlArr = Url.includes("/")? Url.split("/"):Url;
+                                                    let {Url,Title}=arg2,urlArr = Url.includes("http")? Url:Url.split("/");
+                                                    let {token}=iss;
                                                     return  <li className="" key={ind2}>
                                                                                                     
                                                             {
                                                                 (typeof urlArr=="string")?
-                                                                (<a id={id} href={urlArr? urlArr:"javascript:;"} target="_blank" >{Title}</a>)
+                                                                (<a id={id} href={urlArr? urlArr.includes("?")? `${urlArr}&token=${token}`:`${urlArr}?token=${token}`:"javascript:;"} target="_blank" >{Title}</a>)
                                                                  :(
                                                                     <a id={id} href="javascript:void(0);"
                                                                         onClick={this.EVENT_CLICK.bind(this,urlArr[0],urlArr[1])}>{Title}</a>
