@@ -4,10 +4,14 @@ import iss from '../js/iss';
  * 获取张权项目清单数据
  */
 
-export const YearSupplyMarkSummary=(data)=>{
+export const YearSupplyMarkSummary=()=>{
     return iss.fetch({
-         url:"/Report/YearSupplyMarkSummary",
-         data,
+         url:"/Report/YearSupplyMarkSummary"
+     })
+ }
+ export const YearSupplyMark=()=>{
+    return iss.fetch({
+         url:"/Exprot/YearSupplyMark"
      })
  }
 const success=(da)=>{

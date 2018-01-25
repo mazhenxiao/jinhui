@@ -22,70 +22,62 @@ class ProjectList extends Component{
 
   }
   componentDidMount(){
-    this.pageInit();
+    this.getFetchTable()
   }
-  /**
-   * 页面入口
-   */
-  pageInit=()=>{
-     this.getFetchTable()
-     
-  }
- 
+
   getFetchTable=()=>{
     this.setState({
         loading:true
     });
-    PlanSummary.YearSupplyMarkSummary({})
+    PlanSummary.YearSupplyMarkSummary()
     .then(data=>{
-        console.log("data",data)
+        data.rows.dataSource.forEach((el,ind)=>{
+            el.key=ind+1
+        });
         this.setState({
-            loading:false
+            loading:false,
+            header:data.rows.headerData,
+            source:data.rows.dataSource
         })
     }).catch(error=>{
         console.error("发生错误",error);
     })
-    // var th=this;
-    // iss.ajax({
-    //     url: "/Report/YearSupplyMarkSummary",
-    //     data:{
-    //         //stageversionid: th.state.versionId
-    //     },
-    //     success(data) {
-    //         th.setState({
-    //             header:data.headerData,
-    //             source:data.dataSource                
-    //         })
-    //     },
-    //     error() {
-    //         console.log('失败')
-    //     }
-    // })
   }
-  export = () =>{
-
+  exportExcel = () =>{
+    
+    PlanSummary.YearSupplyMark()
+    .then(data=>{
+        window.location.href = "http://39.106.71.187:8000/Exprot/DownLoadExcelFile/?fileName=" + data.rows.File
+    }).catch(error=>{
+        console.error("发生错误",error);
+    })
+  
   }
   render(){
       let {header,source,loading}=this.state;
        let defaultHeight = 1000;
       return <article className="reportForm">
+      <Spin size="large" spinning={this.state.loading} tip="加载中请稍后。。。">
                 <Row>
-                    <Col span={24}>
-                            <button className="jh_btn jh_btn22 jh_btn_edit" onClick={this.handleEditClick}>
-                                编辑供货
+                    <Col span={22}>
+                    </Col>
+                    <Col span={2}>
+                            <button className="jh_btn jh_btn22 jh_btn_edit right" onClick={this.exportExcel}>
+                                导出
                             </button>
                     </Col>
                 </Row>
                 <Row>
                     <Col span={24}>
-                        {/* <WrapperTreeTable
+                        <WrapperTreeTable
                             headerData={header || []}
                             dataSource={source || []}
-                            fixedAble={true}
                             defaultHeight={defaultHeight}
-                        /> */}
+                            planSummary={"planSummary"}
+                        />
                     </Col>
                 </Row>
+                </Spin>
                 
       </article>
   }

@@ -108,9 +108,9 @@ class SignIndex extends Component {
             nodeId,
             nodeLevel
         })
-            .then((data) => {
-                window.location.href = "http://39.106.71.187:8000/Exprot/DownLoadExcelFile/?fileName=" + data.File
-            })
+        .then((data) => {
+            window.location.href = "http://39.106.71.187:8000/Exprot/DownLoadExcelFile/?fileName=" + data.File
+        })
     };
 
     /**

@@ -347,7 +347,7 @@ class WrapperTreeTable extends Component {
     };
 
     getColumns = (headerData) => {
-        const {columnRender, editState, fixedAble, firstColumnWidth, editMode} = this.props;
+        const {columnRender, editState,planSummary, fixedAble, firstColumnWidth, editMode} = this.props;
         let columnArray = [];
         columnArray.scrollX = 0;
 
@@ -360,7 +360,7 @@ class WrapperTreeTable extends Component {
             if (fixedAble && index === 0) {
                 column.fixed = "left";
             }
-            if(fixedAble == "year"){
+            if(planSummary){
                 if( index === 0 ||  index === 1 || index === 2 ||  index === 3){
                     column.fixed = "left";
                 }
