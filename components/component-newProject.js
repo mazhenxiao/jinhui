@@ -38,8 +38,8 @@ class NewProject extends React.Component {
         this.time = "";//延时变量
         this.firstData = [];//初始化数据
         this.child1 = "";//子集指针
-
-      
+        this.Jurisdiction=iss.Jurisdiction("newProjects");;//权限
+        
     }
     componentWillMount() {
         
@@ -779,8 +779,14 @@ class NewProject extends React.Component {
                         <i>（<i className="redFont"></i>为必填项）</i>
                     </p>
                     <span className="functionButton">
+                        {
+                            Boolean(th.Jurisdiction.includes("save"))&&
                         <a className="saveIcon " onClick={this.EVENT_CLICK_SAVE.bind(this, "zc")} href="javascript:void(0);">暂存 <NewProjectTime endTiming={this.handleEndTiming.bind(this)} approvalTime={this.state.NewProjectCountDATA.APPROVETIME || ""} /></a>
+                        }
+                        {
+                        Boolean(th.Jurisdiction.includes("approval"))&&
                         <a className="approvalIcon" onClick={this.BIND_ROUTERCHANGE.bind(this)} href="javascript:;">发起审批 <NewProjectTime endTiming={this.handleEndTiming.bind(this)} approvalTime={this.state.NewProjectCountDATA.APPROVETIME || ""} /></a>
+                        }
                     </span> 
                 </h3>
                 <NewProjectCount ref="NewProjectCount" projectCode={this.state.projectCode} checkName={this.checkName} local={th.props.location} NewProjectCountDATA={th.BIND_NewProjectCountDATA.bind(th)} save={th.EVENT_CLICK_SAVE.bind(this)} status={th.state.status} projectId={th.state.projectId} point={th.BIND_NewProjectCount.bind(this)} />

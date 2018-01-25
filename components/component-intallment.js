@@ -29,7 +29,7 @@ class Intallment extends React.Component {
             //maxCode:"",/*最大编码*/
             //pCodeAndLXCode:""/*分期编码*/
         }
-        
+        this.Jurisdiction=iss.Jurisdiction("intallment");;//权限
      
     }    
     componentWillMount(){
@@ -394,8 +394,14 @@ class Intallment extends React.Component {
                         <i>（<i className="redFont"></i>为必填项）</i>
                     </p>
 				    <span className="functionButton" >
+                    {
+                         Boolean(th.Jurisdiction.includes("save"))&&
                         <a className="saveIcon" onClick={this.EVENT_CLICK_SAVE} href="javascript:void(0);">暂存</a>
+                    }
+                    {
+                        Boolean(th.Jurisdiction.includes("approval"))&&
                         <a className="approvalIcon" onClick={this.EVENT_CLICK_POSTAPP.bind(this)} href="javascript:void(0);">发起审批</a>
+                    }
                     </span>
 			</h3>
         </div> 
